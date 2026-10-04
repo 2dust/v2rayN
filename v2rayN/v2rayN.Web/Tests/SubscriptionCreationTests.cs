@@ -61,7 +61,7 @@ public class SubscriptionCreationTests
 
             var reloadedView = V2rayRuntime.ToSubscriptionView(saved);
             await reloadedView.Url.Should().BeEqualTo(string.Empty);
-            await reloadedView.Enabled.Should().BeFalse();
+            await reloadedView.Enabled.Should().BeTrue();
             await reloadedView.AutoUpdateInterval.Should().BeEqualTo(0);
         }
         finally

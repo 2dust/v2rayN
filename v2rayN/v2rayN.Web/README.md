@@ -82,6 +82,19 @@ The API package includes only a WebUI installation placeholder. It does not incl
 Vue sources or a built UI. Backend self-update packages contain only the API executable and build
 identity and never delete, overwrite, or recreate user-installed `webui/**` files.
 
+## Prerelease update preferences
+
+Update checks and installs default to each target's entry in `CheckPreReleaseCoreTypes`;
+the API self-update target is `v2rayN.Web`, independent of Desktop's `v2rayN` and Core targets.
+A missing list or entry defaults to stable releases. An explicit `preRelease=true` or `false`
+overrides the preference only for that request; batches use each target's own preference.
+
+`GET /api/core-updates` returns `checkPreReleaseCoreTypes`. Pass this list to
+`PUT /api/core-updates/settings` to save independent preferences (an empty list disables them).
+Targets not exposed by this updater retain their stored preferences. For older clients that
+omit the list, `preRelease` still applies to all exposed prerelease-capable targets, including
+`v2rayN.Web`; the response's legacy `preRelease` flag reflects the Web target's preference.
+
 ## Build and test the Backend
 
 Requires the .NET 10 SDK. No Node.js or npm is used by the Backend build, tests, native publish,

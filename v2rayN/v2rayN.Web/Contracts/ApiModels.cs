@@ -339,9 +339,14 @@ public sealed record CoreUpdateSettingsView(
     IReadOnlyList<CoreUpdateTargetView> Targets,
     bool GeoFilesSelected,
     bool PreRelease,
-    bool UseProxy);
+    bool UseProxy,
+    IReadOnlyList<string>? CheckPreReleaseCoreTypes = null);
 
-public sealed record CoreUpdateSettingsInput(string[] SelectedCoreTypes, bool PreRelease, bool UseProxy);
+public sealed record CoreUpdateSettingsInput(
+    string[] SelectedCoreTypes,
+    bool PreRelease,
+    bool UseProxy,
+    string[]? CheckPreReleaseCoreTypes = null);
 
 public sealed record CoreUpdateBatchInput(bool Apply);
 

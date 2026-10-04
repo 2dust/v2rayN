@@ -46,7 +46,7 @@ public sealed partial class V2rayRuntime
         CancellationToken cancellationToken)
     {
         var check = await CheckWebUpdateReleaseAsync(
-            preRelease ?? Config.CheckUpdateItem.CheckPreReleaseUpdate,
+            GetUpdatePreRelease(WebUpdateTarget, preRelease),
             useProxy ?? Config.CheckUpdateItem.UpdateViaProxy,
             cancellationToken);
         Volatile.Write(ref _latestWebUpdateVersion, check.Version);
@@ -92,7 +92,7 @@ public sealed partial class V2rayRuntime
                 return OperationView.Fail("core_update_busy", ApiMessageKeys.CoreUpdateBusy);
             }
             _webUpdateTask = Task.Run(() => RunWebUpdateAsync(
-                preRelease ?? Config.CheckUpdateItem.CheckPreReleaseUpdate,
+                GetUpdatePreRelease(WebUpdateTarget, preRelease),
                 useProxy ?? Config.CheckUpdateItem.UpdateViaProxy));
         }
         return OperationView.Ok(ApiMessageKeys.CoreUpdateStarted, new { target = WebUpdateTarget });

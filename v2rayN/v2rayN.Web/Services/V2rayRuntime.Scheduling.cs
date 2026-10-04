@@ -164,7 +164,6 @@ public sealed partial class V2rayRuntime
         await using var operation = await _operations.EnterOperationAsync(cancellationToken);
         var updateService = new UpdateService(Config, (_, _) => Task.CompletedTask);
         var messages = await updateService.CheckHasUpdateOnlyAll(
-            Config.CheckUpdateItem.CheckPreReleaseUpdate,
             Config.CheckUpdateItem.UpdateViaProxy,
             operation.Token);
         foreach (var message in messages)

@@ -26,6 +26,9 @@ public sealed partial class V2rayRuntime
     private Task? _geoUpdateTask;
     private Task? _coreUpdateBatchTask;
 
+    internal bool GetUpdatePreRelease(string target, bool? preRelease = null) =>
+        preRelease ?? (Config.CheckUpdateItem.CheckPreReleaseCoreTypes?.Contains(target, StringComparer.Ordinal) ?? false);
+
     public CoreUpdateSettingsView GetCoreUpdateSettings()
     {
         var manager = CoreInfoManager.Instance;
@@ -54,11 +57,16 @@ public sealed partial class V2rayRuntime
             })
             .ToArray();
 
+        var preReleaseNames = GetAvailablePreReleaseUpdateTargets();
         return new CoreUpdateSettingsView(
             targets,
             selectedTypes?.Contains(GeoFilesUpdateTarget, StringComparer.Ordinal) ?? true,
-            Config.CheckUpdateItem.CheckPreReleaseUpdate,
-            Config.CheckUpdateItem.UpdateViaProxy);
+            GetUpdatePreRelease(WebUpdateTarget),
+            Config.CheckUpdateItem.UpdateViaProxy,
+            Config.CheckUpdateItem.CheckPreReleaseCoreTypes?
+                .Where(preReleaseNames.Contains)
+                .Distinct(StringComparer.Ordinal)
+                .ToArray() ?? []);
     }
 
     public IReadOnlyList<CoreUpdateProgressView> GetCoreUpdateProgress() =>
@@ -80,7 +88,13 @@ public sealed partial class V2rayRuntime
         var requestedNames = (input.SelectedCoreTypes ?? [])
             .Distinct(StringComparer.Ordinal)
             .ToArray();
-        if (requestedNames.Any(name => name != GeoFilesUpdateTarget && !supportedNames.Contains(name)))
+        var preReleaseNames = GetAvailablePreReleaseUpdateTargets();
+        // Older clients still submit a single switch. An explicit per-target list takes
+        // precedence, including an empty list, and is independent of update selections.
+        var requestedPreReleaseNames = input.CheckPreReleaseCoreTypes
+            ?? (input.PreRelease ? preReleaseNames.ToArray() : []);
+        if (requestedNames.Any(name => name != GeoFilesUpdateTarget && !supportedNames.Contains(name))
+            || requestedPreReleaseNames.Any(name => !preReleaseNames.Contains(name)))
         {
             return OperationView.Fail("core_update_settings_invalid", ApiMessageKeys.CommonInvalidInput);
         }
@@ -95,7 +109,12 @@ public sealed partial class V2rayRuntime
                 .Concat(requestedNames)
                 .Distinct(StringComparer.Ordinal)
                 .ToList();
-            Config.CheckUpdateItem.CheckPreReleaseUpdate = input.PreRelease;
+            var hiddenPreReleaseSelections = (Config.CheckUpdateItem.CheckPreReleaseCoreTypes ?? [])
+                .Where(name => !preReleaseNames.Contains(name));
+            Config.CheckUpdateItem.CheckPreReleaseCoreTypes = hiddenPreReleaseSelections
+                .Concat(requestedPreReleaseNames)
+                .Distinct(StringComparer.Ordinal)
+                .ToList();
             Config.CheckUpdateItem.UpdateViaProxy = input.UseProxy;
             await EnsureConfigSaveSucceededAsync(() => ConfigHandler.SaveConfig(Config));
         });
@@ -166,7 +185,7 @@ public sealed partial class V2rayRuntime
 
             var task = Task.Run(() => RunCoreUpdateAsync(
                 coreType,
-                preRelease ?? Config.CheckUpdateItem.CheckPreReleaseUpdate,
+                GetUpdatePreRelease(coreType.ToString(), preRelease),
                 useProxy ?? Config.CheckUpdateItem.UpdateViaProxy));
             _coreUpdateTasks[coreType] = task;
         }
@@ -209,7 +228,6 @@ public sealed partial class V2rayRuntime
                 includeGeoFiles,
                 includeWeb,
                 apply,
-                Config.CheckUpdateItem.CheckPreReleaseUpdate,
                 Config.CheckUpdateItem.UpdateViaProxy));
         }
 
@@ -275,7 +293,6 @@ public sealed partial class V2rayRuntime
         bool includeGeoFiles,
         bool includeWeb,
         bool apply,
-        bool preRelease,
         bool useProxy)
     {
         var staged = new List<CoreUpdateStage>();
@@ -298,7 +315,7 @@ public sealed partial class V2rayRuntime
                 currentTarget = coreType.ToString();
                 var wasRunning = IsCoreTypeRunning(coreType);
                 PublishCoreUpdateProgress(coreType, "checking", false, false, wasRunning, null, null, batch: true);
-                var checkedUpdate = await CheckCoreUpdateResultAsync(coreType, preRelease, useProxy, token);
+                var checkedUpdate = await CheckCoreUpdateResultAsync(coreType, null, useProxy, token);
                 var check = checkedUpdate.Result;
                 if (checkedUpdate.IsUpToDate)
                 {
@@ -341,7 +358,7 @@ public sealed partial class V2rayRuntime
             {
                 currentTarget = WebUpdateTarget;
                 PublishWebUpdateProgress("checking", false, false, null, batch: true);
-                webCheck = await CheckWebUpdateReleaseAsync(preRelease, useProxy, token);
+                webCheck = await CheckWebUpdateReleaseAsync(GetUpdatePreRelease(WebUpdateTarget), useProxy, token);
                 Volatile.Write(ref _latestWebUpdateVersion, webCheck.Version);
                 if (!string.IsNullOrEmpty(webCheck.Error))
                 {
@@ -536,6 +553,13 @@ public sealed partial class V2rayRuntime
         }
     }
 
+    private HashSet<string> GetAvailablePreReleaseUpdateTargets() =>
+        GetAvailableWebCoreUpdateTypes()
+            .Where(coreType => CoreInfoManager.Instance.GetCheckPreRelease(coreType, true))
+            .Select(coreType => coreType.ToString())
+            .Append(WebUpdateTarget)
+            .ToHashSet(StringComparer.Ordinal);
+
     private IReadOnlyList<ECoreType> GetAvailableWebCoreUpdateTypes()
     {
         var manager = CoreInfoManager.Instance;
@@ -571,7 +595,7 @@ public sealed partial class V2rayRuntime
         var updateService = new UpdateService(Config, (_, _) => Task.CompletedTask);
         var result = await updateService.CheckHasUpdateOnly(
             coreType,
-            preRelease ?? Config.CheckUpdateItem.CheckPreReleaseUpdate,
+            GetUpdatePreRelease(coreType.ToString(), preRelease),
             useProxy ?? Config.CheckUpdateItem.UpdateViaProxy,
             cancellationToken);
         return new CoreUpdateCheckResult(result, IsUpToDateResult(coreType, result.Msg));
