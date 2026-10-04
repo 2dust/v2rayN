@@ -1,0 +1,6 @@
+<linker>
+  <assembly fullname="ServiceLib">
+    <type fullname="ServiceLib.Models.*" preserve="all" />
+    <type fullname="ServiceLib.Enums.*" preserve="all" />
+  </assembly>
+</linker>
