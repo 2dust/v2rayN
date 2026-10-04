@@ -18,6 +18,15 @@
     ShowInTaskbar="True"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
+    <Window.Styles>
+        <!-- Keep the log selected; hide only the strip when it has no other tabs. -->
+        <Style Selector="TabControl.logPane /template/ ItemsPresenter#PART_ItemsPresenter">
+            <Setter Property="IsVisible" Value="{Binding ShowClashUI}" />
+        </Style>
+        <Style Selector="TabControl.logPane /template/ Border#PART_BorderSeparator">
+            <Setter Property="IsVisible" Value="{Binding ShowClashUI}" />
+        </Style>
+    </Window.Styles>
     <dialogHost:DialogHost CloseOnClickAway="True" DisableOpeningAnimation="True">
         <DockPanel>
             <DockPanel Margin="{StaticResource Margin8}" DockPanel.Dock="Top">
@@ -124,6 +133,7 @@
                     <TabControl
                         x:Name="tabMain"
                         Grid.Column="2"
+                        Classes="logPane"
                         HorizontalContentAlignment="Left">
                         <TabItem x:Name="tabMsgView" Header="{x:Static resx:ResUI.MsgInformationTitle}" />
                         <TabItem x:Name="tabClashProxies" Header="{x:Static resx:ResUI.TbProxies}" />
@@ -139,6 +149,7 @@
                     <TabControl
                         x:Name="tabMain1"
                         Grid.Row="2"
+                        Classes="logPane"
                         TabStripPlacement="Left">
                         <TabItem x:Name="tabMsgView1" Header="{x:Static resx:ResUI.MsgInformationTitle}" />
                         <TabItem x:Name="tabClashProxies1" Header="{x:Static resx:ResUI.TbProxies}" />
