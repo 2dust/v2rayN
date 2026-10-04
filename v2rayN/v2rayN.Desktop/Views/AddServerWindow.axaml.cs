@@ -148,7 +148,6 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                             this.Bind(ViewModel, vm => vm.MasquePath, v => v.txtPath14.Text).DisposeWith(currentTypeDisposables);
                             this.Bind(ViewModel, vm => vm.MasqueHeaders, v => v.txtHttpHeaders14.Text).DisposeWith(currentTypeDisposables);
                             break;
-
                     }
                 })
                 .DisposeWith(disposables);
@@ -202,7 +201,6 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
             this.BindCommand(ViewModel, vm => vm.FetchCertChainCmd, v => v.btnFetchCertChain).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
         });
-
     }
 
     private void InitializeData(ProfileItem profileItem)

@@ -439,6 +439,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
 
     private static readonly DataFormat<ProfileItemModel> LstProfilesRowFormat =
         DataFormat.CreateInProcessFormat<ProfileItemModel>("LstProfilesRow");
+
     private (Point, PointerPressedEventArgs)? _dragStartPoint;
 
     private void LstProfiles_PointerPressed(object? sender, PointerPressedEventArgs e)
