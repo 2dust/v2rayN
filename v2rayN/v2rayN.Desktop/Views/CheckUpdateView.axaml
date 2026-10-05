@@ -75,22 +75,23 @@
                                     VerticalAlignment="Center"
                                     IsChecked="{Binding IsSelected}" />
 
-                                <StackPanel
+                                <DockPanel
                                     Grid.Column="1"
-                                    Margin="{StaticResource Margin4}"
-                                    IsVisible="{Binding ShowCheckPreRelease}"
-                                    Orientation="Horizontal">
+                                    Margin="{StaticResource MarginLr4}"
+                                    IsVisible="{Binding ShowCheckPreRelease}">
                                     <ToggleSwitch
                                         Margin="{StaticResource Margin4}"
                                         HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
                                         IsChecked="{Binding IsCheckPreRelease}"
                                         OffContent=""
                                         OnContent="" />
                                     <TextBlock
                                         Margin="{StaticResource Margin4}"
                                         VerticalAlignment="Center"
-                                        Text="{x:Static resx:ResUI.TbSettingsEnableCheckPreReleaseUpdate}" />
-                                </StackPanel>
+                                        Text="{x:Static resx:ResUI.TbSettingsEnableCheckPreReleaseUpdate}"
+                                        TextWrapping="Wrap" />
+                                </DockPanel>
 
                                 <TextBlock
                                     Grid.Column="2"
