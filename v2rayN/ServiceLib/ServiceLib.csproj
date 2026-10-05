@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<OutputType>Library</OutputType>
@@ -18,7 +18,6 @@
 		<PackageReference Include="QRCoder" />
 		<PackageReference Include="CliWrap" />
 		<PackageReference Include="ZXing.Net.Bindings.SkiaSharp" />
-		<PackageReference Include="TaskScheduler" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -45,6 +44,7 @@
 		<EmbeddedResource Include="Sample\SampleTunRules" />
 		<EmbeddedResource Include="Sample\SingboxSampleClientConfig" />
 		<EmbeddedResource Include="Sample\SingboxSampleOutbound" />
+		<EmbeddedResource Include="Sample\TaskXmlTemplate" />
 		<EmbeddedResource Include="Sample\tun_singbox_dns" />
 		<EmbeddedResource Include="Sample\tun_singbox_inbound" />
 		<EmbeddedResource Include="Sample\tun_singbox_rules" />
