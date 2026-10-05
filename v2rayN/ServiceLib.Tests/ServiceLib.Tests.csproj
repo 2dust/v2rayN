@@ -4,6 +4,7 @@
         <OutputType>Exe</OutputType>
         <IsPackable>false</IsPackable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <PublishAot>true</PublishAot>
     </PropertyGroup>
 
     <ItemGroup>
