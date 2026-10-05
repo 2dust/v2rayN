@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       release_tag:
-        description: 'Release tag (for example 7.25.4). Empty builds a development API package.'
+        description: 'Release tag (for example 7.x.y). Empty builds a development API package.'
         required: false
         default: ''
         type: string
@@ -103,11 +103,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - rid: linux-x64
-            runner: ubuntu-24.04
-          - rid: linux-arm64
-            runner: ubuntu-24.04-arm
+        # Development builds keep x64 coverage; releases also validate ARM64.
+        include: >-
+          ${{ fromJSON(needs.identity.outputs.release == 'true'
+            && '[{"rid":"linux-x64","runner":"ubuntu-24.04"},{"rid":"linux-arm64","runner":"ubuntu-24.04-arm"}]'
+            || '[{"rid":"linux-x64","runner":"ubuntu-24.04"}]') }}
     runs-on: ${{ matrix.runner }}
     env:
       RID: ${{ matrix.rid }}
@@ -153,11 +153,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - rid: linux-x64
-            platform: linux/amd64
-          - rid: linux-arm64
-            platform: linux/arm64
+        # Development builds keep amd64 coverage; releases also validate ARM64.
+        include: >-
+          ${{ fromJSON(needs.identity.outputs.release == 'true'
+            && '[{"rid":"linux-x64","platform":"linux/amd64"},{"rid":"linux-arm64","platform":"linux/arm64"}]'
+            || '[{"rid":"linux-x64","platform":"linux/amd64"}]') }}
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
