@@ -36,14 +36,14 @@
 
             <Button
                 x:Name="btnCheckOnly"
-                Width="100"
+                MinWidth="100"
                 Margin="{StaticResource Margin8}"
                 Content="{x:Static resx:ResUI.menuCheckOnly}"
                 Style="{StaticResource DefButton}" />
 
             <Button
                 x:Name="btnCheckUpdate"
-                Width="100"
+                MinWidth="100"
                 Margin="{StaticResource Margin8}"
                 Content="{x:Static resx:ResUI.menuCheckAndUpdate}"
                 IsDefault="True"

@@ -149,5 +149,6 @@ public partial class ProfilesSelectWindow
             e.Handled = true;
         }
     }
+
     #endregion Event
 }

@@ -32,13 +32,13 @@
             Orientation="Horizontal">
             <Button
                 x:Name="btnSave"
-                Width="100"
+                MinWidth="100"
                 Content="{x:Static resx:ResUI.TbConfirm}"
                 IsDefault="True"
                 Style="{StaticResource DefButton}" />
             <Button
                 x:Name="btnCancel"
-                Width="100"
+                MinWidth="100"
                 Margin="{StaticResource MarginLeftRight8}"
                 Content="{x:Static resx:ResUI.TbCancel}"
                 IsCancel="true"
@@ -174,7 +174,8 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.LvAutoUpdateInterval}" />
+                        Text="{x:Static resx:ResUI.LvAutoUpdateInterval}"
+                        TextWrapping="Wrap" />
                 </DockPanel>
 
                 <TextBlock
@@ -282,7 +283,8 @@
                     VerticalAlignment="Center"
                     materialDesign:HintAssist.Hint="{x:Static resx:ResUI.LvPrevProfileTip}"
                     AcceptsReturn="True"
-                    Style="{StaticResource MyOutlinedTextBox}" />
+                    Style="{StaticResource MyOutlinedTextBox}"
+                    ToolTip="{x:Static resx:ResUI.LvPrevProfileTip}" />
                 <Button
                     x:Name="btnSelectPrevProfile"
                     Grid.Row="10"
@@ -307,7 +309,8 @@
                     VerticalAlignment="Center"
                     materialDesign:HintAssist.Hint="{x:Static resx:ResUI.LvPrevProfileTip}"
                     AcceptsReturn="True"
-                    Style="{StaticResource MyOutlinedTextBox}" />
+                    Style="{StaticResource MyOutlinedTextBox}"
+                    ToolTip="{x:Static resx:ResUI.LvPrevProfileTip}" />
                 <Button
                     x:Name="btnSelectNextProfile"
                     Grid.Row="11"

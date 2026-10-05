@@ -51,7 +51,7 @@ public class CoreConfigV2rayServiceTests
             .Select(item => item!.GetValue<string>())
             .Should().BeEquivalentTo(["a=1", "b=2"]);
     }
- 
+
     [Test]
     public async Task GenerateClientConfigContent_PolicyGroup_ShouldExpandChildrenAndBuildBalancer()
     {
