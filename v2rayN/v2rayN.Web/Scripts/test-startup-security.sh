@@ -136,6 +136,38 @@ stop_instance() {
 assert_rejected_without_key systemd
 assert_rejected_without_key container
 
+assert_remote_listener_rejected() {
+  local source="$1" output="$temporary/listener-$1.log" status
+  local settings=() arguments=()
+  case "$source" in
+    urls) settings=(ASPNETCORE_URLS=http://0.0.0.0:5080) ;;
+    ipv6) settings=('ASPNETCORE_URLS=http://[::]:5080') ;;
+    lan) settings=(ASPNETCORE_URLS=http://192.168.1.20:5080) ;;
+    multiple) settings=('ASPNETCORE_URLS=http://localhost:5080;http://0.0.0.0:5081') ;;
+    cli) settings=(ASPNETCORE_URLS=http://localhost:5080); arguments=(--urls http://0.0.0.0:5081) ;;
+    cli-equals) arguments=(--urls=http://0.0.0.0:5081) ;;
+    http-ports) settings=(ASPNETCORE_HTTP_PORTS=5080) ;;
+    https-ports) settings=(ASPNETCORE_HTTPS_PORTS=5443) ;;
+    kestrel) settings=(ASPNETCORE_URLS=http://localhost:5080 Kestrel__Endpoints__Http__Url=http://0.0.0.0:5081) ;;
+  esac
+  if timeout 15 env -u V2RAYN_WEB_API_KEY \
+      -u ASPNETCORE_URLS -u ASPNETCORE_HTTP_PORTS -u ASPNETCORE_HTTPS_PORTS \
+      -u INVOCATION_ID -u JOURNAL_STREAM -u NOTIFY_SOCKET \
+      -u DOTNET_RUNNING_IN_CONTAINER -u container \
+      "${settings[@]}" V2RAYN_DATA_HOME="$temporary/listener-$source-data" \
+      "$executable" --foreground --no-open "${arguments[@]}" >"$output" 2>&1; then
+    status=0
+  else
+    status=$?
+  fi
+  [[ "$status" -eq 1 ]] || { cat "$output" >&2; echo "$source listener did not fail closed (exit $status)." >&2; exit 1; }
+  grep -Fq 'Management Key is required for non-loopback Web listeners.' "$output"
+}
+
+for source in urls ipv6 lan multiple cli cli-equals http-ports https-ports kestrel; do
+  assert_remote_listener_rejected "$source"
+done
+
 assert_malformed_configuration_fails() {
   local output="$temporary/malformed-env.log" status
   printf 'V2RAYN_WEB_API_KEY=must-not-be-echoed"\n' > "$runtime_directory/.env"
@@ -358,4 +390,4 @@ start_managed_with_process_environment_precedence "$(new_port)"
 start_managed_with_key systemd "$(new_port)"
 start_managed_with_key container "$(new_port)"
 
-echo "Startup security tests passed (native first-run, malformed .env rejection, managed no-key fail-closed, systemd/container keys from .env or process environment)."
+echo "Startup security tests passed (loopback first-run, remote listeners fail-closed across configuration sources, malformed .env rejection, systemd/container keys from .env or process environment)."

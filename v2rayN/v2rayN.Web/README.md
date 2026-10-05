@@ -22,10 +22,20 @@ chmod 600 .env
 ./v2rayN.Web --foreground --no-open
 ```
 
-The default listener is `http://0.0.0.0:5080`. Protect it with a firewall/VPN or an HTTPS reverse
-proxy; do not expose it directly to the public Internet. Systemd and container deployments
-require `V2RAYN_WEB_API_KEY` to be set before startup. For an interactive native install without
-an environment key, first-run setup remains controlled by the Backend's existing setup policy.
+The default listener is `http://127.0.0.1:5080`. A local native install may temporarily leave
+`V2RAYN_WEB_API_KEY` empty when **all** listeners are loopback (`127.0.0.1`, `localhost`, or
+`[::1]`), then complete first-run setup through a local browser and an installed WebUI.
+
+For LAN / NAS / headless / container / systemd deployments, preconfigure
+`V2RAYN_WEB_API_KEY`. Systemd and containers require it even on loopback. Any non-loopback
+listener (including `0.0.0.0`, `[::]`, wildcard/hostname bindings, and LAN IPs) fails startup
+without this environment Key, even if a Key was previously saved through local setup.
+The check uses the effective ASP.NET Core configuration, including `ASPNETCORE_URLS`,
+command-line `--urls`, `ASPNETCORE_HTTP_PORTS` / `ASPNETCORE_HTTPS_PORTS` (wildcard bindings),
+and `Kestrel:Endpoints`, respecting their precedence. With multiple URLs, one non-loopback
+listener is enough to require a Key; request Host headers never determine exposure.
+For remote access, set a Key before selecting e.g. `ASPNETCORE_URLS=http://0.0.0.0:5080`.
+Protect it with a firewall/VPN or an HTTPS reverse proxy; do not expose it directly to the Internet.
 
 `GET /api/health` is a non-sensitive health probe. After authentication, `GET /api/status`
 reports the running Backend version, commit, runtime identifier, and runtime capability fields.

@@ -66,7 +66,7 @@ path, key, port = sys.argv[1:]
 content = Path(path).read_text(encoding="utf-8")
 replacements = {
     "V2RAYN_WEB_API_KEY=": f"V2RAYN_WEB_API_KEY={key}",
-    "ASPNETCORE_URLS=http://0.0.0.0:5080": f"ASPNETCORE_URLS=http://127.0.0.1:{port}",
+    "ASPNETCORE_URLS=http://127.0.0.1:5080": f"ASPNETCORE_URLS=http://127.0.0.1:{port}",
     "V2RAYN_WEB_AUTOSTART=true": "V2RAYN_WEB_AUTOSTART=false",
 }
 for original, replacement in replacements.items():

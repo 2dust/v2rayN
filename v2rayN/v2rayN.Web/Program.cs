@@ -66,6 +66,18 @@ internal static class Program
             return result is WebStopResult.NotRunning or WebStopResult.Stopped ? 0 : 1;
         }
 
+        var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+        {
+            Args = launchOptions.HostArguments,
+            ContentRootPath = AppContext.BaseDirectory,
+        });
+        WebListenerSecurityPolicy.ApplyDefault(builder);
+        if (WebListenerSecurityPolicy.GetStartupError(builder.Configuration, managementKey) is { } listenerError)
+        {
+            Console.Error.WriteLine(listenerError);
+            return 1;
+        }
+
         if (launchOptions.Mode == WebLaunchMode.BackgroundLauncher)
         {
             if (!OperatingSystem.IsLinux())
@@ -117,7 +129,7 @@ internal static class Program
                 && args.Contains(WebLaunchOptions.ForegroundFlag, StringComparer.Ordinal)
                 && !daemonEnvironment
                 && !containerEnvironment;
-            hostResult = await RunWebHostAsync(launchOptions.HostArguments, showForegroundPrompt);
+            hostResult = await RunWebHostAsync(builder, launchOptions.HostArguments, showForegroundPrompt);
         }
 
         // The host cleanup is complete and the old owner has disposed this lock. The
@@ -159,7 +171,7 @@ internal static class Program
         return hostResult.ExitCode;
     }
 
-    private static async Task<WebHostRunResult> RunWebHostAsync(string[] args, bool showForegroundPrompt)
+    private static async Task<WebHostRunResult> RunWebHostAsync(WebApplicationBuilder builder, string[] args, bool showForegroundPrompt)
     {
         var configPath = WebAuthStorage.MigrateAndGetPath(
             Utils.StartupPath(),
@@ -169,20 +181,9 @@ internal static class Program
         var webUiOptions = WebUiHostOptions.Resolve(
             applicationBase,
             Environment.GetEnvironmentVariable(WebUiPathEnvironmentVariable));
-        var builder = WebApplication.CreateBuilder(new WebApplicationOptions
-        {
-            Args = args,
-            ContentRootPath = applicationBase,
-        });
         // EventSource carries only a one-time, short-lived SSE ticket in its URL; keep
         // request lifecycle logs from recording that ticket as well.
         builder.Logging.AddFilter("Microsoft.AspNetCore.Hosting.Diagnostics", LogLevel.Warning);
-        if (string.IsNullOrWhiteSpace(builder.Configuration[Microsoft.AspNetCore.Hosting.WebHostDefaults.ServerUrlsKey])
-            && string.IsNullOrWhiteSpace(builder.Configuration["http_ports"]))
-        {
-            builder.WebHost.UseUrls("http://0.0.0.0:5080");
-        }
-
         builder.Services.AddSingleton<EventHub>();
         builder.Services.AddSingleton<LogBuffer>();
         builder.Services.AddSingleton<RuntimeOperationCoordinator>();
