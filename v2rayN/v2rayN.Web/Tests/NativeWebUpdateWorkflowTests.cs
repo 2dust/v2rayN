@@ -1,9 +1,54 @@
+using System.Text.Json;
 using v2rayN.Web.Launcher;
 
 namespace v2rayN.Web.Tests;
 
 public class NativeWebUpdateWorkflowTests
 {
+    [Test, NotInParallel]
+    public async Task InFlightHelperProgressIsReReadUntilTheTerminalResult()
+    {
+        var previousLocalData = Environment.GetEnvironmentVariable(ServiceLib.Global.LocalAppData);
+        Environment.SetEnvironmentVariable(ServiceLib.Global.LocalAppData, "0");
+        var path = ServiceLib.Common.Utils.GetTempPath("web-update-progress.json");
+        var previous = File.Exists(path) ? await File.ReadAllBytesAsync(path) : null;
+        try
+        {
+            var options = new JsonSerializerOptions(JsonSerializerDefaults.Web);
+            var runtime = new v2rayN.Web.Services.V2rayRuntime(null!, null!, null!, null!, null!);
+            await File.WriteAllTextAsync(path, JsonSerializer.Serialize(
+                new WebUpdateProgressState("verifying-health", false, false, "7.25.91", null, CoreWasRunning: true), options));
+            await runtime.GetWebUpdateProgress()!.IsComplete.Should().BeFalse();
+            await File.WriteAllTextAsync(path, JsonSerializer.Serialize(
+                new WebUpdateProgressState("failed", true, false, "7.25.91", null, true, true), options));
+            var terminal = runtime.GetWebUpdateProgress()!;
+            await terminal.Phase.Should().BeEqualTo("failed");
+            await terminal.IsComplete.Should().BeTrue();
+            await terminal.RollbackSucceeded.Should().BeEqualTo(true);
+            await terminal.CoreWasRunning.Should().BeTrue();
+        }
+        finally
+        {
+            if (previous is null) File.Delete(path);
+            else await File.WriteAllBytesAsync(path, previous);
+            Environment.SetEnvironmentVariable(ServiceLib.Global.LocalAppData, previousLocalData);
+        }
+    }
+
+    [Test]
+    public async Task PersistedProgressKeepsThePreUpdateCoreStateAndAcceptsOlderProgress()
+    {
+        var options = new JsonSerializerOptions(JsonSerializerDefaults.Web);
+        var state = new WebUpdateProgressState("completed", true, true, "7.25.91", null,
+            CoreWasRunning: true);
+        var restored = JsonSerializer.Deserialize<WebUpdateProgressState>(JsonSerializer.Serialize(state, options), options);
+        await restored!.CoreWasRunning.Should().BeTrue();
+
+        var legacy = JsonSerializer.Deserialize<WebUpdateProgressState>(
+            """{"phase":"completed","isComplete":true,"success":true,"version":"7.25.90"}""", options);
+        await legacy!.CoreWasRunning.Should().BeFalse();
+    }
+
     [Test]
     public async Task UpdateHealthRequiresTheOriginalRunningOrStoppedRuntimeIntent()
     {

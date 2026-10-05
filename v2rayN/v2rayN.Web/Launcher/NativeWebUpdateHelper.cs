@@ -18,7 +18,8 @@ internal sealed record NativeWebUpdatePlan(
     string Rid,
     string PreviousVersion,
     string RuntimeIntentPath,
-    string ProgressPath);
+    string ProgressPath,
+    bool CoreWasRunning = false);
 
 internal sealed record WebUpdateProgressState(
     string Phase,
@@ -26,7 +27,8 @@ internal sealed record WebUpdateProgressState(
     bool Success,
     string? Version,
     string? Detail,
-    bool? RollbackSucceeded = null);
+    bool? RollbackSucceeded = null,
+    bool CoreWasRunning = false);
 
 internal static class NativeWebUpdateHelper
 {
@@ -327,13 +329,29 @@ internal static class NativeWebUpdateHelper
         var backup = plan.BackupDirectory;
         if (!Directory.Exists(backup)) throw new DirectoryNotFoundException("The previous Web application backup is missing.");
 
-        File.Copy(Path.Combine(backup, "v2rayN.Web"), Path.Combine(install, "v2rayN.Web"), overwrite: true);
         var previousIdentity = Path.Combine(backup, "v2rayN.Web.build.json");
-        if (File.Exists(previousIdentity))
-            File.Copy(previousIdentity, Path.Combine(install, "v2rayN.Web.build.json"), overwrite: true);
-        else
-            TryDeleteFile(Path.Combine(install, "v2rayN.Web.build.json"));
-        SetExecutableMode(Path.Combine(install, "v2rayN.Web"));
+        var restoredExecutable = Path.Combine(install, $".v2rayn-web-restore-{Guid.NewGuid():N}");
+        var restoredIdentity = restoredExecutable + ".build.json";
+        try
+        {
+            // Never truncate an executable inode: the single-file helper may still
+            // have bundled assemblies mapped from it. Restore by atomic rename,
+            // just like the forward swap, so existing mappings remain unchanged.
+            File.Copy(Path.Combine(backup, "v2rayN.Web"), restoredExecutable);
+            if (File.Exists(previousIdentity))
+                File.Copy(previousIdentity, restoredIdentity);
+            SetExecutableMode(restoredExecutable);
+            File.Move(restoredExecutable, Path.Combine(install, "v2rayN.Web"), overwrite: true);
+            if (File.Exists(restoredIdentity))
+                File.Move(restoredIdentity, Path.Combine(install, "v2rayN.Web.build.json"), overwrite: true);
+            else
+                TryDeleteFile(Path.Combine(install, "v2rayN.Web.build.json"));
+        }
+        finally
+        {
+            TryDeleteFile(restoredExecutable);
+            TryDeleteFile(restoredIdentity);
+        }
     }
 
     private static Process StartWebInstance(NativeWebUpdatePlan plan)
@@ -458,7 +476,7 @@ internal static class NativeWebUpdateHelper
         try
         {
             var temporary = plan.ProgressPath + $".{Environment.ProcessId}.tmp";
-            File.WriteAllText(temporary, JsonSerializer.Serialize(state, JsonOptions));
+            File.WriteAllText(temporary, JsonSerializer.Serialize(state with { CoreWasRunning = plan.CoreWasRunning }, JsonOptions));
             File.Move(temporary, plan.ProgressPath, overwrite: true);
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)

@@ -113,12 +113,14 @@ public sealed partial class V2rayRuntime
                 persisted.Phase,
                 persisted.IsComplete,
                 persisted.Success,
-                false,
+                persisted.CoreWasRunning,
                 persisted.Version,
                 persisted.Detail,
                 false,
                 persisted.RollbackSucceeded);
-            _updateProgress[WebUpdateTarget] = progress;
+            // In-flight persisted progress belongs to the detached helper. Caching
+            // it as local progress would prevent subsequent reads of its result.
+            if (progress.IsComplete) _updateProgress[WebUpdateTarget] = progress;
             return progress;
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or JsonException)
@@ -368,7 +370,8 @@ public sealed partial class V2rayRuntime
             stage.Package.Rid,
             WebBuildIdentity.Current.Version,
             runtimeIntentPath,
-            progressPath);
+            progressPath,
+            wasRunning);
 
         await WriteRuntimeIntentAsync(runtimeIntentPath, runtimeIntent);
         try

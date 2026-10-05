@@ -1,11 +1,34 @@
 using v2rayN.Web.Launcher;
 using System.Security.Cryptography;
 using System.Text;
+using System.IO.MemoryMappedFiles;
 
 namespace v2rayN.Web.Tests;
 
 public class NativeWebUpdateFileSwapTests
 {
+    [Test]
+    public async Task RollbackDoesNotModifyAnExecutableThatIsStillMemoryMapped()
+    {
+        if (!OperatingSystem.IsLinux()) return;
+        using var directory = new TemporaryDirectory();
+        var plan = await CreatePlanAsync(directory.Path, includeNewIdentity: true);
+        NativeWebUpdateHelper.CopyCurrentAppToBackup(plan);
+        NativeWebUpdateHelper.SwapCandidateAppIntoPlace(plan);
+        using var executable = new FileStream(Path.Combine(plan.InstallDirectory, "v2rayN.Web"),
+            FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+        using var mapping = MemoryMappedFile.CreateFromFile(executable, null, 0,
+            MemoryMappedFileAccess.Read, HandleInheritability.None, leaveOpen: true);
+        using var view = mapping.CreateViewAccessor(0, 0, MemoryMappedFileAccess.Read);
+        await view.ReadByte(0).Should().BeEqualTo((byte)'n');
+
+        NativeWebUpdateHelper.RestorePreviousApp(plan);
+
+        await view.ReadByte(0).Should().BeEqualTo((byte)'n');
+        await (await File.ReadAllTextAsync(Path.Combine(plan.InstallDirectory, "v2rayN.Web"))).Should().BeEqualTo("old-web");
+        await Directory.GetFiles(plan.InstallDirectory, ".v2rayn-web-restore-*").Length.Should().BeEqualTo(0);
+    }
+
     [Test]
     public async Task ApiSelfUpdatePreservesThirdPartyWebUiByteForByte()
     {
