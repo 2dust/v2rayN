@@ -202,6 +202,38 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
                 _coreConfig.routing.rules.Add(rule);
             }
 
+            // The template's direct outbound was cleared above; add it back so that
+            // GenDns()'s DNS routing rules and freedom domain strategy have a target
+            _coreConfig.outbounds.Add(new Outbounds4Ray()
+            {
+                protocol = "freedom",
+                tag = Global.DirectTag,
+            });
+
+            // Speedtest only needs DNS to resolve node server addresses (first hop, must be direct);
+            // the test URL is resolved remotely through the proxy. So use direct DNS only.
+            var directDnsAddresses = (Utils.String2List(context.SimpleDnsItem?.DirectDNS) ?? [])
+                .Select(addr => addr.Trim())
+                .Where(addr => !string.IsNullOrEmpty(addr))
+                .Select(addr => addr.StartsWith("dhcp", StringComparison.OrdinalIgnoreCase) ? "localhost" : addr)
+                .Distinct()
+                .ToList();
+            if (directDnsAddresses.Count == 0)
+            {
+                directDnsAddresses = [Global.DomainDirectDNSAddress.First()];
+            }
+            _coreConfig.dns = new Dns4Ray()
+            {
+                tag = Global.DnsTag,
+                servers = [.. directDnsAddresses]
+            };
+            _coreConfig.routing.rules.Add(new RulesItem4Ray()
+            {
+                type = "field",
+                inboundTag = [Global.DnsTag],
+                outboundTag = Global.DirectTag,
+            });
+
             if (_config.CoreBasicItem.EnableFragment)
             {
                 ApplyOutboundFragment();

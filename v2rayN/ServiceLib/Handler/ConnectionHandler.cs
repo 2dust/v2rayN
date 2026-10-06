@@ -69,18 +69,20 @@ public static class ConnectionHandler
     public static async Task<int> GetRealPingTime(IWebProxy? webProxy, CancellationToken cancellationToken = default)
     {
         var url = AppManager.Instance.Config.SpeedTestItem.SpeedPingTestUrl;
+        // Use the user-configured speed test timeout so slow-but-working nodes are not cut off
+        var timeout = TimeSpan.FromSeconds(AppManager.Instance.Config.SpeedTestItem.SpeedTestTimeout);
         var responseTime = -1;
         try
         {
             using var timeoutCts = new CancellationTokenSource();
-            timeoutCts.CancelAfter(Global.LocalFetch);
+            timeoutCts.CancelAfter(timeout);
             using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, timeoutCts.Token);
             var linkedToken = linkedCts.Token;
             using var client = new HttpClient(new SocketsHttpHandler()
             {
                 Proxy = webProxy,
                 UseProxy = webProxy != null,
-                ConnectTimeout = Global.LocalFetch,
+                ConnectTimeout = timeout,
             });
 
             List<int> oneTime = [];

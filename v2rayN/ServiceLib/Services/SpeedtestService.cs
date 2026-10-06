@@ -250,7 +250,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         List<ServerTestItem> lstFailed = [];
         foreach (var lst in lstTest)
         {
-            var ret = await RunRealPingAsync(lst, completedIds, ct);
+            var ret = await RunRealPingAsync(lst, completedIds,_config.SpeedTestItem.MixedConcurrencyCount, ct);
             if (ret == false)
             {
                 lstFailed.AddRange(lst);
@@ -278,7 +278,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     }
 
     private async Task<bool> RunRealPingAsync(List<ServerTestItem> selecteds,
-        ConcurrentDictionary<string, byte> completedIds, CancellationToken ct = default)
+        ConcurrentDictionary<string, byte> completedIds,int concurrencyCount, CancellationToken ct = default)
     {
         ProcessService processService = null;
         try
@@ -292,7 +292,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
             var parallelOptions = new ParallelOptions
             {
-                MaxDegreeOfParallelism = selecteds.Count,
+                MaxDegreeOfParallelism = concurrencyCount,
                 CancellationToken = ct,
             };
 
