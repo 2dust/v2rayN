@@ -1,0 +1,45 @@
+name: release v2rayN.Web API
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Release tag (for example 7.x.y).'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  build:
+    uses: ./.github/workflows/build-web.yml
+    permissions:
+      contents: read
+    with:
+      release_tag: ${{ inputs.release_tag }}
+
+  release-web-packages:
+    name: sign and upload Web API packages
+    # Keep the existing upstream-only signing policy; forks can validate build artifacts.
+    if: inputs.release_tag != '' && github.repository == '2dust/v2rayN'
+    needs: build
+    uses: ./.github/workflows/upload-sign.yml
+    with:
+      release_tag: ${{ inputs.release_tag }}
+      artifact_name: web-release-packages
+      file_pattern: 'v2rayN-*-web*.zip'
+    secrets: { GPG_PRIVATE_KEY: "${{ secrets.GPG_PRIVATE_KEY }}" }
+
+  release-web-manifest:
+    name: sign and upload Web update manifest
+    if: inputs.release_tag != '' && github.repository == '2dust/v2rayN'
+    # Advertise the update only after its packages and signatures have been uploaded.
+    needs: [build, release-web-packages]
+    uses: ./.github/workflows/upload-sign.yml
+    with:
+      release_tag: ${{ inputs.release_tag }}
+      artifact_name: web-release-manifest
+      file_pattern: 'web-update.json'
+    secrets: { GPG_PRIVATE_KEY: "${{ secrets.GPG_PRIVATE_KEY }}" }

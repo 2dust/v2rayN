@@ -52,6 +52,16 @@ jobs:
               }
             }"
 
+      - name: Trigger release web
+        if: inputs.release_tag != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          gh workflow run release-web.yml \
+            --repo "$GITHUB_REPOSITORY" --ref master \
+            --field release_tag="$RELEASE_TAG"
+
       - name: Trigger build osx
         if: inputs.release_tag != ''
         run: |

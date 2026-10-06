@@ -20,12 +20,6 @@ jobs:
     with:
       target: linux
 
-  web:
-    name: build v2rayN.Web
-    uses: ./.github/workflows/build-web.yml
-    with:
-      release_tag: ${{ inputs.release_tag }}
-
   release-zip:
     if: inputs.release_tag != ''
     needs: build
@@ -548,26 +542,4 @@ jobs:
     needs: rpm-loong64
     uses: ./.github/workflows/upload-sign.yml
     with: { release_tag: "${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}", artifact_name: release-rpm-loong64, file_pattern: "*.rpm" }
-    secrets: { GPG_PRIVATE_KEY: "${{ secrets.GPG_PRIVATE_KEY }}" }
-
-  release-web-packages:
-    name: sign and upload web packages x64 arm64
-    if: ((github.event_name == 'workflow_dispatch' && inputs.release_tag != '') || (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))) && github.repository == '2dust/v2rayN'
-    needs: web
-    uses: ./.github/workflows/upload-sign.yml
-    with:
-      release_tag: "${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}"
-      artifact_name: web-release-packages
-      file_pattern: "v2rayN-linux-*-web*.zip"
-    secrets: { GPG_PRIVATE_KEY: "${{ secrets.GPG_PRIVATE_KEY }}" }
-
-  release-web-manifest:
-    name: sign and upload web update manifest
-    if: ((github.event_name == 'workflow_dispatch' && inputs.release_tag != '') || (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))) && github.repository == '2dust/v2rayN'
-    needs: web
-    uses: ./.github/workflows/upload-sign.yml
-    with:
-      release_tag: "${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}"
-      artifact_name: web-release-manifest
-      file_pattern: "web-update.json"
     secrets: { GPG_PRIVATE_KEY: "${{ secrets.GPG_PRIVATE_KEY }}" }

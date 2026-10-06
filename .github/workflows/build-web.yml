@@ -25,7 +25,22 @@ on:
       - 'v2rayN/v2rayN.slnx'
       - 'global.json'
       - '.github/workflows/build-web.yml'
-      - '.github/workflows/build-linux.yml'
+      - '.github/workflows/release-web.yml'
+      - '.github/workflows/build-all.yml'
+      - '.github/workflows/upload-sign.yml'
+  push:
+    branches: [master]
+    paths:
+      - 'v2rayN/v2rayN.Web/**'
+      - 'v2rayN/ServiceLib/**'
+      - 'v2rayN/ServiceLib.Tests/**'
+      - 'v2rayN/Directory.Build.*'
+      - 'v2rayN/Directory.Packages.props'
+      - 'v2rayN/v2rayN.slnx'
+      - 'global.json'
+      - '.github/workflows/build-web.yml'
+      - '.github/workflows/release-web.yml'
+      - '.github/workflows/build-all.yml'
       - '.github/workflows/upload-sign.yml'
 permissions:
   contents: read
@@ -104,6 +119,8 @@ jobs:
       fail-fast: false
       matrix:
         # Development builds keep x64 coverage; releases also validate ARM64.
+        # Only tested Linux RIDs are enabled; native RID/runner pairs are independent
+        # of Desktop workflows and the container platform matrix.
         include: >-
           ${{ fromJSON(needs.identity.outputs.release == 'true'
             && '[{"rid":"linux-x64","runner":"ubuntu-24.04"},{"rid":"linux-arm64","runner":"ubuntu-24.04-arm"}]'

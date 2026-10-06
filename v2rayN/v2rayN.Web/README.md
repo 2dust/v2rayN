@@ -116,10 +116,21 @@ bash Scripts/verify.sh
 ```
 
 `Scripts/verify.sh` builds and tests the Backend, runs ServiceLib tests, checks startup/security,
-and exercises API ZIP/self-update package boundaries. Release CI additionally builds native
-`linux-x64` and `linux-arm64` packages and both container architectures.
+and exercises API ZIP/self-update package boundaries. The independent `build-web.yml` workflow
+runs these checks and native/container builds on relevant PRs and pushes to `master`; it can also
+be dispatched manually or called by a release workflow. Release builds currently enable only
+the tested `linux-x64` and `linux-arm64` native targets and both Linux container architectures.
 
 ## Releases and containers
+
+Dispatch `release-web.yml` with a `release_tag` (`x.y.z`) to call `build-web.yml`, assemble and
+validate the assets, then sign and upload them through the existing `upload-sign.yml` workflow.
+The signing/upload jobs retain the upstream-only repository guard; forks can validate the build
+artifacts without publishing. `build-web.yml` can also be dispatched with a tag for package-only
+verification. `build-all.yml` dispatches the Web release independently of Linux Desktop;
+`build-linux.yml` builds and releases only Desktop assets. Web release orchestration and artifact
+names are RID-based, so additional tested native targets can be added separately from containers
+and Desktop workflows. Windows Web packages are not enabled yet.
 
 The API release provides architecture-specific full-install and app-only update ZIPs plus
 `web-update.json`:
