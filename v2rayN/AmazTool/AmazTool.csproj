@@ -5,16 +5,31 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<EmbeddedResource Update="Resx\Resource.resx">
-			<Generator>ResXFileCodeGenerator</Generator>
-			<LastGenOutput>Resource.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
-
 		<Compile Update="Resx\Resource.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 			<DependentUpon>Resource.resx</DependentUpon>
 		</Compile>
+		<EmbeddedResource Update="Resx\Resource.resx">
+			<SubType>Designer</SubType>
+			<LastGenOutput>Resource.Designer.cs</LastGenOutput>
+			<Generator>ResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resx\ResUI.zh-Hans.resx">
+			<SubType>Designer</SubType>
+			<Generator>ResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resx\ResUI.zh-Hant.resx">
+			<SubType>Designer</SubType>
+			<Generator>ResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
 	</ItemGroup>
+
+	<Target Name="RemoveAotSatelliteOutputs" AfterTargets="ComputeFilesToPublish" Condition="'$(PublishAot)' == 'true'">
+		<ItemGroup>
+			<ResolvedFileToPublish Remove="@(ResolvedFileToPublish)" 
+								Condition="$([System.String]::Copy('%(ResolvedFileToPublish.RelativePath)').Contains('resources.dll'))" />
+		</ItemGroup>
+	</Target>
 
 </Project>
