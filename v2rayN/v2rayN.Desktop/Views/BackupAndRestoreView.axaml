@@ -24,7 +24,7 @@
                 HorizontalAlignment="Left" />
         </StackPanel>
 
-        <StackPanel>
+        <StackPanel Grid.IsSharedSizeScope="True">
             <Border
                 Margin="{StaticResource Margin4}"
                 VerticalAlignment="Center"
@@ -32,8 +32,14 @@
 
                 <Grid Margin="{StaticResource Margin4}" RowDefinitions="Auto,Auto,Auto,Auto">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" MinWidth="300" />
-                        <ColumnDefinition Width="Auto" MinWidth="200" />
+                        <ColumnDefinition
+                            Width="Auto"
+                            MinWidth="300"
+                            SharedSizeGroup="BackupLabel" />
+                        <ColumnDefinition
+                            Width="Auto"
+                            MinWidth="200"
+                            SharedSizeGroup="BackupButton" />
                     </Grid.ColumnDefinitions>
                     <TextBlock
                         Grid.Row="0"
@@ -82,8 +88,14 @@
                 Theme="{DynamicResource CardBorder}">
                 <Grid Margin="{StaticResource Margin4}" RowDefinitions="Auto,Auto,Auto,Auto,Auto">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" MinWidth="300" />
-                        <ColumnDefinition Width="Auto" MinWidth="200" />
+                        <ColumnDefinition
+                            Width="Auto"
+                            MinWidth="300"
+                            SharedSizeGroup="BackupLabel" />
+                        <ColumnDefinition
+                            Width="Auto"
+                            MinWidth="200"
+                            SharedSizeGroup="BackupButton" />
                     </Grid.ColumnDefinitions>
                     <StackPanel
                         Grid.Row="0"
