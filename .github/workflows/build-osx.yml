@@ -28,7 +28,23 @@ jobs:
       target: macos
       release_tag: ${{ inputs.release_tag }}
     secrets: inherit
-    
+
+  build-aot:
+    uses: ./.github/workflows/build.yml
+    with:
+      target: macos
+      isAot: true
+
+  release-aot-zip:
+    if: inputs.release_tag != ''
+    needs: build-aot
+    uses: ./.github/workflows/package-zip.yml
+    with:
+      target: macos
+      release_tag: ${{ inputs.release_tag }}
+      isAot: true
+    secrets: inherit
+
   dmg:
     name: package and release macOS dmg
     if: inputs.release_tag != ''
