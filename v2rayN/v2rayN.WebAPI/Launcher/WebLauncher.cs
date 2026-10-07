@@ -20,7 +20,7 @@ public sealed record WebHealthProbeResult(
 
 public interface IBrowserOpener
 {
-    bool TryOpen(Uri webUiUri);
+    bool TryOpen(Uri apiUri);
 }
 
 public sealed class HttpWebHealthProbe : IWebHealthProbe
@@ -74,7 +74,7 @@ public sealed class HttpWebHealthProbe : IWebHealthProbe
 
 public sealed class LinuxXdgBrowserOpener : IBrowserOpener
 {
-    public bool TryOpen(Uri webUiUri)
+    public bool TryOpen(Uri apiUri)
     {
         if (string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("DISPLAY"))
             && string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("WAYLAND_DISPLAY")))
@@ -95,7 +95,7 @@ public sealed class LinuxXdgBrowserOpener : IBrowserOpener
                 FileName = xdgOpen,
                 UseShellExecute = false,
             };
-            startInfo.ArgumentList.Add(webUiUri.ToString());
+            startInfo.ArgumentList.Add(apiUri.ToString());
             return Process.Start(startInfo) is not null;
         }
         catch (Exception exception) when (exception is InvalidOperationException or IOException or System.ComponentModel.Win32Exception)
@@ -130,7 +130,7 @@ public static class ExistingInstanceHandler
     public static async Task<ExistingInstanceResult> TryReuseAsync(
         string lockPath,
         Uri healthUri,
-        Uri webUiUri,
+        Uri apiUri,
         IWebHealthProbe healthProbe,
         IBrowserOpener browserOpener,
         bool noOpen,
@@ -152,7 +152,7 @@ public static class ExistingInstanceHandler
             {
                 if (!noOpen)
                 {
-                    var browserOpened = browserOpener.TryOpen(webUiUri);
+                    var browserOpened = browserOpener.TryOpen(apiUri);
                     return new ExistingInstanceResult(true, browserOpened);
                 }
                 return new ExistingInstanceResult(true, false);
@@ -195,7 +195,7 @@ public sealed class WebLauncher
         string[] hostArguments,
         string instanceLockPath,
         Uri healthUri,
-        Uri webUiUri,
+        Uri apiUri,
         bool noOpen,
         CancellationToken cancellationToken = default)
     {
@@ -206,7 +206,7 @@ public sealed class WebLauncher
             var existing = await ExistingInstanceHandler.TryReuseAsync(
                     instanceLockPath,
                     healthUri,
-                    webUiUri,
+                    apiUri,
                     _healthProbe,
                     _browserOpener,
                     noOpen,
@@ -215,7 +215,7 @@ public sealed class WebLauncher
             if (existing.Existing)
             {
                 Print(LauncherMessages.AlreadyRunning(
-                    webUiUri.ToString(),
+                    apiUri.ToString(),
                     launcherCommand,
                     existing.BrowserOpened,
                     _locale));
@@ -246,18 +246,18 @@ public sealed class WebLauncher
             if (lockHeld && ownerProcessId.HasValue
                 && health.IsHealthy && health.InstanceProcessId == ownerProcessId)
             {
-                var opened = !noOpen && _browserOpener.TryOpen(webUiUri);
+                var opened = !noOpen && _browserOpener.TryOpen(apiUri);
                 if (ownerProcessId.Value == child.Id)
                 {
                     Print(LauncherMessages.Started(
-                        webUiUri.ToString(),
+                        apiUri.ToString(),
                         launcherCommand,
                         _locale));
                     return 0;
                 }
 
                 Print(LauncherMessages.AlreadyRunning(
-                    webUiUri.ToString(),
+                    apiUri.ToString(),
                     launcherCommand,
                     opened,
                     _locale));
@@ -270,9 +270,9 @@ public sealed class WebLauncher
                 if (lockHeld && ownerProcessId.HasValue && ownerProcessId != child.Id
                     && health.IsHealthy && health.InstanceProcessId == ownerProcessId)
                 {
-                    var opened = !noOpen && _browserOpener.TryOpen(webUiUri);
+                    var opened = !noOpen && _browserOpener.TryOpen(apiUri);
                     Print(LauncherMessages.AlreadyRunning(
-                        webUiUri.ToString(),
+                        apiUri.ToString(),
                         launcherCommand,
                         opened,
                         _locale));

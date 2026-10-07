@@ -336,14 +336,14 @@ public class WebLauncherTests
         var chinese = LauncherMessages.Started("http://127.0.0.1:5080", command, LauncherLocale.SimplifiedChinese);
         var english = LauncherMessages.Started("http://127.0.0.1:5080", command, LauncherLocale.English);
 
-        await chinese.Contains("管理页面", StringComparison.Ordinal).Should().BeTrue();
+        await chinese.Contains("API 健康端点", StringComparison.Ordinal).Should().BeTrue();
         await chinese.Contains("Ctrl+C 不会停止", StringComparison.Ordinal).Should().BeTrue();
         await chinese.Contains("./v2rayN.WebAPI --stop", StringComparison.Ordinal).Should().BeTrue();
         await LauncherMessages.AlreadyRunning("http://127.0.0.1:5080", command, false, LauncherLocale.TraditionalChinese)
             .Contains("--stop", StringComparison.Ordinal).Should().BeTrue();
         await (LauncherMessages.Started("http://127.0.0.1:5080", command, LauncherLocale.TraditionalChinese)
             .Contains("--stop", StringComparison.Ordinal)).Should().BeTrue();
-        await english.Contains("Web UI", StringComparison.Ordinal).Should().BeTrue();
+        await english.Contains("API health endpoint", StringComparison.Ordinal).Should().BeTrue();
         await LauncherMessages.ForegroundStarted("http://127.0.0.1:5080", LauncherLocale.English)
             .Contains("Ctrl+C", StringComparison.Ordinal).Should().BeTrue();
         await (LauncherMessages.StopMessage(WebStopResult.NotRunning, LauncherLocale.English)
@@ -422,9 +422,9 @@ public class WebLauncherTests
     {
         public Uri? LastUri { get; private set; }
 
-        public bool TryOpen(Uri webUiUri)
+        public bool TryOpen(Uri apiUri)
         {
-            LastUri = webUiUri;
+            LastUri = apiUri;
             return true;
         }
     }

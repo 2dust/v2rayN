@@ -34,10 +34,9 @@ bash "$web_root/Scripts/test-startup-security.sh" "$output_dir/v2rayN.WebAPI"
 bash "$web_root/Scripts/test-release-packaging.sh"
 smoke_dir="$(mktemp -d "${TMPDIR:-/tmp}/v2rayn-api-package-smoke.XXXXXX")"
 trap 'rm -rf "$smoke_dir"' EXIT HUP INT TERM
-mkdir -p "$smoke_dir/package/webui" "$smoke_dir/package/bin"
+mkdir -p "$smoke_dir/package/bin"
 cp "$output_dir/v2rayN.WebAPI" "$output_dir/v2rayN.WebAPI.build.json" \
   "$web_root/.env.example" "$smoke_dir/package/"
-cp "$web_root/Deploy/WebUI/README.txt" "$smoke_dir/package/webui/README.txt"
 touch "$smoke_dir/package/bin/.keep"
 python3 - "$smoke_dir/package" "$smoke_dir/v2rayN-api-smoke.zip" <<'PY'
 from pathlib import Path

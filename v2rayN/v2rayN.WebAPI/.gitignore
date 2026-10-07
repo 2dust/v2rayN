@@ -2,7 +2,6 @@
 /.NET/*
 !/.NET/.gitignore
 /TestResults/
-/WebUI/
 .env
 /bin/
 /obj/

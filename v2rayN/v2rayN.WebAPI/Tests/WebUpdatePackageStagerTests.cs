@@ -119,8 +119,7 @@ public class WebUpdatePackageStagerTests
         await File.Exists(Path.Combine(extracted, "bin", "xray", "xray")).Should().BeFalse();
         await File.Exists(Path.Combine(extracted, "guiConfigs", "guiNConfig.json")).Should().BeFalse();
         await File.Exists(Path.Combine(extracted, "webData", "web-auth.json")).Should().BeFalse();
-        await File.Exists(Path.Combine(extracted, "webui", "index.html")).Should().BeFalse();
-        await File.Exists(Path.Combine(extracted, "wwwroot", "index.html")).Should().BeFalse();
+        await Directory.GetFiles(extracted, "*", SearchOption.AllDirectories).Length.Should().BeEqualTo(2);
     }
 
     [Test]
@@ -166,8 +165,8 @@ public class WebUpdatePackageStagerTests
 
         foreach (var entryName in new[]
         {
-            "../escape", "/absolute", "webui/../escape",
-            ".env", ".env.example", "webui/.env", "webui/.env.example",
+            "../escape", "/absolute", "extra/../escape",
+            ".env", ".env.example", "extra/.env", "extra/.env.example",
         })
         {
             var archive = Path.Combine(directory.Path, Guid.NewGuid().ToString("N") + ".zip");
@@ -179,7 +178,7 @@ public class WebUpdatePackageStagerTests
         }
 
         var symlinkArchive = Path.Combine(directory.Path, "symlink.zip");
-        await WriteSymlinkAsync(symlinkArchive, "webui/index.html", "../../outside");
+        await WriteSymlinkAsync(symlinkArchive, "extra/marker.dat", "../../outside");
         var symlinkManifest = CreateManifest(symlinkArchive, identity.Version, identity.Commit, "linux-x64", identity.BuildDate);
         await ExpectInvalidDataAsync(() => WebUpdatePackageStager.VerifyAndExtractAsync(
             symlinkArchive, Path.Combine(directory.Path, "symlink-stage"), symlinkManifest,
@@ -202,7 +201,7 @@ public class WebUpdatePackageStagerTests
         [
             ("v2rayN.WebAPI", NativeExecutableFixture()),
             ("v2rayN.WebAPI.build.json", identityJson),
-            ("webui/index.html", Encoding.UTF8.GetBytes("THIRD_PARTY_UI_TEST")),
+            ("extra/marker.dat", Encoding.UTF8.GetBytes("UNEXPECTED_FILE_TEST")),
         ]);
         var unexpectedManifest = CreateManifest(unexpectedArchive, identity.Version, identity.Commit, "linux-x64", identity.BuildDate);
         await ExpectInvalidDataAsync(() => WebUpdatePackageStager.VerifyAndExtractAsync(

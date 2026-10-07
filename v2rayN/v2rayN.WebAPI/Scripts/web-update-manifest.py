@@ -7,7 +7,7 @@ depends on a fork-specific release channel.
 
 Verification also opens each app-only archive and cross-checks its embedded
 `v2rayN.WebAPI.build.json` against the manifest. App-only archives contain only the API executable
-and build identity; user-installed WebUI files are neither packaged nor touched by self-update.
+and build identity; unrelated files are neither packaged nor touched by self-update.
 
 Usage:
   web-update-manifest.py write --version 7.25.4 --repository 2dust/v2rayN --commit <sha> \

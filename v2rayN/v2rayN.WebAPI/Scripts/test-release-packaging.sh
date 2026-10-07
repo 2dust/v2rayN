@@ -11,13 +11,9 @@ trap 'rm -rf "$temporary"' EXIT HUP INT TERM
 make_publish_fixture() {
   local rid="$1"
   local publish="$temporary/publish-$rid"
-  mkdir -p "$publish/wwwroot/assets" "$publish/webui/assets" "$publish/bin/xray" "$publish/bin/sing_box" "$publish/bin/mihomo" "$publish/bin/srss"
+  mkdir -p "$publish/bin/xray" "$publish/bin/sing_box" "$publish/bin/mihomo" "$publish/bin/srss"
   printf '#!/bin/sh\nexit 0\n' > "$publish/v2rayN.WebAPI"
   chmod 755 "$publish/v2rayN.WebAPI"
-  printf '<html>stale bundled UI must not ship</html>\n' > "$publish/wwwroot/index.html"
-  printf 'stale UI asset must not ship\n' > "$publish/wwwroot/assets/app.js"
-  printf '<html>third-party UI must not ship</html>\n' > "$publish/webui/index.html"
-  printf 'third-party UI asset must not ship\n' > "$publish/webui/assets/app.js"
   # Simulate accidental local environment files in the publish tree. Only the reviewed
   # repository template may be copied into a full install ZIP.
   printf 'V2RAYN_WEB_API_KEY=fixture-secret\n' > "$publish/.env"
@@ -78,13 +74,10 @@ full, update, env_example_source = sys.argv[1:]
 with zipfile.ZipFile(full) as archive:
     names = archive.namelist()
     env_example_data = archive.read(".env.example")
-    webui_readme_data = archive.read("webui/README.txt")
-for required in ("v2rayN.WebAPI", "v2rayN.WebAPI.build.json", ".env.example", "webui/README.txt", "bin/xray/xray"):
+for required in ("v2rayN.WebAPI", "v2rayN.WebAPI.build.json", ".env.example", "bin/xray/xray"):
     assert required in names, required
 assert names.count(".env.example") == 1, names
 assert env_example_data == Path(env_example_source).read_bytes()
-assert webui_readme_data.startswith(b"This API package does not include a WebUI."), webui_readme_data
-assert not any(name.startswith(("wwwroot/", "webui/")) and name != "webui/README.txt" for name in names), names
 assert not any(".env" in name.split("/") for name in names), names
 assert not any(".env.example" in name.split("/") and name != ".env.example" for name in names), names
 with zipfile.ZipFile(update) as archive:
@@ -246,7 +239,7 @@ write_variant("rid", identity_transform(field="rid", value="linux-arm64"))
 write_variant("missing-identity", identity_transform(drop=True))
 write_variant("invalid-json", identity_transform(invalid=True))
 write_variant("embedded-bin", appended("bin/xray/xray", b"#!/bin/sh\nexit 0\n"))
-write_variant("symlink", appended("wwwroot/vendor.js", b"/etc/passwd", symlink=True))
+write_variant("symlink", appended("extra/vendor.dat", b"/etc/passwd", symlink=True))
 write_variant("duplicate", appended(identity_name, identity_data))
 write_variant("traversal", appended("../outside.txt", b"nope"))
 print(f"prepared identity tamper variants in {out_root}")

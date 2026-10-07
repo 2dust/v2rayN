@@ -30,18 +30,18 @@ public class NativeWebUpdateFileSwapTests
     }
 
     [Test]
-    public async Task ApiSelfUpdatePreservesThirdPartyWebUiByteForByte()
+    public async Task ApiSelfUpdatePreservesUnrelatedFilesByteForByte()
     {
         using var directory = new TemporaryDirectory();
         var plan = await CreatePlanAsync(directory.Path, includeNewIdentity: true);
-        var uiHash = await HashDirectoryAsync(Path.Combine(plan.InstallDirectory, "webui"));
+        var extraHash = await HashDirectoryAsync(Path.Combine(plan.InstallDirectory, "extra"));
         NativeWebUpdateHelper.CopyCurrentAppToBackup(plan);
         NativeWebUpdateHelper.SwapCandidateAppIntoPlace(plan);
 
         await (await File.ReadAllTextAsync(Path.Combine(plan.InstallDirectory, "v2rayN.WebAPI"))).Should().BeEqualTo("new-web");
-        await (await File.ReadAllTextAsync(Path.Combine(plan.InstallDirectory, "webui", "index.html"))).Should().BeEqualTo("THIRD_PARTY_UI_TEST");
-        await (await HashDirectoryAsync(Path.Combine(plan.InstallDirectory, "webui"))).Should().BeEqualTo(uiHash);
-        await Directory.Exists(Path.Combine(plan.BackupDirectory, "webui")).Should().BeFalse();
+        await (await File.ReadAllTextAsync(Path.Combine(plan.InstallDirectory, "extra", "marker.dat"))).Should().BeEqualTo("UNRELATED_FILE_TEST");
+        await (await HashDirectoryAsync(Path.Combine(plan.InstallDirectory, "extra"))).Should().BeEqualTo(extraHash);
+        await Directory.Exists(Path.Combine(plan.BackupDirectory, "extra")).Should().BeFalse();
         await (await File.ReadAllTextAsync(Path.Combine(plan.InstallDirectory, "bin", "xray", "xray"))).Should().BeEqualTo("updated-core");
         await (await File.ReadAllTextAsync(Path.Combine(plan.InstallDirectory, "guiConfigs", "guiNConfig.json"))).Should().BeEqualTo("user-config");
         await (await File.ReadAllTextAsync(Path.Combine(plan.InstallDirectory, ".env"))).Should().BeEqualTo("V2RAYN_WEB_API_KEY=private-test-key\n");
@@ -53,7 +53,7 @@ public class NativeWebUpdateFileSwapTests
     {
         using var directory = new TemporaryDirectory();
         var plan = await CreatePlanAsync(directory.Path, includeNewIdentity: false);
-        var uiHash = await HashDirectoryAsync(Path.Combine(plan.InstallDirectory, "webui"));
+        var extraHash = await HashDirectoryAsync(Path.Combine(plan.InstallDirectory, "extra"));
         NativeWebUpdateHelper.CopyCurrentAppToBackup(plan);
 
         var rollback = await NativeWebUpdateWorkflow.ApplyAsync(
@@ -67,8 +67,8 @@ public class NativeWebUpdateFileSwapTests
         await rollback.Success.Should().BeFalse();
         await rollback.RollbackSucceeded.Should().BeTrue();
         await (await File.ReadAllTextAsync(Path.Combine(plan.InstallDirectory, "v2rayN.WebAPI"))).Should().BeEqualTo("old-web");
-        await (await File.ReadAllTextAsync(Path.Combine(plan.InstallDirectory, "webui", "index.html"))).Should().BeEqualTo("THIRD_PARTY_UI_TEST");
-        await (await HashDirectoryAsync(Path.Combine(plan.InstallDirectory, "webui"))).Should().BeEqualTo(uiHash);
+        await (await File.ReadAllTextAsync(Path.Combine(plan.InstallDirectory, "extra", "marker.dat"))).Should().BeEqualTo("UNRELATED_FILE_TEST");
+        await (await HashDirectoryAsync(Path.Combine(plan.InstallDirectory, "extra"))).Should().BeEqualTo(extraHash);
         await (await File.ReadAllTextAsync(Path.Combine(plan.InstallDirectory, "bin", "xray", "xray"))).Should().BeEqualTo("updated-core");
         await (await File.ReadAllTextAsync(Path.Combine(plan.InstallDirectory, ".env"))).Should().BeEqualTo("V2RAYN_WEB_API_KEY=private-test-key\n");
         await File.Exists(Path.Combine(plan.BackupDirectory, ".env")).Should().BeFalse();
@@ -80,14 +80,14 @@ public class NativeWebUpdateFileSwapTests
         var parent = Path.GetDirectoryName(install)!;
         var candidate = Path.Combine(parent, ".v2rayn-web-candidate-test");
         var backup = Path.Combine(parent, ".v2rayn-web-backup-test");
-        Directory.CreateDirectory(Path.Combine(install, "webui", "assets"));
+        Directory.CreateDirectory(Path.Combine(install, "extra", "nested"));
         Directory.CreateDirectory(Path.Combine(install, "bin", "xray"));
         Directory.CreateDirectory(Path.Combine(install, "guiConfigs"));
         Directory.CreateDirectory(candidate);
         await File.WriteAllTextAsync(Path.Combine(install, "v2rayN.WebAPI"), "old-web");
         await File.WriteAllTextAsync(Path.Combine(install, "v2rayN.WebAPI.build.json"), "old-identity");
-        await File.WriteAllTextAsync(Path.Combine(install, "webui", "index.html"), "THIRD_PARTY_UI_TEST");
-        await File.WriteAllTextAsync(Path.Combine(install, "webui", "assets", "test.js"), "window.thirdPartyUi = true;");
+        await File.WriteAllTextAsync(Path.Combine(install, "extra", "marker.dat"), "UNRELATED_FILE_TEST");
+        await File.WriteAllTextAsync(Path.Combine(install, "extra", "nested", "test.dat"), "unrelated nested data");
         await File.WriteAllTextAsync(Path.Combine(install, "bin", "xray", "xray"), "updated-core");
         await File.WriteAllTextAsync(Path.Combine(install, "guiConfigs", "guiNConfig.json"), "user-config");
         await File.WriteAllTextAsync(Path.Combine(install, ".env"), "V2RAYN_WEB_API_KEY=private-test-key\n");

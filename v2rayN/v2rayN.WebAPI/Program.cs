@@ -7,7 +7,6 @@ using ServiceLib.Common;
 using v2rayN.WebAPI.Api;
 using v2rayN.WebAPI.Configuration;
 using v2rayN.WebAPI.Contracts;
-using v2rayN.WebAPI.Hosting;
 using v2rayN.WebAPI.Launcher;
 using v2rayN.WebAPI.Security;
 using v2rayN.WebAPI.Services;
@@ -15,7 +14,6 @@ using v2rayN.WebAPI.Services;
 internal static class Program
 {
     private const string ManagementKeyEnvironmentVariable = "V2RAYN_WEB_API_KEY";
-    private const string WebUiPathEnvironmentVariable = "V2RAYN_WEB_UI_PATH";
 
     public static async Task<int> Main(string[] args)
     {
@@ -82,7 +80,6 @@ internal static class Program
         try
         {
             cors = new WebCorsPolicy(builder.Configuration[WebCorsPolicy.EnvironmentVariable]);
-            builder.Services.AddSingleton(new WebUiConnectPolicy(builder.Configuration[WebUiConnectPolicy.EnvironmentVariable]));
         }
         catch (ArgumentException exception)
         {
@@ -100,7 +97,7 @@ internal static class Program
                 return 1;
             }
 
-            var (healthUri, webUiUri) = GetLauncherUris(launchOptions.HostArguments);
+            var (healthUri, apiUri) = GetLauncherUris(launchOptions.HostArguments);
             var launcher = new WebLauncher(new HttpWebHealthProbe(), new LinuxXdgBrowserOpener(), GetLauncherLocale());
             var processPath = Environment.ProcessPath;
             if (string.IsNullOrWhiteSpace(processPath))
@@ -115,7 +112,7 @@ internal static class Program
                 launchOptions.HostArguments,
                 lockPath,
                 healthUri,
-                webUiUri,
+                apiUri,
                 launchOptions.NoOpen);
         }
 
@@ -191,10 +188,6 @@ internal static class Program
             Utils.StartupPath(),
             Utils.GetConfigPath("web-auth.json"));
         var webAuth = new WebAuthService(configPath, Environment.GetEnvironmentVariable(ManagementKeyEnvironmentVariable));
-        var applicationBase = AppContext.BaseDirectory;
-        var webUiOptions = WebUiHostOptions.Resolve(
-            applicationBase,
-            Environment.GetEnvironmentVariable(WebUiPathEnvironmentVariable));
         // EventSource carries only a one-time, short-lived SSE ticket in its URL; keep
         // request lifecycle logs from recording that ticket as well.
         builder.Logging.AddFilter("Microsoft.AspNetCore.Hosting.Diagnostics", LogLevel.Warning);
@@ -217,7 +210,6 @@ internal static class Program
         var runtime = app.Services.GetRequiredService<V2rayRuntime>();
         app.UseMiddleware<WebSecurityHeadersMiddleware>();
         app.UseMiddleware<WebAuthRequestBodyLimitMiddleware>();
-        app.UseReplaceableWebUi(webUiOptions);
         app.UseRouting();
         app.UseMiddleware<WebOriginGuardMiddleware>();
         app.UseCors(WebCorsPolicy.PolicyName); // OPTIONS must complete before session auth.
@@ -298,16 +290,11 @@ internal static class Program
         app.MapFallback("/api/{**path}", () =>
             Results.NotFound(ApiEnvelope<object>.Fail("route_not_found", ApiMessageKeys.CommonRouteNotFound)));
 
-        if (webUiOptions.ConfigurationError is { } webUiError)
-        {
-            app.Logger.LogWarning("{WebUiError}", webUiError);
-        }
-
         if (showForegroundPrompt)
         {
-            var (_, webUiUri) = GetLauncherUris(args);
+            var (_, apiUri) = GetLauncherUris(args);
             app.Lifetime.ApplicationStarted.Register(() =>
-                Console.Out.WriteLine(LauncherMessages.ForegroundStarted(webUiUri.ToString(), GetLauncherLocale())));
+                Console.Out.WriteLine(LauncherMessages.ForegroundStarted(apiUri.ToString(), GetLauncherLocale())));
         }
 
         await app.RunAsync();
@@ -355,7 +342,7 @@ internal static class Program
     private static string GetInstanceLockPath() =>
         Path.Combine(Utils.StartupPath(), "v2rayN.WebAPI.instance.lock");
 
-    private static (Uri HealthUri, Uri WebUiUri) GetLauncherUris(string[] hostArguments)
+    private static (Uri HealthUri, Uri ApiUri) GetLauncherUris(string[] hostArguments)
     {
         var configuredUrl = hostArguments
             .Select((argument, index) => (argument, index))
@@ -384,7 +371,7 @@ internal static class Program
         }
 
         var healthUri = new Uri(baseUri, "api/health");
-        return (healthUri, baseUri);
+        return (healthUri, healthUri);
     }
 
     private static bool IsContainerEnvironment()

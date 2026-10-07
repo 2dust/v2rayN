@@ -16,6 +16,5 @@ public static class WebApiCapabilities
         "core.runtime",
         "core.updates",
         "web.self-update",
-        "static-webui",
     ];
 }

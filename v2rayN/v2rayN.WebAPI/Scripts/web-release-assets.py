@@ -29,8 +29,6 @@ ASSET_MAP_PATH = SCRIPT_DIR.parent / "Assets" / "web-assets.json"
 FIXED_TIME = (1980, 1, 1, 0, 0, 0)
 EXECUTABLE_NAME = "v2rayN.WebAPI"
 BUILD_IDENTITY_NAME = "v2rayN.WebAPI.build.json"
-USER_UI_ROOTS = frozenset(("wwwroot", "webui"))
-WEBUI_PLACEHOLDER = SCRIPT_DIR.parent / "Deploy" / "WebUI" / "README.txt"
 ENVIRONMENT_FILE_NAMES = frozenset((".env", ".env.example"))
 REQUIRED_FILES = (
     EXECUTABLE_NAME,
@@ -128,15 +126,12 @@ def create_full_zip(publish: Path, output: Path) -> None:
     env_example = SCRIPT_DIR.parent / ".env.example"
     if env_example.is_symlink() or not env_example.is_file():
         fail(f"full package is missing the source environment example: {env_example}")
-    if WEBUI_PLACEHOLDER.is_symlink() or not WEBUI_PLACEHOLDER.is_file():
-        fail(f"full package is missing the WebUI installation placeholder: {WEBUI_PLACEHOLDER}")
 
     # Only the reviewed template is shipped. A local .env (or another copied template) is
     # never taken from the publish tree, even if a build tool happened to copy it there.
     entries = [
         entry for entry in collect_tree(publish)
         if not any(segment in ENVIRONMENT_FILE_NAMES for segment in entry[0].split("/"))
-        and entry[0].split("/", 1)[0] not in USER_UI_ROOTS
     ]
     names = {relative for relative, _, _ in entries}
     for required in REQUIRED_FILES:
@@ -152,7 +147,6 @@ def create_full_zip(publish: Path, output: Path) -> None:
             else:
                 write_file(handle, path, relative, stat.S_IMODE(path.stat().st_mode))
         write_file(handle, env_example, ".env.example", 0o644)
-        write_file(handle, WEBUI_PLACEHOLDER, "webui/README.txt", 0o644)
 
 
 def create_update_zip(publish: Path, output: Path) -> None:

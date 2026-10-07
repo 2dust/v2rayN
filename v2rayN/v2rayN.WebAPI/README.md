@@ -3,12 +3,12 @@
 `v2rayN.WebAPI` is a headless ASP.NET Core host for v2rayN's existing `ServiceLib`. It exposes
 REST APIs, authenticated SSE/runtime events, setup and sessions, settings and options,
 profiles/subscriptions, routing and DNS, backups, updates, and the existing Core runtime bridge.
-It can run without a browser, desktop session, or installed WebUI. The API has no dependency on
+It runs without a browser or desktop session. The API has no dependency on
 Vue, React, Vite, Node.js, npm, or any frontend manifest.
 
-The API contract and the WebUI are separate deliverables. The reference implementation is
-[Nozilla-X/v2rayN-WebUI](https://github.com/Nozilla-X/v2rayN-WebUI); users may install any
-compatible static site instead.
+The API only serves API endpoints; it does not host, inspect, or configure a WebUI. A WebUI,
+including [Nozilla-X/v2rayN-WebUI](https://github.com/Nozilla-X/v2rayN-WebUI), is an independent
+HTTP client with its own hosting and configuration.
 
 ## Start the API
 
@@ -24,7 +24,7 @@ chmod 600 .env
 
 The default listener is `http://127.0.0.1:5080`. A local native install may temporarily leave
 `V2RAYN_WEB_API_KEY` empty when **all** listeners are loopback (`127.0.0.1`, `localhost`, or
-`[::1]`), then complete first-run setup through a local browser and an installed WebUI.
+`[::1]`), then complete first-run setup through a direct loopback API client.
 
 For LAN / NAS / headless / container / systemd deployments, preconfigure
 `V2RAYN_WEB_API_KEY`. Systemd and containers require it even on loopback. Any non-loopback
@@ -50,17 +50,16 @@ option lists.
   endpoints. The Management Key is not a REST or SSE bearer token.
 - `POST /api/auth/sse-ticket` returns a short-lived, one-time ticket for `/api/events`.
 - Setup, login rate limits, session expiry/revocation, LAN/setup policy, DNS rebinding checks,
-  and API authorization remain Backend-owned and apply equally to every WebUI.
-- Static WebUI files are public. They do not grant, bypass, or alter API authorization. The API
-  never enables wildcard CORS; same-origin hosting is the default deployment model.
+  and API authorization remain Backend-owned and apply equally to every client.
+- The API never enables wildcard CORS. Client hosting and configuration are independent.
 
-## Independent WebUI and strict CORS
+## Browser/client origins and strict CORS
 
-WebUI hosting is optional. A static site on another server can connect directly to this API:
+An independently hosted browser client can connect directly to this API:
 
 ```ini
 V2RAYN_WEB_API_KEY=<your-management-key>
-V2RAYN_WEB_ALLOWED_ORIGINS=https://webui.example.com,https://another.example.com
+V2RAYN_WEB_ALLOWED_ORIGINS=https://client.example.com,https://another.example.com
 ```
 
 Unset/empty origins deny cross-origin API requests. Entries must be exact HTTP(S) origins
@@ -75,7 +74,7 @@ Allowed-origin OPTIONS preflights complete before session authorization. CORS su
 HEAD, POST, PUT, DELETE and OPTIONS, `Authorization` / `Content-Type`, and exposes only
 `Content-Disposition` for downloads. It does not enable credentials, cookies, wildcard origins
 or blanket private-network preflight bypasses. SSE tickets and `/api/events` use the same policy.
-The allowlist grants browser access, not authentication; trust every allowed WebUI origin.
+The allowlist grants browser access, not authentication; trust every allowed browser/client origin.
 
 A same-origin browser behind a TLS/path-prefix reverse proxy retains REST access even when
 Kestrel sees an internal HTTP URL: browser-controlled `Sec-Fetch-Site: same-origin` identifies
@@ -91,60 +90,14 @@ cannot initialize a Management Key. `/api/setup/status` remains public and repor
 must configure `V2RAYN_WEB_API_KEY` before startup. The historical private-network setup branch
 was removed to align with the local-only initialization policy.
 
-For a *Backend-hosted* WebUI connecting to other Backends, the hosting Backend's CSP needs a
-separate destination allowlist:
-
-```ini
-V2RAYN_WEB_UI_CONNECT_ORIGINS=http://127.0.0.1:5081,https://v2rayn-api.example.com
-```
-
-This uses the same strict origin validation but controls outgoing `connect-src`, not incoming
-CORS. Default CSP and all other security headers are unchanged. The default hosted same-origin
-UI requires neither setting. Standalone hosts control their own CSP and deployment defaults.
-
 HTTPS public dashboards connecting to HTTP localhost/LAN remain subject to browser Local
 Network Access permissions and mixed-content restrictions. CORS cannot override them; verify
 REST and native EventSource in the target browser. Some browsers block HTTP LAN even with
-permission; use same-origin hosting or an HTTPS API. Never expose an unauthenticated/wildcard
+permission; use an HTTPS API or a same-origin reverse proxy. Never expose an unauthenticated/wildcard
 listener or disable the existing listener/Management Key policies to work around browser limits.
 
-## Install any compatible WebUI
-
-The API serves ordinary static files only. A compatible WebUI root needs an `index.html` and its
-normal static files; no framework, asset directory name, manifest, or build tool is required.
-
-The default root is `webui/` beside the `v2rayN.WebAPI` executable. For example, the reference
-WebUI release ZIP has `index.html` and `assets/**` at its archive root:
-
-```sh
-mkdir -p webui
-unzip -o v2rayN-WebUI.zip -d webui
-```
-
-Alternatively, set `V2RAYN_WEB_UI_PATH` in the process environment or executable-directory
-`.env`:
-
-```ini
-V2RAYN_WEB_UI_PATH=/opt/v2rayn/webui
-```
-
-An unset value selects `<AppContext.BaseDirectory>/webui`. Absolute paths are used as-is;
-relative paths are resolved from `AppContext.BaseDirectory`, never from the current working
-directory. An explicitly empty value disables static WebUI hosting. Invalid paths, absent or
-empty directories, and directories without `index.html` do not prevent the API from starting.
-
-With a WebUI installed, existing static files are served directly and `GET`/`HEAD` routes without
-a file extension fall back to `index.html` for SPA navigation. Missing file-like assets return
-404. `/api/**` always belongs to the Backend: defined routes and API 404s can never fall through
-to the WebUI.
-
-Without a WebUI, all API, SSE, authentication, settings, subscription, routing, DNS, backup,
-update, and runtime endpoints continue to work. `GET /` reports `v2rayN API is running. No
-WebUI is installed.`; other non-API paths return 404.
-
-The API package includes only a WebUI installation placeholder. It does not include the reference
-Vue sources or a built UI. Backend self-update packages contain only the API executable and build
-identity and never delete, overwrite, or recreate user-installed `webui/**` files.
+Non-API paths, including `GET /`, return 404. The launcher opens the API health endpoint,
+not a client application. API packages contain no frontend installation directory or placeholder.
 
 ## Prerelease update preferences
 
@@ -177,7 +130,7 @@ the tested `linux-x64` and `linux-arm64` native targets and both Linux container
 
 `Scripts/test-native-update-identity.py <previous-publish-dir> <candidate-publish-dir>` additionally
 exercises real native helper replacement and health-mismatch rollback with two distinct versions,
-isolated data/ports and preserved third-party WebUI/Core markers. It never uses user configuration.
+isolated data/ports and preserved unrelated file/Core markers. It never uses user configuration.
 
 ## Pre-merge product rename and update migration
 
@@ -188,11 +141,11 @@ The lock is `v2rayN.WebAPI.instance.lock`; the build identity is `v2rayN.WebAPI.
 
 **Old experimental `v2rayN.Web` installs require a one-time manual reinstall.** Stop the old
 instance first (including its systemd/container supervisor), back up data and `.env`, install
-the new full package, update ExecStart/container entrypoint, and restore the retained data/UI.
+the new full package, update ExecStart/container entrypoint, and restore the retained data.
 Do not run the two executables against the same data directory. There is no cross-name update
 helper, executable alias or silent in-place migration. Old-product manifests/packages are not
 accepted by the new updater; new `WebAPI → WebAPI` updates preserve the transactional helper,
-health/PID/lock checks, atomic replacement/rollback and WebUI/Core/data boundaries.
+health/PID/lock checks, atomic replacement/rollback and executable/Core/data boundaries.
 Both package staging and the helper also check the Linux ELF64 header, declared RID's machine
 architecture and program-table bounds before replacement; a script/truncated/wrong-ISA candidate
 cannot reach shutdown/swap merely by carrying the correct JSON identity.
@@ -202,9 +155,9 @@ to `v2rayN.WebAPI` at startup; legacy settings payloads are also normalized. Des
 preferences are preserved. This migrates preferences, not the executable or package identity.
 
 Intentional compatibility names remain: `V2RAYN_WEB_*` configuration (including the Management
-Key/UI-path variables), `WebVersion`/`WebCommit`/`WebBuildDate`/`WebRepository` build metadata,
+Key and allowed-origin variables), `WebVersion`/`WebCommit`/`WebBuildDate`/`WebRepository` build metadata,
 `webVersion` and related status fields, `web.self-update`, `/api/web-updates`, native health header
-names, `web-auth.json`, generic Web host/security class names, `webui/`, existing systemd unit /
+names, `web-auth.json`, generic Web host/security class names, existing systemd unit /
 install-path examples, progress/intent file names, workflow file names, all release ZIP names and
 `web-update.json`. These are not stale executable assumptions.
 
@@ -223,17 +176,12 @@ The API release provides architecture-specific full-install and app-only update 
 `web-update.json`:
 
 - `v2rayN-linux-64-web.zip` / `v2rayN-linux-arm64-web.zip` — API, runtime files, `.env.example`,
-  Core bundle, and an optional empty `webui/README.txt` placeholder.
+  and Core bundle.
 - `v2rayN-linux-64-web-update.zip` / `v2rayN-linux-arm64-web-update.zip` — API executable and
-  build identity only; user data, Core files, credentials, and WebUI files are excluded.
+  build identity only; user data, Core files, credentials, and unrelated files are excluded.
 - `web-update.json` — version, commit, runtime identifier, sizes, and SHA-256 digests.
 
-The API ZIP and its self-update path are independent from the separately released
-`v2rayN-WebUI.zip`. Updating the API preserves any installed first-party or third-party WebUI.
-
-For Docker/Podman, the included `Containerfile` builds only the API and Core runtime. Mount a
-compatible static site at `/app/webui` (read-only is sufficient) to have it served by the default
-path; omit the mount for API-only operation. The Compose example requires a non-empty Management
-Key.
+For Docker/Podman, the included `Containerfile` builds only the API and Core runtime.
+The Compose example requires a non-empty Management Key.
 
 See [`FEATURE-MAP.md`](FEATURE-MAP.md) for the current ServiceLib/API feature boundary.

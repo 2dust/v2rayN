@@ -1,6 +1,6 @@
 namespace v2rayN.WebAPI.Security;
 
-public sealed class WebSecurityHeadersMiddleware(RequestDelegate next, WebUiConnectPolicy? connectPolicy = null)
+public sealed class WebSecurityHeadersMiddleware(RequestDelegate next)
 {
     public const string ContentSecurityPolicy =
         "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; " +
@@ -11,7 +11,7 @@ public sealed class WebSecurityHeadersMiddleware(RequestDelegate next, WebUiConn
         context.Response.Headers["X-Content-Type-Options"] = "nosniff";
         context.Response.Headers["Referrer-Policy"] = "no-referrer";
         context.Response.Headers["X-Frame-Options"] = "DENY";
-        context.Response.Headers["Content-Security-Policy"] = connectPolicy?.ContentSecurityPolicy ?? ContentSecurityPolicy;
+        context.Response.Headers["Content-Security-Policy"] = ContentSecurityPolicy;
         await next(context);
     }
 }

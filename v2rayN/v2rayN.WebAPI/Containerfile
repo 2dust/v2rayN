@@ -30,7 +30,6 @@ RUN NUGET_PACKAGES=/src/.packages/nuget dotnet publish v2rayN/v2rayN.WebAPI/v2ra
     -p:WebRepository="$WEB_REPOSITORY" \
     --output /out \
     && mkdir -p /runtime-data
-COPY v2rayN/v2rayN.WebAPI/Deploy/WebUI/README.txt /out/webui/README.txt
 # Copy the complete upstream bin/ payload; do not curate or enumerate Core files here.
 COPY --from=core-assets /out/bin/ /out/bin/
 

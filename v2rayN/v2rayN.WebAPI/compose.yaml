@@ -11,7 +11,6 @@ services:
       ASPNETCORE_URLS: http://0.0.0.0:5080
       V2RAYN_WEB_API_KEY: ${V2RAYN_WEB_API_KEY:?Set V2RAYN_WEB_API_KEY in your environment}
       V2RAYN_WEB_ALLOWED_ORIGINS: ${V2RAYN_WEB_ALLOWED_ORIGINS:-}
-      V2RAYN_WEB_UI_CONNECT_ORIGINS: ${V2RAYN_WEB_UI_CONNECT_ORIGINS:-}
       V2RAYN_WEB_AUTOSTART: "true"
       V2RAYN_WEB_PROXY_PORT: ${V2RAYN_PROXY_PORT:-10808}
       V2RAYN_WEB_PROXY_LISTEN_ALL: "true"
@@ -22,7 +21,6 @@ services:
       - "127.0.0.1:${V2RAYN_PROXY_PORT:-10808}:${V2RAYN_PROXY_PORT:-10808}/udp"
     volumes:
       - v2rayn-data:/data
-      - ${V2RAYN_WEB_UI_HOST_PATH:-./webui}:/app/webui:ro
 
 volumes:
   v2rayn-data:

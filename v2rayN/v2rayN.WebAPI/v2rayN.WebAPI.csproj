@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <InvariantGlobalization>false</InvariantGlobalization>
-    <DefaultItemExcludes>$(DefaultItemExcludes);.NET/**;.packages/**;Tests/**;TestResults/**;publish/**;WebUI/**</DefaultItemExcludes>
+    <DefaultItemExcludes>$(DefaultItemExcludes);.NET/**;.packages/**;Tests/**;TestResults/**;publish/**</DefaultItemExcludes>
     <WebVersion Condition="'$(WebVersion)' == ''">0.0.0-dev</WebVersion>
     <WebCommit Condition="'$(WebCommit)' == ''">unknown</WebCommit>
     <WebBuildDate Condition="'$(WebBuildDate)' == ''">unknown</WebBuildDate>

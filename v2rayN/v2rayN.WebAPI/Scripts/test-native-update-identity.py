@@ -63,8 +63,8 @@ def run_scenario(root, previous, candidate, rollback, reject_invalid=False):
     scope = data / "v2rayN"
     temps = scope / "guiTemps"
     temps.mkdir(parents=True)
-    (install / "webui").mkdir()
-    (install / "webui" / "index.html").write_text("third-party UI must survive")
+    (install / "extra").mkdir()
+    (install / "extra" / "marker.dat").write_text("unrelated files must survive")
     (scope / "bin").mkdir()
     (scope / "bin" / "marker").write_text("Core files must survive")
     (install / "bin").mkdir()
@@ -76,7 +76,7 @@ def run_scenario(root, previous, candidate, rollback, reject_invalid=False):
     env = {**os.environ, "V2RAYN_WEB_API_KEY": secrets.token_urlsafe(32),
            "V2RAYN_DATA_HOME": str(data), "XDG_DATA_HOME": str(data),
            "V2RAYN_LOCAL_APPLICATION_DATA_V2": "1", "ASPNETCORE_URLS": url,
-           "V2RAYN_WEB_AUTOSTART": "false", "V2RAYN_WEB_UI_PATH": str(install / "webui"),
+           "V2RAYN_WEB_AUTOSTART": "false",
            "DOTNET_BUNDLE_EXTRACT_BASE_DIR": str(root / ".net-bundle")}
     for key in ("INVOCATION_ID", "JOURNAL_STREAM", "container", "DOTNET_RUNNING_IN_CONTAINER"):
         env.pop(key, None)
@@ -84,7 +84,7 @@ def run_scenario(root, previous, candidate, rollback, reject_invalid=False):
     owner = subprocess.Popen([str(install / NAME), "--foreground", "--no-open"], env=env, stdout=log, stderr=log)
     try:
         wait_health(url, before["version"])
-        preserved = {str(p): fingerprint(p) for p in (install / "webui", install / "bin", scope / "bin")}
+        preserved = {str(p): fingerprint(p) for p in (install / "extra", install / "bin", scope / "bin")}
         staged = root / (".v2rayn-web-candidate-" + secrets.token_hex(8))
         backup = root / (".v2rayn-web-backup-" + secrets.token_hex(8))
         staged.mkdir()
@@ -126,7 +126,7 @@ def run_scenario(root, previous, candidate, rollback, reject_invalid=False):
             assert fingerprint(Path(directory)) == snapshot
         assert not backup.exists() and not intent.exists()
         label = "invalid executable rejection" if reject_invalid else "rollback" if rollback else "replacement"
-        print("Native WebAPI " + label + " passed (version/PID/lock health, atomic executable swap, UI/Core preservation).")
+        print("Native WebAPI " + label + " passed (version/PID/lock health, atomic executable swap, unrelated file/Core preservation).")
     finally:
         if owner.poll() is None:
             owner.send_signal(signal.SIGTERM)

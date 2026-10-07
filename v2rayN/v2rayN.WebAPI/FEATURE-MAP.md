@@ -2,7 +2,8 @@
 
 This map describes the v2rayN Web API's feature boundary against the existing WPF/Avalonia views and shared `ServiceLib.ViewModels`. A separately released reference WebUI consumes this API; it is not required to build or start the Backend. Any compatible client must use the Backend API and must not keep a second copy of configuration, profiles, subscriptions, routing, DNS, or statistics.
 
-Both optional same-origin `webui/` hosting and independently hosted WebUI clients are supported.
+WebUI clients are independent HTTP clients with their own hosting and configuration. The Backend
+does not host, inspect, or configure them; browser/client origins use the generic CORS allowlist.
 Independent clients configure an API base (including a proxy prefix) and require exact
 `V2RAYN_WEB_ALLOWED_ORIGINS` authorization. CORS does not replace sessions or permit first-run
 cross-origin setup. Browser local-network/mixed-content policy remains a separate boundary.

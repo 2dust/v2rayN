@@ -12,6 +12,5 @@ public class WebApiCapabilitiesTests
         await capabilities.Distinct(StringComparer.Ordinal).Count().Should().BeEqualTo(capabilities.Length);
         await capabilities.Should().Contain("events.sse");
         await capabilities.Should().Contain("editor.options");
-        await capabilities.Should().Contain("static-webui");
     }
 }

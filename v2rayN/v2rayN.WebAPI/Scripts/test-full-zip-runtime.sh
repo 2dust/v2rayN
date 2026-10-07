@@ -31,9 +31,6 @@ mkdir -p "$install_dir" "$data_home" "$temporary/dotnet-bundle" "$temporary/othe
 unzip -q "$archive" -d "$install_dir"
 executable="$install_dir/v2rayN.WebAPI"
 test -x "$executable"
-test -s "$install_dir/webui/README.txt"
-test ! -e "$install_dir/webui/index.html"
-test ! -e "$install_dir/wwwroot/index.html"
 test -s "$install_dir/.env.example"
 expected_version="$(python3 - "$archive" <<'PY'
 import json
@@ -117,9 +114,7 @@ if [[ "$healthy" != true ]]; then
   echo "Full ZIP did not become healthy within 90 seconds." >&2
   exit 1
 fi
-curl --noproxy '*' --silent --show-error --fail "http://127.0.0.1:$port/" >"$temporary/root.txt"
-grep -Fq 'v2rayN API is running.' "$temporary/root.txt"
-grep -Fq 'No WebUI is installed.' "$temporary/root.txt"
+test "$(curl --noproxy '*' --silent --show-error -o /dev/null -w '%{http_code}' "http://127.0.0.1:$port/")" = 404
 grep -Fiq 'X-v2rayn-web-instance-pid:' "$temporary/health.headers"
 grep -Fiq "X-v2rayn-web-version: $expected_version" "$temporary/health.headers"
 grep -Fiq 'X-v2rayn-web-core-state: stopped' "$temporary/health.headers"

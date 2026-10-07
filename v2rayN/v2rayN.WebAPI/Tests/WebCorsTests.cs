@@ -37,17 +37,6 @@ public class WebCorsTests
     }
 
     [Test]
-    public async Task HostedUiConnectDestinationsAreIndependentExplicitOriginsAndDefaultCspIsUnchanged()
-    {
-        await new WebUiConnectPolicy(null).ContentSecurityPolicy.Should().BeEqualTo(WebSecurityHeadersMiddleware.ContentSecurityPolicy);
-        var policy = new WebUiConnectPolicy("http://127.0.0.1:5081, https://api.example.com");
-        await policy.ContentSecurityPolicy.EndsWith("connect-src 'self' http://127.0.0.1:5081 https://api.example.com", StringComparison.Ordinal).Should().BeTrue();
-        var rejected = false;
-        try { _ = new WebUiConnectPolicy("*"); } catch (ArgumentException) { rejected = true; }
-        await rejected.Should().BeTrue();
-    }
-
-    [Test]
     public async Task DefaultDeniesCrossOriginIncludingSimpleLoginWithoutExecutingIt()
     {
         await using var api = await Harness.StartAsync(null);
