@@ -22,6 +22,6 @@
   <Project Path="ServiceLib/ServiceLib.csproj" />
   <Project Path="v2rayN.Desktop/v2rayN.Desktop.csproj" />
   <Project Path="v2rayN/v2rayN.csproj" />
-  <Project Path="v2rayN.Web/v2rayN.Web.csproj" />
-  <Project Path="v2rayN.Web/Tests/v2rayN.Web.Tests.csproj" />
+  <Project Path="v2rayN.WebAPI/v2rayN.WebAPI.csproj" />
+  <Project Path="v2rayN.WebAPI/Tests/v2rayN.WebAPI.Tests.csproj" />
 </Solution>

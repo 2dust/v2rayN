@@ -1,9 +1,0 @@
-/.packages/
-.env
-/bin/
-/obj/
-/publish/
-/core-bin/
-/Tests/bin/
-/Tests/obj/
-/Tests/TestResults/
