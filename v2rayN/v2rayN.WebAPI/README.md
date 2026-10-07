@@ -6,9 +6,8 @@ profiles/subscriptions, routing and DNS, backups, updates, and the existing Core
 It runs without a browser or desktop session. The API has no dependency on
 Vue, React, Vite, Node.js, npm, or any frontend manifest.
 
-The API only serves API endpoints; it does not host, inspect, or configure a WebUI. A WebUI,
-including [Nozilla-X/v2rayN-WebUI](https://github.com/Nozilla-X/v2rayN-WebUI), is an independent
-HTTP client with its own hosting and configuration.
+The API only serves API endpoints; it does not host, inspect, or configure a WebUI.
+An independent WebUI or other HTTP client manages its own hosting and configuration.
 
 ## Start the API
 
