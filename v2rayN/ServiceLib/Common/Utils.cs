@@ -1355,6 +1355,13 @@ public class Utils
 
     public static bool IsPackagedInstall()
     {
+#if true
+#if V2RAYN_IS_PACKAGED
+        return true;
+#else // V2RAYN_IS_PACKAGED
+        return false;
+#endif // V2RAYN_IS_PACKAGED
+#else
         try
         {
             if (IsWindows() || IsMacOS())
@@ -1390,6 +1397,7 @@ public class Utils
         {
         }
         return false;
+#endif
     }
 
     private static async Task<string?> GetLinuxUserId()
