@@ -1,77 +1,56 @@
 # v2rayN.WebAPI feature map
 
-This map describes the v2rayN Web API's feature boundary against the existing WPF/Avalonia views and shared `ServiceLib.ViewModels`. A separately released reference WebUI consumes this API; it is not required to build or start the Backend. Any compatible client must use the Backend API and must not keep a second copy of configuration, profiles, subscriptions, routing, DNS, or statistics.
+The API uses existing public ServiceLib capabilities without changing desktop or Core behavior.
+API scheduling and cancellation live in `V2rayRuntime.Scheduling.cs`; the desktop `TaskManager`
+is not registered. `RuntimeMutationGate` serializes API-side writes to configuration and SQLite.
 
-WebUI clients are independent HTTP clients with their own hosting and configuration. The Backend
-does not host, inspect, or configure them; browser/client origins use the generic CORS allowlist.
-Independent clients configure an API base (including a proxy prefix) and require exact
-`V2RAYN_WEB_ALLOWED_ORIGINS` authorization. CORS does not replace sessions or permit first-run
-cross-origin setup. Browser local-network/mixed-content policy remains a separate boundary.
-Product identity is `v2rayN.WebAPI`; `webVersion`, `web.self-update`, `/api/web-updates`, `Web*`
-build metadata and release asset names intentionally remain compatible. Old experimental
-executables require manual reinstall; API update preference identifiers are normalized.
+## ServiceLib → WebAPI capabilities
 
-The Backend project is `v2rayN/v2rayN.WebAPI/`; the reference WebUI is maintained separately at `Nozilla-X/v2rayN-WebUI`. No existing ServiceLib, WPF, or Avalonia source files are modified. The Backend uses ServiceLib through existing public APIs. Web scheduling and its cancellation lifecycle live in `V2rayRuntime.Scheduling.cs`; ServiceLib's desktop `TaskManager` is not registered by the Web host. Web's `RuntimeMutationGate` serializes Web-side writes to shared config and SQLite state. UI layout and implementation choices are outside this API contract.
+| Capability | Existing ServiceLib capability | WebAPI |
+|---|---|---|
+| Runtime status and operations | `MainWindowViewModel`; `StatusBarViewModel`; `CoreManager` | `GET /api/status`; `GET /api/operations` |
+| Subscription groups and current group | `AppManager.SubItems`; `Config.SubIndexId`; `ProfilesViewModel.RefreshSubscriptions` | `GET /api/profile-groups`; `PUT /api/profile-groups/current` |
+| Profiles and filtering | `AppManager.ProfileModels/ProfileItems`; `ProfileExManager`; `StatisticsManager`; `Utils.IsRegexMatch` | `GET /api/profiles?subscriptionId=&filter=`; filtering uses ServiceLib's regex guard |
+| Current profile and Core lifecycle | `ConfigHandler.SetDefaultServerIndex`; `CoreConfigContextBuilder.BuildAll`; `CoreManager.LoadCore` | `POST /api/profiles/{id}/select`; `POST /api/core/start`, `/stop`, `/restart` |
+| Add/edit profiles and group profiles | `ConfigHandler.AddServer/AddServerCommon`; protocol-specific `Add*Server`; `ProfileItem.IsValid`; `GroupProfileManager` | `GET /api/profiles/{id}`; `POST /api/profiles`; `PUT /api/profiles/{id}` |
+| Import profiles and custom configuration | `ConfigHandler.AddBatchServers`; `FmtHandler.ResolveConfig`; custom-config parsers | `POST /api/profiles/import` |
+| Remove/copy profiles | `ConfigHandler.RemoveServers/CopyServer` | `DELETE /api/profiles`; `POST /api/profiles/copy` |
+| Deduplicate and remove failed test results | `ConfigHandler.DedupServerList/RemoveInvalidServerResult` | `POST /api/profiles/deduplicate`; `DELETE /api/profiles/invalid-test-results` |
+| Move/reorder profiles | `ConfigHandler.MoveToGroup/MoveServer`; `ProfileExManager.SetSort` | `POST /api/profiles/move-to-group`; `POST /api/profiles/move` |
+| Sort profiles | `ConfigHandler.SortServers`; `EServerColName` | `POST /api/profiles/sort` |
+| Latency, UDP and speed tests | `SpeedtestService.RunLoop/ExitLoop`; `ESpeedActionType` | `POST /api/profiles/{id}/latency`; `POST/DELETE /api/speedtests`; progress/results through SSE |
+| Share/export profiles and Core configuration | `FmtHandler.GetShareUri`; `InnerFmt.ToUri`; `CoreConfigContextBuilder.Build`; `CoreConfigHandler.GenerateClientConfig` | `POST /api/profiles/export` |
+| Generate all-node/regional groups | `ConfigHandler.AddGroupAllServer/AddGroupRegionServer` | `POST /api/profile-groups/generate/all`; `POST /api/profile-groups/generate/regions` |
+| Manage/share subscriptions | `SubItem`; `ConfigHandler.AddSubItem/DeleteSubItem`; `SubSettingViewModel` | `GET/POST/PUT/DELETE /api/subscriptions`; `GET /api/subscriptions/{id}/share` |
+| Update subscriptions | `SubscriptionHandler.UpdateProcess` | `POST /api/subscriptions/update`; group/proxy options; progress through `GET /api/operations` and SSE |
+| Scheduled subscription updates | `SubItem.AutoUpdateInterval/UpdateTime`; `SubscriptionHandler.UpdateProcess` | `V2rayRuntime.Scheduling.RunScheduledSubscriptionUpdatesAsync` checks intervals and starts API-owned background tasks |
+| Core/GeoFiles updates | `CoreInfoManager`; `UpdateService`; `CoreManager` | `GET/POST /api/core-updates/{coreType}/check`, `/update`; `POST /api/core-updates/batch`; `POST /api/core/geo/update`; GeoFiles backup/verify/rollback |
+| API self-update (separate from Desktop) | API-owned release manifest, package validation and native helper | `GET /api/web-updates`; `GET /api/web-updates/check`; `POST /api/web-updates/update`; protected systemd/container deployments are check-only |
+| Inbound listeners | `Config.Inbound`; `StatusBarViewModel.InboundDisplayStatus`; `AppManager.GetLocalPort` | `GET /api/status`; `GET/PUT /api/settings/inbound` |
+| Traffic/statistics | `StatisticsManager`; `ServerStatItem`; `ServerSpeedItem` | Profile byte counters; `GET /api/status`; SSE `traffic`; `DELETE /api/statistics` |
+| Logs | `MsgViewModel`; `AppEvents.SendMsgViewRequested`; `CoreManager` callback | `GET/DELETE /api/logs`; `GET /api/logs/page?page=&pageSize=&filter=`; `/api/events` log/state/progress events |
+| General settings | `OptionSettingViewModel`; `Config`; `ConfigHandler.SaveConfig` | `GET /api/settings`; atomic `PUT /api/settings/apply`; section settings APIs |
+| Routing profiles | `AppManager.RoutingItems`; `ConfigHandler.SaveRoutingItem/RemoveRoutingItem/SetDefaultRouting/InitRouting` | `GET/POST/PUT/DELETE /api/settings/routing-profiles`; `/activate`; `/import`; `PUT /api/settings/routing` |
+| Routing rules | `RoutingItem.RuleSet`; `RulesItem`; `ConfigHandler.AddBatchRoutingRules/MoveRoutingRule` | `GET/PUT /api/settings/routing-profiles/{id}/rules`; `/rules/import`; `/rules/move`; `/rules/{ruleId}` |
+| Simple/per-Core DNS | `Config.SimpleDNSItem`; `DNSItem`; `ConfigHandler.SaveDNSItems/GetExternalDNSItem` | `GET/PUT /api/settings/dns/simple`; `GET/PUT /api/settings/dns/profiles` |
+| Core configuration templates | `FullConfigTemplateItem`; `ConfigHandler.SaveFullConfigTemplate` | `GET /api/settings/core-templates`; `PUT /api/settings/core-templates/{coreType}`; stored TUN fields are preserved, not editable |
+| Regional presets | `ConfigHandler.ApplyRegionalPreset/InitRouting` | `POST /api/settings/regional-presets/{preset}` |
+| WebDAV and backup/restore | `WebDavManager`; existing `guiConfigs/` ZIP format; `FileUtils` | `GET/PUT /api/settings/webdav`; `/api/backup/webdav/check`; `/webdav`; `/webdav/restore`; `GET /api/backup/download`; multipart `POST /api/backup/restore` |
 
-Core start/restart delegates the resolved Core type to ServiceLib and requires that Core's executable to be installed. Xray/sing-box update flows are not generalized; the generated speed-test configs support Xray and sing-box, while TCPing is available for any profile with a port.
+Core selection/startup remain delegated to ServiceLib's `CoreInfoManager` and `CoreManager`,
+and require the selected Core executable. Generated speed-test configurations support Xray
+and sing-box; TCPing is available for any profile with a port. Release/container artifacts
+copy the complete architecture-matched official `2dust/v2rayN-core-bin` payload.
 
-v2rayN.WebAPI does not curate its own Core distribution. GitHub artifacts and container images bundle the complete architecture-matched official Linux `2dust/v2rayN-core-bin` payload. The current upstream bundle includes Xray, sing-box, Mihomo, geodata, and sing-box rule sets; required-file/version checks are sanity checks, not an allowlist, and the complete upstream `bin/` directory is copied into the artifact. Bundled Core availability is not the same as Web-specific UI capability. Runtime Core selection and startup remain delegated to ServiceLib's `CoreInfoManager` and `CoreManager`; Web does not add hard-coded branches or distribution rules for bundled Cores.
+## Unsupported desktop capabilities
 
-REST responses use stable JSON field names and enum codes. Operation/error responses have `{ success, code, messageKey, data }`; clients may localize the stable `messageKey`. User-provided names, URLs, profile remarks, and log lines remain data. The Backend does not render HTML or translate API responses.
+TUN settings/control, desktop system proxy, Clash Proxies/Connections, tray icons, global
+hotkeys, window placement, desktop startup integration and native dialogs/scanners are outside
+the headless API boundary. Core start/restart/autostart rejects generated TUN configurations
+without changing saved settings. These exclusions are not claims of full desktop parity.
 
-## Original feature → ServiceLib → Web API → reference WebUI action
+## Response contract
 
-| Original v2rayN feature / interaction | Existing ServiceLib capability | Backend API | Optional reference WebUI action |
-|---|---|---|---|
-| Main window: Servers, Subscription, Setting, Help, Reload; resizable profile pane and message/Clash tabs | `MainWindowViewModel`; `ProfilesViewModel`; `MsgViewModel`; `StatusBarViewModel`; `ClashProxiesViewModel`; `ClashConnectionsViewModel` | `GET /api/status`, `GET /api/operations`, feature endpoints below | Sidebar and compact top status; navigation sections; the profile table remains the primary workspace |
-| Subscription-group chips and current group | `AppManager.SubItems`; `Config.SubIndexId`; `ProfilesViewModel.RefreshSubscriptions` | `GET /api/profile-groups`; `PUT /api/profile-groups/current` | Group chip/selector above the table |
-| Profile list and original columns: type, active mark, remarks, address, port, transport, TLS, subscription, delay, speed, IP info, today/total upload and download | `AppManager.ProfileModels/ProfileItems`; `ProfileExManager`; `StatisticsManager`; `ProfileItemModel` | `GET /api/profiles?subscriptionId=&filter=` | Dense desktop table with original fields; responsive compact rows on mobile |
-| Search/filter profiles | `ProfilesViewModel.ServerFilterChanged`; `Utils.IsRegexMatch` | `GET /api/profiles?filter=` uses ServiceLib's regex guard | Table filter; retain regex behavior |
-| Set current profile (Enter, context menu, tray quick-select); double-click behavior | `ConfigHandler.SetDefaultServerIndex`; `CoreConfigContextBuilder.BuildAll`; `CoreManager.LoadCore` | `POST /api/profiles/{id}/select`; `POST /api/core/start|stop|restart` | Row activation/context menu; current profile remains visibly marked |
-| Add/edit protocol profiles and custom group profiles | `ConfigHandler.AddServer/AddServerCommon`; protocol-specific `Add*Server` methods; `ProfileItem.IsValid`; `GroupProfileManager` | `GET /api/profiles/{id}`; `POST /api/profiles`; `PUT /api/profiles/{id}` | Common protocol editor plus complete `ProfileItem` JSON editor; protocol/transport extras and group child ordering, source/filter, and Core type remain editable |
-| Import from clipboard, file, URI text, custom config | `ConfigHandler.AddBatchServers`; `FmtHandler.ResolveConfig`; custom-config parsers | `POST /api/profiles/import` | Browser clipboard/file input submits text; no desktop clipboard or file-dialog dependency |
-| Remove/copy selected profiles | `ConfigHandler.RemoveServers/CopyServer` | `DELETE /api/profiles`; `POST /api/profiles/copy` | Multi-select table context actions |
-| Remove duplicate profiles; remove profiles with failed tests | `ConfigHandler.DedupServerList/RemoveInvalidServerResult` | `POST /api/profiles/deduplicate`; `DELETE /api/profiles/invalid-test-results` | Table context actions |
-| Move selected nodes between groups; reorder top/up/down/bottom/position | `ConfigHandler.MoveToGroup/MoveServer`; `ProfileExManager.SetSort` | `POST /api/profiles/move-to-group`; `POST /api/profiles/move` | Multi-select toolbar and row context menu |
-| Sort by table columns, including delay/speed and traffic | `ConfigHandler.SortServers`; `EServerColName` | `POST /api/profiles/sort` | Clickable column headers |
-| TCPing, real ping, UDP test, speed test, mixed test, fast real ping; cancel current batch | `SpeedtestService.RunLoop/ExitLoop`; `ESpeedActionType` | `POST /api/profiles/{id}/latency`; `POST/DELETE /api/speedtests` | TCPing works for any profile with a port; generated-Core test modes use ServiceLib's Xray/sing-box speed-test builders; progress/results via SSE |
-| Share selected server; export client config/file or JSON to clipboard; raw/Base64 share URI; inner URI | `FmtHandler.GetShareUri`; `InnerFmt.ToUri`; `CoreConfigContextBuilder.Build`; `CoreConfigHandler.GenerateClientConfig` | `POST /api/profiles/export` | Multi-select export dialog supports raw/Base64 URI, inner URI, client config, clipboard copy, and text download |
-| Generate all-node or regional groups | `ConfigHandler.AddGroupAllServer/AddGroupRegionServer` | `POST /api/profile-groups/generate/all`; `POST /api/profile-groups/generate/regions` | Node group toolbar actions, preserving ServiceLib grouping semantics |
-| Subscription table: name, URL, enabled, interval, user agent, sort; add/edit/delete/share | `SubItem`; `ConfigHandler.AddSubItem/DeleteSubItem`; `SubSettingViewModel`; `WebDav` is separate | `GET/POST/PUT/DELETE /api/subscriptions`; `GET /api/subscriptions/{id}/share` | Subscription section with original editable fields and destructive confirmation |
-| Update all, update all via proxy, update selected group, update selected group via proxy | `SubscriptionHandler.UpdateProcess`; Web starts and tracks background updates in `V2rayRuntime` | `POST /api/subscriptions/update`; request may specify group and proxy mode; `GET /api/operations` | Subscription toolbar actions; task progress via SSE |
-| Per-subscription automatic update interval | `SubItem.AutoUpdateInterval/UpdateTime`; `SubscriptionHandler.UpdateProcess` | `V2rayRuntime.Scheduling.RunScheduledSubscriptionUpdatesAsync` checks intervals and starts Web-owned background update tasks | Per-subscription editor; scheduled updates are performed by the Web runtime, not ServiceLib `TaskManager` |
-| Core status, start/stop/restart; platform-supported Core, GeoFiles, and separate v2rayN Web update channels | Existing public `CoreManager`, `CoreInfoManager`, and `UpdateService` APIs; Web-owned process/listener tracking and GeoFiles backup/verify/rollback; Web release manifest and transactional native helper | `GET /api/status`; `POST /api/core/start|stop|restart`; `GET/POST /api/core-updates/{coreType}/check|update`; `/api/web-updates[/check|/update]`; `POST /api/core-updates/batch`; `POST /api/core/geo/update` | Runtime snapshot plus per-target and selected-batch progress over SSE; Web package stages before shutdown and applies last; failed native Web startup restores the old app |
-| v2rayN Web self-update (not Desktop updater) | Official upstream `x.y.z` release channel (`web-update.json` and app-only archives attached to the same v2rayN Release); HTTPS manifest, SHA-256, app-only archives, native transactional helper | `GET /api/web-updates`; `GET /api/web-updates/check`; `POST /api/web-updates/update`; version follows the official release tag (for example `7.25.4`) via independent `release-web.yml` → reusable `build-web.yml` → `upload-sign.yml` | Writable native Linux install can update; protected systemd and container deployments are check-only and require administrator redeploy/image recreation |
-| Local/SOCKS/HTTP inbound display, secondary local listener, LAN listener | `Config.Inbound`; `StatusBarViewModel.InboundDisplayStatus`; `AppManager.GetLocalPort` | `GET /api/status` reports each configured mixed listener; `GET/PUT /api/settings/inbound` | Compact status line and inbound settings; HTTP and SOCKS are shown on each configured `mixed` listener |
-| Live proxy/direct traffic and per-node traffic counters | `StatisticsManager`; `ServerStatItem`; `ServerSpeedItem` | Profile table carries raw byte counters; `GET /api/status` and SSE `traffic` provide current counters/rates; `DELETE /api/statistics` clears them | Table traffic columns and compact traffic strip |
-| Message view: auto-refresh, regex filter, clear; Core and subscription output | `MsgViewModel`; `AppEvents.SendMsgViewRequested`; `CoreManager` callback | Backward-compatible `GET/DELETE /api/logs`; paged `GET /api/logs/page?page=&pageSize=&filter=`; SSE `/api/events` (`log` only while Logs is open, plus state/progress events) | Log page with regex filtering, clear-generation fencing, paged history, bounded byte/count retention, batched live updates |
-| Option settings: inbound, Core log/fingerprint/user-agent, mux, Hysteria, fragment, statistics, speed-test parameters, source URLs, Core-type mapping | `OptionSettingViewModel`; `Config`; `ConfigHandler.SaveConfig` | `GET /api/settings`; atomic `PUT /api/settings/apply`; individual section settings APIs remain available | Settings pages grouped like the original tabs; the all-settings action validates and persists once, then restarts a previously running Core once |
-| TUN | Existing desktop/ServiceLib capability: `Config.TunModeItem`, `CoreConfigContextBuilder`, and Core config builders | No Web TUN settings, status, or capability API | Not exposed by v2rayN.WebAPI in the initial Web frontend; intentionally deferred to a follow-up/community contribution. Core start/restart/autostart refuses generated main/pre contexts with `IsTunEnabled=true` and leaves the saved configuration unchanged. |
-| Desktop system proxy mode | `SysProxyHandler`; `Config.SystemProxyItem`; `StatusBarViewModel` | No Web API; system-proxy integration requires a desktop session and platform adapter | Not exposed in the headless Web frontend |
-| Routing profiles: list/add/edit/remove/default/import; domain strategies | `AppManager.RoutingItems`; `ConfigHandler.SaveRoutingItem/RemoveRoutingItem/SetDefaultRouting/InitRouting` | `GET/POST/PUT/DELETE /api/settings/routing-profiles`; `/activate`; `/import`; `PUT /api/settings/routing` | Routing section and current route indicator |
-| Routing rules: import, add/edit/delete/reorder/export | `RoutingItem.RuleSet`; `RulesItem`; `ConfigHandler.AddBatchRoutingRules/MoveRoutingRule` | `GET/PUT /api/settings/routing-profiles/{id}/rules`; `/rules/import`, `/rules/move`, `/rules/{ruleId}` | Nested rule table with existing outbound/type/port/network/domain/IP/protocol/process fields |
-| DNS: simple DNS and per-Core DNS profiles | `Config.SimpleDNSItem`; `DNSItem`; `ConfigHandler.SaveDNSItems/GetExternalDNSItem` | `GET/PUT /api/settings/dns/simple`; `GET/PUT /api/settings/dns/profiles` | DNS section edits simple DNS and per-Core normal DNS profiles |
-| Full Xray/sing-box config templates | `FullConfigTemplateItem`; `ConfigHandler.SaveFullConfigTemplate` | `GET /api/settings/core-templates`; `PUT /api/settings/core-templates/{coreType}` | Advanced Core template editor exposes regular `Config`; an existing stored TUN template field is preserved but is not exposed for editing |
-| Regional presets | `ConfigHandler.ApplyRegionalPreset/InitRouting` | `POST /api/settings/regional-presets/{preset}` | Explicit Default/Russia/Iran actions |
-| WebDAV and backup/restore | `WebDavManager`; existing backup file format (`guiConfigs/` ZIP); `FileUtils` | `GET/PUT /api/settings/webdav`; `/api/backup/webdav/check`, `/webdav`, `/webdav/restore`; `GET /api/backup/download`; multipart `POST /api/backup/restore` | Backup/restore settings and actions; restore validates ZIP paths and requests an application restart |
-| Clash Proxies / Connections tabs | `ClashProxiesViewModel`, `ClashConnectionsViewModel`, `ClashApiManager` | Not exposed in the Web slice: those tabs are tied to the sing-box/Mihomo Clash API | No dead/placeholder tabs; can be added with a supported Core/API later |
-| Global hotkeys, tray icon/menu, window placement/theme/font, startup task, UWP/admin elevation, promotion, native dialogs/scanner | WPF/Avalonia Views and platform adapters | Not applicable to a headless Web process, or explicitly excluded by the no-desktop/no-privilege scope | No fake Web controls; browser-native import/download/copy replaces the relevant file/clipboard flows |
-
-## Intentionally unsupported desktop scope
-
-These capabilities are deliberately outside the current headless API boundary and can be considered in a future contribution that does not require duplicating ServiceLib configuration or runtime behavior:
-
-- TUN configuration and runtime control.
-- Desktop system-proxy integration.
-- Clash Proxies and Clash Connections views.
-- Tray icon/menu, global hotkeys, window placement, and desktop startup integration.
-- Native file/scanner dialogs and other desktop-only integrations.
-
-When an existing TUN configuration is detected, Web refuses to start the generated Core configuration without changing the saved setting. These exclusions are not placeholders or claims of full desktop parity.
-
-## Internationalization contract
-
-- API keys and field names stay fixed English identifiers (`profileId`, `coreType`, `restartRequired`).
-- Enums/states are stable codes, not translated labels.
-- REST operation responses use `success`, `code`, `messageKey`, `data`; SSE events use stable event/type codes plus data.
-- The reference WebUI uses TypeScript and `vue-i18n`; its locale resources are maintained in the independent WebUI repository. The API does not depend on those files and exposes stable message keys only.
+JSON field names and enum/state codes are stable identifiers. Operation/error responses use
+`{ success, code, messageKey, data }`; SSE uses stable event/type codes plus data. User-provided
+names, URLs, remarks and log lines remain data. The API does not render HTML or translate responses.

@@ -35,6 +35,7 @@ internal static class NativeWebUpdateHelper
     private static readonly TimeSpan OwnerReleaseTimeout = TimeSpan.FromSeconds(45);
     private static readonly TimeSpan HealthTimeout = TimeSpan.FromSeconds(60);
     private static readonly TimeSpan PollInterval = TimeSpan.FromMilliseconds(200);
+    private const string IsolatedHelperPrefix = ".v2rayn-web-update-helper-";
 
     public static async Task<int> RunAsync(string planPath)
     {
@@ -43,17 +44,21 @@ internal static class NativeWebUpdateHelper
         {
             plan = JsonSerializer.Deserialize<NativeWebUpdatePlan>(await File.ReadAllTextAsync(planPath), JsonOptions);
             ValidatePlan(plan);
+            if (Path.GetFileName(Environment.ProcessPath) == "v2rayN.WebAPI")
+            {
+                return RunFromIsolatedBundle(planPath, Environment.ProcessPath!);
+            }
         }
-        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or JsonException or InvalidDataException or ArgumentException)
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or JsonException or InvalidDataException or ArgumentException or InvalidOperationException or System.ComponentModel.Win32Exception)
         {
-            Console.Error.WriteLine($"Invalid native Web update plan: {exception.Message}");
+            Console.Error.WriteLine($"Could not prepare the native Web update: {exception.Message}");
             var previousRestarted = false;
             if (plan is not null && CanRestartPreviousWithoutApplying(plan))
             {
                 try
                 {
                     WriteProgress(plan, new WebUpdateProgressState("rolling-back", false, false, plan.ExpectedVersion,
-                        "The staged update plan was rejected; restarting the unchanged application."));
+                        "The update could not be prepared; restarting the unchanged application."));
                     using var oldProcess = StartWebInstance(plan);
                     previousRestarted = await WaitForExpectedHealthAsync(plan, oldProcess, plan.PreviousVersion, HealthTimeout);
                     if (!previousRestarted) StopOwnedProcess(oldProcess, plan.InstanceLockPath);
@@ -65,8 +70,8 @@ internal static class NativeWebUpdateHelper
                 }
                 WriteProgress(plan, new WebUpdateProgressState("failed", true, false, plan.ExpectedVersion,
                     previousRestarted
-                        ? $"The update plan was rejected ({exception.Message}); the unchanged Web build is healthy."
-                        : $"The update plan was rejected ({exception.Message}); the unchanged Web build could not be verified.",
+                        ? $"The update could not be prepared ({exception.Message}); the unchanged Web build is healthy."
+                        : $"The update could not be prepared ({exception.Message}); the unchanged Web build could not be verified.",
                     previousRestarted));
             }
             TryDeleteFile(planPath);
@@ -193,6 +198,61 @@ internal static class NativeWebUpdateHelper
         }
     }
 
+    private static int RunFromIsolatedBundle(string planPath, string executable)
+    {
+        var helperPath = CreateIsolatedHelperExecutable(executable);
+        try
+        {
+            // The worker must keep an unchanged executable path for the entire
+            // transaction: the single-file loader resolves assemblies lazily
+            // from that path, even after the application executable is swapped.
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = helperPath,
+                WorkingDirectory = Path.GetDirectoryName(helperPath)!,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+            };
+            startInfo.ArgumentList.Add("--apply-web-update");
+            startInfo.ArgumentList.Add(planPath);
+            using var worker = Process.Start(startInfo)
+                ?? throw new InvalidOperationException("The isolated native Web update helper could not be started.");
+            worker.WaitForExit();
+            return worker.ExitCode;
+        }
+        finally
+        {
+            // The outer helper waits for exit before deleting the bundle. The
+            // worker never deletes its own executable while it can still load it.
+            TryDeleteFile(helperPath);
+        }
+    }
+
+    internal static string CreateIsolatedHelperExecutable(string executable)
+    {
+        if (new FileInfo(executable).LinkTarget is not null)
+            throw new InvalidDataException("The native update helper cannot be copied from a symlink.");
+        var helperPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(executable))!,
+            $"{IsolatedHelperPrefix}{Guid.NewGuid():N}");
+        try
+        {
+            File.Copy(executable, helperPath, overwrite: false);
+            if (OperatingSystem.IsLinux())
+                File.SetUnixFileMode(helperPath, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
+            return helperPath;
+        }
+        catch
+        {
+            TryDeleteFile(helperPath);
+            throw;
+        }
+    }
+
+    internal static bool IsUpdateHelperExecutableName(string name) =>
+        name == "v2rayN.WebAPI"
+        || (name.StartsWith(IsolatedHelperPrefix, StringComparison.Ordinal)
+            && Guid.TryParseExact(name[IsolatedHelperPrefix.Length..], "N", out _));
+
     private static void ValidatePlan(NativeWebUpdatePlan? plan)
     {
         if (!OperatingSystem.IsLinux() || plan is null
@@ -216,7 +276,8 @@ internal static class NativeWebUpdateHelper
             ?? throw new InvalidDataException("The update helper process path is unavailable.");
         var install = Path.GetFullPath(plan.InstallDirectory);
         if (Path.GetFullPath(Path.GetDirectoryName(executable) ?? string.Empty) != install
-            || !Path.GetFileName(executable).Equals("v2rayN.WebAPI", StringComparison.Ordinal))
+            || !IsUpdateHelperExecutableName(Path.GetFileName(executable))
+            || new FileInfo(executable).LinkTarget is not null)
         {
             throw new InvalidDataException("The update plan does not target this native v2rayN.WebAPI installation.");
         }
@@ -268,7 +329,8 @@ internal static class NativeWebUpdateHelper
                 && !File.Exists("/.dockerenv")
                 && !File.Exists("/run/.containerenv")
                 && !string.IsNullOrWhiteSpace(executable)
-                && Path.GetFileName(executable).Equals("v2rayN.WebAPI", StringComparison.Ordinal)
+                && IsUpdateHelperExecutableName(Path.GetFileName(executable))
+                && new FileInfo(executable).LinkTarget is null
                 && Path.GetFullPath(Path.GetDirectoryName(executable) ?? string.Empty) == Path.GetFullPath(plan.InstallDirectory)
                 && Path.IsPathFullyQualified(plan.InstanceLockPath)
                 && Path.IsPathFullyQualified(plan.ProgressPath)

@@ -112,6 +112,7 @@ def run_scenario(root, previous, candidate, rollback, reject_invalid=False):
             owner.send_signal(signal.SIGTERM)
             owner.wait(timeout=40)
         helper_code = helper.wait(timeout=100)
+        assert not list(install.glob(".v2rayn-web-update-helper-*")), "Isolated helper bundle was not cleaned after worker exit"
         failed = rollback or reject_invalid
         assert helper_code == (1 if failed else 0), f"helper returned {helper_code}; inspect {root / 'runtime.log'} and {progress}"
         wait_health(url, before["version"] if failed else after["version"])

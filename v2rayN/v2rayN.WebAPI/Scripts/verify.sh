@@ -50,4 +50,5 @@ with zipfile.ZipFile(archive_path, "w", compression=zipfile.ZIP_DEFLATED) as arc
             archive.write(path, path.relative_to(root).as_posix())
 PY
 bash "$web_root/Scripts/test-full-zip-runtime.sh" "$smoke_dir/v2rayN-api-smoke.zip"
+bash "$web_root/Scripts/test-native-update-regression.sh" "$output_dir"
 printf 'WebAPI verification passed; native publish ready: %s\n' "$output_dir/v2rayN.WebAPI"

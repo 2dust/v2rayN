@@ -8,15 +8,14 @@ public static class WebSetupAccessPolicy
     public static bool IsAllowed(
         IPAddress? remoteAddress,
         string? host,
-        bool forwardedHeadersPresent,
-        IPAddress? localAddress = null) =>
+        bool forwardedHeadersPresent) =>
         !forwardedHeadersPresent
         && IsLoopbackAddress(remoteAddress) && IsLocalHost(host);
 
     public static bool IsAllowedFromRequest(HttpContext context) =>
         WebCorsPolicy.IsSameOriginRequest(context.Request)
         && IsAllowed(context.Connection.RemoteIpAddress, context.Request.Host.Host,
-            HasForwardedHeaders(context.Request.Headers), context.Connection.LocalIpAddress);
+            HasForwardedHeaders(context.Request.Headers));
 
     public static bool IsLoopbackAddress(IPAddress? remoteAddress)
     {
@@ -54,40 +53,6 @@ public static class WebSetupAccessPolicy
 
         return IPAddress.TryParse(normalized, out var address)
             && (address.Equals(IPAddress.Loopback) || address.Equals(IPAddress.IPv6Loopback));
-    }
-
-    public static bool IsPrivateNetworkAddress(IPAddress? address)
-    {
-        if (address is null) return false;
-        if (address.IsIPv4MappedToIPv6) address = address.MapToIPv4();
-
-        var bytes = address.GetAddressBytes();
-        if (address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
-        {
-            return bytes[0] == 10
-                || (bytes[0] == 172 && bytes[1] is >= 16 and <= 31)
-                || (bytes[0] == 192 && bytes[1] == 168)
-                || (bytes[0] == 100 && bytes[1] is >= 64 and <= 127)
-                || (bytes[0] == 169 && bytes[1] == 254);
-        }
-
-        return address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetworkV6
-            && ((bytes[0] & 0xFE) == 0xFC || (bytes[0] == 0xFE && (bytes[1] & 0xC0) == 0x80));
-    }
-
-    private static bool HostMatchesAddress(string? host, IPAddress? address)
-    {
-        if (address is null || string.IsNullOrWhiteSpace(host)) return false;
-        var normalized = host.Trim();
-        if (normalized.Length > 1 && normalized[0] == '[' && normalized[^1] == ']')
-        {
-            normalized = normalized[1..^1];
-        }
-
-        if (!IPAddress.TryParse(normalized, out var hostAddress)) return false;
-        if (hostAddress.IsIPv4MappedToIPv6) hostAddress = hostAddress.MapToIPv4();
-        if (address.IsIPv4MappedToIPv6) address = address.MapToIPv4();
-        return hostAddress.Equals(address);
     }
 
     public static bool HasForwardedHeaders(IHeaderDictionary headers) =>

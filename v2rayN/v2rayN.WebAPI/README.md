@@ -123,7 +123,8 @@ bash Scripts/verify.sh
 ```
 
 `Scripts/verify.sh` builds and tests the Backend, runs ServiceLib tests, checks startup/security,
-and exercises API ZIP/self-update package boundaries. The independent `build-web.yml` workflow
+and exercises API ZIP/self-update package boundaries and real different-layout native update,
+rollback and invalid-executable rejection. The independent `build-web.yml` workflow
 runs these checks and native/container builds on relevant PRs and pushes to `master`; it can also
 be dispatched manually or called by a release workflow. Release builds currently enable only
 the tested `linux-x64` and `linux-arm64` native targets and both Linux container architectures.
@@ -131,6 +132,25 @@ the tested `linux-x64` and `linux-arm64` native targets and both Linux container
 `Scripts/test-native-update-identity.py <previous-publish-dir> <candidate-publish-dir>` additionally
 exercises real native helper replacement and health-mismatch rollback with two distinct versions,
 isolated data/ports and preserved unrelated file/Core markers. It never uses user configuration.
+
+### Native self-update and legacy helpers
+
+The update worker runs from an owner-only, GUID-named copy of the current executable beside the
+installation. This keeps its single-file bundle path unchanged during replacement and rollback:
+.NET loads dependencies lazily, and replacing a running helper's own executable with a different
+bundle layout can break later assembly loads. The outer helper waits for worker exit, propagates
+its result, and then removes that copy. Configuration and data paths remain unchanged.
+
+`Scripts/test-native-update-regression.sh <native-publish-directory>` deliberately changes the
+candidate's bundle layout with test-only assembly metadata; version-only fixtures can conceal
+this failure. It checks actual replacement, rollback, invalid-executable rejection and worker
+cleanup, and is included in `Scripts/verify.sh`.
+
+**Builds predating helper isolation need a one-time manual reinstall.** Their already-running
+old helper cannot gain this fix from the candidate package. Stop the instance, back up the
+executable, build identity, data and `.env`, and install the corrected API package. For a failed
+legacy update, retain the previous-application backup and verify the restored application's
+health before discarding it. Systemd/container deployments remain check-only and use redeploy.
 
 ## Pre-merge product rename and update migration
 

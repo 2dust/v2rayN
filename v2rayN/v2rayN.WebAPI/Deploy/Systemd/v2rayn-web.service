@@ -1,5 +1,5 @@
 [Unit]
-Description=v2rayN Headless Web Frontend
+Description=v2rayN Web API
 Wants=network-online.target
 After=network-online.target
 
