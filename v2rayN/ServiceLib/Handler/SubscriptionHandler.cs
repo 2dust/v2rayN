@@ -101,12 +101,12 @@ public static class SubscriptionHandler
 
     private static async Task<string> DownloadSubscriptionContent(DownloadService downloadHandle, string url, bool blProxy, string userAgent)
     {
-        var result = await downloadHandle.TryDownloadString(url, blProxy, userAgent);
+        var result = await downloadHandle.TryDownloadSubscriptionString(url, blProxy, userAgent);
 
         // If download with proxy fails, try direct connection
         if (blProxy && result.IsNullOrEmpty())
         {
-            result = await downloadHandle.TryDownloadString(url, false, userAgent);
+            result = await downloadHandle.TryDownloadSubscriptionString(url, false, userAgent);
         }
 
         return result ?? string.Empty;

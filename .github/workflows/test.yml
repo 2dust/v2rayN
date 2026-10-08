@@ -30,7 +30,12 @@ permissions:
 
 jobs:
   test:
+    name: Test with Xray (${{ matrix.xray-channel }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        xray-channel: [stable, preview]
     steps:
     - name: Checkout
       uses: actions/checkout@v7
@@ -41,6 +46,29 @@ jobs:
         dotnet-version: '10.x'
         dotnet-quality: 'ga'
 
+    - name: Setup Xray for TLS integration tests
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+        XRAY_CHANNEL: ${{ matrix.xray-channel }}
+      run: |
+        query='. as $release | .assets[] | select(.name == "Xray-linux-64.zip") | [$release.tag_name, .browser_download_url] | @tsv'
+        if [[ "$XRAY_CHANNEL" == "preview" ]]; then
+          release="$(gh api --paginate --slurp 'repos/XTLS/Xray-core/releases?per_page=100' | jq -er "add | map(select(.prerelease and (.draft | not))) | max_by(.published_at) | $query")"
+        else
+          release="$(gh api repos/XTLS/Xray-core/releases/latest --jq "$query")"
+        fi
+        IFS=$'\t' read -r version url <<< "$release"
+        if [[ -z "$version" || -z "$url" ]]; then
+          echo "::error::No Xray $XRAY_CHANNEL release with Xray-linux-64.zip found"
+          exit 1
+        fi
+        echo "Testing Xray $XRAY_CHANNEL: $version"
+        curl --fail --location --retry 3 "$url" -o "$RUNNER_TEMP/xray.zip"
+        unzip -q "$RUNNER_TEMP/xray.zip" -d "$RUNNER_TEMP/xray-tls-tests"
+        chmod +x "$RUNNER_TEMP/xray-tls-tests/xray"
+        echo "V2RAYN_TEST_XRAY_PATH=$RUNNER_TEMP/xray-tls-tests/xray" >> "$GITHUB_ENV"
+
     - name: Test Code
       run: dotnet test --project ./v2rayN/ServiceLib.Tests -c Release --results-directory ./TestResults -- --report-trx
 
@@ -49,4 +77,5 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v2
       with:
         files: ./TestResults/*.trx
+        check_name: Test results (Xray ${{ matrix.xray-channel }})
         comment_mode: failures

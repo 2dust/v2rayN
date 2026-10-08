@@ -44,6 +44,33 @@ public static class HttpRequestHeadersHelper
         return headers is { Count: > 0 } ? new RequestHeadersHandler(innerHandler, headers) : innerHandler;
     }
 
+    internal static void ApplyHeaders(HttpRequestMessage request, IReadOnlyDictionary<string, string>? headers)
+    {
+        if (headers == null)
+        {
+            return;
+        }
+        using var customHeaders = new HttpRequestMessage { Content = new ByteArrayContent([]) };
+        foreach (var header in headers)
+        {
+            if (!TryAddHeader(customHeaders, header.Key, header.Value))
+            {
+                throw new FormatException(ResUI.SubRequestHeadersInvalid);
+            }
+        }
+        foreach (var header in customHeaders.Headers.NonValidated)
+        {
+            request.Headers.Remove(header.Key);
+            request.Headers.TryAddWithoutValidation(header.Key, header.Value);
+        }
+        foreach (var header in customHeaders.Content.Headers.NonValidated)
+        {
+            request.Content ??= new ByteArrayContent([]);
+            request.Content.Headers.Remove(header.Key);
+            request.Content.Headers.TryAddWithoutValidation(header.Key, header.Value);
+        }
+    }
+
     private static bool TryAddHeader(HttpRequestMessage request, string name, string value)
     {
         if (value.Any(c => char.IsControl(c) && c != '\t'))
@@ -60,28 +87,8 @@ public static class HttpRequestHeadersHelper
     {
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            using var customHeaders = new HttpRequestMessage { Content = new ByteArrayContent([]) };
-            foreach (var header in headers)
-            {
-                if (!TryAddHeader(customHeaders, header.Key, header.Value))
-                {
-                    throw new FormatException(ResUI.SubRequestHeadersInvalid);
-                }
-            }
-
             // Apply after each downloader's defaults, replacing headers without changing their values.
-            foreach (var header in customHeaders.Headers.NonValidated)
-            {
-                request.Headers.Remove(header.Key);
-                request.Headers.TryAddWithoutValidation(header.Key, header.Value);
-            }
-            foreach (var header in customHeaders.Content.Headers.NonValidated)
-            {
-                request.Content ??= new ByteArrayContent([]);
-                request.Content.Headers.Remove(header.Key);
-                request.Content.Headers.TryAddWithoutValidation(header.Key, header.Value);
-            }
-
+            ApplyHeaders(request, headers);
             return base.SendAsync(request, cancellationToken);
         }
     }

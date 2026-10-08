@@ -190,6 +190,47 @@ public class DownloadService
     }
 
     /// <summary>
+    /// Downloads subscriptions with Xray TLS on Windows 10 to avoid TLS 1.3 incompatibility.
+    /// </summary>
+    public async Task<string?> TryDownloadSubscriptionString(string url, bool blProxy, string userAgent, CancellationToken cancellationToken = default)
+    {
+        if (!XraySubscriptionDownloader.IsRequired())
+        {
+            return await TryDownloadString(url, blProxy, userAgent, cancellationToken);
+        }
+
+        try
+        {
+            var webProxy = await GetWebProxy(blProxy, cancellationToken);
+            using var timeoutCts = new CancellationTokenSource(webProxy is null ? Global.DirectFetch : Global.ProxyFetch);
+            using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, timeoutCts.Token);
+            var downloader = new XraySubscriptionDownloader(() =>
+            {
+                var coreInfo = CoreInfoManager.Instance.GetCoreInfo(ECoreType.Xray);
+                var executable = CoreInfoManager.Instance.GetCoreExecFile(coreInfo, out var message);
+                return executable.IsNotEmpty() ? executable : throw new FileNotFoundException(message);
+            }, CertPemManager.Instance.BuildCertificateChainPolicy());
+
+            return await downloader.DownloadStringAsync(url, webProxy, userAgent.IsNotEmpty() ? userAgent : Utils.GetVersion(false),
+                RequestHeaders, AcceptHeader, linkedCts.Token);
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+            Error?.Invoke(this, new ErrorEventArgs(ex));
+            if (ex.InnerException != null)
+            {
+                Error?.Invoke(this, new ErrorEventArgs(ex.InnerException));
+            }
+            return null;
+        }
+    }
+
+    /// <summary>
     /// Tries to download string content using proxy switch setting.
     /// </summary>
     public async Task<string?> TryDownloadString(string url, bool blProxy, string userAgent, CancellationToken cancellationToken = default)
