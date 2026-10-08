@@ -1,4 +1,4 @@
-name: release v2rayN.Web API
+name: release v2rayN.WebAPI
 
 on:
   workflow_dispatch:

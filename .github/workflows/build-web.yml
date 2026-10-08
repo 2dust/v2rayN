@@ -1,4 +1,4 @@
-name: build v2rayN.Web API
+name: build v2rayN.WebAPI
 
 on:
   workflow_call:
@@ -17,7 +17,7 @@ on:
   pull_request:
     branches: [master]
     paths:
-      - 'v2rayN/v2rayN.Web/**'
+      - 'v2rayN/v2rayN.WebAPI/**'
       - 'v2rayN/ServiceLib/**'
       - 'v2rayN/ServiceLib.Tests/**'
       - 'v2rayN/Directory.Build.*'
@@ -31,7 +31,7 @@ on:
   push:
     branches: [master]
     paths:
-      - 'v2rayN/v2rayN.Web/**'
+      - 'v2rayN/v2rayN.WebAPI/**'
       - 'v2rayN/ServiceLib/**'
       - 'v2rayN/ServiceLib.Tests/**'
       - 'v2rayN/Directory.Build.*'
@@ -97,7 +97,7 @@ jobs:
         with:
           dotnet-version: '10.x'
       - name: Verify API build, backend and ServiceLib tests, native startup and package boundaries
-        run: bash v2rayN/v2rayN.Web/Scripts/verify.sh "$RUNNER_TEMP/v2rayN.Web-verify"
+        run: bash v2rayN/v2rayN.WebAPI/Scripts/verify.sh "$RUNNER_TEMP/v2rayN.WebAPI-verify"
       - name: Check patch whitespace
         if: github.event_name == 'pull_request' || github.event_name == 'push'
         shell: bash
@@ -140,27 +140,27 @@ jobs:
         with:
           dotnet-version: '10.x'
       - name: Publish native API
-        run: bash v2rayN/v2rayN.Web/Scripts/publish-native.sh "$RID"
+        run: bash v2rayN/v2rayN.WebAPI/Scripts/publish-native.sh "$RID"
       - name: Verify native executable
-        run: test -x "v2rayN/v2rayN.Web/publish/$RID/v2rayN.Web"
+        run: test -x "v2rayN/v2rayN.WebAPI/publish/$RID/v2rayN.WebAPI"
       - name: Add the matching Linux Core bundle
         if: needs.identity.outputs.release == 'true'
-        run: sh v2rayN/v2rayN.Web/Scripts/fetch-core-bundle.sh "$RID" "v2rayN/v2rayN.Web/publish/$RID/bin"
+        run: sh v2rayN/v2rayN.WebAPI/Scripts/fetch-core-bundle.sh "$RID" "v2rayN/v2rayN.WebAPI/publish/$RID/bin"
       - name: Package API install and self-update ZIPs
         if: needs.identity.outputs.release == 'true'
-        run: bash v2rayN/v2rayN.Web/Scripts/package-native.sh "$RID" "v2rayN/v2rayN.Web/publish/$RID" dist
+        run: bash v2rayN/v2rayN.WebAPI/Scripts/package-native.sh "$RID" "v2rayN/v2rayN.WebAPI/publish/$RID" dist
       - name: Smoke-test bundled Cores
         if: needs.identity.outputs.release == 'true'
         run: |
           set -euo pipefail
-          publish="v2rayN/v2rayN.Web/publish/$RID"
+          publish="v2rayN/v2rayN.WebAPI/publish/$RID"
           "$publish/bin/xray/xray" -version
           "$publish/bin/sing_box/sing-box" version
           "$publish/bin/mihomo/mihomo" -v
       - uses: actions/upload-artifact@v7
         if: needs.identity.outputs.release == 'true'
         with:
-          name: v2rayN.Web-${{ matrix.rid }}
+          name: v2rayN.WebAPI-${{ matrix.rid }}
           path: dist/*.zip
           if-no-files-found: error
 
@@ -187,7 +187,7 @@ jobs:
           DOCKER_BUILD_RECORD_UPLOAD: false
         with:
           context: .
-          file: ./v2rayN/v2rayN.Web/Containerfile
+          file: ./v2rayN/v2rayN.WebAPI/Containerfile
           platforms: ${{ matrix.platform }}
           tags: v2rayn-web-api:ci
           build-args: |
@@ -209,7 +209,7 @@ jobs:
           persist-credentials: false
       - uses: actions/download-artifact@v7
         with:
-          pattern: v2rayN.Web-*
+          pattern: v2rayN.WebAPI-*
           path: release-assets
           merge-multiple: true
       - name: Build and verify web-update.json
@@ -217,19 +217,19 @@ jobs:
           RELEASE_TAG: ${{ needs.identity.outputs.tag }}
         run: |
           set -euo pipefail
-          python3 v2rayN/v2rayN.Web/Scripts/web-update-manifest.py write \
+          python3 v2rayN/v2rayN.WebAPI/Scripts/web-update-manifest.py write \
             --version "$RELEASE_TAG" \
             --repository "${{ github.repository }}" \
             --commit "${{ github.sha }}" \
             --build-date "${{ needs.identity.outputs.build_date }}" \
             --dist release-assets \
             --output release-assets/web-update.json
-          python3 v2rayN/v2rayN.Web/Scripts/web-update-manifest.py verify \
+          python3 v2rayN/v2rayN.WebAPI/Scripts/web-update-manifest.py verify \
             --manifest release-assets/web-update.json \
             --dist release-assets \
             --repository "${{ github.repository }}"
       - name: Smoke-test full API ZIP
-        run: bash v2rayN/v2rayN.Web/Scripts/test-full-zip-runtime.sh release-assets/v2rayN-linux-64-web.zip
+        run: bash v2rayN/v2rayN.WebAPI/Scripts/test-full-zip-runtime.sh release-assets/v2rayN-linux-64-web.zip
       - uses: actions/upload-artifact@v7
         with:
           name: web-release-packages
