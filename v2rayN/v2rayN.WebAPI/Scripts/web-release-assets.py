@@ -7,6 +7,7 @@ release asset names:
 
   linux-x64   -> v2rayN-linux-64-web.zip        + v2rayN-linux-64-web-update.zip
   linux-arm64 -> v2rayN-linux-arm64-web.zip     + v2rayN-linux-arm64-web-update.zip
+  win-x64     -> v2rayN-windows-64-web.zip      + v2rayN-windows-64-web-update.zip
 
 Usage:
   web-release-assets.py get --rid linux-x64 --field full
@@ -27,24 +28,30 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).resolve().parent
 ASSET_MAP_PATH = SCRIPT_DIR.parent / "Assets" / "web-assets.json"
 FIXED_TIME = (1980, 1, 1, 0, 0, 0)
-EXECUTABLE_NAME = "v2rayN.WebAPI"
 BUILD_IDENTITY_NAME = "v2rayN.WebAPI.build.json"
 ENVIRONMENT_FILE_NAMES = frozenset((".env", ".env.example"))
-REQUIRED_FILES = (
-    EXECUTABLE_NAME,
-    BUILD_IDENTITY_NAME,
-    "bin/sing_box/libcronet.so",
-    "bin/geosite.dat",
-    "bin/geoip.dat",
-    "bin/geoip.metadb",
-    "bin/Country.mmdb",
-    "bin/srss/geosite-category-ads-all.srs",
-)
-REQUIRED_EXECUTABLES = (
-    EXECUTABLE_NAME,
-    "bin/xray/xray",
-    "bin/sing_box/sing-box",
-    "bin/mihomo/mihomo",
+EXECUTABLE_NAMES = {
+    "linux-x64": "v2rayN.WebAPI",
+    "linux-arm64": "v2rayN.WebAPI",
+    "win-x64": "v2rayN.WebAPI.exe",
+}
+REQUIRED_FILES = {
+    "linux-x64": (
+        "v2rayN.WebAPI", BUILD_IDENTITY_NAME, "bin/sing_box/libcronet.so", "bin/geosite.dat",
+        "bin/geoip.dat", "bin/geoip.metadb", "bin/Country.mmdb", "bin/srss/geosite-category-ads-all.srs",
+    ),
+    "linux-arm64": (
+        "v2rayN.WebAPI", BUILD_IDENTITY_NAME, "bin/sing_box/libcronet.so", "bin/geosite.dat",
+        "bin/geoip.dat", "bin/geoip.metadb", "bin/Country.mmdb", "bin/srss/geosite-category-ads-all.srs",
+    ),
+    "win-x64": (
+        "v2rayN.WebAPI.exe", BUILD_IDENTITY_NAME, "bin/xray/xray.exe", "bin/sing_box/sing-box.exe",
+        "bin/mihomo/mihomo.exe", "bin/geosite.dat", "bin/geoip.dat", "bin/geoip.metadb", "bin/Country.mmdb",
+    ),
+}
+LINUX_REQUIRED_EXECUTABLES = ("bin/xray/xray", "bin/sing_box/sing-box", "bin/mihomo/mihomo")
+WINDOWS_REQUIRED_EXECUTABLES = (
+    "v2rayN.WebAPI.exe", "bin/xray/xray.exe", "bin/sing_box/sing-box.exe", "bin/mihomo/mihomo.exe",
 )
 BLOCK_SIZE = 1024 * 1024
 
@@ -122,7 +129,7 @@ def write_symlink(handle: zipfile.ZipFile, target: str, arcname: str) -> None:
     handle.writestr(info, target)
 
 
-def create_full_zip(publish: Path, output: Path) -> None:
+def create_full_zip(publish: Path, output: Path, rid: str) -> None:
     env_example = SCRIPT_DIR.parent / ".env.example"
     if env_example.is_symlink() or not env_example.is_file():
         fail(f"full package is missing the source environment example: {env_example}")
@@ -134,11 +141,12 @@ def create_full_zip(publish: Path, output: Path) -> None:
         if not any(segment in ENVIRONMENT_FILE_NAMES for segment in entry[0].split("/"))
     ]
     names = {relative for relative, _, _ in entries}
-    for required in REQUIRED_FILES:
+    for required in REQUIRED_FILES[rid]:
         if required not in names:
             fail(f"full package is missing required file: {required}")
-    for required in REQUIRED_EXECUTABLES:
-        if required not in names or not os.access(publish / required, os.X_OK):
+    required_executables = WINDOWS_REQUIRED_EXECUTABLES if rid == "win-x64" else LINUX_REQUIRED_EXECUTABLES
+    for required in required_executables:
+        if required not in names or (rid != "win-x64" and not os.access(publish / required, os.X_OK)):
             fail(f"full package is missing required executable: {required}")
     with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED, allowZip64=True) as handle:
         for relative, path, kind in entries:
@@ -149,24 +157,26 @@ def create_full_zip(publish: Path, output: Path) -> None:
         write_file(handle, env_example, ".env.example", 0o644)
 
 
-def create_update_zip(publish: Path, output: Path) -> None:
-    if not os.access(publish / EXECUTABLE_NAME, os.X_OK):
-        fail(f"app-only package is missing required executable: {EXECUTABLE_NAME}")
+def create_update_zip(publish: Path, output: Path, rid: str) -> None:
+    executable_name = EXECUTABLE_NAMES[rid]
+    if not (publish / executable_name).is_file() or (rid != "win-x64" and not os.access(publish / executable_name, os.X_OK)):
+        fail(f"app-only package is missing required executable: {executable_name}")
     entries: list[tuple[str, Path]] = []
-    for name in (EXECUTABLE_NAME, BUILD_IDENTITY_NAME):
+    for name in (executable_name, BUILD_IDENTITY_NAME):
         path = publish / name
         if path.is_symlink() or not path.is_file():
             fail(f"app-only package is missing required file: {name}")
-    entries.append((EXECUTABLE_NAME, publish / EXECUTABLE_NAME))
+    entries.append((executable_name, publish / executable_name))
     entries.append((BUILD_IDENTITY_NAME, publish / BUILD_IDENTITY_NAME))
 
     with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED, allowZip64=True) as handle:
         for arcname, path in entries:
             write_file(handle, path, arcname, stat.S_IMODE(path.stat().st_mode))
-    verify_update_zip(output)
+    verify_update_zip(output, rid)
 
 
-def verify_update_zip(path: Path) -> None:
+def verify_update_zip(path: Path, rid: str) -> None:
+    executable_name = EXECUTABLE_NAMES[rid]
     try:
         handle = zipfile.ZipFile(path)
     except (OSError, zipfile.BadZipFile) as exc:
@@ -182,9 +192,9 @@ def verify_update_zip(path: Path) -> None:
             if name in seen:
                 fail(f"app-only package {path.name} contains a duplicate archive path: {name}")
             seen.add(name)
-            if name not in (EXECUTABLE_NAME, BUILD_IDENTITY_NAME):
+            if name not in (executable_name, BUILD_IDENTITY_NAME):
                 fail(f"app-only package {path.name} contains an unexpected entry: {name}")
-        for required in (EXECUTABLE_NAME, BUILD_IDENTITY_NAME):
+        for required in (executable_name, BUILD_IDENTITY_NAME):
             if required not in seen:
                 fail(f"app-only package {path.name} is missing {required}")
 
@@ -209,8 +219,8 @@ def package_command(args: argparse.Namespace) -> None:
     dist.mkdir(parents=True, exist_ok=True)
     full_archive = dist / entry["full"]
     update_archive = dist / entry["update"]
-    create_full_zip(publish, full_archive)
-    create_update_zip(publish, update_archive)
+    create_full_zip(publish, full_archive, args.rid)
+    create_update_zip(publish, update_archive, args.rid)
     print(f"Packaged {full_archive} and {update_archive}")
 
 

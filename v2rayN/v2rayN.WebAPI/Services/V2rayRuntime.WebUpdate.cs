@@ -22,7 +22,7 @@ public sealed partial class V2rayRuntime
         var deployment = GetWebUpdateDeployment();
         var build = WebBuildIdentity.Current;
         var selected = Config.CheckUpdateItem.SelectedCoreTypes;
-        var supportedRid = build.Rid is "linux-x64" or "linux-arm64";
+        var supportedRid = build.Rid is "linux-x64" or "linux-arm64" or "win-x64";
         var runtimeInstallReason = GetWebUpdateRuntimeInstallReason();
         var canInstall = deployment.CanInstall && runtimeInstallReason is null;
         return new WebUpdateTargetView(
@@ -333,7 +333,7 @@ public sealed partial class V2rayRuntime
 
             PublishWebUpdateProgress("staged", false, false, "The app-only package passed SHA-256, RID, identity, and archive checks.",
                 check.Manifest.Version, batch);
-            CopyVerifiedWebApp(packageDirectory, candidateDirectory);
+            CopyVerifiedWebApp(packageDirectory, candidateDirectory, check.Package.Rid);
             return new WebUpdateStage(archivePath, packageDirectory, candidateDirectory, backupDirectory,
                 installDirectory, check.Manifest, check.Package);
         }
@@ -379,27 +379,61 @@ public sealed partial class V2rayRuntime
             await WriteNativeWebUpdatePlanAsync(planPath, plan);
             var executablePath = Environment.ProcessPath
                 ?? throw new InvalidOperationException("The native Web executable path is unavailable.");
-            var setsid = LinuxXdgBrowserOpener.FindExecutable("setsid")
-                ?? throw new InvalidOperationException("The setsid executable is required for a native Web update.");
-            var startInfo = new ProcessStartInfo
+            ProcessStartInfo startInfo;
+            string? isolatedWindowsHelper = null;
+            if (OperatingSystem.IsLinux())
             {
-                FileName = setsid,
-                WorkingDirectory = stage.InstallDirectory,
-                UseShellExecute = false,
-                CreateNoWindow = true,
-            };
-            startInfo.ArgumentList.Add(executablePath);
+                var setsid = LinuxXdgBrowserOpener.FindExecutable("setsid")
+                    ?? throw new InvalidOperationException("The setsid executable is required for a native Web update.");
+                startInfo = new ProcessStartInfo
+                {
+                    FileName = setsid,
+                    WorkingDirectory = stage.InstallDirectory,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                };
+                startInfo.ArgumentList.Add(executablePath);
+            }
+            else if (OperatingSystem.IsWindows())
+            {
+                // The Windows process image is locked while running. Use a sibling copy as the
+                // detached update worker so it can replace the installed executable after the
+                // Web host releases its instance lock.
+                isolatedWindowsHelper = NativeWebUpdateHelper.CreateIsolatedHelperExecutable(executablePath);
+                startInfo = new ProcessStartInfo
+                {
+                    FileName = isolatedWindowsHelper,
+                    WorkingDirectory = stage.InstallDirectory,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                };
+            }
+            else
+            {
+                throw new PlatformNotSupportedException("Native Web self-update is supported on Linux and Windows x64.");
+            }
             startInfo.ArgumentList.Add("--apply-web-update");
             startInfo.ArgumentList.Add(planPath);
-            using var helper = Process.Start(startInfo)
-                ?? throw new InvalidOperationException("The native Web update helper could not be started.");
-
-            stage.TransferredToHelper = true;
-            PublishWebUpdateProgress("stopping", false, false,
-                "All network operations and package verification completed before Web/Core shutdown.",
-                stage.Manifest.Version, batch);
-            AddLog("update", $"Handing off the v2rayN.WebAPI update to helper process {helper.Id}.");
-            _lifetime.StopApplication();
+            Process helper;
+            try
+            {
+                helper = Process.Start(startInfo)
+                    ?? throw new InvalidOperationException("The native Web update helper could not be started.");
+            }
+            catch
+            {
+                if (isolatedWindowsHelper is not null) TryDeleteFile(isolatedWindowsHelper);
+                throw;
+            }
+            using (helper)
+            {
+                stage.TransferredToHelper = true;
+                PublishWebUpdateProgress("stopping", false, false,
+                    "All network operations and package verification completed before Web/Core shutdown.",
+                    stage.Manifest.Version, batch);
+                AddLog("update", $"Handing off the v2rayN.WebAPI update to helper process {helper.Id}.");
+                _lifetime.StopApplication();
+            }
         }
         catch
         {
@@ -418,17 +452,24 @@ public sealed partial class V2rayRuntime
             || !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("INVOCATION_ID"))
             || !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("JOURNAL_STREAM"));
         var executable = Environment.ProcessPath;
-        var nativeSingleFile = !string.IsNullOrWhiteSpace(executable)
-            && Path.GetFileName(executable).Equals("v2rayN.WebAPI", StringComparison.Ordinal)
+        var expectedExecutableName = WebBuildIdentity.Current.Rid is "linux-x64" or "linux-arm64" or "win-x64"
+            ? WebUpdatePackageStager.ExecutableNameForRid(WebBuildIdentity.Current.Rid)
+            : null;
+        var pathComparison = OperatingSystem.IsWindows() ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
+        var nativeSingleFile = expectedExecutableName is not null && !string.IsNullOrWhiteSpace(executable)
+            && Path.GetFileName(executable).Equals(expectedExecutableName, pathComparison)
             && File.Exists(executable)
-            && AppContext.BaseDirectory == Path.GetDirectoryName(Path.GetFullPath(executable)) + Path.DirectorySeparatorChar;
+            && string.Equals(AppContext.BaseDirectory,
+                Path.GetDirectoryName(Path.GetFullPath(executable)) + Path.DirectorySeparatorChar,
+                pathComparison);
         var installDirectory = nativeSingleFile && executable is not null ? Path.GetDirectoryName(executable)! : string.Empty;
         var writable = nativeSingleFile && !isSystemd && IsWritableInstallDirectory(installDirectory, executable!);
-        return WebUpdateDeploymentPolicy.Evaluate(OperatingSystem.IsLinux(), isContainer, isSystemd, nativeSingleFile, writable);
+        var supportedNativePlatform = OperatingSystem.IsLinux() || OperatingSystem.IsWindows();
+        return WebUpdateDeploymentPolicy.Evaluate(supportedNativePlatform, isContainer, isSystemd, nativeSingleFile, writable);
     }
 
     private bool CanInstallWebUpdate() =>
-        WebBuildIdentity.Current.Rid is "linux-x64" or "linux-arm64"
+        WebBuildIdentity.Current.Rid is "linux-x64" or "linux-arm64" or "win-x64"
         && GetWebUpdateDeployment().CanInstall
         && GetWebUpdateRuntimeInstallReason() is null;
 
@@ -514,14 +555,15 @@ public sealed partial class V2rayRuntime
         return new Uri("http://127.0.0.1:5080/api/health");
     }
 
-    private static void CopyVerifiedWebApp(string source, string destination)
+    private static void CopyVerifiedWebApp(string source, string destination, string rid)
     {
         Directory.CreateDirectory(destination);
-        File.Copy(Path.Combine(source, "v2rayN.WebAPI"), Path.Combine(destination, "v2rayN.WebAPI"));
+        var executableName = WebUpdatePackageStager.ExecutableNameForRid(rid);
+        File.Copy(Path.Combine(source, executableName), Path.Combine(destination, executableName));
         File.Copy(Path.Combine(source, "v2rayN.WebAPI.build.json"), Path.Combine(destination, "v2rayN.WebAPI.build.json"));
-        if (OperatingSystem.IsLinux())
+        if (OperatingSystem.IsLinux() && rid.StartsWith("linux-", StringComparison.Ordinal))
         {
-            File.SetUnixFileMode(Path.Combine(destination, "v2rayN.WebAPI"),
+            File.SetUnixFileMode(Path.Combine(destination, executableName),
                 UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute
                 | UnixFileMode.GroupRead | UnixFileMode.GroupExecute
                 | UnixFileMode.OtherRead | UnixFileMode.OtherExecute);

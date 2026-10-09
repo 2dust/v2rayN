@@ -11,6 +11,12 @@
       "arch": "arm64",
       "full": "v2rayN-linux-arm64-web.zip",
       "update": "v2rayN-linux-arm64-web-update.zip"
+    },
+    {
+      "rid": "win-x64",
+      "arch": "64",
+      "full": "v2rayN-windows-64-web.zip",
+      "update": "v2rayN-windows-64-web-update.zip"
     }
   ]
 }

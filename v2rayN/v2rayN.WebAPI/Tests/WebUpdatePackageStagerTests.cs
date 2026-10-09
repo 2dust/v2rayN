@@ -71,12 +71,16 @@ public class WebUpdatePackageStagerTests
             new WebUpdatePackage("linux-arm64", "v2rayN-linux-arm64-web-update.zip",
                 "https://github.com/2dust/v2rayN/releases/download/7.25.3/v2rayN-linux-arm64-web-update.zip",
                 new string('b', 64), 2345),
+            new WebUpdatePackage("win-x64", "v2rayN-windows-64-web-update.zip",
+                "https://github.com/2dust/v2rayN/releases/download/7.25.3/v2rayN-windows-64-web-update.zip",
+                new string('c', 64), 3456),
         ]);
         var json = JsonSerializer.Serialize(manifest, new JsonSerializerOptions(JsonSerializerDefaults.Web));
         var parsed = WebUpdatePackageStager.ParseManifest(json);
         await parsed.Version.Should().BeEqualTo("7.25.3");
         await WebUpdatePackageStager.RequirePackage(parsed, "linux-x64").Rid.Should().BeEqualTo("linux-x64");
         await WebUpdatePackageStager.RequirePackage(parsed, "linux-arm64").Rid.Should().BeEqualTo("linux-arm64");
+        await WebUpdatePackageStager.RequirePackage(parsed, "win-x64").Rid.Should().BeEqualTo("win-x64");
         await WebReleaseChannel.IsTrustedAssetUrl(parsed.Packages[0].Url, "2dust/v2rayN", parsed.Version, parsed.Packages[0].Asset)
             .Should().BeTrue();
 
@@ -119,6 +123,30 @@ public class WebUpdatePackageStagerTests
         await File.Exists(Path.Combine(extracted, "bin", "xray", "xray")).Should().BeFalse();
         await File.Exists(Path.Combine(extracted, "guiConfigs", "guiNConfig.json")).Should().BeFalse();
         await File.Exists(Path.Combine(extracted, "webData", "web-auth.json")).Should().BeFalse();
+        await Directory.GetFiles(extracted, "*", SearchOption.AllDirectories).Length.Should().BeEqualTo(2);
+    }
+
+    [Test]
+    public async Task WindowsAppOnlyZipRequiresAndExtractsAnX64PeExecutable()
+    {
+        using var directory = new TemporaryDirectory();
+        var archive = Path.Combine(directory.Path, "web-app-win.zip");
+        var identity = new WebUpdatePackageIdentity("v2rayN.WebAPI", "7.25.4", "windows-commit",
+            "2026-10-09T00:00:00Z", "win-x64");
+        await WriteArchiveAsync(archive,
+        [
+            ("v2rayN.WebAPI.exe", WindowsExecutableFixture()),
+            ("v2rayN.WebAPI.build.json", JsonSerializer.SerializeToUtf8Bytes(identity, new JsonSerializerOptions(JsonSerializerDefaults.Web))),
+        ]);
+        var manifest = CreateManifest(archive, identity.Version, identity.Commit, identity.Rid, identity.BuildDate);
+        var extracted = Path.Combine(directory.Path, "windows-stage");
+
+        var actualIdentity = await WebUpdatePackageStager.VerifyAndExtractAsync(
+            archive, extracted, manifest, manifest.Packages[0], CancellationToken.None);
+
+        await actualIdentity.Should().BeEqualTo(identity);
+        await File.Exists(Path.Combine(extracted, "v2rayN.WebAPI.exe")).Should().BeTrue();
+        await File.Exists(Path.Combine(extracted, "v2rayN.WebAPI")).Should().BeFalse();
         await Directory.GetFiles(extracted, "*", SearchOption.AllDirectories).Length.Should().BeEqualTo(2);
     }
 
@@ -226,6 +254,29 @@ public class WebUpdatePackageStagerTests
         WebUpdatePackageStager.RequireNativeExecutable(path, "linux-x64");
     }
 
+    [Test]
+    public async Task WindowsExecutableMustBePe32PlusAmd64()
+    {
+        using var directory = new TemporaryDirectory();
+        var path = Path.Combine(directory.Path, "candidate.exe");
+        foreach (var image in new[]
+        {
+            Encoding.UTF8.GetBytes("MZ but not a PE executable"),
+            WindowsExecutableFixture(machine: 0x014C),
+            WindowsExecutableFixture(optionalHeaderMagic: 0x010B),
+            WindowsExecutableFixture()[..80],
+        })
+        {
+            await File.WriteAllBytesAsync(path, image);
+            var rejected = false;
+            try { WebUpdatePackageStager.RequireNativeExecutable(path, "win-x64"); }
+            catch (InvalidDataException) { rejected = true; }
+            await rejected.Should().BeTrue();
+        }
+        await File.WriteAllBytesAsync(path, WindowsExecutableFixture());
+        WebUpdatePackageStager.RequireNativeExecutable(path, "win-x64");
+    }
+
     private static byte[] NativeExecutableFixture(ushort machine = 62)
     {
         var image = new byte[120]; // Minimal ELF/program-table fixture, never executed.
@@ -237,6 +288,20 @@ public class WebUpdatePackageStagerTests
         BinaryPrimitives.WriteUInt16LittleEndian(image.AsSpan(52), 64);
         BinaryPrimitives.WriteUInt16LittleEndian(image.AsSpan(54), 56);
         BinaryPrimitives.WriteUInt16LittleEndian(image.AsSpan(56), 1);
+        return image;
+    }
+
+    private static byte[] WindowsExecutableFixture(ushort machine = 0x8664, ushort optionalHeaderMagic = 0x020B)
+    {
+        var image = new byte[512]; // Minimal PE32+ AMD64 image fixture, never executed.
+        BinaryPrimitives.WriteUInt16LittleEndian(image.AsSpan(0), 0x5A4D);
+        BinaryPrimitives.WriteUInt32LittleEndian(image.AsSpan(0x3C), 128);
+        "PE\0\0"u8.CopyTo(image.AsSpan(128));
+        BinaryPrimitives.WriteUInt16LittleEndian(image.AsSpan(132), machine);
+        BinaryPrimitives.WriteUInt16LittleEndian(image.AsSpan(134), 1);
+        BinaryPrimitives.WriteUInt16LittleEndian(image.AsSpan(148), 240);
+        BinaryPrimitives.WriteUInt16LittleEndian(image.AsSpan(150), 0x0002);
+        BinaryPrimitives.WriteUInt16LittleEndian(image.AsSpan(152), optionalHeaderMagic);
         return image;
     }
 

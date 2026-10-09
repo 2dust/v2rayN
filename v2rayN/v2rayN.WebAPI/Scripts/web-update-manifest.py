@@ -28,7 +28,11 @@ from pathlib import Path
 PRODUCT = "v2rayN.WebAPI"
 ASSET_MAP_PATH = Path(__file__).resolve().parent.parent / "Assets" / "web-assets.json"
 BUILD_IDENTITY_NAME = "v2rayN.WebAPI.build.json"
-APP_EXECUTABLE_NAME = "v2rayN.WebAPI"
+APP_EXECUTABLE_NAMES = {
+    "linux-x64": "v2rayN.WebAPI",
+    "linux-arm64": "v2rayN.WebAPI",
+    "win-x64": "v2rayN.WebAPI.exe",
+}
 MAX_ARCHIVE_ENTRIES = 10000
 MAX_EXPANDED_ARCHIVE_BYTES = 1024 * 1024 * 1024
 VERSION_RE = re.compile(r"^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$")
@@ -97,8 +101,33 @@ def normalize_member_path(archive_name: str, member_name: str) -> str:
     return "/".join(segments)
 
 
-def app_member_allowed(path: str) -> bool:
-    return path in (APP_EXECUTABLE_NAME, BUILD_IDENTITY_NAME)
+def app_member_allowed(path: str, rid: str) -> bool:
+    return path in (APP_EXECUTABLE_NAMES[rid], BUILD_IDENTITY_NAME)
+
+
+def verify_windows_pe_x64(stream, size: int, archive_name: str) -> None:
+    if size < 64:
+        fail(f"app-only archive {archive_name} does not contain a Windows PE executable")
+    dos_header = stream.read(64)
+    if len(dos_header) != 64 or dos_header[:2] != b"MZ":
+        fail(f"app-only archive {archive_name} does not contain a Windows PE executable")
+    pe_offset = int.from_bytes(dos_header[0x3C:0x40], "little")
+    if pe_offset < 64 or pe_offset + 26 > size:
+        fail(f"app-only archive {archive_name} has a truncated Windows PE header")
+    stream.seek(pe_offset)
+    pe_header = stream.read(26)
+    if len(pe_header) != 26 or pe_header[:4] != b"PE\0\0":
+        fail(f"app-only archive {archive_name} has a truncated Windows PE header")
+    machine = int.from_bytes(pe_header[4:6], "little")
+    sections = int.from_bytes(pe_header[6:8], "little")
+    optional_size = int.from_bytes(pe_header[20:22], "little")
+    characteristics = int.from_bytes(pe_header[22:24], "little")
+    optional_start = pe_offset + 24
+    if (machine != 0x8664 or sections == 0 or characteristics & 0x0002 == 0
+            or optional_size < 2 or optional_start + optional_size > size):
+        fail(f"app-only archive {archive_name} executable is not a Windows PE32+ x64 image")
+    if int.from_bytes(pe_header[24:26], "little") != 0x20B:
+        fail(f"app-only archive {archive_name} executable is not a Windows PE32+ x64 image")
 
 
 def verify_app_archive_identity(archive: Path, rid: str, version: str, commit: str, build_date: str) -> None:
@@ -109,8 +138,10 @@ def verify_app_archive_identity(archive: Path, rid: str, version: str, commit: s
     performs before installing a self-update package.
     """
     archive_name = archive.name
+    executable_name = APP_EXECUTABLE_NAMES[rid]
     seen: set[str] = set()
     identity_bytes: bytes | None = None
+    executable_info: zipfile.ZipInfo | None = None
     entry_count = 0
     expanded_bytes = 0
     try:
@@ -126,7 +157,7 @@ def verify_app_archive_identity(archive: Path, rid: str, version: str, commit: s
             if path in seen:
                 fail(f"app-only archive {archive_name} contains a duplicate archive path: {path}")
             seen.add(path)
-            if not app_member_allowed(path):
+            if not app_member_allowed(path, rid):
                 fail(f"app-only archive {archive_name} contains an entry outside the app-only layout: {path}")
             unix_type = (info.external_attr >> 16) & 0xF000
             if unix_type not in (0, 0x4000, 0x8000):
@@ -138,12 +169,19 @@ def verify_app_archive_identity(archive: Path, rid: str, version: str, commit: s
                 fail(f"app-only archive {archive_name} expands beyond the supported size")
             if path == BUILD_IDENTITY_NAME:
                 identity_bytes = handle.read(info)
+            elif path == executable_name:
+                executable_info = info
+        if rid == "win-x64" and executable_info is not None:
+            with handle.open(executable_info) as executable_stream:
+                verify_windows_pe_x64(executable_stream, executable_info.file_size, archive_name)
 
-    for required in (APP_EXECUTABLE_NAME, BUILD_IDENTITY_NAME):
+    for required in (executable_name, BUILD_IDENTITY_NAME):
         if required not in seen:
             fail(f"app-only archive {archive_name} is missing {required}")
     if identity_bytes is None:
         fail(f"app-only archive {archive_name} has an unreadable {BUILD_IDENTITY_NAME}")
+    if executable_info is None:
+        fail(f"app-only archive {archive_name} has an unreadable {executable_name}")
     try:
         identity = json.loads(identity_bytes.decode("utf-8"))
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:

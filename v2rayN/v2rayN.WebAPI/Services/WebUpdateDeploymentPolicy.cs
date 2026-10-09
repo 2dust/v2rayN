@@ -14,7 +14,7 @@ internal sealed record WebUpdateDeployment(WebDeploymentKind Kind, bool CanCheck
 internal static class WebUpdateDeploymentPolicy
 {
     public static WebUpdateDeployment Evaluate(
-        bool isLinux,
+        bool isSupportedNativePlatform,
         bool isContainer,
         bool isSystemdManaged,
         bool isNativeSingleFile,
@@ -24,7 +24,7 @@ internal static class WebUpdateDeploymentPolicy
             return new(WebDeploymentKind.Container, true, false, "maintenance.webUpdateContainerImage");
         if (isSystemdManaged)
             return new(WebDeploymentKind.SystemdManaged, true, false, "maintenance.webUpdateSystemdAdmin");
-        if (!isLinux || !isNativeSingleFile)
+        if (!isSupportedNativePlatform || !isNativeSingleFile)
             return new(WebDeploymentKind.Unsupported, true, false, "maintenance.webUpdateUnsupported");
         if (!installDirectoryWritable)
             return new(WebDeploymentKind.ReadOnly, true, false, "maintenance.webUpdateReadOnly");

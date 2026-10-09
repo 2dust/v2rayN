@@ -30,5 +30,10 @@ public class WebUpdateDeploymentPolicyTests
         var unsupported = WebUpdateDeploymentPolicy.Evaluate(false, false, false, false, true);
         await unsupported.CanCheck.Should().BeTrue();
         await unsupported.CanInstall.Should().BeFalse();
+
+        var windowsNative = WebUpdateDeploymentPolicy.Evaluate(true, false, false, true, true);
+        await windowsNative.Kind.Should().BeEqualTo(WebDeploymentKind.NativeWritable);
+        await windowsNative.CanCheck.Should().BeTrue();
+        await windowsNative.CanInstall.Should().BeTrue();
     }
 }

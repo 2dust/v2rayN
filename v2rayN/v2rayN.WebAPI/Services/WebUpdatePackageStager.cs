@@ -23,7 +23,8 @@ internal static partial class WebUpdatePackageStager
     internal const long MaximumArchiveBytes = 256L * 1024 * 1024;
     internal const long MaximumExpandedBytes = 1024L * 1024 * 1024;
     private const int MaximumEntries = 10000;
-    private const string ExecutableName = "v2rayN.WebAPI";
+    private const string LinuxExecutableName = "v2rayN.WebAPI";
+    private const string WindowsExecutableName = "v2rayN.WebAPI.exe";
 
     public static bool IsValidVersion(string? value) =>
         !string.IsNullOrWhiteSpace(value) && VersionPattern().IsMatch(value);
@@ -66,7 +67,7 @@ internal static partial class WebUpdatePackageStager
         }
         foreach (var package in manifest.Packages)
         {
-            if (package.Rid is not ("linux-x64" or "linux-arm64")
+            if (package.Rid is not ("linux-x64" or "linux-arm64" or "win-x64")
                 || string.IsNullOrWhiteSpace(package.Asset)
                 || !Uri.TryCreate(package.Url, UriKind.Absolute, out var assetUri)
                 || assetUri.Scheme != Uri.UriSchemeHttps
@@ -82,15 +83,15 @@ internal static partial class WebUpdatePackageStager
 
     public static WebUpdatePackage RequirePackage(WebUpdateManifest manifest, string rid)
     {
-        if (rid is not ("linux-x64" or "linux-arm64"))
+        if (rid is not ("linux-x64" or "linux-arm64" or "win-x64"))
             throw new InvalidDataException($"The Web release does not support runtime identifier {rid}.");
         return manifest.Packages.FirstOrDefault(package => package.Rid == rid)
             ?? throw new InvalidDataException($"The Web release has no package for runtime identifier {rid}.");
     }
 
     /// <summary>
-    /// Maps a supported .NET runtime identifier to the upstream Linux release architecture suffix
-    /// (<c>linux-x64</c> becomes <c>64</c> and <c>linux-arm64</c> stays <c>arm64</c>).
+    /// Maps a supported .NET runtime identifier to the release archive architecture suffix
+    /// (<c>linux-x64</c>/<c>win-x64</c> become <c>64</c>; <c>linux-arm64</c> stays <c>arm64</c>).
     /// </summary>
     public static string? ArtifactArch(string? rid) => WebReleaseAssets.ArtifactArch(rid);
 
@@ -140,7 +141,7 @@ internal static partial class WebUpdatePackageStager
                     throw new InvalidDataException("The Web package contains a path outside its staging directory.");
                 if (IsEnvironmentConfigurationPath(relative))
                     throw new InvalidDataException("The Web package must not contain .env or .env.example files.");
-                if (!IsAllowedPath(relative))
+                if (!IsAllowedPath(relative, package.Rid))
                     throw new InvalidDataException($"The Web package contains an unexpected file: {relative}.");
 
                 var unixType = (entry.ExternalAttributes >> 16) & 0xF000;
@@ -163,7 +164,8 @@ internal static partial class WebUpdatePackageStager
             }
         }
 
-        var executable = Path.Combine(root, ExecutableName);
+        var executableName = ExecutableNameForRid(package.Rid);
+        var executable = Path.Combine(root, executableName);
         var identityPath = Path.Combine(root, "v2rayN.WebAPI.build.json");
         if (!File.Exists(executable) || new FileInfo(executable).Length == 0
             || !File.Exists(identityPath))
@@ -204,14 +206,29 @@ internal static partial class WebUpdatePackageStager
         return normalized;
     }
 
-    private static bool IsAllowedPath(string path) =>
-        path is ExecutableName or "v2rayN.WebAPI.build.json";
+    private static bool IsAllowedPath(string path, string rid) =>
+        path == ExecutableNameForRid(rid) || path == "v2rayN.WebAPI.build.json";
 
     // JSON RID alone cannot prove executable identity. Reject wrong-architecture,
     // truncated and script payloads before shutdown or process replacement.
+    internal static string ExecutableNameForRid(string rid) => rid switch
+    {
+        "linux-x64" or "linux-arm64" => LinuxExecutableName,
+        "win-x64" => WindowsExecutableName,
+        _ => throw new InvalidDataException($"Unsupported WebAPI runtime identifier: {rid}."),
+    };
+
     internal static void RequireNativeExecutable(string path, string rid)
     {
         using var stream = File.OpenRead(path);
+        if (rid == "win-x64")
+        {
+            RequireWindowsExecutable(stream);
+            return;
+        }
+        if (rid is not ("linux-x64" or "linux-arm64"))
+            throw new InvalidDataException($"Unsupported WebAPI runtime identifier: {rid}.");
+
         Span<byte> header = stackalloc byte[64];
         if (stream.Read(header) != header.Length
             || !header[..7].SequenceEqual(new byte[] { 0x7f, (byte)'E', (byte)'L', (byte)'F', 2, 1, 1 })
@@ -226,6 +243,43 @@ internal static partial class WebUpdatePackageStager
         if (offset < 64 || offset > (ulong)stream.Length || entrySize != 56 || count == 0
             || (ulong)count * entrySize > (ulong)stream.Length - offset)
             throw new InvalidDataException("The WebAPI package executable has a truncated or invalid ELF program table.");
+    }
+
+    private static void RequireWindowsExecutable(Stream stream)
+    {
+        Span<byte> dosHeader = stackalloc byte[64];
+        if (stream.Length < dosHeader.Length || stream.Read(dosHeader) != dosHeader.Length
+            || BinaryPrimitives.ReadUInt16LittleEndian(dosHeader) != 0x5A4D)
+        {
+            throw new InvalidDataException("The WebAPI package executable must be a Windows PE32+ image for x64.");
+        }
+
+        var peOffset = BinaryPrimitives.ReadUInt32LittleEndian(dosHeader[0x3C..]);
+        if (peOffset < dosHeader.Length || peOffset > stream.Length - 26)
+            throw new InvalidDataException("The WebAPI package executable has a truncated Windows PE header.");
+
+        stream.Position = peOffset;
+        Span<byte> peHeader = stackalloc byte[26];
+        if (stream.Read(peHeader) != peHeader.Length
+            || !peHeader[..4].SequenceEqual(new byte[] { (byte)'P', (byte)'E', 0, 0 })
+            || BinaryPrimitives.ReadUInt16LittleEndian(peHeader[4..]) != 0x8664
+            || BinaryPrimitives.ReadUInt16LittleEndian(peHeader[6..]) == 0
+            || BinaryPrimitives.ReadUInt16LittleEndian(peHeader[20..]) < 2
+            || (BinaryPrimitives.ReadUInt16LittleEndian(peHeader[22..]) & 0x0002) == 0)
+        {
+            throw new InvalidDataException("The WebAPI package executable must be a Windows PE32+ image for x64.");
+        }
+
+        var optionalHeaderSize = BinaryPrimitives.ReadUInt16LittleEndian(peHeader[20..]);
+        if ((long)peOffset + 24 + optionalHeaderSize > stream.Length)
+            throw new InvalidDataException("The WebAPI package executable has a truncated Windows optional header.");
+        Span<byte> optionalHeaderMagic = stackalloc byte[2];
+        stream.Position = (long)peOffset + 24;
+        if (stream.Read(optionalHeaderMagic) != optionalHeaderMagic.Length
+            || BinaryPrimitives.ReadUInt16LittleEndian(optionalHeaderMagic) != 0x20B)
+        {
+            throw new InvalidDataException("The WebAPI package executable must be a Windows PE32+ image for x64.");
+        }
     }
 
     private static bool IsEnvironmentConfigurationPath(string path) =>

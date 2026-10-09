@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Release packaging dry-run: validates the full-install/app-only ZIP boundaries and the
-# web-update.json manifest using small fixtures, without publishing anything.
+# Release packaging dry-run: validates Linux/Windows full-install and app-only ZIP boundaries
+# plus the web-update.json manifest using small fixtures, without publishing anything.
 set -euo pipefail
 
 web_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -11,18 +11,46 @@ trap 'rm -rf "$temporary"' EXIT HUP INT TERM
 make_publish_fixture() {
   local rid="$1"
   local publish="$temporary/publish-$rid"
+  local app_executable="v2rayN.WebAPI" xray="bin/xray/xray" sing_box="bin/sing_box/sing-box" mihomo="bin/mihomo/mihomo"
+  if [[ "$rid" == win-x64 ]]; then
+    app_executable="v2rayN.WebAPI.exe"
+    xray="bin/xray/xray.exe"
+    sing_box="bin/sing_box/sing-box.exe"
+    mihomo="bin/mihomo/mihomo.exe"
+  fi
   mkdir -p "$publish/bin/xray" "$publish/bin/sing_box" "$publish/bin/mihomo" "$publish/bin/srss"
-  printf '#!/bin/sh\nexit 0\n' > "$publish/v2rayN.WebAPI"
-  chmod 755 "$publish/v2rayN.WebAPI"
+  if [[ "$rid" == win-x64 ]]; then
+    python3 - "$publish/$app_executable" "$publish/$xray" "$publish/$sing_box" "$publish/$mihomo" <<'PY'
+from pathlib import Path
+import struct
+import sys
+
+image = bytearray(512)
+image[:2] = b"MZ"
+struct.pack_into("<I", image, 0x3C, 128)
+image[128:132] = b"PE\0\0"
+struct.pack_into("<HHH", image, 132, 0x8664, 1, 0)
+struct.pack_into("<H", image, 148, 240)
+struct.pack_into("<H", image, 150, 0x0002)
+struct.pack_into("<H", image, 152, 0x020B)
+for name in sys.argv[1:]:
+    Path(name).write_bytes(image)
+PY
+  else
+    printf '#!/bin/sh\nexit 0\n' > "$publish/$app_executable"
+    chmod 755 "$publish/$app_executable"
+    for executable in "$xray" "$sing_box" "$mihomo"; do
+      printf '#!/bin/sh\nexit 0\n' > "$publish/$executable"
+      chmod 755 "$publish/$executable"
+    done
+  fi
   # Simulate accidental local environment files in the publish tree. Only the reviewed
   # repository template may be copied into a full install ZIP.
   printf 'V2RAYN_WEB_API_KEY=fixture-secret\n' > "$publish/.env"
   printf 'unreviewed template\n' > "$publish/.env.example"
-  for executable in bin/xray/xray bin/sing_box/sing-box bin/mihomo/mihomo; do
-    printf '#!/bin/sh\nexit 0\n' > "$publish/$executable"
-    chmod 755 "$publish/$executable"
-  done
-  for asset in bin/sing_box/libcronet.so bin/geosite.dat bin/geoip.dat bin/geoip.metadb bin/Country.mmdb bin/srss/geosite-category-ads-all.srs; do
+  local assets=(bin/geosite.dat bin/geoip.dat bin/geoip.metadb bin/Country.mmdb)
+  if [[ "$rid" != win-x64 ]]; then assets+=(bin/sing_box/libcronet.so bin/srss/geosite-category-ads-all.srs); fi
+  for asset in "${assets[@]}"; do
     printf 'asset\n' > "$publish/$asset"
   done
   # User data that must never leak into the app-only self-update package.
@@ -47,7 +75,7 @@ with open(path, "w", encoding="utf-8") as handle:
 PY
 }
 
-for rid in linux-x64 linux-arm64; do
+for rid in linux-x64 linux-arm64 win-x64; do
   make_publish_fixture "$rid"
   bash "$web_root/Scripts/package-native.sh" "$rid" "$temporary/publish-$rid" "$temporary/dist"
 done
@@ -56,21 +84,25 @@ full_x64="$(python3 "$asset_tool" get --rid linux-x64 --field full)"
 full_arm64="$(python3 "$asset_tool" get --rid linux-arm64 --field full)"
 update_x64="$(python3 "$asset_tool" get --rid linux-x64 --field update)"
 update_arm64="$(python3 "$asset_tool" get --rid linux-arm64 --field update)"
+full_windows="$(python3 "$asset_tool" get --rid win-x64 --field full)"
+update_windows="$(python3 "$asset_tool" get --rid win-x64 --field update)"
 
-for asset in "$full_x64" "$full_arm64" "$update_x64" "$update_arm64"; do
+for asset in "$full_x64" "$full_arm64" "$update_x64" "$update_arm64" "$full_windows" "$update_windows"; do
   test -s "$temporary/dist/$asset"
 done
 test "$full_x64" = "v2rayN-linux-64-web.zip"
 test "$full_arm64" = "v2rayN-linux-arm64-web.zip"
 test "$update_x64" = "v2rayN-linux-64-web-update.zip"
 test "$update_arm64" = "v2rayN-linux-arm64-web-update.zip"
+test "$full_windows" = "v2rayN-windows-64-web.zip"
+test "$update_windows" = "v2rayN-windows-64-web-update.zip"
 
-python3 - "$temporary/dist/$full_x64" "$temporary/dist/$update_x64" "$web_root/.env.example" <<'PY'
+python3 - "$temporary/dist/$full_x64" "$temporary/dist/$update_x64" "$temporary/dist/$full_windows" "$temporary/dist/$update_windows" "$web_root/.env.example" <<'PY'
 from pathlib import Path
 import sys
 import zipfile
 
-full, update, env_example_source = sys.argv[1:]
+full, update, full_windows, update_windows, env_example_source = sys.argv[1:]
 with zipfile.ZipFile(full) as archive:
     names = archive.namelist()
     env_example_data = archive.read(".env.example")
@@ -85,6 +117,16 @@ with zipfile.ZipFile(update) as archive:
 assert update_names == {"v2rayN.WebAPI", "v2rayN.WebAPI.build.json"}, update_names
 assert not any(segment in (".env", ".env.example") for name in update_names for segment in name.split("/")), update_names
 assert not any(name.startswith(("bin/", "guiConfigs/", "guiLogs/", "webData/")) for name in update_names), update_names
+with zipfile.ZipFile(full_windows) as archive:
+    windows_names = archive.namelist()
+    assert "v2rayN.WebAPI.exe" in windows_names, windows_names
+    assert "v2rayN.WebAPI.build.json" in windows_names, windows_names
+    assert "bin/xray/xray.exe" in windows_names, windows_names
+    assert archive.read(".env.example") == Path(env_example_source).read_bytes()
+    assert not any(name.split("/")[-1] == ".env" for name in windows_names), windows_names
+with zipfile.ZipFile(update_windows) as archive:
+    windows_update_names = set(archive.namelist())
+assert windows_update_names == {"v2rayN.WebAPI.exe", "v2rayN.WebAPI.build.json"}, windows_update_names
 process = __import__("subprocess").run(["unzip", "-l", update], capture_output=True, text=True)
 assert process.returncode == 0, process.stderr
 
@@ -108,14 +150,14 @@ python3 "$web_root/Scripts/web-update-manifest.py" verify \
   --dist "$temporary/dist" \
   --repository 2dust/v2rayN
 
-python3 - "$temporary/dist/web-update.json" "$update_x64" "$update_arm64" <<'PY'
+python3 - "$temporary/dist/web-update.json" "$update_x64" "$update_arm64" "$update_windows" <<'PY'
 import hashlib
 import json
 import sys
 from pathlib import Path
 
 manifest_path = Path(sys.argv[1])
-asset_x64, asset_arm64 = sys.argv[2:]
+asset_x64, asset_arm64, asset_windows = sys.argv[2:]
 manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
 assert manifest["product"] == "v2rayN.WebAPI", manifest
 assert manifest["version"] == "7.25.3", manifest
@@ -124,13 +166,14 @@ assert manifest["buildDate"] == "2026-09-28T00:00:00Z", manifest
 expected = {
     "linux-x64": asset_x64,
     "linux-arm64": asset_arm64,
+    "win-x64": asset_windows,
 }
 packages = {package["rid"]: package for package in manifest["packages"]}
 assert set(packages) == set(expected), packages
 for rid, asset in expected.items():
     package = packages[rid]
     url = f"https://github.com/2dust/v2rayN/releases/download/7.25.3/{asset}"
-    assert asset.startswith("v2rayN-linux-") and asset.endswith("-web-update.zip"), asset
+    assert asset.endswith("-web-update.zip"), asset
     assert package["asset"] == asset, package
     assert package["url"] == url, package
     data = (manifest_path.parent / asset).read_bytes()

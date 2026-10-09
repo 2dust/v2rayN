@@ -122,11 +122,12 @@ bash Scripts/verify.sh
 ```
 
 `Scripts/verify.sh` builds and tests the Backend, runs ServiceLib tests, checks startup/security,
-and exercises API ZIP/self-update package boundaries and real different-layout native update,
+and exercises API ZIP/self-update package boundaries and real different-layout Linux update,
 rollback and invalid-executable rejection. The independent `build-web.yml` workflow
-runs these checks and native/container builds on relevant PRs and pushes to `master`; it can also
-be dispatched manually or called by a release workflow. Release builds currently enable only
-the tested `linux-x64` and `linux-arm64` native targets and both Linux container architectures.
+runs these checks, Windows win-x64 build/startup/update smoke, native Linux builds, and Linux
+container builds on relevant PRs and pushes to `master`; it can also be dispatched manually or
+called by a release workflow. Releases include Linux x64/ARM64 and Windows x64 packages; Linux
+containers are built for amd64 and arm64.
 
 `Scripts/test-native-update-identity.py <previous-publish-dir> <candidate-publish-dir>` additionally
 exercises real native helper replacement and health-mismatch rollback with two distinct versions,
@@ -134,18 +135,20 @@ isolated data/ports and preserved unrelated file/Core markers. It never uses use
 
 ### Native self-update and legacy helpers
 
-The update worker runs from an owner-only, GUID-named copy of the current executable beside the
-installation. This keeps its single-file bundle path unchanged during replacement and rollback:
-.NET loads dependencies lazily, and replacing a running helper's own executable with a different
-bundle layout can break later assembly loads. The outer helper waits for worker exit, propagates
-its result, and then removes that copy. Configuration and data paths remain unchanged.
+The update worker runs from a GUID-named copy of the current executable beside the installation
+(owner-only permissions on Linux). This keeps its single-file bundle path unchanged during
+replacement and rollback: .NET loads dependencies lazily, and replacing a running helper's own
+executable with a different bundle layout can break later assembly loads. On Linux the outer
+helper waits for the worker, propagates its result, and removes the copy; on Windows the detached
+helper waits for the prior process and schedules its own copy for deletion after exit. Configuration
+and data paths remain unchanged.
 
 `Scripts/test-native-update-regression.sh <native-publish-directory>` deliberately changes the
 candidate's bundle layout with test-only assembly metadata; version-only fixtures can conceal
 this failure. It checks actual replacement, rollback, invalid-executable rejection and worker
 cleanup, and is included in `Scripts/verify.sh`.
 
-**Builds predating helper isolation need a one-time manual reinstall.** Their already-running
+**Linux builds predating helper isolation need a one-time manual reinstall.** Their already-running
 old helper cannot gain this fix from the candidate package. Stop the instance, back up the
 executable, build identity, data and `.env`, and install the corrected API package. For a failed
 legacy update, retain the previous-application backup and verify the restored application's
@@ -165,8 +168,8 @@ Do not run the two executables against the same data directory. There is no cros
 helper, executable alias or silent in-place migration. Old-product manifests/packages are not
 accepted by the new updater; new `WebAPI → WebAPI` updates preserve the transactional helper,
 health/PID/lock checks, atomic replacement/rollback and executable/Core/data boundaries.
-Both package staging and the helper also check the Linux ELF64 header, declared RID's machine
-architecture and program-table bounds before replacement; a script/truncated/wrong-ISA candidate
+Package staging checks Linux ELF64 headers/program tables or Windows PE32+ AMD64 headers against
+the declared RID before replacement; a script, truncated image, or wrong-architecture candidate
 cannot reach shutdown/swap merely by carrying the correct JSON identity.
 
 API-owned `SelectedCoreTypes` and `CheckPreReleaseCoreTypes` entries `v2rayN.Web` are normalized
@@ -183,13 +186,13 @@ install-path examples, progress/intent file names, workflow file names, all rele
 ## Releases and containers
 
 Dispatch `release-web.yml` with a `release_tag` (`x.y.z`) to call `build-web.yml`, assemble and
-validate the assets, then sign and upload them through the existing `upload-sign.yml` workflow.
+validate the Linux and Windows WebAPI assets, then sign and upload them through the existing `upload-sign.yml` workflow.
 The signing/upload jobs retain the upstream-only repository guard; forks can validate the build
 artifacts without publishing. `build-web.yml` can also be dispatched with a tag for package-only
 verification. `build-all.yml` dispatches the Web release independently of Linux Desktop;
 `build-linux.yml` builds and releases only Desktop assets. Web release orchestration and artifact
-names are RID-based, so additional tested native targets can be added separately from containers
-and Desktop workflows. Windows Web packages are not enabled yet.
+names are RID-based, separately from containers and Desktop workflows. Windows x64 has full-install
+and app-only update ZIPs; Windows containers are not built.
 
 The API release provides architecture-specific full-install and app-only update ZIPs plus
 `web-update.json`:
@@ -198,6 +201,9 @@ The API release provides architecture-specific full-install and app-only update 
   and Core bundle.
 - `v2rayN-linux-64-web-update.zip` / `v2rayN-linux-arm64-web-update.zip` — API executable and
   build identity only; user data, Core files, credentials, and unrelated files are excluded.
+- `v2rayN-windows-64-web.zip` — Windows x64 API, runtime/Core files, and `.env.example`.
+- `v2rayN-windows-64-web-update.zip` — Windows API executable and build identity only; user data,
+  Core files, credentials, and unrelated files are excluded.
 - `web-update.json` — version, commit, runtime identifier, sizes, and SHA-256 digests.
 
 For Docker/Podman, the included `Containerfile` builds only the API and Core runtime.

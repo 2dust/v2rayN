@@ -8,8 +8,11 @@ public class NativeWebUpdateHelperTests
     public async Task OnlyTheInstalledExecutableAndGuidNamedWorkersAreAccepted()
     {
         await NativeWebUpdateHelper.IsUpdateHelperExecutableName("v2rayN.WebAPI").Should().BeTrue();
+        await NativeWebUpdateHelper.IsUpdateHelperExecutableName("v2rayN.WebAPI.exe").Should().BeTrue();
         await NativeWebUpdateHelper.IsUpdateHelperExecutableName(
             ".v2rayn-web-update-helper-" + Guid.NewGuid().ToString("N")).Should().BeTrue();
+        await NativeWebUpdateHelper.IsUpdateHelperExecutableName(
+            ".v2rayn-web-update-helper-" + Guid.NewGuid().ToString("N") + ".exe").Should().BeTrue();
         foreach (var name in new[] { "", "v2rayN.Web", "other", ".v2rayn-web-update-helper-",
             ".v2rayn-web-update-helper-not-a-guid", ".v2rayn-web-update-helper-" + Guid.NewGuid().ToString("D"),
             "../v2rayN.WebAPI", ".v2rayn-web-update-helper-" + Guid.NewGuid().ToString("N") + ".bak" })
@@ -25,7 +28,7 @@ public class NativeWebUpdateHelperTests
         Directory.CreateDirectory(directory);
         try
         {
-            var executable = Path.Combine(directory, "v2rayN.WebAPI");
+            var executable = Path.Combine(directory, OperatingSystem.IsWindows() ? "v2rayN.WebAPI.exe" : "v2rayN.WebAPI");
             await File.WriteAllTextAsync(executable, "original-bundle");
             var helper = NativeWebUpdateHelper.CreateIsolatedHelperExecutable(executable);
             await Path.GetDirectoryName(helper).Should().BeEqualTo(directory);

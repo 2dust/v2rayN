@@ -7,6 +7,9 @@ namespace v2rayN.WebAPI.Tests;
 
 public class NativeWebUpdateFileSwapTests
 {
+    private static string ExecutableName => OperatingSystem.IsWindows() ? "v2rayN.WebAPI.exe" : "v2rayN.WebAPI";
+    private static string Rid => OperatingSystem.IsWindows() ? "win-x64" : "linux-x64";
+
     [Test]
     public async Task RollbackDoesNotModifyAnExecutableThatIsStillMemoryMapped()
     {
@@ -15,7 +18,7 @@ public class NativeWebUpdateFileSwapTests
         var plan = await CreatePlanAsync(directory.Path, includeNewIdentity: true);
         NativeWebUpdateHelper.CopyCurrentAppToBackup(plan);
         NativeWebUpdateHelper.SwapCandidateAppIntoPlace(plan);
-        using var executable = new FileStream(Path.Combine(plan.InstallDirectory, "v2rayN.WebAPI"),
+        using var executable = new FileStream(Path.Combine(plan.InstallDirectory, ExecutableName),
             FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
         using var mapping = MemoryMappedFile.CreateFromFile(executable, null, 0,
             MemoryMappedFileAccess.Read, HandleInheritability.None, leaveOpen: true);
@@ -25,7 +28,7 @@ public class NativeWebUpdateFileSwapTests
         NativeWebUpdateHelper.RestorePreviousApp(plan);
 
         await view.ReadByte(0).Should().BeEqualTo((byte)'n');
-        await (await File.ReadAllTextAsync(Path.Combine(plan.InstallDirectory, "v2rayN.WebAPI"))).Should().BeEqualTo("old-web");
+        await (await File.ReadAllTextAsync(Path.Combine(plan.InstallDirectory, ExecutableName))).Should().BeEqualTo("old-web");
         await Directory.GetFiles(plan.InstallDirectory, ".v2rayn-web-restore-*").Length.Should().BeEqualTo(0);
     }
 
@@ -38,7 +41,7 @@ public class NativeWebUpdateFileSwapTests
         NativeWebUpdateHelper.CopyCurrentAppToBackup(plan);
         NativeWebUpdateHelper.SwapCandidateAppIntoPlace(plan);
 
-        await (await File.ReadAllTextAsync(Path.Combine(plan.InstallDirectory, "v2rayN.WebAPI"))).Should().BeEqualTo("new-web");
+        await (await File.ReadAllTextAsync(Path.Combine(plan.InstallDirectory, ExecutableName))).Should().BeEqualTo("new-web");
         await (await File.ReadAllTextAsync(Path.Combine(plan.InstallDirectory, "extra", "marker.dat"))).Should().BeEqualTo("UNRELATED_FILE_TEST");
         await (await HashDirectoryAsync(Path.Combine(plan.InstallDirectory, "extra"))).Should().BeEqualTo(extraHash);
         await Directory.Exists(Path.Combine(plan.BackupDirectory, "extra")).Should().BeFalse();
@@ -66,7 +69,7 @@ public class NativeWebUpdateFileSwapTests
 
         await rollback.Success.Should().BeFalse();
         await rollback.RollbackSucceeded.Should().BeTrue();
-        await (await File.ReadAllTextAsync(Path.Combine(plan.InstallDirectory, "v2rayN.WebAPI"))).Should().BeEqualTo("old-web");
+        await (await File.ReadAllTextAsync(Path.Combine(plan.InstallDirectory, ExecutableName))).Should().BeEqualTo("old-web");
         await (await File.ReadAllTextAsync(Path.Combine(plan.InstallDirectory, "extra", "marker.dat"))).Should().BeEqualTo("UNRELATED_FILE_TEST");
         await (await HashDirectoryAsync(Path.Combine(plan.InstallDirectory, "extra"))).Should().BeEqualTo(extraHash);
         await (await File.ReadAllTextAsync(Path.Combine(plan.InstallDirectory, "bin", "xray", "xray"))).Should().BeEqualTo("updated-core");
@@ -84,14 +87,14 @@ public class NativeWebUpdateFileSwapTests
         Directory.CreateDirectory(Path.Combine(install, "bin", "xray"));
         Directory.CreateDirectory(Path.Combine(install, "guiConfigs"));
         Directory.CreateDirectory(candidate);
-        await File.WriteAllTextAsync(Path.Combine(install, "v2rayN.WebAPI"), "old-web");
+        await File.WriteAllTextAsync(Path.Combine(install, ExecutableName), "old-web");
         await File.WriteAllTextAsync(Path.Combine(install, "v2rayN.WebAPI.build.json"), "old-identity");
         await File.WriteAllTextAsync(Path.Combine(install, "extra", "marker.dat"), "UNRELATED_FILE_TEST");
         await File.WriteAllTextAsync(Path.Combine(install, "extra", "nested", "test.dat"), "unrelated nested data");
         await File.WriteAllTextAsync(Path.Combine(install, "bin", "xray", "xray"), "updated-core");
         await File.WriteAllTextAsync(Path.Combine(install, "guiConfigs", "guiNConfig.json"), "user-config");
         await File.WriteAllTextAsync(Path.Combine(install, ".env"), "V2RAYN_WEB_API_KEY=private-test-key\n");
-        await File.WriteAllTextAsync(Path.Combine(candidate, "v2rayN.WebAPI"), "new-web");
+        await File.WriteAllTextAsync(Path.Combine(candidate, ExecutableName), "new-web");
         if (includeNewIdentity)
             await File.WriteAllTextAsync(Path.Combine(candidate, "v2rayN.WebAPI.build.json"), "new-identity");
         return new NativeWebUpdatePlan(
@@ -103,7 +106,7 @@ public class NativeWebUpdateFileSwapTests
             [],
             "7.25.2-web.2",
             "new-commit",
-            "linux-x64",
+            Rid,
             "7.25.2-web.1",
             Path.Combine(root, "runtime-intent.json"),
             Path.Combine(root, "update-progress.json"));

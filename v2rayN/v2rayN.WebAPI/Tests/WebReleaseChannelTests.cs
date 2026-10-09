@@ -58,7 +58,7 @@ public class WebReleaseChannelTests
     }
 
     [Test]
-    public async Task RuntimeIdentifiersMapToUpstreamLinuxArchiveNames()
+    public async Task RuntimeIdentifiersMapToSupportedArchiveNames()
     {
         await WebUpdatePackageStager.ArtifactArch("linux-x64").Should().BeEqualTo("64");
         await WebUpdatePackageStager.ArtifactArch("linux-arm64").Should().BeEqualTo("arm64");
@@ -66,6 +66,9 @@ public class WebReleaseChannelTests
         await WebUpdatePackageStager.FullInstallAssetName("linux-arm64").Should().BeEqualTo("v2rayN-linux-arm64-web.zip");
         await WebUpdatePackageStager.AppOnlyAssetName("linux-x64").Should().BeEqualTo("v2rayN-linux-64-web-update.zip");
         await WebUpdatePackageStager.AppOnlyAssetName("linux-arm64").Should().BeEqualTo("v2rayN-linux-arm64-web-update.zip");
+        await WebUpdatePackageStager.ArtifactArch("win-x64").Should().BeEqualTo("64");
+        await WebUpdatePackageStager.FullInstallAssetName("win-x64").Should().BeEqualTo("v2rayN-windows-64-web.zip");
+        await WebUpdatePackageStager.AppOnlyAssetName("win-x64").Should().BeEqualTo("v2rayN-windows-64-web-update.zip");
         await WebUpdatePackageStager.FullInstallAssetName("linux-riscv64").Should().BeNull();
         await WebUpdatePackageStager.AppOnlyAssetName(null).Should().BeNull();
     }

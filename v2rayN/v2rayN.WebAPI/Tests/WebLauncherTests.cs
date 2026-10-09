@@ -5,6 +5,21 @@ namespace v2rayN.WebAPI.Tests;
 public class WebLauncherTests
 {
     [Test]
+    public async Task InstanceLockOwnerCanBeReadWhileAnotherProcessHoldsTheLock()
+    {
+        using var directory = new TemporaryDirectory();
+        var lockPath = Path.Combine(directory.Path, "instance.lock");
+        await WebInstanceLock.TryAcquire(lockPath, writeOwner: true, out var heldLock).Should().BeTrue();
+        using (heldLock)
+        {
+            await WebInstanceLock.ReadOwnerProcessId(lockPath).Should().BeEqualTo(Environment.ProcessId);
+            await WebInstanceLock.IsHeld(lockPath).Should().BeTrue();
+            await WebInstanceLock.TryAcquire(lockPath, writeOwner: false, out _).Should().BeFalse();
+        }
+        await WebInstanceLock.IsHeld(lockPath).Should().BeFalse();
+    }
+
+    [Test]
     public async Task StopFlagSelectsStopModeAndIsNotForwardedToHost()
     {
         var options = WebLaunchOptions.Parse(

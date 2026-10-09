@@ -7,6 +7,14 @@ on:
         required: false
         type: string
         default: ''
+      publish_release:
+        required: false
+        type: boolean
+        default: false
+      prerelease:
+        required: false
+        type: boolean
+        default: true
   workflow_dispatch:
     inputs:
       release_tag:
@@ -14,6 +22,16 @@ on:
         required: false
         default: ''
         type: string
+      publish_release:
+        description: 'Publish the validated packages as a GitHub Release in Nozilla-X/v2rayN.'
+        required: false
+        default: false
+        type: boolean
+      prerelease:
+        description: 'Mark the published GitHub Release as a prerelease.'
+        required: false
+        default: true
+        type: boolean
   pull_request:
     branches: [master]
     paths:
@@ -114,11 +132,14 @@ jobs:
 
   windows:
     name: Windows WebAPI build and runtime smoke
-    # Release calls pass a release_tag; keep this CI-only validation out of release runs.
-    if: inputs.release_tag == ''
+    needs: identity
     runs-on: windows-latest
     env:
       TUNIT_MAX_PARALLEL_TESTS: 1
+      WEB_VERSION: ${{ needs.identity.outputs.version }}
+      WEB_COMMIT: ${{ github.sha }}
+      WEB_BUILD_DATE: ${{ needs.identity.outputs.build_date }}
+      WEB_REPOSITORY: ${{ github.repository }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -126,6 +147,9 @@ jobs:
       - uses: actions/setup-dotnet@v6
         with:
           dotnet-version: '10.x'
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
       - name: Restore WebAPI
         shell: pwsh
         run: dotnet restore v2rayN/v2rayN.WebAPI/v2rayN.WebAPI.csproj
@@ -154,7 +178,20 @@ jobs:
             --self-contained true `
             -p:PublishSingleFile=true `
             -p:IncludeNativeLibrariesForSelfExtract=true `
+            -p:WebVersion=$env:WEB_VERSION `
+            -p:WebCommit=$env:WEB_COMMIT `
+            -p:WebBuildDate=$env:WEB_BUILD_DATE `
+            -p:WebRepository=$env:WEB_REPOSITORY `
             --output $publishDirectory
+          $identity = [ordered]@{
+            product = 'v2rayN.WebAPI'
+            version = $env:WEB_VERSION
+            commit = $env:WEB_COMMIT
+            buildDate = $env:WEB_BUILD_DATE
+            rid = 'win-x64'
+          }
+          $json = $identity | ConvertTo-Json -Compress
+          [IO.File]::WriteAllText((Join-Path $publishDirectory 'v2rayN.WebAPI.build.json'), $json, [Text.UTF8Encoding]::new($false))
       - name: Verify single-file publish output
         shell: pwsh
         run: |
@@ -175,6 +212,94 @@ jobs:
         run: |
           $publishDirectory = Join-Path $env:RUNNER_TEMP 'v2rayN.WebAPI-win-x64'
           & ./v2rayN/v2rayN.WebAPI/Scripts/Test-Windows.ps1 -PublishDirectory $publishDirectory
+      - name: Publish previous Windows fixture for update regression
+        if: inputs.release_tag != ''
+        shell: pwsh
+        run: |
+          $publishDirectory = Join-Path $env:RUNNER_TEMP 'v2rayN.WebAPI-win-x64-previous'
+          dotnet publish v2rayN/v2rayN.WebAPI/v2rayN.WebAPI.csproj `
+            --configuration Release `
+            --runtime win-x64 `
+            --self-contained true `
+            -p:PublishSingleFile=true `
+            -p:IncludeNativeLibrariesForSelfExtract=true `
+            -p:WebVersion=0.0.1-regression `
+            -p:WebCommit=$env:WEB_COMMIT `
+            -p:WebBuildDate=$env:WEB_BUILD_DATE `
+            -p:WebRepository=$env:WEB_REPOSITORY `
+            --output $publishDirectory
+          $identity = [ordered]@{
+            product = 'v2rayN.WebAPI'
+            version = '0.0.1-regression'
+            commit = $env:WEB_COMMIT
+            buildDate = $env:WEB_BUILD_DATE
+            rid = 'win-x64'
+          }
+          $json = $identity | ConvertTo-Json -Compress
+          [IO.File]::WriteAllText((Join-Path $publishDirectory 'v2rayN.WebAPI.build.json'), $json, [Text.UTF8Encoding]::new($false))
+      - name: Add the matching Windows Core bundle
+        if: inputs.release_tag != ''
+        shell: pwsh
+        run: |
+          $bundle = Join-Path $env:RUNNER_TEMP 'v2rayN-windows-64.zip'
+          $expanded = Join-Path $env:RUNNER_TEMP 'v2rayN-windows-64-core'
+          $publishDirectory = Join-Path $env:RUNNER_TEMP 'v2rayN.WebAPI-win-x64'
+          $previousDirectory = Join-Path $env:RUNNER_TEMP 'v2rayN.WebAPI-win-x64-previous'
+          Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-windows-64.zip' -OutFile $bundle
+          Expand-Archive -LiteralPath $bundle -DestinationPath $expanded -Force
+          $sourceBin = Join-Path $expanded 'v2rayN-windows-64\bin'
+          if (-not (Test-Path -LiteralPath $sourceBin -PathType Container)) {
+            throw "Windows Core bundle is missing $sourceBin"
+          }
+          foreach ($directory in @($publishDirectory, $previousDirectory)) {
+            $destinationBin = Join-Path $directory 'bin'
+            New-Item -ItemType Directory -Path $destinationBin -Force | Out-Null
+            Copy-Item -Path (Join-Path $sourceBin '*') -Destination $destinationBin -Recurse -Force
+          }
+          foreach ($directory in @($publishDirectory, $previousDirectory)) {
+            $checkBin = Join-Path $directory 'bin'
+            foreach ($relative in @('xray\xray.exe','sing_box\sing-box.exe','mihomo\mihomo.exe','geoip.dat','geosite.dat','geoip.metadb','Country.mmdb')) {
+              $required = Join-Path $checkBin $relative
+              if (-not (Test-Path -LiteralPath $required -PathType Leaf)) { throw "Missing Windows Core asset: $required" }
+            }
+          }
+          $candidateBin = Join-Path $publishDirectory 'bin'
+          & (Join-Path $candidateBin 'xray\xray.exe') -version
+          if ($LASTEXITCODE -ne 0) { throw "xray.exe smoke failed: $LASTEXITCODE" }
+          & (Join-Path $candidateBin 'sing_box\sing-box.exe') version
+          if ($LASTEXITCODE -ne 0) { throw "sing-box.exe smoke failed: $LASTEXITCODE" }
+          & (Join-Path $candidateBin 'mihomo\mihomo.exe') -v
+          if ($LASTEXITCODE -ne 0) { throw "mihomo.exe smoke failed: $LASTEXITCODE" }
+      - name: Smoke-test Windows self-update replacement and rollback
+        if: inputs.release_tag != ''
+        shell: pwsh
+        run: |
+          & ./v2rayN/v2rayN.WebAPI/Scripts/Test-WindowsUpdate.ps1 `
+            -PreviousPublishDirectory (Join-Path $env:RUNNER_TEMP 'v2rayN.WebAPI-win-x64-previous') `
+            -CandidatePublishDirectory (Join-Path $env:RUNNER_TEMP 'v2rayN.WebAPI-win-x64')
+      - name: Package and smoke-test Windows full-install and app-only ZIPs
+        if: inputs.release_tag != ''
+        shell: pwsh
+        run: |
+          $publishDirectory = Join-Path $env:RUNNER_TEMP 'v2rayN.WebAPI-win-x64'
+          $dist = Join-Path $env:RUNNER_TEMP 'v2rayN.WebAPI-win-x64-dist'
+          python v2rayN/v2rayN.WebAPI/Scripts/web-release-assets.py package --rid win-x64 --publish $publishDirectory --dist $dist
+          $fullZip = Join-Path $dist 'v2rayN-windows-64-web.zip'
+          $appOnlyZip = Join-Path $dist 'v2rayN-windows-64-web-update.zip'
+          if (-not (Test-Path -LiteralPath $fullZip -PathType Leaf) -or -not (Test-Path -LiteralPath $appOnlyZip -PathType Leaf)) {
+            throw 'Windows release ZIPs were not created.'
+          }
+          $extracted = Join-Path $env:RUNNER_TEMP 'v2rayN-windows-64-web-smoke'
+          Expand-Archive -LiteralPath $fullZip -DestinationPath $extracted -Force
+          & ./v2rayN/v2rayN.WebAPI/Scripts/Test-Windows.ps1 -PublishDirectory $extracted
+          "Windows full-install ZIP: $fullZip"
+          "Windows app-only update ZIP: $appOnlyZip"
+      - uses: actions/upload-artifact@v7
+        if: inputs.release_tag != ''
+        with:
+          name: v2rayN.WebAPI-win-x64
+          path: ${{ runner.temp }}/v2rayN.WebAPI-win-x64-dist/*.zip
+          if-no-files-found: error
 
   native:
     name: Native API build (${{ matrix.rid }})
@@ -265,7 +390,7 @@ jobs:
   release-assets:
     name: Assemble API release assets
     if: needs.identity.outputs.release == 'true'
-    needs: [identity, verify, native, container]
+    needs: [identity, verify, windows, native, container]
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
@@ -304,3 +429,80 @@ jobs:
           name: web-release-manifest
           path: release-assets/web-update.json
           if-no-files-found: error
+
+  publish-fork-release:
+    name: Publish fork GitHub Release
+    if: inputs.publish_release && github.event_name == 'workflow_dispatch' && github.repository == 'Nozilla-X/v2rayN'
+    needs: [identity, release-assets]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v7
+        with:
+          pattern: web-release-*
+          path: release-assets
+          merge-multiple: true
+      - name: Re-verify all release assets
+        env:
+          RELEASE_TAG: ${{ needs.identity.outputs.tag }}
+        run: |
+          set -euo pipefail
+          expected=(
+            v2rayN-linux-64-web.zip
+            v2rayN-linux-arm64-web.zip
+            v2rayN-linux-64-web-update.zip
+            v2rayN-linux-arm64-web-update.zip
+            v2rayN-windows-64-web.zip
+            v2rayN-windows-64-web-update.zip
+            web-update.json
+          )
+          for asset in "${expected[@]}"; do
+            test -s "release-assets/$asset" || { echo "Missing release asset: $asset" >&2; exit 1; }
+          done
+          python3 v2rayN/v2rayN.WebAPI/Scripts/web-update-manifest.py verify \
+            --manifest release-assets/web-update.json \
+            --dist release-assets \
+            --repository "$GITHUB_REPOSITORY" \
+            --version "$RELEASE_TAG"
+      - name: Create the release without replacing an existing tag or release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ needs.identity.outputs.tag }}
+          PRERELEASE: ${{ inputs.prerelease }}
+        run: |
+          set -euo pipefail
+          if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$RELEASE_TAG" >/dev/null 2>&1; then
+            echo "Git tag already exists: $RELEASE_TAG" >&2
+            exit 1
+          fi
+          if gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "GitHub Release already exists: $RELEASE_TAG" >&2
+            exit 1
+          fi
+          assets=(
+            release-assets/v2rayN-linux-64-web.zip
+            release-assets/v2rayN-linux-arm64-web.zip
+            release-assets/v2rayN-linux-64-web-update.zip
+            release-assets/v2rayN-linux-arm64-web-update.zip
+            release-assets/v2rayN-windows-64-web.zip
+            release-assets/v2rayN-windows-64-web-update.zip
+            release-assets/web-update.json
+          )
+          arguments=(
+            "$RELEASE_TAG"
+            "${assets[@]}"
+            --repo "$GITHUB_REPOSITORY"
+            --target "$GITHUB_SHA"
+            --title "$RELEASE_TAG"
+            --notes "v2rayN.WebAPI $RELEASE_TAG. Includes Linux x64/ARM64 and Windows x64 full-install and self-update packages."
+          )
+          if [[ "$PRERELEASE" == "true" ]]; then arguments+=(--prerelease); fi
+          gh release create "${arguments[@]}"
+          gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" \
+            --json url,isPrerelease,assets \
+            --jq '{url, isPrerelease, assets: [.assets[].name]}'

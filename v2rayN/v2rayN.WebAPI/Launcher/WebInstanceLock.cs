@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Text;
 using Microsoft.Win32.SafeHandles;
 
@@ -38,7 +39,10 @@ public sealed class WebInstanceLock : IDisposable
             {
                 Mode = FileMode.OpenOrCreate,
                 Access = FileAccess.ReadWrite,
-                Share = FileShare.None,
+                // Windows uses a byte-range lock below, leaving the owner PID at the start
+                // of the file readable by the detached update helper while still excluding
+                // every competing lock acquisition.
+                Share = OperatingSystem.IsWindows() ? FileShare.ReadWrite : FileShare.None,
             };
             try
             {
@@ -51,7 +55,9 @@ public sealed class WebInstanceLock : IDisposable
             }
         }
 
-        var acquired = !OperatingSystem.IsLinux() || TryFlock(stream, LockExclusive | LockNonBlocking);
+        var acquired = OperatingSystem.IsLinux()
+            ? TryFlock(stream, LockExclusive | LockNonBlocking)
+            : OperatingSystem.IsWindows() ? TryWindowsLock(stream) : true;
         if (!acquired)
         {
             stream.Dispose();
@@ -95,7 +101,16 @@ public sealed class WebInstanceLock : IDisposable
             }
             else
             {
-                ownerText = File.ReadAllText(path, Encoding.ASCII).Trim();
+                if (OperatingSystem.IsWindows())
+                {
+                    using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                    using var reader = new StreamReader(stream, Encoding.ASCII);
+                    ownerText = reader.ReadToEnd().Trim();
+                }
+                else
+                {
+                    ownerText = File.ReadAllText(path, Encoding.ASCII).Trim();
+                }
             }
             return int.TryParse(ownerText, out var processId) && processId > 0 ? processId : null;
         }
@@ -133,6 +148,11 @@ public sealed class WebInstanceLock : IDisposable
             var descriptor = _stream.SafeFileHandle.DangerousGetHandle().ToInt32();
             _ = Flock(descriptor, LockUnlock);
         }
+        else if (OperatingSystem.IsWindows())
+        {
+            try { _stream.Unlock(WindowsLockOffset, WindowsLockLength); }
+            catch (IOException) { }
+        }
         _stream.Dispose();
     }
 
@@ -144,6 +164,8 @@ public sealed class WebInstanceLock : IDisposable
     private const int OpenCreate = 64;
     private const int OpenCloseOnExec = 524288;
     private const uint UserReadWriteMode = 0x180;
+    private const long WindowsLockOffset = 1024 * 1024;
+    private const long WindowsLockLength = 1;
 
     [DllImport("libc", EntryPoint = "open", SetLastError = true)]
     private static extern int Open(string path, int flags, uint mode);
@@ -163,6 +185,20 @@ public sealed class WebInstanceLock : IDisposable
         }
 
         throw new IOException("Unable to acquire the v2rayN.WebAPI instance lock.", new Win32Exception(error));
+    }
+
+    [SupportedOSPlatform("windows")]
+    private static bool TryWindowsLock(FileStream stream)
+    {
+        try
+        {
+            stream.Lock(WindowsLockOffset, WindowsLockLength);
+            return true;
+        }
+        catch (IOException)
+        {
+            return false;
+        }
     }
 
     [DllImport("libc", EntryPoint = "flock", SetLastError = true)]

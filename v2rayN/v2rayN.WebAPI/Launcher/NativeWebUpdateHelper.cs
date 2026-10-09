@@ -1,5 +1,7 @@
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 using ServiceLib.Common;
 using v2rayN.WebAPI.Services;
@@ -39,12 +41,25 @@ internal static class NativeWebUpdateHelper
 
     public static async Task<int> RunAsync(string planPath)
     {
+        var executable = Environment.ProcessPath;
+        try
+        {
+            return await RunCoreAsync(planPath);
+        }
+        finally
+        {
+            ScheduleWindowsHelperCleanup(executable);
+        }
+    }
+
+    private static async Task<int> RunCoreAsync(string planPath)
+    {
         NativeWebUpdatePlan? plan = null;
         try
         {
             plan = JsonSerializer.Deserialize<NativeWebUpdatePlan>(await File.ReadAllTextAsync(planPath), JsonOptions);
             ValidatePlan(plan);
-            if (Path.GetFileName(Environment.ProcessPath) == "v2rayN.WebAPI")
+            if (OperatingSystem.IsLinux() && Path.GetFileName(Environment.ProcessPath) == "v2rayN.WebAPI")
             {
                 return RunFromIsolatedBundle(planPath, Environment.ProcessPath!);
             }
@@ -78,6 +93,22 @@ internal static class NativeWebUpdateHelper
             return previousRestarted ? 1 : 2;
         }
 
+        Process? windowsOwnerProcess;
+        try
+        {
+            windowsOwnerProcess = CaptureWindowsOwnerProcess(plan!);
+        }
+        catch (Exception exception) when (exception is InvalidDataException or IOException or UnauthorizedAccessException)
+        {
+            Console.Error.WriteLine($"Could not identify the previous Windows Web process: {exception.Message}");
+            DeleteRuntimeIntent(plan!.RuntimeIntentPath);
+            TryDeleteDirectory(plan.CandidateDirectory);
+            WriteProgress(plan, new WebUpdateProgressState("failed", true, false, plan.ExpectedVersion,
+                "The previous Windows Web process could not be identified; the installed application was not modified."));
+            TryDeleteFile(planPath);
+            return 1;
+        }
+        using var ownedWindowsProcess = windowsOwnerProcess;
         WriteProgress(plan!, new WebUpdateProgressState("waiting", false, false, plan!.ExpectedVersion,
             "Waiting for the previous Web instance to stop gracefully."));
         if (!await WaitForLockReleaseAsync(plan.InstanceLockPath, OwnerReleaseTimeout))
@@ -86,6 +117,16 @@ internal static class NativeWebUpdateHelper
             TryDeleteDirectory(plan.CandidateDirectory);
             WriteProgress(plan, new WebUpdateProgressState("failed", true, false, plan.ExpectedVersion,
                 "The previous Web instance did not release its instance lock; the old application was not modified.", false));
+            TryDeleteFile(planPath);
+            return 1;
+        }
+        if (windowsOwnerProcess is not null
+            && !await WaitForProcessExitAsync(windowsOwnerProcess, OwnerReleaseTimeout))
+        {
+            DeleteRuntimeIntent(plan.RuntimeIntentPath);
+            TryDeleteDirectory(plan.CandidateDirectory);
+            WriteProgress(plan, new WebUpdateProgressState("failed", true, false, plan.ExpectedVersion,
+                "The previous Windows Web process did not exit after releasing its instance lock; the old application was not modified.", false));
             TryDeleteFile(planPath);
             return 1;
         }
@@ -232,8 +273,9 @@ internal static class NativeWebUpdateHelper
     {
         if (new FileInfo(executable).LinkTarget is not null)
             throw new InvalidDataException("The native update helper cannot be copied from a symlink.");
+        var extension = OperatingSystem.IsWindows() ? ".exe" : string.Empty;
         var helperPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(executable))!,
-            $"{IsolatedHelperPrefix}{Guid.NewGuid():N}");
+            $"{IsolatedHelperPrefix}{Guid.NewGuid():N}{extension}");
         try
         {
             File.Copy(executable, helperPath, overwrite: false);
@@ -248,21 +290,81 @@ internal static class NativeWebUpdateHelper
         }
     }
 
-    internal static bool IsUpdateHelperExecutableName(string name) =>
-        name == "v2rayN.WebAPI"
-        || (name.StartsWith(IsolatedHelperPrefix, StringComparison.Ordinal)
-            && Guid.TryParseExact(name[IsolatedHelperPrefix.Length..], "N", out _));
+    internal static bool IsUpdateHelperExecutableName(string name)
+    {
+        if (name is "v2rayN.WebAPI" or "v2rayN.WebAPI.exe") return true;
+        return IsIsolatedHelperExecutableName(name);
+    }
+
+    private static bool IsIsolatedHelperExecutableName(string name)
+    {
+        var helperName = name.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) ? name[..^4] : name;
+        return helperName.StartsWith(IsolatedHelperPrefix, StringComparison.Ordinal)
+            && Guid.TryParseExact(helperName[IsolatedHelperPrefix.Length..], "N", out _);
+    }
+
+    internal static void ScheduleWindowsHelperCleanup(string? executable)
+    {
+        if (!OperatingSystem.IsWindows() || string.IsNullOrWhiteSpace(executable)
+            || !Path.GetFileName(executable).StartsWith(IsolatedHelperPrefix, StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+
+        try
+        {
+            var powershell = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.System),
+                "WindowsPowerShell", "v1.0", "powershell.exe");
+            var escapedPath = Path.GetFullPath(executable).Replace("'", "''", StringComparison.Ordinal);
+            var script = $"$targetPid={Environment.ProcessId};$targetPath='{escapedPath}';"
+                + "for($i=0;$i -lt 600;$i++){if(-not(Get-Process -Id $targetPid -ErrorAction SilentlyContinue)){break};Start-Sleep -Milliseconds 100};"
+                + "Remove-Item -LiteralPath $targetPath -Force -ErrorAction SilentlyContinue";
+            var encoded = Convert.ToBase64String(Encoding.Unicode.GetBytes(script));
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = powershell,
+                WorkingDirectory = Path.GetTempPath(),
+                UseShellExecute = true,
+                WindowStyle = ProcessWindowStyle.Hidden,
+            };
+            startInfo.ArgumentList.Add("-NoLogo");
+            startInfo.ArgumentList.Add("-NoProfile");
+            startInfo.ArgumentList.Add("-NonInteractive");
+            startInfo.ArgumentList.Add("-ExecutionPolicy");
+            startInfo.ArgumentList.Add("Bypass");
+            startInfo.ArgumentList.Add("-EncodedCommand");
+            startInfo.ArgumentList.Add(encoded);
+            Process.Start(startInfo)?.Dispose();
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException
+            or InvalidOperationException or System.ComponentModel.Win32Exception)
+        {
+            Console.Error.WriteLine($"Could not schedule cleanup of the Windows update helper: {exception.Message}");
+            _ = MoveFileEx(Path.GetFullPath(executable), null, MoveFileDelayUntilReboot);
+        }
+    }
+
+    private const int MoveFileDelayUntilReboot = 0x00000004;
+
+    [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+    private static extern bool MoveFileEx(string existingFileName, string? newFileName, int flags);
 
     private static void ValidatePlan(NativeWebUpdatePlan? plan)
     {
-        if (!OperatingSystem.IsLinux() || plan is null
-            || File.Exists("/.dockerenv") || File.Exists("/run/.containerenv")
-            || WebStopper.IsManagedBySystemd(Environment.ProcessId)
+        var isLinux = OperatingSystem.IsLinux();
+        var isWindows = OperatingSystem.IsWindows();
+        var isManagedLinuxService = isLinux && (WebStopper.IsManagedBySystemd(Environment.ProcessId)
             || !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("INVOCATION_ID"))
-            || !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("JOURNAL_STREAM"))
+            || !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("JOURNAL_STREAM")));
+        if ((!isLinux && !isWindows) || plan is null
+            || File.Exists("/.dockerenv") || File.Exists("/run/.containerenv")
+            || !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("container"))
+            || !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER"))
+            || isManagedLinuxService
             || !WebUpdatePackageStager.IsValidVersion(plan.ExpectedVersion)
             || !WebUpdatePackageStager.IsValidVersion(plan.PreviousVersion)
-            || plan.Rid is not ("linux-x64" or "linux-arm64")
+            || plan.Rid is not ("linux-x64" or "linux-arm64" or "win-x64")
             || plan.Rid != System.Runtime.InteropServices.RuntimeInformation.RuntimeIdentifier
             || string.IsNullOrWhiteSpace(plan.ExpectedCommit)
             || !Uri.TryCreate(plan.HealthUri, UriKind.Absolute, out var healthUri)
@@ -275,8 +377,12 @@ internal static class NativeWebUpdateHelper
         var executable = Environment.ProcessPath
             ?? throw new InvalidDataException("The update helper process path is unavailable.");
         var install = Path.GetFullPath(plan.InstallDirectory);
-        if (Path.GetFullPath(Path.GetDirectoryName(executable) ?? string.Empty) != install
-            || !IsUpdateHelperExecutableName(Path.GetFileName(executable))
+        var executableName = WebUpdatePackageStager.ExecutableNameForRid(plan.Rid);
+        var processFileName = Path.GetFileName(executable);
+        var pathComparison = isWindows ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
+        if (!string.Equals(Path.GetFullPath(Path.GetDirectoryName(executable) ?? string.Empty), install, pathComparison)
+            || !IsUpdateHelperExecutableName(processFileName)
+            || (isWindows && !IsIsolatedHelperExecutableName(processFileName))
             || new FileInfo(executable).LinkTarget is not null)
         {
             throw new InvalidDataException("The update plan does not target this native v2rayN.WebAPI installation.");
@@ -288,17 +394,20 @@ internal static class NativeWebUpdateHelper
         if (!Path.IsPathFullyQualified(plan.InstanceLockPath)
             || !Path.IsPathFullyQualified(plan.RuntimeIntentPath)
             || !Path.IsPathFullyQualified(plan.ProgressPath)
-            || Path.GetFullPath(plan.InstanceLockPath) != Path.GetFullPath(Path.Combine(Utils.StartupPath(), "v2rayN.WebAPI.instance.lock"))
-            || Path.GetFullPath(plan.RuntimeIntentPath) != Path.GetFullPath(V2rayRuntime.WebUpdateRuntimeStatePath)
-            || Path.GetFullPath(plan.ProgressPath) != Path.GetFullPath(Utils.GetTempPath("web-update-progress.json"))
+            || !string.Equals(Path.GetFullPath(plan.InstanceLockPath),
+                Path.GetFullPath(Path.Combine(Utils.StartupPath(), "v2rayN.WebAPI.instance.lock")), pathComparison)
+            || !string.Equals(Path.GetFullPath(plan.RuntimeIntentPath),
+                Path.GetFullPath(V2rayRuntime.WebUpdateRuntimeStatePath), pathComparison)
+            || !string.Equals(Path.GetFullPath(plan.ProgressPath),
+                Path.GetFullPath(Utils.GetTempPath("web-update-progress.json")), pathComparison)
             || !Directory.Exists(plan.CandidateDirectory)
-            || !File.Exists(Path.Combine(plan.CandidateDirectory, "v2rayN.WebAPI"))
+            || !File.Exists(Path.Combine(plan.CandidateDirectory, executableName))
             || !File.Exists(Path.Combine(plan.CandidateDirectory, "v2rayN.WebAPI.build.json")))
         {
             throw new InvalidDataException("The update plan paths or staged application files are invalid.");
         }
         EnsureNoLinks(plan.CandidateDirectory);
-        WebUpdatePackageStager.RequireNativeExecutable(Path.Combine(plan.CandidateDirectory, "v2rayN.WebAPI"), plan.Rid);
+        WebUpdatePackageStager.RequireNativeExecutable(Path.Combine(plan.CandidateDirectory, executableName), plan.Rid);
         var identity = JsonSerializer.Deserialize<WebUpdatePackageIdentity>(
             File.ReadAllText(Path.Combine(plan.CandidateDirectory, "v2rayN.WebAPI.build.json")), JsonOptions);
         if (identity is null || identity.Product != "v2rayN.WebAPI"
@@ -311,7 +420,7 @@ internal static class NativeWebUpdateHelper
         using (new FileStream(writableProbe, FileMode.CreateNew, FileAccess.Write, FileShare.None)) { }
         File.Delete(writableProbe);
         if (new DirectoryInfo(install).LinkTarget is not null
-            || new FileInfo(Path.Combine(install, "v2rayN.WebAPI")).LinkTarget is not null)
+            || new FileInfo(Path.Combine(install, executableName)).LinkTarget is not null)
         {
             throw new InvalidDataException("Self-update is disabled for symlink-managed installations.");
         }
@@ -322,22 +431,31 @@ internal static class NativeWebUpdateHelper
         try
         {
             var executable = Environment.ProcessPath;
-            return OperatingSystem.IsLinux()
-                && !WebStopper.IsManagedBySystemd(Environment.ProcessId)
-                && string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("INVOCATION_ID"))
-                && string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("JOURNAL_STREAM"))
+            var isLinux = OperatingSystem.IsLinux();
+            var isWindows = OperatingSystem.IsWindows();
+            var pathComparison = isWindows ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
+            return (isLinux || isWindows)
+                && (!isLinux || (!WebStopper.IsManagedBySystemd(Environment.ProcessId)
+                    && string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("INVOCATION_ID"))
+                    && string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("JOURNAL_STREAM"))))
                 && !File.Exists("/.dockerenv")
                 && !File.Exists("/run/.containerenv")
+                && string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("container"))
+                && string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER"))
                 && !string.IsNullOrWhiteSpace(executable)
                 && IsUpdateHelperExecutableName(Path.GetFileName(executable))
                 && new FileInfo(executable).LinkTarget is null
-                && Path.GetFullPath(Path.GetDirectoryName(executable) ?? string.Empty) == Path.GetFullPath(plan.InstallDirectory)
+                && string.Equals(Path.GetFullPath(Path.GetDirectoryName(executable) ?? string.Empty),
+                    Path.GetFullPath(plan.InstallDirectory), pathComparison)
                 && Path.IsPathFullyQualified(plan.InstanceLockPath)
                 && Path.IsPathFullyQualified(plan.ProgressPath)
                 && Path.IsPathFullyQualified(plan.RuntimeIntentPath)
-                && Path.GetFullPath(plan.InstanceLockPath) == Path.GetFullPath(Path.Combine(Utils.StartupPath(), "v2rayN.WebAPI.instance.lock"))
-                && Path.GetFullPath(plan.RuntimeIntentPath) == Path.GetFullPath(V2rayRuntime.WebUpdateRuntimeStatePath)
-                && Path.GetFullPath(plan.ProgressPath) == Path.GetFullPath(Utils.GetTempPath("web-update-progress.json"))
+                && string.Equals(Path.GetFullPath(plan.InstanceLockPath),
+                    Path.GetFullPath(Path.Combine(Utils.StartupPath(), "v2rayN.WebAPI.instance.lock")), pathComparison)
+                && string.Equals(Path.GetFullPath(plan.RuntimeIntentPath),
+                    Path.GetFullPath(V2rayRuntime.WebUpdateRuntimeStatePath), pathComparison)
+                && string.Equals(Path.GetFullPath(plan.ProgressPath),
+                    Path.GetFullPath(Utils.GetTempPath("web-update-progress.json")), pathComparison)
                 && Uri.TryCreate(plan.HealthUri, UriKind.Absolute, out var uri)
                 && uri.Scheme == Uri.UriSchemeHttp && uri.Host is "127.0.0.1" or "localhost"
                 && WebUpdatePackageStager.IsValidVersion(plan.PreviousVersion)
@@ -353,7 +471,8 @@ internal static class NativeWebUpdateHelper
     private static void EnsureSiblingDirectory(string value, string parent, string prefix)
     {
         var full = Path.GetFullPath(value);
-        if (Path.GetDirectoryName(full) != parent
+        var comparison = OperatingSystem.IsWindows() ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
+        if (!string.Equals(Path.GetDirectoryName(full), parent, comparison)
             || !Path.GetFileName(full).StartsWith(prefix, StringComparison.Ordinal))
         {
             throw new InvalidDataException("A staged update directory is outside the installation parent.");
@@ -362,10 +481,11 @@ internal static class NativeWebUpdateHelper
 
     internal static void CopyCurrentAppToBackup(NativeWebUpdatePlan plan)
     {
+        var executableName = WebUpdatePackageStager.ExecutableNameForRid(plan.Rid);
         Directory.CreateDirectory(plan.BackupDirectory);
-        if (new FileInfo(Path.Combine(plan.InstallDirectory, "v2rayN.WebAPI")).LinkTarget is not null)
+        if (new FileInfo(Path.Combine(plan.InstallDirectory, executableName)).LinkTarget is not null)
             throw new InvalidDataException("The installed Web executable is a symlink and cannot be transactionally replaced.");
-        File.Copy(Path.Combine(plan.InstallDirectory, "v2rayN.WebAPI"), Path.Combine(plan.BackupDirectory, "v2rayN.WebAPI"));
+        File.Copy(Path.Combine(plan.InstallDirectory, executableName), Path.Combine(plan.BackupDirectory, executableName));
         var oldIdentity = Path.Combine(plan.InstallDirectory, "v2rayN.WebAPI.build.json");
         if (File.Exists(oldIdentity))
         {
@@ -378,33 +498,34 @@ internal static class NativeWebUpdateHelper
     internal static void SwapCandidateAppIntoPlace(NativeWebUpdatePlan plan)
     {
         var install = plan.InstallDirectory;
-        var backup = plan.BackupDirectory;
         var candidate = plan.CandidateDirectory;
+        var executableName = WebUpdatePackageStager.ExecutableNameForRid(plan.Rid);
 
-        File.Move(Path.Combine(candidate, "v2rayN.WebAPI"), Path.Combine(install, "v2rayN.WebAPI"), overwrite: true);
+        File.Move(Path.Combine(candidate, executableName), Path.Combine(install, executableName), overwrite: true);
         File.Move(Path.Combine(candidate, "v2rayN.WebAPI.build.json"), Path.Combine(install, "v2rayN.WebAPI.build.json"), overwrite: true);
-        SetExecutableMode(Path.Combine(install, "v2rayN.WebAPI"));
+        SetExecutableMode(Path.Combine(install, executableName));
     }
 
     internal static void RestorePreviousApp(NativeWebUpdatePlan plan)
     {
         var install = plan.InstallDirectory;
         var backup = plan.BackupDirectory;
+        var executableName = WebUpdatePackageStager.ExecutableNameForRid(plan.Rid);
         if (!Directory.Exists(backup)) throw new DirectoryNotFoundException("The previous Web application backup is missing.");
 
         var previousIdentity = Path.Combine(backup, "v2rayN.WebAPI.build.json");
-        var restoredExecutable = Path.Combine(install, $".v2rayn-web-restore-{Guid.NewGuid():N}");
+        var restoredExecutable = Path.Combine(install, $".v2rayn-web-restore-{Guid.NewGuid():N}{Path.GetExtension(executableName)}");
         var restoredIdentity = restoredExecutable + ".build.json";
         try
         {
             // Never truncate an executable inode: the single-file helper may still
             // have bundled assemblies mapped from it. Restore by atomic rename,
             // just like the forward swap, so existing mappings remain unchanged.
-            File.Copy(Path.Combine(backup, "v2rayN.WebAPI"), restoredExecutable);
+            File.Copy(Path.Combine(backup, executableName), restoredExecutable);
             if (File.Exists(previousIdentity))
                 File.Copy(previousIdentity, restoredIdentity);
             SetExecutableMode(restoredExecutable);
-            File.Move(restoredExecutable, Path.Combine(install, "v2rayN.WebAPI"), overwrite: true);
+            File.Move(restoredExecutable, Path.Combine(install, executableName), overwrite: true);
             if (File.Exists(restoredIdentity))
                 File.Move(restoredIdentity, Path.Combine(install, "v2rayN.WebAPI.build.json"), overwrite: true);
             else
@@ -419,18 +540,36 @@ internal static class NativeWebUpdateHelper
 
     private static Process StartWebInstance(NativeWebUpdatePlan plan)
     {
-        var executable = Path.Combine(plan.InstallDirectory, "v2rayN.WebAPI");
-        var setsid = LinuxXdgBrowserOpener.FindExecutable("setsid")
-            ?? throw new InvalidOperationException("The setsid executable is required for a detached native Web restart.");
-        var startInfo = new ProcessStartInfo
+        var executable = Path.Combine(plan.InstallDirectory, WebUpdatePackageStager.ExecutableNameForRid(plan.Rid));
+        ProcessStartInfo startInfo;
+        if (OperatingSystem.IsLinux())
         {
-            FileName = setsid,
-            WorkingDirectory = plan.InstallDirectory,
-            UseShellExecute = false,
-            CreateNoWindow = true,
-        };
-        startInfo.ArgumentList.Add(executable);
-        startInfo.ArgumentList.Add(WebLaunchOptions.BackgroundChildFlag);
+            var setsid = LinuxXdgBrowserOpener.FindExecutable("setsid")
+                ?? throw new InvalidOperationException("The setsid executable is required for a detached native Web restart.");
+            startInfo = new ProcessStartInfo
+            {
+                FileName = setsid,
+                WorkingDirectory = plan.InstallDirectory,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+            };
+            startInfo.ArgumentList.Add(executable);
+            startInfo.ArgumentList.Add(WebLaunchOptions.BackgroundChildFlag);
+        }
+        else if (OperatingSystem.IsWindows())
+        {
+            startInfo = new ProcessStartInfo
+            {
+                FileName = executable,
+                WorkingDirectory = plan.InstallDirectory,
+                UseShellExecute = true,
+                WindowStyle = ProcessWindowStyle.Hidden,
+            };
+        }
+        else
+        {
+            throw new PlatformNotSupportedException("Native Web self-update is supported on Linux and Windows x64.");
+        }
         foreach (var argument in plan.HostArguments) startInfo.ArgumentList.Add(argument);
         return Process.Start(startInfo) ?? throw new InvalidOperationException("Could not start the updated Web application.");
     }
@@ -444,24 +583,45 @@ internal static class NativeWebUpdateHelper
         var healthProbe = new HttpWebHealthProbe();
         var healthUri = new Uri(plan.HealthUri);
         var deadline = DateTimeOffset.UtcNow + timeout;
+        int? lastOwnerProcessId = null;
+        var lastHealth = new WebHealthProbeResult(false, null);
+        var lastRuntimeIntentSatisfied = false;
         while (DateTimeOffset.UtcNow < deadline)
         {
             if (WebInstanceLock.IsHeld(plan.InstanceLockPath))
             {
-                var owner = WebInstanceLock.ReadOwnerProcessId(plan.InstanceLockPath);
-                var health = await healthProbe.ProbeAsync(healthUri, CancellationToken.None);
-                if (owner.HasValue && health.IsHealthy && health.InstanceProcessId == owner
-                    && string.Equals(health.WebVersion, expectedVersion, StringComparison.Ordinal)
-                    && RuntimeIntentIsSatisfied(plan.RuntimeIntentPath, health))
+                lastOwnerProcessId = WebInstanceLock.ReadOwnerProcessId(plan.InstanceLockPath);
+                lastHealth = await healthProbe.ProbeAsync(healthUri, CancellationToken.None);
+                lastRuntimeIntentSatisfied = RuntimeIntentIsSatisfied(plan.RuntimeIntentPath, lastHealth);
+                if (lastOwnerProcessId.HasValue && lastHealth.IsHealthy && lastHealth.InstanceProcessId == lastOwnerProcessId
+                    && string.Equals(lastHealth.WebVersion, expectedVersion, StringComparison.Ordinal)
+                    && lastRuntimeIntentSatisfied)
                 {
                     return true;
                 }
             }
-            if (process.HasExited && !WebInstanceLock.IsHeld(plan.InstanceLockPath)) return false;
+            if (process.HasExited && !WebInstanceLock.IsHeld(plan.InstanceLockPath))
+            {
+                WriteHealthMismatchDiagnostic(plan, expectedVersion, lastOwnerProcessId, lastHealth, lastRuntimeIntentSatisfied);
+                return false;
+            }
             await Task.Delay(PollInterval);
         }
+        WriteHealthMismatchDiagnostic(plan, expectedVersion, lastOwnerProcessId, lastHealth, lastRuntimeIntentSatisfied);
         return false;
     }
+
+    private static void WriteHealthMismatchDiagnostic(
+        NativeWebUpdatePlan plan,
+        string expectedVersion,
+        int? ownerProcessId,
+        WebHealthProbeResult health,
+        bool runtimeIntentSatisfied) =>
+        Console.Error.WriteLine(
+            $"Native Web update health mismatch: expectedVersion={expectedVersion}; lockOwner={ownerProcessId}; "
+            + $"healthy={health.IsHealthy}; healthPid={health.InstanceProcessId}; observedVersion={health.WebVersion}; "
+            + $"coreState={health.CoreState}; corePids={string.Join(',', health.CoreProcessIds ?? [])}; "
+            + $"runtimeIntentSatisfied={runtimeIntentSatisfied}; progress={plan.ProgressPath}.");
 
     private static bool RuntimeIntentIsSatisfied(string intentPath, WebHealthProbeResult health)
     {
@@ -486,6 +646,40 @@ internal static class NativeWebUpdateHelper
             await Task.Delay(PollInterval);
         }
         return !WebInstanceLock.IsHeld(lockPath);
+    }
+
+    private static Process? CaptureWindowsOwnerProcess(NativeWebUpdatePlan plan)
+    {
+        if (!OperatingSystem.IsWindows() || !WebInstanceLock.IsHeld(plan.InstanceLockPath)) return null;
+        var ownerProcessId = WebInstanceLock.ReadOwnerProcessId(plan.InstanceLockPath)
+            ?? throw new InvalidDataException("The running Windows Web process identity could not be read from its instance lock.");
+        try
+        {
+            return Process.GetProcessById(ownerProcessId);
+        }
+        catch (ArgumentException exception)
+        {
+            throw new InvalidDataException("The running Windows Web process no longer matches its instance lock.", exception);
+        }
+    }
+
+    private static async Task<bool> WaitForProcessExitAsync(Process process, TimeSpan timeout)
+    {
+        var deadline = DateTimeOffset.UtcNow + timeout;
+        while (DateTimeOffset.UtcNow < deadline)
+        {
+            try
+            {
+                if (process.HasExited) return true;
+            }
+            catch (InvalidOperationException)
+            {
+                return true;
+            }
+            await Task.Delay(PollInterval);
+        }
+        try { return process.HasExited; }
+        catch (InvalidOperationException) { return true; }
     }
 
     private static void StopOwnedProcess(Process? process, string lockPath)
