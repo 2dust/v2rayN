@@ -1,3 +1,4 @@
+using System.Net;
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.RateLimiting;
 
@@ -26,7 +27,7 @@ public static class WebAuthRateLimiting
 
     private static RateLimitPartition<string> CreateIpPartition(HttpContext context, int permitLimit) =>
         RateLimitPartition.GetFixedWindowLimiter(
-            context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+            GetPartitionKey(context.Connection.RemoteIpAddress),
             _ => new FixedWindowRateLimiterOptions
             {
                 AutoReplenishment = true,
@@ -35,4 +36,18 @@ public static class WebAuthRateLimiting
                 QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
                 Window = TimeSpan.FromMinutes(1),
             });
+
+    private static string GetPartitionKey(IPAddress? address)
+    {
+        if (address is null)
+        {
+            return "unknown";
+        }
+
+        return IsLoopback(address) ? "loopback" : address.ToString();
+    }
+
+    private static bool IsLoopback(IPAddress address) =>
+        IPAddress.IsLoopback(address)
+        || (address.IsIPv4MappedToIPv6 && IPAddress.IsLoopback(address.MapToIPv4()));
 }

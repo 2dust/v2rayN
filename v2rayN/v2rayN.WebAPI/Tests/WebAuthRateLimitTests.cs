@@ -61,6 +61,108 @@ public class WebAuthRateLimitTests
         }
     }
 
+    [Test]
+    [Arguments("/login-limited")]
+    [Arguments("/setup-limited")]
+    public async Task AllLoopbackAddressesShareOneRateLimitPartition(string endpoint)
+    {
+        await using var app = CreatePartitionTestApp();
+        await app.StartAsync();
+        try
+        {
+            using var client = CreateClient(app);
+            var loopbackAddresses = new[] { "127.0.0.1", "127.0.0.2", "::1", "::ffff:127.0.0.1" };
+            var permitLimit = endpoint == "/login-limited" ? 5 : 10;
+
+            for (var index = 0; index < permitLimit; index++)
+            {
+                await (await GetLimitedStatusAsync(client, endpoint, loopbackAddresses[index % loopbackAddresses.Length], index))
+                    .Should().BeEqualTo(HttpStatusCode.OK);
+            }
+
+            await (await GetLimitedStatusAsync(client, endpoint, loopbackAddresses[permitLimit % loopbackAddresses.Length], permitLimit))
+                .Should().BeEqualTo(HttpStatusCode.TooManyRequests);
+        }
+        finally
+        {
+            await app.StopAsync();
+        }
+    }
+
+    [Test]
+    [Arguments("/login-limited")]
+    [Arguments("/setup-limited")]
+    public async Task DifferentNonLoopbackAddressesKeepIndependentRateLimitPartitions(string endpoint)
+    {
+        await using var app = CreatePartitionTestApp();
+        await app.StartAsync();
+        try
+        {
+            using var client = CreateClient(app);
+            var permitLimit = endpoint == "/login-limited" ? 5 : 10;
+
+            for (var index = 0; index < permitLimit; index++)
+            {
+                await (await GetLimitedStatusAsync(client, endpoint, "192.0.2.1", index))
+                    .Should().BeEqualTo(HttpStatusCode.OK);
+            }
+
+            await (await GetLimitedStatusAsync(client, endpoint, "192.0.2.2", permitLimit))
+                .Should().BeEqualTo(HttpStatusCode.OK);
+            await (await GetLimitedStatusAsync(client, endpoint, "192.0.2.1", permitLimit + 1))
+                .Should().BeEqualTo(HttpStatusCode.TooManyRequests);
+        }
+        finally
+        {
+            await app.StopAsync();
+        }
+    }
+
+    private static WebApplication CreatePartitionTestApp()
+    {
+        var builder = WebApplication.CreateBuilder();
+        builder.WebHost.ConfigureKestrel(options => options.Listen(IPAddress.Loopback, 0));
+        builder.Services.AddRateLimiter(WebAuthRateLimiting.Configure);
+
+        var app = builder.Build();
+        app.UseRouting();
+        // Test-only injection lets the integration tests exercise multiple peer addresses
+        // without trusting forwarded headers in the WebAPI pipeline.
+        app.Use(async (context, next) =>
+        {
+            if (IPAddress.TryParse(context.Request.Headers["X-Test-Remote-Ip"].FirstOrDefault(), out var address))
+            {
+                context.Connection.RemoteIpAddress = address;
+            }
+
+            await next();
+        });
+        app.UseRateLimiter();
+        app.MapGet("/login-limited", () => Results.Ok())
+            .RequireRateLimiting(WebAuthRateLimiting.LoginPolicy);
+        app.MapGet("/setup-limited", () => Results.Ok())
+            .RequireRateLimiting(WebAuthRateLimiting.SetupPolicy);
+        return app;
+    }
+
+    private static HttpClient CreateClient(WebApplication app)
+    {
+        var server = app.Services.GetRequiredService<IServer>();
+        var address = server.Features.Get<IServerAddressesFeature>()!.Addresses.Single();
+        return new HttpClient { BaseAddress = new Uri(address), Timeout = TimeSpan.FromSeconds(20) };
+    }
+
+    private static async Task<HttpStatusCode> GetLimitedStatusAsync(HttpClient client, string endpoint, string remoteIp, int requestIndex)
+    {
+        using var request = new HttpRequestMessage(HttpMethod.Get, endpoint);
+        request.Headers.Add("X-Test-Remote-Ip", remoteIp);
+        request.Headers.Add("X-Forwarded-For", $"198.51.100.{requestIndex + 1}");
+        request.Headers.Add("Forwarded", $"for=198.51.100.{requestIndex + 1}");
+        request.Headers.Add("X-Real-IP", $"198.51.100.{requestIndex + 1}");
+        using var response = await client.SendAsync(request);
+        return response.StatusCode;
+    }
+
     private sealed class TemporaryDirectory : IDisposable
     {
         public TemporaryDirectory()

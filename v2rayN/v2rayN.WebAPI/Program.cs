@@ -36,6 +36,15 @@ internal static class Program
         var daemonEnvironment = LauncherEnvironment.IsDaemonEnvironment(environment);
         var containerEnvironment = IsContainerEnvironment();
         var managementKey = environment.GetValueOrDefault(ManagementKeyEnvironmentVariable);
+        if (!string.IsNullOrEmpty(managementKey)
+            && (managementKey.Length < WebAuthService.MinimumKeyLength
+                || managementKey.Length > WebAuthService.MaximumKeyLength))
+        {
+            Console.Error.WriteLine(
+                $"{ManagementKeyEnvironmentVariable} length must be between {WebAuthService.MinimumKeyLength} and {WebAuthService.MaximumKeyLength} characters.");
+            return 1;
+        }
+
         if (WebDeploymentSecurityPolicy.GetStartupError(daemonEnvironment, containerEnvironment, managementKey) is { } startupError)
         {
             Console.Error.WriteLine(startupError);

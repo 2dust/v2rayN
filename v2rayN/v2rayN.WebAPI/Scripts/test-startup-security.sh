@@ -188,6 +188,85 @@ assert_malformed_configuration_fails() {
 
 assert_malformed_configuration_fails
 
+assert_invalid_management_key_fails() {
+  local source="$1" length="$2" key output data_home status
+  output="$temporary/invalid-key-$source-$length.log"
+  data_home="$temporary/invalid-key-$source-$length-data"
+  key="$(python3 -c 'import sys; print("x" * int(sys.argv[1]))' "$length")"
+  rm -f "$runtime_directory/.env"
+  if [[ "$source" == dotenv ]]; then
+    printf 'V2RAYN_WEB_API_KEY=%s\n' "$key" > "$runtime_directory/.env"
+    chmod 600 "$runtime_directory/.env"
+  fi
+
+  set +e
+  if (
+    cd "$temporary/other-working-directory"
+    if [[ "$source" == environment ]]; then
+      exec env -u INVOCATION_ID -u JOURNAL_STREAM -u NOTIFY_SOCKET \
+        -u DOTNET_RUNNING_IN_CONTAINER -u container \
+        "V2RAYN_WEB_API_KEY=$key" V2RAYN_DATA_HOME="$data_home" \
+        "$executable" --foreground --no-open
+    else
+      exec env -u V2RAYN_WEB_API_KEY \
+        -u INVOCATION_ID -u JOURNAL_STREAM -u NOTIFY_SOCKET \
+        -u DOTNET_RUNNING_IN_CONTAINER -u container \
+        V2RAYN_DATA_HOME="$data_home" "$executable" --foreground --no-open
+    fi
+  ) >"$output" 2>&1; then
+    status=0
+  else
+    status=$?
+  fi
+  set -e
+  rm -f "$runtime_directory/.env"
+
+  [[ "$status" -eq 1 ]] || { cat "$output" >&2; echo "$source key with length $length did not fail startup (exit $status)." >&2; exit 1; }
+  grep -Fqx 'V2RAYN_WEB_API_KEY length must be between 12 and 4096 characters.' "$output"
+  ! grep -Fq "$key" "$output"
+  test ! -e "$data_home"
+}
+
+start_with_valid_management_key_boundary() {
+  local source="$1" length="$2" key port data_home output url
+  local key_settings=()
+  key="$(python3 -c 'import sys; print("b" * int(sys.argv[1]))' "$length")"
+  port="$(new_port)"
+  data_home="$temporary/valid-key-$source-$length-data"
+  output="$temporary/valid-key-$source-$length.log"
+  url="http://127.0.0.1:$port"
+  rm -f "$runtime_directory/.env"
+
+  if [[ "$source" == dotenv ]]; then
+    printf 'V2RAYN_WEB_API_KEY=%s\n' "$key" > "$runtime_directory/.env"
+    chmod 600 "$runtime_directory/.env"
+  else
+    key_settings=("V2RAYN_WEB_API_KEY=$key")
+  fi
+
+  (
+    cd "$temporary/other-working-directory"
+    exec env -u V2RAYN_WEB_API_KEY \
+      -u INVOCATION_ID -u JOURNAL_STREAM -u NOTIFY_SOCKET \
+      -u DOTNET_RUNNING_IN_CONTAINER -u container \
+      -u ASPNETCORE_URLS -u ASPNETCORE_HTTP_PORTS -u ASPNETCORE_HTTPS_PORTS \
+      "${key_settings[@]}" \
+      V2RAYN_DATA_HOME="$data_home" V2RAYN_WEB_AUTOSTART=false ASPNETCORE_URLS="$url" \
+      "$executable" --foreground --no-open
+  ) >"$output" 2>&1 &
+  web_pid=$!
+  wait_for_health "$url" "$output"
+  stop_instance "$output"
+  rm -f "$runtime_directory/.env"
+}
+
+assert_invalid_management_key_fails environment 11
+assert_invalid_management_key_fails environment 4097
+assert_invalid_management_key_fails dotenv 11
+assert_invalid_management_key_fails dotenv 4097
+start_with_valid_management_key_boundary environment 12
+start_with_valid_management_key_boundary dotenv 4096
+
 # Native interactive first run remains available without SSH or a preconfigured key.
 native_port="$(new_port)"
 native_data="$temporary/native-data"
