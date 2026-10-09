@@ -237,6 +237,7 @@ public class WebDavItem
     public string? UserName { get; set; }
     public string? Password { get; set; }
     public string? DirName { get; set; }
+    public bool ExcludeFromRemoteBackup { get; set; }
 }
 
 [Serializable]

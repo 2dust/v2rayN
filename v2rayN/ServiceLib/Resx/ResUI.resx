@@ -1305,6 +1305,9 @@
   <data name="LvWebDavCheck" xml:space="preserve">
     <value>WebDAV Check</value>
   </data>
+  <data name="LvWebDavExcludeSettings" xml:space="preserve">
+    <value>Exclude WebDAV settings from remote backups</value>
+  </data>
   <data name="LvWebDavDirName" xml:space="preserve">
     <value>Remote folder name (optional)</value>
   </data>
