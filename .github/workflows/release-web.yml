@@ -22,8 +22,8 @@ jobs:
 
   release-web-packages:
     name: sign and upload Web API packages
-    # Keep the existing upstream-only signing policy; forks can validate build artifacts.
-    if: inputs.release_tag != '' && github.repository == '2dust/v2rayN'
+    # Upload through the shared signing flow, exactly like the desktop packages.
+    if: inputs.release_tag != ''
     needs: build
     uses: ./.github/workflows/upload-sign.yml
     with:
@@ -34,8 +34,8 @@ jobs:
 
   release-web-manifest:
     name: sign and upload Web update manifest
-    if: inputs.release_tag != '' && github.repository == '2dust/v2rayN'
-    # Advertise the update only after its packages and signatures have been uploaded.
+    if: inputs.release_tag != ''
+    # Advertise the update only after its packages and manifest have been uploaded.
     needs: [build, release-web-packages]
     uses: ./.github/workflows/upload-sign.yml
     with:

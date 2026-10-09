@@ -7,14 +7,6 @@ on:
         required: false
         type: string
         default: ''
-      publish_release:
-        required: false
-        type: boolean
-        default: false
-      prerelease:
-        required: false
-        type: boolean
-        default: true
   workflow_dispatch:
     inputs:
       release_tag:
@@ -22,16 +14,6 @@ on:
         required: false
         default: ''
         type: string
-      publish_release:
-        description: 'Publish the validated packages as a GitHub Release in Nozilla-X/v2rayN.'
-        required: false
-        default: false
-        type: boolean
-      prerelease:
-        description: 'Mark the published GitHub Release as a prerelease.'
-        required: false
-        default: true
-        type: boolean
   pull_request:
     branches: [master]
     paths:
@@ -429,80 +411,3 @@ jobs:
           name: web-release-manifest
           path: release-assets/web-update.json
           if-no-files-found: error
-
-  publish-fork-release:
-    name: Publish fork GitHub Release
-    if: inputs.publish_release && github.event_name == 'workflow_dispatch' && github.repository == 'Nozilla-X/v2rayN'
-    needs: [identity, release-assets]
-    runs-on: ubuntu-24.04
-    permissions:
-      contents: write
-      actions: read
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          persist-credentials: false
-      - uses: actions/download-artifact@v7
-        with:
-          pattern: web-release-*
-          path: release-assets
-          merge-multiple: true
-      - name: Re-verify all release assets
-        env:
-          RELEASE_TAG: ${{ needs.identity.outputs.tag }}
-        run: |
-          set -euo pipefail
-          expected=(
-            v2rayN-linux-64-web.zip
-            v2rayN-linux-arm64-web.zip
-            v2rayN-linux-64-web-update.zip
-            v2rayN-linux-arm64-web-update.zip
-            v2rayN-windows-64-web.zip
-            v2rayN-windows-64-web-update.zip
-            web-update.json
-          )
-          for asset in "${expected[@]}"; do
-            test -s "release-assets/$asset" || { echo "Missing release asset: $asset" >&2; exit 1; }
-          done
-          python3 v2rayN/v2rayN.WebAPI/Scripts/web-update-manifest.py verify \
-            --manifest release-assets/web-update.json \
-            --dist release-assets \
-            --repository "$GITHUB_REPOSITORY" \
-            --version "$RELEASE_TAG"
-      - name: Create the release without replacing an existing tag or release
-        env:
-          GH_TOKEN: ${{ github.token }}
-          RELEASE_TAG: ${{ needs.identity.outputs.tag }}
-          PRERELEASE: ${{ inputs.prerelease }}
-        run: |
-          set -euo pipefail
-          if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$RELEASE_TAG" >/dev/null 2>&1; then
-            echo "Git tag already exists: $RELEASE_TAG" >&2
-            exit 1
-          fi
-          if gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-            echo "GitHub Release already exists: $RELEASE_TAG" >&2
-            exit 1
-          fi
-          assets=(
-            release-assets/v2rayN-linux-64-web.zip
-            release-assets/v2rayN-linux-arm64-web.zip
-            release-assets/v2rayN-linux-64-web-update.zip
-            release-assets/v2rayN-linux-arm64-web-update.zip
-            release-assets/v2rayN-windows-64-web.zip
-            release-assets/v2rayN-windows-64-web-update.zip
-            release-assets/web-update.json
-          )
-          arguments=(
-            "$RELEASE_TAG"
-            "${assets[@]}"
-            --repo "$GITHUB_REPOSITORY"
-            --target "$GITHUB_SHA"
-            --title "$RELEASE_TAG"
-            --notes "v2rayN.WebAPI $RELEASE_TAG. Includes Linux x64/ARM64 and Windows x64 full-install and self-update packages."
-          )
-          if [[ "$PRERELEASE" == "true" ]]; then arguments+=(--prerelease); fi
-          gh release create "${arguments[@]}"
-          gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" \
-            --json url,isPrerelease,assets \
-            --jq '{url, isPrerelease, assets: [.assets[].name]}'

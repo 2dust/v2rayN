@@ -32,7 +32,7 @@ jobs:
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             https://api.github.com/repos/${{ github.repository }}/actions/workflows/build-windows.yml/dispatches \
             -d "{
-              \"ref\": \"master\",
+              \"ref\": \"${{ github.ref_name }}\",
               \"inputs\": {
                 \"release_tag\": \"${{ inputs.release_tag }}\"
               }
@@ -46,7 +46,7 @@ jobs:
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             https://api.github.com/repos/${{ github.repository }}/actions/workflows/build-linux.yml/dispatches \
             -d "{
-              \"ref\": \"master\",
+              \"ref\": \"${{ github.ref_name }}\",
               \"inputs\": {
                 \"release_tag\": \"${{ inputs.release_tag }}\"
               }
@@ -59,7 +59,7 @@ jobs:
           RELEASE_TAG: ${{ inputs.release_tag }}
         run: |
           gh workflow run release-web.yml \
-            --repo "$GITHUB_REPOSITORY" --ref master \
+            --repo "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME" \
             --field release_tag="$RELEASE_TAG"
 
       - name: Trigger build osx
@@ -70,7 +70,7 @@ jobs:
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             https://api.github.com/repos/${{ github.repository }}/actions/workflows/build-osx.yml/dispatches \
             -d "{
-              \"ref\": \"master\",
+              \"ref\": \"${{ github.ref_name }}\",
               \"inputs\": {
                 \"release_tag\": \"${{ inputs.release_tag }}\"
               }
@@ -84,7 +84,7 @@ jobs:
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             https://api.github.com/repos/${{ github.repository }}/actions/workflows/build-windows-desktop.yml/dispatches \
             -d "{
-              \"ref\": \"master\",
+              \"ref\": \"${{ github.ref_name }}\",
               \"inputs\": {
                 \"release_tag\": \"${{ inputs.release_tag }}\"
               }
@@ -98,7 +98,7 @@ jobs:
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             https://api.github.com/repos/${{ github.repository }}/actions/workflows/build-windows-x86.yml/dispatches \
             -d "{
-              \"ref\": \"master\",
+              \"ref\": \"${{ github.ref_name }}\",
               \"inputs\": {
                 \"release_tag\": \"${{ inputs.release_tag }}\"
               }

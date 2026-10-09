@@ -185,14 +185,16 @@ install-path examples, progress/intent file names, workflow file names, all rele
 
 ## Releases and containers
 
-Dispatch `release-web.yml` with a `release_tag` (`x.y.z`) to call `build-web.yml`, assemble and
-validate the Linux and Windows WebAPI assets, then sign and upload them through the existing `upload-sign.yml` workflow.
-The signing/upload jobs retain the upstream-only repository guard; forks can validate the build
-artifacts without publishing. `build-web.yml` can also be dispatched with a tag for package-only
-verification. `build-all.yml` dispatches the Web release independently of Linux Desktop;
-`build-linux.yml` builds and releases only Desktop assets. Web release orchestration and artifact
-names are RID-based, separately from containers and Desktop workflows. Windows x64 has full-install
-and app-only update ZIPs; Windows containers are not built.
+`build-all.yml` ("release all platforms") dispatches every platform workflow, including
+`release-web.yml`; the WebAPI packages ride the same `upload-sign.yml` path and land in the same
+release as the desktop assets. `release-web.yml` can also be dispatched directly with a
+`release_tag` (`x.y.z`) to call `build-web.yml`, assemble and validate the Linux and Windows
+WebAPI assets, then sign and upload them through the existing `upload-sign.yml` workflow. Signing
+uses the repository GPG key, so a fork that runs this flow publishes with its own
+`GPG_PRIVATE_KEY` secret. `build-web.yml` can also be dispatched with a tag for package-only
+verification. Web release orchestration and artifact names are RID-based, separately from
+containers and Desktop workflows. Windows x64 has full-install and app-only update ZIPs; Windows
+containers are not built.
 
 The API release provides architecture-specific full-install and app-only update ZIPs plus
 `web-update.json`:
