@@ -44,17 +44,26 @@ public partial class BackupAndRestoreViewModel : MyReactiveObject
     {
         DisplayOperationMsg();
         _config.WebDavItem = SelectedSource;
-        _ = await ConfigHandler.SaveConfig(_config);
+        if (await ConfigHandler.SaveConfig(_config) != 0)
+        {
+            DisplayOperationMsg(ResUI.OperationFailed);
+            return;
+        }
 
         var result = await WebDavManager.Instance.CheckConnection();
-        if (result)
+        var message = result switch
         {
-            DisplayOperationMsg(ResUI.OperationSuccess);
-        }
-        else
-        {
-            DisplayOperationMsg(WebDavManager.Instance.GetLastError());
-        }
+            WebDavCheckStatus.ReadWrite => ResUI.LvWebDavReadWrite,
+            WebDavCheckStatus.ReadOnly => ResUI.LvWebDavReadOnly,
+            WebDavCheckStatus.BackupMissingWritable => ResUI.LvWebDavBackupMissingWritable,
+            WebDavCheckStatus.BackupMissingNoWrite => ResUI.LvWebDavBackupMissingNoWrite,
+            WebDavCheckStatus.WriteOnly => ResUI.LvWebDavWriteOnly,
+            WebDavCheckStatus.ReadForbidden => ResUI.LvWebDavReadForbidden,
+            WebDavCheckStatus.Unauthorized => ResUI.LvWebDavUnauthorized,
+            WebDavCheckStatus.CleanupFailed => ResUI.LvWebDavCleanupFailed,
+            _ => WebDavManager.Instance.GetLastError(),
+        };
+        DisplayOperationMsg(message);
     }
 
     private async Task RemoteBackup()
