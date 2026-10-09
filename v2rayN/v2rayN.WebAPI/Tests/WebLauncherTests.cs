@@ -356,8 +356,11 @@ public class WebLauncherTests
             .Contains("systemctl stop", StringComparison.Ordinal).Should().BeTrue();
         await LauncherMessages.StopMessage(WebStopResult.CoreProcessStillRunning, LauncherLocale.SimplifiedChinese)
             .Contains("Core", StringComparison.Ordinal).Should().BeTrue();
-        await (LauncherMessages.ExecutableCommand("/usr/share/dotnet/dotnet", "/opt/v2rayn/v2rayN.WebAPI.dll")
-            == "\"/usr/share/dotnet/dotnet\" \"/opt/v2rayn/v2rayN.WebAPI.dll\"").Should().BeTrue();
+        if (OperatingSystem.IsLinux())
+        {
+            await (LauncherMessages.ExecutableCommand("/usr/share/dotnet/dotnet", "/opt/v2rayn/v2rayN.WebAPI.dll")
+                == "\"/usr/share/dotnet/dotnet\" \"/opt/v2rayn/v2rayN.WebAPI.dll\"").Should().BeTrue();
+        }
         await (LauncherMessages.ResolveLocale("zh_Hant_TW") == LauncherLocale.TraditionalChinese).Should().BeTrue();
         await (LauncherMessages.ResolveLocale("zh_CN.UTF-8") == LauncherLocale.SimplifiedChinese).Should().BeTrue();
         await (LauncherMessages.ResolveLocale("fr_FR.UTF-8") == LauncherLocale.English).Should().BeTrue();

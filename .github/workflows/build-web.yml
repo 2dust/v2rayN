@@ -112,6 +112,70 @@ jobs:
             git diff --check "$BASE_SHA...HEAD"
           fi
 
+  windows:
+    name: Windows WebAPI build and runtime smoke
+    # Release calls pass a release_tag; keep this CI-only validation out of release runs.
+    if: inputs.release_tag == ''
+    runs-on: windows-latest
+    env:
+      TUNIT_MAX_PARALLEL_TESTS: 1
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.x'
+      - name: Restore WebAPI
+        shell: pwsh
+        run: dotnet restore v2rayN/v2rayN.WebAPI/v2rayN.WebAPI.csproj
+      - name: Restore WebAPI.Tests
+        shell: pwsh
+        run: dotnet restore v2rayN/v2rayN.WebAPI/Tests/v2rayN.WebAPI.Tests.csproj
+      - name: Restore ServiceLib.Tests
+        shell: pwsh
+        run: dotnet restore v2rayN/ServiceLib.Tests/ServiceLib.Tests.csproj
+      - name: Build WebAPI
+        shell: pwsh
+        run: dotnet build v2rayN/v2rayN.WebAPI/v2rayN.WebAPI.csproj --configuration Release --no-restore
+      - name: Run WebAPI.Tests
+        shell: pwsh
+        run: dotnet test --project v2rayN/v2rayN.WebAPI/Tests/v2rayN.WebAPI.Tests.csproj --configuration Release --no-restore
+      - name: Run ServiceLib.Tests
+        shell: pwsh
+        run: dotnet test --project v2rayN/ServiceLib.Tests/ServiceLib.Tests.csproj --configuration Release --no-restore
+      - name: Publish win-x64 self-contained single-file WebAPI
+        shell: pwsh
+        run: |
+          $publishDirectory = Join-Path $env:RUNNER_TEMP 'v2rayN.WebAPI-win-x64'
+          dotnet publish v2rayN/v2rayN.WebAPI/v2rayN.WebAPI.csproj `
+            --configuration Release `
+            --runtime win-x64 `
+            --self-contained true `
+            -p:PublishSingleFile=true `
+            -p:IncludeNativeLibrariesForSelfExtract=true `
+            --output $publishDirectory
+      - name: Verify single-file publish output
+        shell: pwsh
+        run: |
+          $publishDirectory = Join-Path $env:RUNNER_TEMP 'v2rayN.WebAPI-win-x64'
+          $executable = Join-Path $publishDirectory 'v2rayN.WebAPI.exe'
+          if (-not (Test-Path -LiteralPath $executable -PathType Leaf)) {
+            throw "dotnet publish did not produce $executable"
+          }
+          if ((Get-Item -LiteralPath $executable).Length -eq 0) {
+            throw "Published executable is empty: $executable"
+          }
+          $looseDlls = @(Get-ChildItem -LiteralPath $publishDirectory -Filter '*.dll' -File -Recurse)
+          if ($looseDlls.Count -gt 0) {
+            throw "Single-file publish left loose DLLs: $($looseDlls.FullName -join ', ')"
+          }
+      - name: Smoke-test first startup, health endpoint and graceful shutdown
+        shell: pwsh
+        run: |
+          $publishDirectory = Join-Path $env:RUNNER_TEMP 'v2rayN.WebAPI-win-x64'
+          & ./v2rayN/v2rayN.WebAPI/Scripts/Test-Windows.ps1 -PublishDirectory $publishDirectory
+
   native:
     name: Native API build (${{ matrix.rid }})
     needs: identity

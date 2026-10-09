@@ -7,6 +7,8 @@ public class WebRestartCoordinatorTests
     [Test]
     public async Task NativeSelfContainedRestartUsesDetachedBackgroundChildCommand()
     {
+        if (!OperatingSystem.IsLinux()) return;
+
         var command = WebReplacementCommand.Create(
             "/usr/bin/setsid",
             "/opt/v2rayN.WebAPI",
@@ -27,6 +29,8 @@ public class WebRestartCoordinatorTests
     [Test]
     public async Task FrameworkDependentRestartPreservesDotnetDllAndHostArguments()
     {
+        if (!OperatingSystem.IsLinux()) return;
+
         var processPath = "/usr/bin/dotnet";
         var entryPoint = WebReplacementCommand.GetManagedEntryPoint(processPath, ["/opt/v2rayN/v2rayN.WebAPI.dll", "--urls"]);
         var command = WebReplacementCommand.Create(
