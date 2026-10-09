@@ -114,7 +114,15 @@ def run_scenario(root, previous, candidate, rollback, reject_invalid=False):
         helper_code = helper.wait(timeout=100)
         assert not list(install.glob(".v2rayn-web-update-helper-*")), "Isolated helper bundle was not cleaned after worker exit"
         failed = rollback or reject_invalid
-        assert helper_code == (1 if failed else 0), f"helper returned {helper_code}; inspect {root / 'runtime.log'} and {progress}"
+        expected_helper_code = 1 if failed else 0
+        if helper_code != expected_helper_code:
+            log.flush()
+            runtime_log = (root / "runtime.log").read_text(errors="replace")
+            progress_state = progress.read_text(errors="replace") if progress.exists() else "<missing>"
+            raise AssertionError(
+                f"helper returned {helper_code}, expected {expected_helper_code};\n"
+                f"runtime.log:\n{runtime_log}\nupdate progress:\n{progress_state}"
+            )
         wait_health(url, before["version"] if failed else after["version"])
         result = json.loads(progress.read_text())
         assert result["isComplete"] and result["success"] == (not failed)

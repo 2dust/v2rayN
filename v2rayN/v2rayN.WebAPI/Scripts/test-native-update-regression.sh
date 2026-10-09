@@ -75,5 +75,19 @@ assert (previous / "v2rayN.WebAPI").stat().st_size != (candidate / "v2rayN.WebAP
     "Regression fixtures must have different bundle layouts, not just different versions"
 PY
 
-TMPDIR="$scratch" python3 "$web_root/Scripts/test-native-update-identity.py" "$previous" "$scratch/candidate"
+identity_test=(python3 "$web_root/Scripts/test-native-update-identity.py" "$previous" "$scratch/candidate")
+# Run in a transient scope so a hosted runner's enclosing systemd service is not mistaken for
+# the WebAPI service under test. Production still rejects actual systemd-managed WebAPI updates.
+if command -v systemd-run >/dev/null && systemd-run --user --scope --quiet /usr/bin/true >/dev/null 2>&1; then
+  systemd-run --user --scope --quiet /usr/bin/env TMPDIR="$scratch" "${identity_test[@]}"
+elif command -v sudo >/dev/null && sudo -n systemd-run --scope --quiet /usr/bin/true >/dev/null 2>&1; then
+  runuser_bin="$(command -v runuser)"
+  sudo -n systemd-run --scope --quiet "$runuser_bin" --preserve-environment -u "$(id -un)" -- \
+    /usr/bin/env TMPDIR="$scratch" "${identity_test[@]}"
+elif grep -Eq 'system\.slice/.*\.service' /proc/self/cgroup; then
+  echo 'Native update regression is in a systemd service cgroup, but no transient scope is available.' >&2
+  exit 1
+else
+  TMPDIR="$scratch" "${identity_test[@]}"
+fi
 printf 'Native single-file different-layout update regression passed.\n'
