@@ -297,7 +297,7 @@ def write_manifest(args: argparse.Namespace) -> None:
 
 
 def verify_command(args: argparse.Namespace) -> None:
-    verify_manifest(Path(args.manifest), Path(args.dist), args.repository)
+    verify_manifest(Path(args.manifest), Path(args.dist), args.repository, args.version)
     print(f"Verified {args.manifest}")
 
 
@@ -318,6 +318,7 @@ def main(argv: list[str]) -> None:
     verify_parser.add_argument("--manifest", required=True)
     verify_parser.add_argument("--dist", required=True)
     verify_parser.add_argument("--repository")
+    verify_parser.add_argument("--version", help="require the manifest to match this release version")
     verify_parser.set_defaults(func=verify_command)
 
     args = parser.parse_args(argv)

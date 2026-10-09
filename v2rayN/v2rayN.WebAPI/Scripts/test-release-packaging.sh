@@ -148,7 +148,17 @@ python3 "$web_root/Scripts/web-update-manifest.py" write \
 python3 "$web_root/Scripts/web-update-manifest.py" verify \
   --manifest "$temporary/dist/web-update.json" \
   --dist "$temporary/dist" \
-  --repository 2dust/v2rayN
+  --repository 2dust/v2rayN \
+  --version 7.25.3
+
+if python3 "$web_root/Scripts/web-update-manifest.py" verify \
+  --manifest "$temporary/dist/web-update.json" \
+  --dist "$temporary/dist" \
+  --repository 2dust/v2rayN \
+  --version 7.25.4 2>/dev/null; then
+  echo "Expected the wrong requested release version to be rejected" >&2
+  exit 1
+fi
 
 python3 - "$temporary/dist/web-update.json" "$update_x64" "$update_arm64" "$update_windows" <<'PY'
 import hashlib
