@@ -20,6 +20,13 @@ jobs:
     secrets:
       GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
 
+  release-web:
+    if: inputs.release_tag != ''
+    uses: ./.github/workflows/release-web.yml
+    with:
+      release_tag: ${{ inputs.release_tag }}
+    secrets: inherit
+
   update:
     runs-on: ubuntu-latest
     steps:
@@ -51,16 +58,6 @@ jobs:
                 \"release_tag\": \"${{ inputs.release_tag }}\"
               }
             }"
-
-      - name: Trigger release web
-        if: inputs.release_tag != ''
-        env:
-          GH_TOKEN: ${{ github.token }}
-          RELEASE_TAG: ${{ inputs.release_tag }}
-        run: |
-          gh workflow run release-web.yml \
-            --repo "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME" \
-            --field release_tag="$RELEASE_TAG"
 
       - name: Trigger build osx
         if: inputs.release_tag != ''

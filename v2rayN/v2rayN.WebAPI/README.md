@@ -185,7 +185,7 @@ install-path examples, progress/intent file names, workflow file names, all rele
 
 ## Releases and containers
 
-`build-all.yml` ("release all platforms") dispatches every platform workflow, including
+`build-all.yml` ("release all platforms") dispatches the desktop platform workflows and calls
 `release-web.yml`; the WebAPI packages ride the same `upload-sign.yml` path and land in the same
 release as the desktop assets. `release-web.yml` can also be dispatched directly with a
 `release_tag` (`x.y.z`) to call `build-web.yml`, assemble and validate the Linux and Windows

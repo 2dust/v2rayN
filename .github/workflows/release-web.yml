@@ -1,6 +1,14 @@
 name: release v2rayN.WebAPI
 
 on:
+  workflow_call:
+    inputs:
+      release_tag:
+        required: true
+        type: string
+    secrets:
+      GPG_PRIVATE_KEY:
+        required: false
   workflow_dispatch:
     inputs:
       release_tag:
