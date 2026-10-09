@@ -7,16 +7,22 @@ public sealed class WebDavManager
     private static readonly Lazy<WebDavManager> _instance = new(() => new());
     public static WebDavManager Instance => _instance.Value;
 
-    private readonly Config? _config;
+    private readonly Config _config;
+    private readonly Func<WebDavClientParams, WebDavClient> _clientFactory;
     private WebDavClient? _client;
     private string? _lastDescription;
     private string _webDir = Global.AppName + "_backup";
     private readonly string _webFileName = "backup.zip";
     private readonly string _tag = "WebDav--";
 
-    public WebDavManager()
+    public WebDavManager() : this(AppManager.Instance.Config, parameters => new WebDavClient(parameters))
     {
-        _config = AppManager.Instance.Config;
+    }
+
+    internal WebDavManager(Config config, Func<WebDavClientParams, WebDavClient> clientFactory)
+    {
+        _config = config;
+        _clientFactory = clientFactory;
     }
 
     private async Task<bool> GetClient()
@@ -51,7 +57,7 @@ public sealed class WebDavManager
                 BaseAddress = new Uri(baseUrl),
                 Credentials = new NetworkCredential(_config.WebDavItem.UserName, _config.WebDavItem.Password)
             };
-            _client = new WebDavClient(clientParams);
+            _client = _clientFactory(clientParams);
         }
         catch (Exception ex)
         {
@@ -95,34 +101,108 @@ public sealed class WebDavManager
         Logging.SaveLog(_tag, ex);
     }
 
-    public async Task<bool> CheckConnection()
+    public async Task<WebDavCheckStatus> CheckConnection()
     {
+        _lastDescription = null;
         if (await GetClient() == false)
         {
-            return false;
+            return WebDavCheckStatus.Failed;
         }
-        await TryCreateDir();
 
+        var canRead = false;
+        var backupMissing = false;
+        var readForbidden = false;
         try
         {
-            var testName = "readme_test";
-            var myContent = new StringContent(testName);
-            var result = await _client.PutFile($"{_webDir}/{testName}", myContent);
-            if (result.IsSuccessful)
+            using var response = await _client!.GetRawFile($"{_webDir}/{_webFileName}");
+            if (response.IsSuccessful)
             {
-                await _client.Delete($"{_webDir}/{testName}");
-                return true;
+                canRead = true;
+            }
+            else if (response.StatusCode == 404)
+            {
+                backupMissing = true;
+            }
+            else if (response.StatusCode == 401)
+            {
+                return WebDavCheckStatus.Unauthorized;
+            }
+            else if (response.StatusCode == 403)
+            {
+                readForbidden = true;
             }
             else
             {
-                SaveLog(result.Description);
+                SaveLog(response.Description);
+                return WebDavCheckStatus.Failed;
+            }
+        }
+        catch (Exception ex)
+        {
+            SaveLog(ex);
+            return WebDavCheckStatus.Failed;
+        }
+
+        var testPath = $"{_webDir}/v2rayN_check_{Guid.NewGuid():N}";
+        var uploaded = false;
+        var writeUnauthorized = false;
+        try
+        {
+            using var content = new StringContent("v2rayN WebDAV check");
+            var result = await _client!.PutFile(testPath, content);
+            if (result.StatusCode == 404 && await TryCreateDir())
+            {
+                using var retryContent = new StringContent("v2rayN WebDAV check");
+                result = await _client.PutFile(testPath, retryContent);
+            }
+
+            uploaded = result.IsSuccessful;
+            if (!uploaded)
+            {
+                writeUnauthorized = result.StatusCode == 401;
+                if (!writeUnauthorized)
+                {
+                    SaveLog(result.Description);
+                }
             }
         }
         catch (Exception ex)
         {
             SaveLog(ex);
         }
-        return false;
+
+        if (uploaded)
+        {
+            try
+            {
+                var deleted = await _client!.Delete(testPath);
+                if (!deleted.IsSuccessful)
+                {
+                    SaveLog(deleted.Description);
+                    return WebDavCheckStatus.CleanupFailed;
+                }
+            }
+            catch (Exception ex)
+            {
+                SaveLog(ex);
+                return WebDavCheckStatus.CleanupFailed;
+            }
+        }
+
+        if (writeUnauthorized && !canRead)
+        {
+            return WebDavCheckStatus.Unauthorized;
+        }
+
+        if (canRead)
+        {
+            return uploaded ? WebDavCheckStatus.ReadWrite : WebDavCheckStatus.ReadOnly;
+        }
+        if (backupMissing)
+        {
+            return uploaded ? WebDavCheckStatus.BackupMissingWritable : WebDavCheckStatus.BackupMissingNoWrite;
+        }
+        return uploaded ? WebDavCheckStatus.WriteOnly : readForbidden ? WebDavCheckStatus.ReadForbidden : WebDavCheckStatus.Failed;
     }
 
     public async Task<bool> PutFile(string fileName)
@@ -157,11 +237,9 @@ public sealed class WebDavManager
         {
             return false;
         }
-        await TryCreateDir();
-
         try
         {
-            var response = await _client.GetRawFile($"{_webDir}/{_webFileName}");
+            using var response = await _client!.GetRawFile($"{_webDir}/{_webFileName}");
             if (!response.IsSuccessful)
             {
                 SaveLog(response.Description);
@@ -180,4 +258,17 @@ public sealed class WebDavManager
     }
 
     public string GetLastError() => _lastDescription ?? string.Empty;
+}
+
+public enum WebDavCheckStatus
+{
+    ReadWrite,
+    ReadOnly,
+    BackupMissingWritable,
+    BackupMissingNoWrite,
+    WriteOnly,
+    ReadForbidden,
+    Unauthorized,
+    CleanupFailed,
+    Failed,
 }

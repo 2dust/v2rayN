@@ -698,6 +698,15 @@ namespace ServiceLib.Resx {
                 return ResourceManager.GetString("LvWebDavCheck", resourceCulture);
             }
         }
+
+        public static string LvWebDavReadWrite => ResourceManager.GetString("LvWebDavReadWrite", resourceCulture);
+        public static string LvWebDavReadOnly => ResourceManager.GetString("LvWebDavReadOnly", resourceCulture);
+        public static string LvWebDavBackupMissingWritable => ResourceManager.GetString("LvWebDavBackupMissingWritable", resourceCulture);
+        public static string LvWebDavBackupMissingNoWrite => ResourceManager.GetString("LvWebDavBackupMissingNoWrite", resourceCulture);
+        public static string LvWebDavWriteOnly => ResourceManager.GetString("LvWebDavWriteOnly", resourceCulture);
+        public static string LvWebDavReadForbidden => ResourceManager.GetString("LvWebDavReadForbidden", resourceCulture);
+        public static string LvWebDavUnauthorized => ResourceManager.GetString("LvWebDavUnauthorized", resourceCulture);
+        public static string LvWebDavCleanupFailed => ResourceManager.GetString("LvWebDavCleanupFailed", resourceCulture);
         
         /// <summary>
         ///   查找类似 Remote folder name (optional) 的本地化字符串。
