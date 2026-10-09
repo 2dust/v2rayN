@@ -67,12 +67,12 @@ public partial class CoreConfigV2rayService
 
                 var address = _config.TunModeItem.IPv4Address.NullIfEmpty() ?? Global.TunIPv4Address.First();
                 tunInbound.settings.gateway = [address];
-                // Route both families into the tunnel regardless of EnableIPv6Address. That option only
-                // controls whether the interface gets an IPv6 address; leaving ::/0 out of the routing
-                // table makes IPv6 follow the system default route and bypass the tunnel entirely.
-                // A host without a global IPv6 address is the exception: it has nothing to leak,
-                // and IPv6 sent into the tunnel would have no way back out.
-                tunInbound.settings.autoSystemRoutingTable = context.HasGlobalIPv6Address
+                // Leaving ::/0 out of the routing table makes IPv6 follow the system default route and
+                // bypass the tunnel entirely, so route it whenever the user enabled IPv6 on the tunnel,
+                // and otherwise whenever the host has IPv6 connectivity. Only a host without either is
+                // skipped: it has nothing to leak, and IPv6 sent into the tunnel would have no way out.
+                var routeIPv6 = _config.TunModeItem.EnableIPv6Address || context.HasIPv6Connectivity;
+                tunInbound.settings.autoSystemRoutingTable = routeIPv6
                     ? ["0.0.0.0/0", "::/0"]
                     : ["0.0.0.0/0"];
                 if (_config.TunModeItem.EnableIPv6Address == true)
@@ -108,7 +108,7 @@ public partial class CoreConfigV2rayService
                         .Where(x => x != null).ToList();
 
                     var includeList = new List<IPNetwork2> { wholeInternet };
-                    var includeListV6 = context.HasGlobalIPv6Address
+                    var includeListV6 = routeIPv6
                         ? new List<IPNetwork2> { wholeInternetV6 }
                         : new List<IPNetwork2>();
 

@@ -587,17 +587,15 @@ public class CoreConfigV2rayServiceTests
     }
 
     [Test]
-    [Arguments(true)]
-    [Arguments(false)]
-    public async Task GenerateClientConfigContent_Tun_ShouldSkipIPv6RouteWithoutGlobalIPv6(bool enableIPv6Address)
+    public async Task GenerateClientConfigContent_Tun_ShouldSkipIPv6RouteWithoutIPv6Connectivity()
     {
-        // A host without a global IPv6 address has no IPv6 traffic that could bypass the tunnel,
+        // A host without IPv6 connectivity has no IPv6 traffic that could bypass the tunnel,
         // while ::/0 would pull IPv6 attempts into a tunnel they cannot leave.
-        var config = CoreConfigTestFactory.CreateConfigWithTun(ECoreType.Xray, enableIPv6Address);
+        var config = CoreConfigTestFactory.CreateConfigWithTun(ECoreType.Xray, enableIPv6Address: false);
         CoreConfigTestFactory.BindAppManagerConfig(config);
 
         var node = CoreConfigTestFactory.CreateVmessNode(ECoreType.Xray, "n-main", "main");
-        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray, hasGlobalIPv6Address: false);
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray, hasIPv6Connectivity: false);
 
         var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
 
@@ -612,14 +610,56 @@ public class CoreConfigV2rayServiceTests
     }
 
     [Test]
-    public async Task GenerateClientConfigContent_TunRouteExcludeAddress_ShouldSkipIPv6RangesWithoutGlobalIPv6()
+    public async Task GenerateClientConfigContent_Tun_ShouldRouteIPv6WhenEnabledWithoutIPv6Connectivity()
+    {
+        // Detection can miss real connectivity, e.g. a default route without a next hop, so an
+        // explicit EnableIPv6Address always wins and keeps IPv6 inside the tunnel.
+        var config = CoreConfigTestFactory.CreateConfigWithTun(ECoreType.Xray, enableIPv6Address: true);
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var node = CoreConfigTestFactory.CreateVmessNode(ECoreType.Xray, "n-main", "main");
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray, hasIPv6Connectivity: false);
+
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue();
+        var cfg = JsonUtils.Deserialize<V2rayConfig>(result.Data!.ToString())!;
+        var tunInbound = cfg.inbounds.FirstOrDefault(i => i.protocol == "tun");
+
+        await tunInbound.Should().NotBeNull();
+        await tunInbound!.settings.autoSystemRoutingTable.Should().Contain("0.0.0.0/0");
+        await tunInbound.settings.autoSystemRoutingTable.Should().Contain("::/0");
+    }
+
+    [Test]
+    public async Task GenerateClientConfigContent_TunRouteExcludeAddress_ShouldIncludeIPv6RangesWhenEnabledWithoutIPv6Connectivity()
+    {
+        var config = CoreConfigTestFactory.CreateConfigWithTunRouteExcludeAddress(ECoreType.Xray);
+        config.TunModeItem.EnableIPv6Address = true;
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var node = CoreConfigTestFactory.CreateVmessNode(ECoreType.Xray, "n-main", "main");
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray, hasIPv6Connectivity: false);
+
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue();
+        var cfg = JsonUtils.Deserialize<V2rayConfig>(result.Data!.ToString())!;
+        var tunInbound = cfg.inbounds.FirstOrDefault(i => i.protocol == "tun");
+
+        await tunInbound.Should().NotBeNull();
+        await tunInbound!.settings.autoSystemRoutingTable.Should().Contain(x => x.Contains(':'));
+    }
+
+    [Test]
+    public async Task GenerateClientConfigContent_TunRouteExcludeAddress_ShouldSkipIPv6RangesWithoutIPv6Connectivity()
     {
         var config = CoreConfigTestFactory.CreateConfigWithTunRouteExcludeAddress(ECoreType.Xray);
         config.TunModeItem.EnableIPv6Address = false;
         CoreConfigTestFactory.BindAppManagerConfig(config);
 
         var node = CoreConfigTestFactory.CreateVmessNode(ECoreType.Xray, "n-main", "main");
-        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray, hasGlobalIPv6Address: false);
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray, hasIPv6Connectivity: false);
 
         var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
 
