@@ -698,6 +698,15 @@ namespace ServiceLib.Resx {
                 return ResourceManager.GetString("LvWebDavCheck", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Exclude WebDAV settings from remote backups.
+        /// </summary>
+        public static string LvWebDavExcludeSettings {
+            get {
+                return ResourceManager.GetString("LvWebDavExcludeSettings", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   查找类似 Remote folder name (optional) 的本地化字符串。
