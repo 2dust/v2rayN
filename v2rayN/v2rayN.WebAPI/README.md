@@ -131,16 +131,19 @@ bash Scripts/verify.sh
 
 `Scripts/verify.sh` builds and tests the Backend, runs ServiceLib tests, checks startup/security,
 and exercises API ZIP/self-update package boundaries and real different-layout Linux update,
-rollback and invalid-executable rejection. The independent `build-WebAPI.yml` workflow
-runs these checks, Windows x64/ARM64 build/startup smoke (the self-update replacement smoke stays
-on win-x64), native Linux builds, and Linux container builds on relevant PRs and pushes to
-`master`; it can also be dispatched manually or called by a release workflow. Releases include
-Linux x64/ARM64/RISC-V 64/LoongArch 64 and Windows x64/ARM64 packages; Linux containers are built
-for amd64 and arm64.
+rollback and invalid-executable rejection. Integration tests live under `Tests/Integration/`
+(security defaults, release packaging dry-run, full-ZIP runtime, native update regression, and
+the Windows smoke: `Test-Windows.ps1 -Mode startup|update`). The independent `build-WebAPI.yml`
+workflow runs these checks, Windows x64/ARM64 build/startup smoke (the self-update
+replacement/rollback smoke stays on win-x64), native Linux builds, and Linux container builds on
+relevant PRs and pushes to `master`; it can also be dispatched manually or called by a release
+workflow. Releases include Linux x64/ARM64/RISC-V 64/LoongArch 64 and Windows x64/ARM64 packages;
+Linux containers are built for amd64 and arm64.
 
-`Scripts/test-native-update-identity.py <previous-publish-dir> <candidate-publish-dir>` additionally
-exercises real native helper replacement and health-mismatch rollback with two distinct versions,
-isolated data/ports and preserved unrelated file/Core markers. It never uses user configuration.
+`Tests/Integration/test-native-update-identity.py <previous-publish-dir> <candidate-publish-dir>`
+additionally exercises real native helper replacement and health-mismatch rollback with two
+distinct versions, isolated data/ports and preserved unrelated file/Core markers. It never uses
+user configuration.
 
 ### Native self-update and legacy helpers
 
@@ -152,10 +155,10 @@ helper waits for the worker, propagates its result, and removes the copy; on Win
 helper waits for the prior process and schedules its own copy for deletion after exit. Configuration
 and data paths remain unchanged.
 
-`Scripts/test-native-update-regression.sh <native-publish-directory>` deliberately changes the
-candidate's bundle layout with test-only assembly metadata; version-only fixtures can conceal
-this failure. It checks actual replacement, rollback, invalid-executable rejection and worker
-cleanup, and is included in `Scripts/verify.sh`.
+`Tests/Integration/test-native-update-regression.sh <native-publish-directory>` deliberately
+changes the candidate's bundle layout with test-only assembly metadata; version-only fixtures can
+conceal this failure. It checks actual replacement, rollback, invalid-executable rejection and
+worker cleanup, and is included in `Scripts/verify.sh`.
 
 **Linux builds predating helper isolation need a one-time manual reinstall.** Their already-running
 old helper cannot gain this fix from the candidate package. Stop the instance, back up the

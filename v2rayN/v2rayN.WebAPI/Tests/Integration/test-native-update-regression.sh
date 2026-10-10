@@ -2,7 +2,7 @@
 # Exercise real single-file updates with deliberately different bundle layouts.
 set -euo pipefail
 
-web_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+web_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)"
 previous="$(realpath "${1:?Usage: test-native-update-regression.sh <native-publish-directory>}")"
 test -x "$previous/v2rayN.WebAPI"
 test -s "$previous/v2rayN.WebAPI.build.json"
@@ -75,7 +75,7 @@ assert (previous / "v2rayN.WebAPI").stat().st_size != (candidate / "v2rayN.WebAP
     "Regression fixtures must have different bundle layouts, not just different versions"
 PY
 
-identity_test=(python3 "$web_root/Scripts/test-native-update-identity.py" "$previous" "$scratch/candidate")
+identity_test=(python3 "$web_root/Tests/Integration/test-native-update-identity.py" "$previous" "$scratch/candidate")
 # Run in a transient scope so a hosted runner's enclosing systemd service is not mistaken for
 # the WebAPI service under test. Production still rejects actual systemd-managed WebAPI updates.
 if command -v systemd-run >/dev/null && systemd-run --user --scope --quiet /usr/bin/true >/dev/null 2>&1; then

@@ -193,7 +193,7 @@ jobs:
         shell: pwsh
         run: |
           $publishDirectory = Join-Path $env:RUNNER_TEMP 'v2rayN.WebAPI-win-x64'
-          & ./v2rayN/v2rayN.WebAPI/Scripts/Test-Windows.ps1 -PublishDirectory $publishDirectory
+          & ./v2rayN/v2rayN.WebAPI/Tests/Integration/Test-Windows.ps1 -Mode startup -PublishDirectory $publishDirectory
       - name: Publish previous Windows fixture for update regression
         if: inputs.release_tag != ''
         shell: pwsh
@@ -256,7 +256,8 @@ jobs:
         if: inputs.release_tag != ''
         shell: pwsh
         run: |
-          & ./v2rayN/v2rayN.WebAPI/Scripts/Test-WindowsUpdate.ps1 `
+          & ./v2rayN/v2rayN.WebAPI/Tests/Integration/Test-Windows.ps1 `
+            -Mode update `
             -PreviousPublishDirectory (Join-Path $env:RUNNER_TEMP 'v2rayN.WebAPI-win-x64-previous') `
             -CandidatePublishDirectory (Join-Path $env:RUNNER_TEMP 'v2rayN.WebAPI-win-x64')
       - name: Package and smoke-test Windows full-install and app-only ZIPs
@@ -273,7 +274,7 @@ jobs:
           }
           $extracted = Join-Path $env:RUNNER_TEMP 'v2rayN-windows-64-WebAPI-smoke'
           Expand-Archive -LiteralPath $fullZip -DestinationPath $extracted -Force
-          & ./v2rayN/v2rayN.WebAPI/Scripts/Test-Windows.ps1 -PublishDirectory $extracted
+          & ./v2rayN/v2rayN.WebAPI/Tests/Integration/Test-Windows.ps1 -Mode startup -PublishDirectory $extracted
           "Windows full-install ZIP: $fullZip"
           "Windows app-only update ZIP: $appOnlyZip"
       - uses: actions/upload-artifact@v7
@@ -352,7 +353,7 @@ jobs:
         shell: pwsh
         run: |
           $publishDirectory = Join-Path $env:RUNNER_TEMP 'v2rayN.WebAPI-win-arm64'
-          & ./v2rayN/v2rayN.WebAPI/Scripts/Test-Windows.ps1 -PublishDirectory $publishDirectory
+          & ./v2rayN/v2rayN.WebAPI/Tests/Integration/Test-Windows.ps1 -Mode startup -PublishDirectory $publishDirectory
       - name: Add the matching Windows ARM64 Core bundle
         if: inputs.release_tag != ''
         shell: pwsh
@@ -393,7 +394,7 @@ jobs:
           }
           $extracted = Join-Path $env:RUNNER_TEMP 'v2rayN-windows-arm64-WebAPI-smoke'
           Expand-Archive -LiteralPath $fullZip -DestinationPath $extracted -Force
-          & ./v2rayN/v2rayN.WebAPI/Scripts/Test-Windows.ps1 -PublishDirectory $extracted
+          & ./v2rayN/v2rayN.WebAPI/Tests/Integration/Test-Windows.ps1 -Mode startup -PublishDirectory $extracted
           "Windows ARM64 full-install ZIP: $fullZip"
           "Windows ARM64 app-only update ZIP: $appOnlyZip"
       - uses: actions/upload-artifact@v7
@@ -439,7 +440,7 @@ jobs:
         run: sh v2rayN/v2rayN.WebAPI/Scripts/fetch-core-bundle.sh "$RID" "v2rayN/v2rayN.WebAPI/publish/$RID/bin"
       - name: Package API install and self-update ZIPs
         if: needs.identity.outputs.release == 'true'
-        run: bash v2rayN/v2rayN.WebAPI/Scripts/package-native.sh "$RID" "v2rayN/v2rayN.WebAPI/publish/$RID" dist
+        run: python3 v2rayN/v2rayN.WebAPI/Scripts/web-release-assets.py package --rid "$RID" --publish "v2rayN/v2rayN.WebAPI/publish/$RID" --dist dist
       - name: Smoke-test bundled Cores
         if: needs.identity.outputs.release == 'true'
         run: |
@@ -515,7 +516,7 @@ jobs:
         run: sh v2rayN/v2rayN.WebAPI/Scripts/fetch-core-bundle.sh "$RID" "v2rayN/v2rayN.WebAPI/publish/$RID/bin"
       - name: Package API install and self-update ZIPs
         shell: bash
-        run: bash v2rayN/v2rayN.WebAPI/Scripts/package-native.sh "$RID" "v2rayN/v2rayN.WebAPI/publish/$RID" dist
+        run: python3 v2rayN/v2rayN.WebAPI/Scripts/web-release-assets.py package --rid "$RID" --publish "v2rayN/v2rayN.WebAPI/publish/$RID" --dist dist
       - name: Smoke-test bundled Cores
         shell: bash
         run: |
@@ -825,7 +826,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          bash repo/v2rayN/v2rayN.WebAPI/Scripts/package-native.sh "$RID" "$GITHUB_WORKSPACE/publish/linux-loongarch64" "$GITHUB_WORKSPACE/dist"
+          python3 repo/v2rayN/v2rayN.WebAPI/Scripts/web-release-assets.py package --rid "$RID" --publish "$GITHUB_WORKSPACE/publish/linux-loongarch64" --dist "$GITHUB_WORKSPACE/dist"
           ls -la "$GITHUB_WORKSPACE/dist"
       - uses: actions/upload-artifact@v7
         with:
@@ -898,7 +899,7 @@ jobs:
             --dist release-assets \
             --repository "${{ github.repository }}"
       - name: Smoke-test full API ZIP
-        run: bash v2rayN/v2rayN.WebAPI/Scripts/test-full-zip-runtime.sh release-assets/v2rayN-linux-64-WebAPI.zip
+        run: bash v2rayN/v2rayN.WebAPI/Tests/Integration/test-full-zip-runtime.sh release-assets/v2rayN-linux-64-WebAPI.zip
       - uses: actions/upload-artifact@v7
         with:
           name: WebAPI-release-packages

@@ -3,7 +3,7 @@
 # plus the WebAPI-update.json manifest using small fixtures, without publishing anything.
 set -euo pipefail
 
-web_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+web_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)"
 asset_tool="$web_root/Scripts/web-release-assets.py"
 temporary="$(mktemp -d)"
 trap 'rm -rf "$temporary"' EXIT HUP INT TERM
@@ -84,7 +84,7 @@ PY
 
 for rid in linux-x64 linux-arm64 linux-riscv64 linux-loongarch64 win-x64 win-arm64; do
   make_publish_fixture "$rid"
-  bash "$web_root/Scripts/package-native.sh" "$rid" "$temporary/publish-$rid" "$temporary/dist"
+  python3 "$asset_tool" package --rid "$rid" --publish "$temporary/publish-$rid" --dist "$temporary/dist"
 done
 
 full_x64="$(python3 "$asset_tool" get --rid linux-x64 --field full)"

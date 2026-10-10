@@ -30,8 +30,8 @@ export NUGET_PACKAGES="${NUGET_PACKAGES:-$web_root/.packages/nuget}"
 "$dotnet" test --project "$upstream_root/ServiceLib.Tests/ServiceLib.Tests.csproj" --configuration Release --no-restore
 bash "$web_root/Scripts/publish-native.sh" linux-x64 "$output_dir"
 test -x "$output_dir/v2rayN.WebAPI"
-bash "$web_root/Scripts/test-startup-security.sh" "$output_dir/v2rayN.WebAPI"
-bash "$web_root/Scripts/test-release-packaging.sh"
+bash "$web_root/Tests/Integration/test-startup-security.sh" "$output_dir/v2rayN.WebAPI"
+bash "$web_root/Tests/Integration/test-release-packaging.sh"
 smoke_dir="$(mktemp -d "${TMPDIR:-/tmp}/v2rayn-api-package-smoke.XXXXXX")"
 trap 'rm -rf "$smoke_dir"' EXIT HUP INT TERM
 mkdir -p "$smoke_dir/package/bin"
@@ -49,6 +49,6 @@ with zipfile.ZipFile(archive_path, "w", compression=zipfile.ZIP_DEFLATED) as arc
         if path.is_file():
             archive.write(path, path.relative_to(root).as_posix())
 PY
-bash "$web_root/Scripts/test-full-zip-runtime.sh" "$smoke_dir/v2rayN-api-smoke.zip"
-bash "$web_root/Scripts/test-native-update-regression.sh" "$output_dir"
+bash "$web_root/Tests/Integration/test-full-zip-runtime.sh" "$smoke_dir/v2rayN-api-smoke.zip"
+bash "$web_root/Tests/Integration/test-native-update-regression.sh" "$output_dir"
 printf 'WebAPI verification passed; native publish ready: %s\n' "$output_dir/v2rayN.WebAPI"
