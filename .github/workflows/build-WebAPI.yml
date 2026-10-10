@@ -283,6 +283,126 @@ jobs:
           path: ${{ runner.temp }}/v2rayN.WebAPI-win-x64-dist/*.zip
           if-no-files-found: error
 
+  # The self-update replacement smoke stays on win-x64: the updater logic is RID-generic
+  # and the per-RID PE/ELF checks are covered by unit tests. This job proves the win-arm64
+  # build, first startup, health endpoint and graceful shutdown on native ARM64 Windows.
+  windows-arm64:
+    name: Windows ARM64 WebAPI build and runtime smoke
+    needs: identity
+    runs-on: windows-11-arm
+    env:
+      TUNIT_MAX_PARALLEL_TESTS: 1
+      WEB_VERSION: ${{ needs.identity.outputs.version }}
+      WEB_COMMIT: ${{ github.sha }}
+      WEB_BUILD_DATE: ${{ needs.identity.outputs.build_date }}
+      WEB_REPOSITORY: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.x'
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
+      - name: Restore WebAPI
+        shell: pwsh
+        run: dotnet restore v2rayN/v2rayN.WebAPI/v2rayN.WebAPI.csproj
+      - name: Restore WebAPI.Tests
+        shell: pwsh
+        run: dotnet restore v2rayN/v2rayN.WebAPI/Tests/v2rayN.WebAPI.Tests.csproj
+      - name: Restore ServiceLib.Tests
+        shell: pwsh
+        run: dotnet restore v2rayN/ServiceLib.Tests/ServiceLib.Tests.csproj
+      - name: Build WebAPI
+        shell: pwsh
+        run: dotnet build v2rayN/v2rayN.WebAPI/v2rayN.WebAPI.csproj --configuration Release --no-restore
+      - name: Run WebAPI.Tests
+        shell: pwsh
+        run: dotnet test --project v2rayN/v2rayN.WebAPI/Tests/v2rayN.WebAPI.Tests.csproj --configuration Release --no-restore
+      - name: Run ServiceLib.Tests
+        shell: pwsh
+        run: dotnet test --project v2rayN/ServiceLib.Tests/ServiceLib.Tests.csproj --configuration Release --no-restore
+      - name: Publish win-arm64 self-contained single-file WebAPI
+        shell: pwsh
+        run: |
+          $publishDirectory = Join-Path $env:RUNNER_TEMP 'v2rayN.WebAPI-win-arm64'
+          dotnet publish v2rayN/v2rayN.WebAPI/v2rayN.WebAPI.csproj `
+            --configuration Release `
+            --runtime win-arm64 `
+            --self-contained true `
+            -p:PublishSingleFile=true `
+            -p:IncludeNativeLibrariesForSelfExtract=true `
+            -p:WebVersion=$env:WEB_VERSION `
+            -p:WebCommit=$env:WEB_COMMIT `
+            -p:WebBuildDate=$env:WEB_BUILD_DATE `
+            -p:WebRepository=$env:WEB_REPOSITORY `
+            --output $publishDirectory
+          $identity = [ordered]@{
+            product = 'v2rayN.WebAPI'
+            version = $env:WEB_VERSION
+            commit = $env:WEB_COMMIT
+            buildDate = $env:WEB_BUILD_DATE
+            rid = 'win-arm64'
+          }
+          $json = $identity | ConvertTo-Json -Compress
+          [IO.File]::WriteAllText((Join-Path $publishDirectory 'v2rayN.WebAPI.build.json'), $json, [Text.UTF8Encoding]::new($false))
+      - name: Smoke-test first startup, health endpoint and graceful shutdown
+        shell: pwsh
+        run: |
+          $publishDirectory = Join-Path $env:RUNNER_TEMP 'v2rayN.WebAPI-win-arm64'
+          & ./v2rayN/v2rayN.WebAPI/Scripts/Test-Windows.ps1 -PublishDirectory $publishDirectory
+      - name: Add the matching Windows ARM64 Core bundle
+        if: inputs.release_tag != ''
+        shell: pwsh
+        run: |
+          $bundle = Join-Path $env:RUNNER_TEMP 'v2rayN-windows-arm64.zip'
+          $expanded = Join-Path $env:RUNNER_TEMP 'v2rayN-windows-arm64-core'
+          $publishDirectory = Join-Path $env:RUNNER_TEMP 'v2rayN.WebAPI-win-arm64'
+          Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-windows-arm64.zip' -OutFile $bundle
+          Expand-Archive -LiteralPath $bundle -DestinationPath $expanded -Force
+          $sourceBin = Join-Path $expanded 'v2rayN-windows-arm64\bin'
+          if (-not (Test-Path -LiteralPath $sourceBin -PathType Container)) {
+            throw "Windows ARM64 Core bundle is missing $sourceBin"
+          }
+          $destinationBin = Join-Path $publishDirectory 'bin'
+          New-Item -ItemType Directory -Path $destinationBin -Force | Out-Null
+          Copy-Item -Path (Join-Path $sourceBin '*') -Destination $destinationBin -Recurse -Force
+          foreach ($relative in @('xray\xray.exe','sing_box\sing-box.exe','mihomo\mihomo.exe','geoip.dat','geosite.dat','geoip.metadb','Country.mmdb')) {
+            $required = Join-Path $destinationBin $relative
+            if (-not (Test-Path -LiteralPath $required -PathType Leaf)) { throw "Missing Windows ARM64 Core asset: $required" }
+          }
+          & (Join-Path $destinationBin 'xray\xray.exe') -version
+          if ($LASTEXITCODE -ne 0) { throw "xray.exe smoke failed: $LASTEXITCODE" }
+          & (Join-Path $destinationBin 'sing_box\sing-box.exe') version
+          if ($LASTEXITCODE -ne 0) { throw "sing-box.exe smoke failed: $LASTEXITCODE" }
+          & (Join-Path $destinationBin 'mihomo\mihomo.exe') -v
+          if ($LASTEXITCODE -ne 0) { throw "mihomo.exe smoke failed: $LASTEXITCODE" }
+      - name: Package Windows ARM64 full-install and app-only ZIPs
+        if: inputs.release_tag != ''
+        shell: pwsh
+        run: |
+          $publishDirectory = Join-Path $env:RUNNER_TEMP 'v2rayN.WebAPI-win-arm64'
+          $dist = Join-Path $env:RUNNER_TEMP 'v2rayN.WebAPI-win-arm64-dist'
+          python v2rayN/v2rayN.WebAPI/Scripts/web-release-assets.py package --rid win-arm64 --publish $publishDirectory --dist $dist
+          $fullZip = Join-Path $dist 'v2rayN-windows-arm64-WebAPI.zip'
+          $appOnlyZip = Join-Path $dist 'v2rayN-windows-arm64-WebAPI-update.zip'
+          if (-not (Test-Path -LiteralPath $fullZip -PathType Leaf) -or -not (Test-Path -LiteralPath $appOnlyZip -PathType Leaf)) {
+            throw 'Windows ARM64 release ZIPs were not created.'
+          }
+          $extracted = Join-Path $env:RUNNER_TEMP 'v2rayN-windows-arm64-WebAPI-smoke'
+          Expand-Archive -LiteralPath $fullZip -DestinationPath $extracted -Force
+          & ./v2rayN/v2rayN.WebAPI/Scripts/Test-Windows.ps1 -PublishDirectory $extracted
+          "Windows ARM64 full-install ZIP: $fullZip"
+          "Windows ARM64 app-only update ZIP: $appOnlyZip"
+      - uses: actions/upload-artifact@v7
+        if: inputs.release_tag != ''
+        with:
+          name: v2rayN.WebAPI-win-arm64
+          path: ${{ runner.temp }}/v2rayN.WebAPI-win-arm64-dist/*.zip
+          if-no-files-found: error
+
   native:
     name: Native API build (${{ matrix.rid }})
     needs: identity
@@ -335,6 +455,312 @@ jobs:
           path: dist/*.zip
           if-no-files-found: error
 
+  # linux-riscv64 runs natively on the RISE RISC-V runners with the community
+  # xujiegb/dotnet-riscv SDK; single-file publish is verified to work there.
+  native-riscv64:
+    name: Native API build (linux-riscv64)
+    needs: identity
+    if: needs.identity.outputs.release == 'true'
+    runs-on: ubuntu-24.04-riscv
+    container: debian:13
+    env:
+      RID: linux-riscv64
+      V2RAYN_WEB_VERSION: ${{ needs.identity.outputs.version }}
+      V2RAYN_WEB_REPOSITORY: ${{ github.repository }}
+      V2RAYN_WEB_COMMIT: ${{ github.sha }}
+      V2RAYN_WEB_BUILD_DATE: ${{ needs.identity.outputs.build_date }}
+    steps:
+      - name: Prepare tools (Debian)
+        shell: bash
+        run: |
+          set -euo pipefail
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get update
+          apt-get install -y sudo git rsync findutils tar gzip unzip which curl jq wget file ca-certificates python3 libc6-dev libgcc-s1 libstdc++6 zlib1g libatomic1 libicu76 || \
+            apt-get install -y sudo git rsync findutils tar gzip unzip which curl jq wget file ca-certificates python3 libc6-dev libgcc-s1 libstdc++6 zlib1g libatomic1 libicu72
+      - name: Checkout repo
+        shell: bash
+        env: { GITHUB_TOKEN: "${{ github.token }}" }
+        run: |
+          set -euo pipefail
+          rm -rf ./*
+          git init .
+          git config --global --add safe.directory "$PWD"
+          git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git fetch --depth=1 origin "${GITHUB_SHA}"
+          git checkout FETCH_HEAD
+      - name: Install community .NET SDK (linux-riscv64)
+        shell: bash
+        run: |
+          set -euo pipefail
+          SDK=dotnet-sdk-10.0.111-linux-riscv64.tar.gz
+          curl -fL "https://github.com/xujiegb/dotnet-riscv/releases/download/10.0.111/$SDK" -o /tmp/$SDK
+          mkdir -p "$HOME/.dotnet"
+          tar -C "$HOME/.dotnet" -xzf /tmp/$SDK
+          echo "DOTNET_ROOT=$HOME/.dotnet" >> "$GITHUB_ENV"
+          echo "$HOME/.dotnet" >> "$GITHUB_PATH"
+          export DOTNET_ROOT="$HOME/.dotnet"
+          export PATH="$DOTNET_ROOT:$PATH"
+          dotnet --info
+      - name: Publish native API
+        shell: bash
+        run: |
+          set -euo pipefail
+          export DOTNET_ROOT="$HOME/.dotnet"
+          export PATH="$DOTNET_ROOT:$PATH"
+          bash v2rayN/v2rayN.WebAPI/Scripts/publish-native.sh "$RID"
+          test -x "v2rayN/v2rayN.WebAPI/publish/$RID/v2rayN.WebAPI"
+      - name: Add the matching Linux Core bundle
+        shell: bash
+        run: sh v2rayN/v2rayN.WebAPI/Scripts/fetch-core-bundle.sh "$RID" "v2rayN/v2rayN.WebAPI/publish/$RID/bin"
+      - name: Package API install and self-update ZIPs
+        shell: bash
+        run: bash v2rayN/v2rayN.WebAPI/Scripts/package-native.sh "$RID" "v2rayN/v2rayN.WebAPI/publish/$RID" dist
+      - name: Smoke-test bundled Cores
+        shell: bash
+        run: |
+          set -euo pipefail
+          publish="v2rayN/v2rayN.WebAPI/publish/$RID"
+          "$publish/bin/xray/xray" -version
+          "$publish/bin/sing_box/sing-box" version
+          "$publish/bin/mihomo/mihomo" -v
+      - name: Smoke-test the published API (native riscv64)
+        shell: bash
+        run: |
+          set -euo pipefail
+          publish="v2rayN/v2rayN.WebAPI/publish/$RID"
+          "$publish/v2rayN.WebAPI" --help | head -n 5
+          export V2RAYN_WEB_API_KEY=ci-smoke-key-0123456789abcdef
+          export ASPNETCORE_URLS=http://127.0.0.1:5080
+          ( cd "$publish" && ./v2rayN.WebAPI --foreground --no-open > /tmp/smoke.log 2>&1 & echo $! > /tmp/smoke.pid )
+          ok=0
+          for i in $(seq 1 90); do
+            if curl -fsS http://127.0.0.1:5080/api/health >/dev/null 2>&1; then ok=1; break; fi
+            sleep 1
+          done
+          if [ "$ok" != 1 ]; then
+            tail -n 60 /tmp/smoke.log
+            kill -9 "$(cat /tmp/smoke.pid)" 2>/dev/null || true
+            exit 1
+          fi
+          kill -TERM "$(cat /tmp/smoke.pid)"
+          sleep 2
+          echo 'linux-riscv64 native API smoke OK'
+      - uses: actions/upload-artifact@v7
+        with:
+          name: v2rayN.WebAPI-linux-riscv64
+          path: dist/*.zip
+          if-no-files-found: error
+
+  # linux-loongarch64 publishes inside the upstream QEMU loong64 VM with the official
+  # Loongson .NET SDK; the VM runs the native smoke before the host packages the ZIPs.
+  native-loong64:
+    name: Native API build (linux-loongarch64)
+    needs: identity
+    if: needs.identity.outputs.release == 'true'
+    runs-on: ubuntu-26.04-arm
+    env:
+      RID: linux-loongarch64
+      V2RAYN_WEB_VERSION: ${{ needs.identity.outputs.version }}
+      V2RAYN_WEB_REPOSITORY: ${{ github.repository }}
+      V2RAYN_WEB_COMMIT: ${{ github.sha }}
+      V2RAYN_WEB_BUILD_DATE: ${{ needs.identity.outputs.build_date }}
+      QCOW2_URL: https://github.com/xujiegb/debian-loong64-qcow2/releases/download/13.5/debian13-loong64.qcow2
+      EFI_CODE_URL: https://github.com/xujiegb/debian-loong64-qcow2/releases/download/13.5/edk2-loongarch64-code.fd
+      EFI_VARS_URL: https://github.com/xujiegb/debian-loong64-qcow2/releases/download/13.5/edk2-loongarch64-vars.fd
+      QCOW2_IMAGE: debian13-loong64.qcow2
+      EFI_CODE: edk2-loongarch64-code.fd
+      EFI_VARS: edk2-loongarch64-vars.fd
+      QEMU_VERSION: 10.2.4
+    steps:
+      - name: Prepare host tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y git rsync qemu-utils qemu-system-common expect wget curl ca-certificates libfdt1 libglib2.0-0 libpixman-1-0 libslirp0 virtiofsd
+          sudo ln -sf /usr/libexec/virtiofsd /usr/local/bin/virtiofsd
+          virtiofsd --version || virtiofsd --help | head
+      - name: Host clone repo
+        shell: bash
+        env: { GITHUB_TOKEN: "${{ github.token }}" }
+        run: |
+          set -euo pipefail
+          rm -rf repo
+          git init repo
+          git -C repo config --global --add safe.directory "$PWD/repo" || true
+          git -C repo remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git -C repo fetch --depth=1 origin "${GITHUB_SHA}"
+          git -C repo checkout FETCH_HEAD
+      - name: Download QEMU prebuild
+        run: |
+          set -euo pipefail
+          wget -O qemu-linux-arm64-v8.2.tar.gz "https://github.com/xujiegb/qemu-linux-prebuild/releases/download/${QEMU_VERSION}/qemu-linux-arm64-v8.2.tar.gz"
+          tar -xzf qemu-linux-arm64-v8.2.tar.gz
+          mkdir -p "$HOME/qemu-install"
+          rsync -a qemu-linux-arm64-v8.2/ "$HOME/qemu-install/"
+          "$HOME/qemu-install/bin/qemu-system-loongarch64" --version
+      - name: Download loong64 qcow2 and EFI firmware
+        shell: bash
+        run: |
+          set -euo pipefail
+          wget -O "$QCOW2_IMAGE" "$QCOW2_URL"
+          wget -O "$EFI_CODE" "$EFI_CODE_URL"
+          wget -O "$EFI_VARS" "$EFI_VARS_URL"
+          qemu-img info "$QCOW2_IMAGE"
+      - name: Stage the VM build script and the matching Core bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > webapi-loong.env <<EOF
+          WEB_VERSION=${V2RAYN_WEB_VERSION}
+          WEB_REPOSITORY=${V2RAYN_WEB_REPOSITORY}
+          WEB_COMMIT=${V2RAYN_WEB_COMMIT}
+          WEB_BUILD_DATE=${V2RAYN_WEB_BUILD_DATE}
+          EOF
+          cat > webapi-loong-run.sh <<'SCRIPT'
+          #!/usr/bin/env bash
+          set +e
+          set -o pipefail
+          source /workspace/webapi-loong.env
+          export DOTNET_ROOT=/root/.dotnet
+          export PATH="$DOTNET_ROOT:$PATH"
+          mkdir -p /root/.dotnet
+          SDK=dotnet-sdk-10.0.111-linux-loongarch64.tar.gz
+          curl -fL "https://github.com/loongson/dotnet/releases/download/v10.0.111-loongarch64/$SDK" -o /tmp/$SDK || exit 9
+          tar -C /root/.dotnet -xzf /tmp/$SDK || exit 9
+          dotnet --info >/dev/null 2>&1 || exit 9
+          cd /root/v2rayN-src || exit 9
+          mkdir -p /workspace/publish/linux-loongarch64
+          V2RAYN_WEB_VERSION="$WEB_VERSION" V2RAYN_WEB_REPOSITORY="$WEB_REPOSITORY" V2RAYN_WEB_COMMIT="$WEB_COMMIT" V2RAYN_WEB_BUILD_DATE="$WEB_BUILD_DATE" \
+            bash v2rayN/v2rayN.WebAPI/Scripts/publish-native.sh linux-loongarch64 /workspace/publish/linux-loongarch64 2>&1 | tee /tmp/publish.log
+          rc=$?
+          if [ $rc -eq 0 ]; then
+            mkdir -p /workspace/publish/linux-loongarch64/bin
+            cp -a /workspace/core-bundle/. /workspace/publish/linux-loongarch64/bin/
+            cd /workspace/publish/linux-loongarch64 || exit 9
+            ./bin/xray/xray -version >/dev/null || rc=9
+            ./bin/sing_box/sing-box version >/dev/null || rc=9
+            ./bin/mihomo/mihomo -v >/dev/null || rc=9
+            ./v2rayN.WebAPI --help >/dev/null || rc=9
+            V2RAYN_WEB_API_KEY=ci-smoke-key-0123456789abcdef ASPNETCORE_URLS=http://127.0.0.1:5080 ./v2rayN.WebAPI --foreground --no-open > /tmp/smoke.log 2>&1 &
+            APP=$!
+            ok=0
+            for i in $(seq 1 90); do
+              if curl -fsS http://127.0.0.1:5080/api/health >/dev/null 2>&1; then ok=1; break; fi
+              sleep 1
+            done
+            if [ "$ok" != 1 ]; then tail -n 60 /tmp/smoke.log; rc=9; fi
+            kill -TERM "$APP" 2>/dev/null || true
+            sleep 2
+          fi
+          if [ "$rc" != 0 ]; then echo '=== publish.log ==='; tail -n 120 /tmp/publish.log 2>/dev/null; fi
+          echo "__WEBAPI_DONE__$rc"
+          SCRIPT
+          bash repo/v2rayN/v2rayN.WebAPI/Scripts/fetch-core-bundle.sh "$RID" "$GITHUB_WORKSPACE/core-bundle"
+          ls -la "$GITHUB_WORKSPACE/core-bundle" | head -n 15
+      - name: Build WebAPI loongarch64 in the VM (publish + native smoke)
+        shell: bash
+        timeout-minutes: 180
+        run: |
+          set -euo pipefail
+          mkdir -p "$GITHUB_WORKSPACE/dist"
+          export VIRTIOFSD_SOCKET="$RUNNER_TEMP/virtiofs-webapi-loongarch64.sock"
+          rm -f "$VIRTIOFSD_SOCKET"
+
+          sudo virtiofsd --socket-path="$VIRTIOFSD_SOCKET" --shared-dir="$GITHUB_WORKSPACE" --cache=auto &
+
+          VIRTIOFSD_PID=$!
+          trap 'sudo kill "$VIRTIOFSD_PID" 2>/dev/null || true; rm -f "$VIRTIOFSD_SOCKET"' EXIT
+
+          for i in {1..100}; do
+            [[ -S "$VIRTIOFSD_SOCKET" ]] && break
+            sleep 0.1
+          done
+          [[ -S "$VIRTIOFSD_SOCKET" ]] || { echo "virtiofsd socket not created"; exit 1; }
+          sudo chown "$USER:$(id -gn)" "$VIRTIOFSD_SOCKET" || true
+          sudo chmod 660 "$VIRTIOFSD_SOCKET" || true
+          expect <<'EOF'
+          log_user 1
+          set timeout 10800
+          set qemu_bin "$env(HOME)/qemu-install/bin/qemu-system-loongarch64"
+          set qemu_rom_dir "$env(HOME)/qemu-install/share/qemu"
+          set virtiofs_socket $env(VIRTIOFSD_SOCKET)
+          set qcow2 $env(QCOW2_IMAGE)
+          set efi_code $env(EFI_CODE)
+          set efi_vars $env(EFI_VARS)
+          proc wait_prompt {} {
+            expect {
+              -re "__CI_PROMPT__# " {}
+              timeout { exit 1 }
+              eof { exit 1 }
+            }
+          }
+          proc run_cmd {cmd} {
+            send -- "$cmd\r"
+            wait_prompt
+          }
+          spawn $qemu_bin \
+            -L $qemu_rom_dir \
+            -machine virt \
+            -accel tcg,thread=multi,tb-size=2048 \
+            -cpu la464 \
+            -m 9216 \
+            -object memory-backend-memfd,id=mem0,size=9216M,share=on \
+            -numa node,memdev=mem0 \
+            -smp 4 \
+            -drive if=pflash,format=raw,unit=0,file=$efi_code,readonly=on \
+            -drive if=pflash,format=raw,unit=1,file=$efi_vars \
+            -device virtio-blk-pci,drive=hd0,bootindex=1 \
+            -drive if=none,media=disk,id=hd0,file=$qcow2,format=qcow2 \
+            -netdev user,id=net0 \
+            -device virtio-net-pci-non-transitional,netdev=net0 \
+            -chardev socket,id=charfs0,path=$virtiofs_socket \
+            -device vhost-user-fs-pci,chardev=charfs0,tag=workspace \
+            -display none \
+            -serial stdio \
+            -monitor none
+          expect -re "login:|debian login:"
+          send -- "root\r"
+          expect -re "Password:|密码:|密码："
+          send -- "password\r"
+          expect {
+            -re "# " {}
+            timeout { exit 1 }
+            eof { exit 1 }
+          }
+          send -- "export TERM=dumb; export PS1='__CI_PROMPT__# '\r"
+          wait_prompt
+          run_cmd "mkdir -p /workspace"
+          run_cmd "mount -t virtiofs workspace /workspace"
+          run_cmd "IFACE=\$(ip -o link show | awk -F': ' '\$2 != \"lo\" {print \$2; exit}') ; ip link set \$IFACE up || true"
+          run_cmd "dhclient \$IFACE || true"
+          run_cmd "printf 'nameserver 10.0.2.3\nnameserver 1.1.1.1\n' >/etc/resolv.conf"
+          run_cmd "apt-get update || apt-get update || apt-get update"
+          run_cmd "DEBIAN_FRONTEND=noninteractive apt-get install -y sudo git rsync findutils tar gzip unzip which curl jq wget file ca-certificates python3 libc6-dev libgcc-s1 libstdc++6 zlib1g libatomic1 libicu76 || DEBIAN_FRONTEND=noninteractive apt-get install -y sudo git rsync findutils tar gzip unzip which curl jq wget file ca-certificates python3 libc6-dev libgcc-s1 libstdc++6 zlib1g libatomic1"
+          run_cmd "rm -rf /root/v2rayN-src"
+          run_cmd "rsync -a /workspace/repo/ /root/v2rayN-src/"
+          run_cmd "cd /root/v2rayN-src && git config --global --add safe.directory /root/v2rayN-src"
+          send -- "bash /workspace/webapi-loong-run.sh\r"
+          expect {
+            -re "__WEBAPI_DONE__0" { send -- "poweroff\r" }
+            -re "__WEBAPI_DONE__" { exit 1 }
+            timeout { exit 1 }
+            eof { exit 1 }
+          }
+          EOF
+      - name: Package API install and self-update ZIPs
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash repo/v2rayN/v2rayN.WebAPI/Scripts/package-native.sh "$RID" "$GITHUB_WORKSPACE/publish/linux-loongarch64" "$GITHUB_WORKSPACE/dist"
+          ls -la "$GITHUB_WORKSPACE/dist"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: v2rayN.WebAPI-linux-loongarch64
+          path: dist/*.zip
+          if-no-files-found: error
+
   container:
     name: API Containerfile (${{ matrix.rid }})
     needs: identity
@@ -372,7 +798,7 @@ jobs:
   release-assets:
     name: Assemble API release assets
     if: needs.identity.outputs.release == 'true'
-    needs: [identity, verify, windows, native, container]
+    needs: [identity, verify, windows, windows-arm64, native, native-riscv64, native-loong64, container]
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7

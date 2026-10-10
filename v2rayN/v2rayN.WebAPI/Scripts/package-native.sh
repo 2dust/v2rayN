@@ -2,7 +2,7 @@
 set -euo pipefail
 
 if [ "$#" -lt 2 ] || [ "$#" -gt 3 ]; then
-  echo "Usage: $0 <linux-x64|linux-arm64> <publish-directory> [dist-directory]" >&2
+  echo "Usage: $0 <linux-x64|linux-arm64|linux-riscv64|linux-loongarch64> <publish-directory> [dist-directory]" >&2
   exit 2
 fi
 

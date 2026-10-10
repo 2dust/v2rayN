@@ -23,8 +23,8 @@ if [[ -z "$dotnet" || ! -x "$dotnet" ]]; then
   exit 1
 fi
 case "$rid" in
-  linux-x64|linux-arm64) ;;
-  *) printf 'Supported runtime identifiers: linux-x64, linux-arm64 (received %s)\n' "$rid" >&2; exit 2 ;;
+  linux-x64|linux-arm64|linux-riscv64|linux-loongarch64) ;;
+  *) printf 'Supported runtime identifiers: linux-x64, linux-arm64, linux-riscv64, linux-loongarch64 (received %s)\n' "$rid" >&2; exit 2 ;;
 esac
 
 export NUGET_PACKAGES="${NUGET_PACKAGES:-$web_root/.packages/nuget}"

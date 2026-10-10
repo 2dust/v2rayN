@@ -69,7 +69,20 @@ public class WebReleaseChannelTests
         await WebUpdatePackageStager.ArtifactArch("win-x64").Should().BeEqualTo("64");
         await WebUpdatePackageStager.FullInstallAssetName("win-x64").Should().BeEqualTo("v2rayN-windows-64-WebAPI.zip");
         await WebUpdatePackageStager.AppOnlyAssetName("win-x64").Should().BeEqualTo("v2rayN-windows-64-WebAPI-update.zip");
-        await WebUpdatePackageStager.FullInstallAssetName("linux-riscv64").Should().BeNull();
+        await WebUpdatePackageStager.ArtifactArch("linux-riscv64").Should().BeEqualTo("riscv64");
+        await WebUpdatePackageStager.FullInstallAssetName("linux-riscv64").Should().BeEqualTo("v2rayN-linux-riscv64-WebAPI.zip");
+        await WebUpdatePackageStager.AppOnlyAssetName("linux-riscv64").Should().BeEqualTo("v2rayN-linux-riscv64-WebAPI-update.zip");
+        await WebUpdatePackageStager.ArtifactArch("linux-loongarch64").Should().BeEqualTo("loong64");
+        await WebUpdatePackageStager.FullInstallAssetName("linux-loongarch64").Should().BeEqualTo("v2rayN-linux-loong64-WebAPI.zip");
+        await WebUpdatePackageStager.AppOnlyAssetName("linux-loongarch64").Should().BeEqualTo("v2rayN-linux-loong64-WebAPI-update.zip");
+        await WebUpdatePackageStager.ArtifactArch("win-arm64").Should().BeEqualTo("arm64");
+        await WebUpdatePackageStager.FullInstallAssetName("win-arm64").Should().BeEqualTo("v2rayN-windows-arm64-WebAPI.zip");
+        await WebUpdatePackageStager.AppOnlyAssetName("win-arm64").Should().BeEqualTo("v2rayN-windows-arm64-WebAPI-update.zip");
+        await WebUpdatePackageStager.IsSupportedRid("linux-riscv64").Should().BeTrue();
+        await WebUpdatePackageStager.IsSupportedRid("linux-loongarch64").Should().BeTrue();
+        await WebUpdatePackageStager.IsSupportedRid("win-arm64").Should().BeTrue();
+        await WebUpdatePackageStager.IsSupportedRid("linux-unknown64").Should().BeFalse();
+        await WebUpdatePackageStager.FullInstallAssetName("linux-unknown64").Should().BeNull();
         await WebUpdatePackageStager.AppOnlyAssetName(null).Should().BeNull();
     }
 

@@ -22,7 +22,7 @@ public sealed partial class V2rayRuntime
         var deployment = GetWebUpdateDeployment();
         var build = WebBuildIdentity.Current;
         var selected = Config.CheckUpdateItem.SelectedCoreTypes;
-        var supportedRid = build.Rid is "linux-x64" or "linux-arm64" or "win-x64";
+        var supportedRid = WebUpdatePackageStager.IsSupportedRid(build.Rid);
         var runtimeInstallReason = GetWebUpdateRuntimeInstallReason();
         var canInstall = deployment.CanInstall && runtimeInstallReason is null;
         return new WebUpdateTargetView(
@@ -450,7 +450,7 @@ public sealed partial class V2rayRuntime
             || !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER"));
         var isSystemd = LauncherEnvironment.IsSystemdManagedDeployment();
         var executable = Environment.ProcessPath;
-        var expectedExecutableName = WebBuildIdentity.Current.Rid is "linux-x64" or "linux-arm64" or "win-x64"
+        var expectedExecutableName = WebUpdatePackageStager.IsSupportedRid(WebBuildIdentity.Current.Rid)
             ? WebUpdatePackageStager.ExecutableNameForRid(WebBuildIdentity.Current.Rid)
             : null;
         var pathComparison = OperatingSystem.IsWindows() ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
@@ -467,7 +467,7 @@ public sealed partial class V2rayRuntime
     }
 
     private bool CanInstallWebUpdate() =>
-        WebBuildIdentity.Current.Rid is "linux-x64" or "linux-arm64" or "win-x64"
+        WebUpdatePackageStager.IsSupportedRid(WebBuildIdentity.Current.Rid)
         && GetWebUpdateDeployment().CanInstall
         && GetWebUpdateRuntimeInstallReason() is null;
 

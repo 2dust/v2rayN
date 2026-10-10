@@ -74,6 +74,15 @@ public class WebUpdatePackageStagerTests
             new WebUpdatePackage("win-x64", "v2rayN-windows-64-WebAPI-update.zip",
                 "https://github.com/2dust/v2rayN/releases/download/7.25.3/v2rayN-windows-64-WebAPI-update.zip",
                 new string('c', 64), 3456),
+            new WebUpdatePackage("linux-riscv64", "v2rayN-linux-riscv64-WebAPI-update.zip",
+                "https://github.com/2dust/v2rayN/releases/download/7.25.3/v2rayN-linux-riscv64-WebAPI-update.zip",
+                new string('d', 64), 4567),
+            new WebUpdatePackage("linux-loongarch64", "v2rayN-linux-loong64-WebAPI-update.zip",
+                "https://github.com/2dust/v2rayN/releases/download/7.25.3/v2rayN-linux-loong64-WebAPI-update.zip",
+                new string('e', 64), 5678),
+            new WebUpdatePackage("win-arm64", "v2rayN-windows-arm64-WebAPI-update.zip",
+                "https://github.com/2dust/v2rayN/releases/download/7.25.3/v2rayN-windows-arm64-WebAPI-update.zip",
+                new string('f', 64), 6789),
         ]);
         var json = JsonSerializer.Serialize(manifest, new JsonSerializerOptions(JsonSerializerDefaults.Web));
         var parsed = WebUpdatePackageStager.ParseManifest(json);
@@ -81,11 +90,14 @@ public class WebUpdatePackageStagerTests
         await WebUpdatePackageStager.RequirePackage(parsed, "linux-x64").Rid.Should().BeEqualTo("linux-x64");
         await WebUpdatePackageStager.RequirePackage(parsed, "linux-arm64").Rid.Should().BeEqualTo("linux-arm64");
         await WebUpdatePackageStager.RequirePackage(parsed, "win-x64").Rid.Should().BeEqualTo("win-x64");
+        await WebUpdatePackageStager.RequirePackage(parsed, "linux-riscv64").Rid.Should().BeEqualTo("linux-riscv64");
+        await WebUpdatePackageStager.RequirePackage(parsed, "linux-loongarch64").Rid.Should().BeEqualTo("linux-loongarch64");
+        await WebUpdatePackageStager.RequirePackage(parsed, "win-arm64").Rid.Should().BeEqualTo("win-arm64");
         await WebReleaseChannel.IsTrustedAssetUrl(parsed.Packages[0].Url, "2dust/v2rayN", parsed.Version, parsed.Packages[0].Asset)
             .Should().BeTrue();
 
         var wrongRidRejected = false;
-        try { _ = WebUpdatePackageStager.RequirePackage(parsed, "linux-riscv64"); }
+        try { _ = WebUpdatePackageStager.RequirePackage(parsed, "linux-unknown64"); }
         catch (InvalidDataException) { wrongRidRejected = true; }
         await wrongRidRejected.Should().BeTrue();
 
@@ -100,6 +112,93 @@ public class WebUpdatePackageStagerTests
         }
         catch (InvalidDataException) { oversizedRejected = true; }
         await oversizedRejected.Should().BeTrue();
+    }
+
+    [Test]
+    public async Task UnknownRidsInANewerManifestAreIgnoredForForwardCompatibility()
+    {
+        var manifest = new WebUpdateManifest("v2rayN.WebAPI", "7.25.3", "0123456789abcdef", "2026-09-28T00:00:00Z",
+        [
+            new WebUpdatePackage("linux-x64", "v2rayN-linux-64-WebAPI-update.zip",
+                "https://github.com/2dust/v2rayN/releases/download/7.25.3/v2rayN-linux-64-WebAPI-update.zip",
+                new string('a', 64), 1234),
+            new WebUpdatePackage("linux-future64", "v2rayN-linux-future64-WebAPI-update.zip",
+                "https://github.com/2dust/v2rayN/releases/download/7.25.3/v2rayN-linux-future64-WebAPI-update.zip",
+                new string('b', 64), 2345),
+        ]);
+        var json = JsonSerializer.Serialize(manifest, new JsonSerializerOptions(JsonSerializerDefaults.Web));
+        var parsed = WebUpdatePackageStager.ParseManifest(json);
+
+        await WebUpdatePackageStager.RequirePackage(parsed, "linux-x64").Rid.Should().BeEqualTo("linux-x64");
+        var unknownRejected = false;
+        try { _ = WebUpdatePackageStager.RequirePackage(parsed, "linux-future64"); }
+        catch (InvalidDataException) { unknownRejected = true; }
+        await unknownRejected.Should().BeTrue();
+    }
+
+    [Test]
+    public async Task NativeExecutableChecksEnforceTheDeclaredArchitecture()
+    {
+        using var directory = new TemporaryDirectory();
+        foreach (var (rid, machine) in new[]
+        {
+            ("linux-x64", 62), ("linux-arm64", 183), ("linux-riscv64", 243), ("linux-loongarch64", 258),
+        })
+        {
+            var matching = Path.Combine(directory.Path, $"elf-{rid}");
+            await File.WriteAllBytesAsync(matching, BuildElfImage(machine));
+            WebUpdatePackageStager.RequireNativeExecutable(matching, rid);
+
+            var mismatched = Path.Combine(directory.Path, $"elf-wrong-{rid}");
+            await File.WriteAllBytesAsync(mismatched, BuildElfImage(machine == 62 ? 183 : 62));
+            var rejected = false;
+            try { WebUpdatePackageStager.RequireNativeExecutable(mismatched, rid); }
+            catch (InvalidDataException) { rejected = true; }
+            await rejected.Should().BeTrue();
+        }
+
+        foreach (var (rid, machine) in new[] { ("win-x64", 0x8664), ("win-arm64", 0xAA64) })
+        {
+            var matching = Path.Combine(directory.Path, $"pe-{rid}.exe");
+            await File.WriteAllBytesAsync(matching, BuildPeImage((ushort)machine));
+            WebUpdatePackageStager.RequireNativeExecutable(matching, rid);
+
+            var mismatched = Path.Combine(directory.Path, $"pe-wrong-{rid}.exe");
+            await File.WriteAllBytesAsync(mismatched, BuildPeImage((ushort)(machine == 0x8664 ? 0xAA64 : 0x8664)));
+            var rejected = false;
+            try { WebUpdatePackageStager.RequireNativeExecutable(mismatched, rid); }
+            catch (InvalidDataException) { rejected = true; }
+            await rejected.Should().BeTrue();
+        }
+    }
+
+    private static byte[] BuildElfImage(int machine)
+    {
+        var image = new byte[128];
+        new byte[] { 0x7f, (byte)'E', (byte)'L', (byte)'F', 2, 1, 1 }.CopyTo(image, 0);
+        BinaryPrimitives.WriteUInt16LittleEndian(image.AsSpan(16), 2);
+        BinaryPrimitives.WriteUInt16LittleEndian(image.AsSpan(18), (ushort)machine);
+        BinaryPrimitives.WriteUInt32LittleEndian(image.AsSpan(20), 1);
+        BinaryPrimitives.WriteUInt64LittleEndian(image.AsSpan(32), 64);
+        BinaryPrimitives.WriteUInt16LittleEndian(image.AsSpan(52), 64);
+        BinaryPrimitives.WriteUInt16LittleEndian(image.AsSpan(54), 56);
+        BinaryPrimitives.WriteUInt16LittleEndian(image.AsSpan(56), 1);
+        return image;
+    }
+
+    private static byte[] BuildPeImage(ushort machine)
+    {
+        var image = new byte[512];
+        image[0] = (byte)'M';
+        image[1] = (byte)'Z';
+        BinaryPrimitives.WriteUInt32LittleEndian(image.AsSpan(0x3C), 128);
+        new byte[] { (byte)'P', (byte)'E', 0, 0 }.CopyTo(image, 128);
+        BinaryPrimitives.WriteUInt16LittleEndian(image.AsSpan(132), machine);
+        BinaryPrimitives.WriteUInt16LittleEndian(image.AsSpan(134), 1);
+        BinaryPrimitives.WriteUInt16LittleEndian(image.AsSpan(148), 240);
+        BinaryPrimitives.WriteUInt16LittleEndian(image.AsSpan(150), 0x0002);
+        BinaryPrimitives.WriteUInt16LittleEndian(image.AsSpan(152), 0x020B);
+        return image;
     }
 
     [Test]

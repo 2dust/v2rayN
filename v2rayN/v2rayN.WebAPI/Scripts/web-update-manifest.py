@@ -31,7 +31,14 @@ BUILD_IDENTITY_NAME = "v2rayN.WebAPI.build.json"
 APP_EXECUTABLE_NAMES = {
     "linux-x64": "v2rayN.WebAPI",
     "linux-arm64": "v2rayN.WebAPI",
+    "linux-riscv64": "v2rayN.WebAPI",
+    "linux-loongarch64": "v2rayN.WebAPI",
     "win-x64": "v2rayN.WebAPI.exe",
+    "win-arm64": "v2rayN.WebAPI.exe",
+}
+WINDOWS_PE_MACHINES = {
+    "win-x64": 0x8664,
+    "win-arm64": 0xAA64,
 }
 MAX_ARCHIVE_ENTRIES = 10000
 MAX_EXPANDED_ARCHIVE_BYTES = 1024 * 1024 * 1024
@@ -105,7 +112,7 @@ def app_member_allowed(path: str, rid: str) -> bool:
     return path in (APP_EXECUTABLE_NAMES[rid], BUILD_IDENTITY_NAME)
 
 
-def verify_windows_pe_x64(stream, size: int, archive_name: str) -> None:
+def verify_windows_pe(stream, size: int, archive_name: str, expected_machine: int) -> None:
     if size < 64:
         fail(f"app-only archive {archive_name} does not contain a Windows PE executable")
     dos_header = stream.read(64)
@@ -123,11 +130,11 @@ def verify_windows_pe_x64(stream, size: int, archive_name: str) -> None:
     optional_size = int.from_bytes(pe_header[20:22], "little")
     characteristics = int.from_bytes(pe_header[22:24], "little")
     optional_start = pe_offset + 24
-    if (machine != 0x8664 or sections == 0 or characteristics & 0x0002 == 0
+    if (machine != expected_machine or sections == 0 or characteristics & 0x0002 == 0
             or optional_size < 2 or optional_start + optional_size > size):
-        fail(f"app-only archive {archive_name} executable is not a Windows PE32+ x64 image")
+        fail(f"app-only archive {archive_name} executable is not a Windows PE32+ image for its declared runtime identifier")
     if int.from_bytes(pe_header[24:26], "little") != 0x20B:
-        fail(f"app-only archive {archive_name} executable is not a Windows PE32+ x64 image")
+        fail(f"app-only archive {archive_name} executable is not a Windows PE32+ image for its declared runtime identifier")
 
 
 def verify_app_archive_identity(archive: Path, rid: str, version: str, commit: str, build_date: str) -> None:
@@ -171,9 +178,9 @@ def verify_app_archive_identity(archive: Path, rid: str, version: str, commit: s
                 identity_bytes = handle.read(info)
             elif path == executable_name:
                 executable_info = info
-        if rid == "win-x64" and executable_info is not None:
+        if rid in WINDOWS_PE_MACHINES and executable_info is not None:
             with handle.open(executable_info) as executable_stream:
-                verify_windows_pe_x64(executable_stream, executable_info.file_size, archive_name)
+                verify_windows_pe(executable_stream, executable_info.file_size, archive_name, WINDOWS_PE_MACHINES[rid])
 
     for required in (executable_name, BUILD_IDENTITY_NAME):
         if required not in seen:

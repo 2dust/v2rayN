@@ -5,9 +5,12 @@ The RID-to-asset map lives in `../Assets/web-assets.json`. The Web assembly embe
 file, so the runtime updater, the release manifest, and this packager never disagree about the
 release asset names:
 
-  linux-x64   -> v2rayN-linux-64-WebAPI.zip        + v2rayN-linux-64-WebAPI-update.zip
-  linux-arm64 -> v2rayN-linux-arm64-WebAPI.zip     + v2rayN-linux-arm64-WebAPI-update.zip
-  win-x64     -> v2rayN-windows-64-WebAPI.zip      + v2rayN-windows-64-WebAPI-update.zip
+  linux-x64        -> v2rayN-linux-64-WebAPI.zip        + v2rayN-linux-64-WebAPI-update.zip
+  linux-arm64      -> v2rayN-linux-arm64-WebAPI.zip     + v2rayN-linux-arm64-WebAPI-update.zip
+  linux-riscv64    -> v2rayN-linux-riscv64-WebAPI.zip   + v2rayN-linux-riscv64-WebAPI-update.zip
+  linux-loongarch64-> v2rayN-linux-loong64-WebAPI.zip   + v2rayN-linux-loong64-WebAPI-update.zip
+  win-x64          -> v2rayN-windows-64-WebAPI.zip      + v2rayN-windows-64-WebAPI-update.zip
+  win-arm64        -> v2rayN-windows-arm64-WebAPI.zip   + v2rayN-windows-arm64-WebAPI-update.zip
 
 Usage:
   web-release-assets.py get --rid linux-x64 --field full
@@ -33,7 +36,10 @@ ENVIRONMENT_FILE_NAMES = frozenset((".env", ".env.example"))
 EXECUTABLE_NAMES = {
     "linux-x64": "v2rayN.WebAPI",
     "linux-arm64": "v2rayN.WebAPI",
+    "linux-riscv64": "v2rayN.WebAPI",
+    "linux-loongarch64": "v2rayN.WebAPI",
     "win-x64": "v2rayN.WebAPI.exe",
+    "win-arm64": "v2rayN.WebAPI.exe",
 }
 REQUIRED_FILES = {
     "linux-x64": (
@@ -44,7 +50,19 @@ REQUIRED_FILES = {
         "v2rayN.WebAPI", BUILD_IDENTITY_NAME, "bin/sing_box/libcronet.so", "bin/geosite.dat",
         "bin/geoip.dat", "bin/geoip.metadb", "bin/Country.mmdb", "bin/srss/geosite-category-ads-all.srs",
     ),
+    "linux-riscv64": (
+        "v2rayN.WebAPI", BUILD_IDENTITY_NAME, "bin/geosite.dat",
+        "bin/geoip.dat", "bin/geoip.metadb", "bin/Country.mmdb", "bin/srss/geosite-category-ads-all.srs",
+    ),
+    "linux-loongarch64": (
+        "v2rayN.WebAPI", BUILD_IDENTITY_NAME, "bin/geosite.dat",
+        "bin/geoip.dat", "bin/geoip.metadb", "bin/Country.mmdb", "bin/srss/geosite-category-ads-all.srs",
+    ),
     "win-x64": (
+        "v2rayN.WebAPI.exe", BUILD_IDENTITY_NAME, "bin/xray/xray.exe", "bin/sing_box/sing-box.exe",
+        "bin/mihomo/mihomo.exe", "bin/geosite.dat", "bin/geoip.dat", "bin/geoip.metadb", "bin/Country.mmdb",
+    ),
+    "win-arm64": (
         "v2rayN.WebAPI.exe", BUILD_IDENTITY_NAME, "bin/xray/xray.exe", "bin/sing_box/sing-box.exe",
         "bin/mihomo/mihomo.exe", "bin/geosite.dat", "bin/geoip.dat", "bin/geoip.metadb", "bin/Country.mmdb",
     ),
@@ -54,6 +72,10 @@ WINDOWS_REQUIRED_EXECUTABLES = (
     "v2rayN.WebAPI.exe", "bin/xray/xray.exe", "bin/sing_box/sing-box.exe", "bin/mihomo/mihomo.exe",
 )
 BLOCK_SIZE = 1024 * 1024
+
+
+def is_windows_rid(rid: str) -> bool:
+    return rid.startswith("win-")
 
 
 def fail(message: str) -> None:
@@ -144,9 +166,9 @@ def create_full_zip(publish: Path, output: Path, rid: str) -> None:
     for required in REQUIRED_FILES[rid]:
         if required not in names:
             fail(f"full package is missing required file: {required}")
-    required_executables = WINDOWS_REQUIRED_EXECUTABLES if rid == "win-x64" else LINUX_REQUIRED_EXECUTABLES
+    required_executables = WINDOWS_REQUIRED_EXECUTABLES if is_windows_rid(rid) else LINUX_REQUIRED_EXECUTABLES
     for required in required_executables:
-        if required not in names or (rid != "win-x64" and not os.access(publish / required, os.X_OK)):
+        if required not in names or (not is_windows_rid(rid) and not os.access(publish / required, os.X_OK)):
             fail(f"full package is missing required executable: {required}")
     with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED, allowZip64=True) as handle:
         for relative, path, kind in entries:
@@ -159,7 +181,7 @@ def create_full_zip(publish: Path, output: Path, rid: str) -> None:
 
 def create_update_zip(publish: Path, output: Path, rid: str) -> None:
     executable_name = EXECUTABLE_NAMES[rid]
-    if not (publish / executable_name).is_file() or (rid != "win-x64" and not os.access(publish / executable_name, os.X_OK)):
+    if not (publish / executable_name).is_file() or (not is_windows_rid(rid) and not os.access(publish / executable_name, os.X_OK)):
         fail(f"app-only package is missing required executable: {executable_name}")
     entries: list[tuple[str, Path]] = []
     for name in (executable_name, BUILD_IDENTITY_NAME):

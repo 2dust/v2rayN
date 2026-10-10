@@ -364,7 +364,7 @@ internal static class NativeWebUpdateHelper
             || isManagedLinuxService
             || !WebUpdatePackageStager.IsValidVersion(plan.ExpectedVersion)
             || !WebUpdatePackageStager.IsValidVersion(plan.PreviousVersion)
-            || plan.Rid is not ("linux-x64" or "linux-arm64" or "win-x64")
+            || !WebUpdatePackageStager.IsSupportedRid(plan.Rid)
             || plan.Rid != System.Runtime.InteropServices.RuntimeInformation.RuntimeIdentifier
             || string.IsNullOrWhiteSpace(plan.ExpectedCommit)
             || !Uri.TryCreate(plan.HealthUri, UriKind.Absolute, out var healthUri)

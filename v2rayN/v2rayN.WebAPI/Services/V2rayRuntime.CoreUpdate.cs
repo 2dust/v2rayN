@@ -203,7 +203,7 @@ public sealed partial class V2rayRuntime
     public OperationView StartSelectedCoreUpdateBatch(bool apply)
     {
         var selected = Config.CheckUpdateItem.SelectedCoreTypes;
-        var webSupported = WebBuildIdentity.Current.Rid is "linux-x64" or "linux-arm64" or "win-x64";
+        var webSupported = WebUpdatePackageStager.IsSupportedRid(WebBuildIdentity.Current.Rid);
         var selectedNames = selected is null
             ? GetAvailableWebCoreUpdateTypes().Select(coreType => coreType.ToString())
                 .Append(GeoFilesUpdateTarget)

@@ -2,7 +2,7 @@
 set -eu
 
 if [ "$#" -ne 2 ]; then
-  echo "Usage: $0 <linux-x64|linux-arm64> <destination-bin-directory>" >&2
+  echo "Usage: $0 <linux-x64|linux-arm64|linux-riscv64|linux-loongarch64> <destination-bin-directory>" >&2
   exit 2
 fi
 
@@ -12,6 +12,8 @@ destination="$2"
 case "$rid" in
   linux-x64) bundle="v2rayN-linux-64" ;;
   linux-arm64) bundle="v2rayN-linux-arm64" ;;
+  linux-riscv64) bundle="v2rayN-linux-riscv64" ;;
+  linux-loongarch64) bundle="v2rayN-linux-loong64" ;;
   *)
     echo "Unsupported runtime identifier: $rid" >&2
     exit 2
@@ -31,7 +33,6 @@ source_bin="$temporary_directory/unpacked/$bundle/bin"
 for required_file in \
   xray/xray \
   sing_box/sing-box \
-  sing_box/libcronet.so \
   mihomo/mihomo \
   Country.mmdb \
   geoip-only-cn-private.dat \
@@ -46,6 +47,13 @@ for required_file in \
     exit 1
   fi
 done
+# The cronet payload is only present in the x64/arm64 bundles.
+if [ "$rid" = "linux-x64" ] || [ "$rid" = "linux-arm64" ]; then
+  if [ ! -f "$source_bin/sing_box/libcronet.so" ]; then
+    echo "Core bundle is missing required asset: sing_box/libcronet.so" >&2
+    exit 1
+  fi
+fi
 
 mkdir -p "$destination"
 # Preserve the complete official bin/ tree, including future upstream assets and Cores.
@@ -54,6 +62,8 @@ chmod 755 \
   "$destination/xray/xray" \
   "$destination/sing_box/sing-box" \
   "$destination/mihomo/mihomo"
-chmod 644 "$destination/sing_box/libcronet.so"
+if [ -f "$destination/sing_box/libcronet.so" ]; then
+  chmod 644 "$destination/sing_box/libcronet.so"
+fi
 
 printf 'Integrated complete upstream %s Core/data bin payload into %s\n' "$rid" "$destination"

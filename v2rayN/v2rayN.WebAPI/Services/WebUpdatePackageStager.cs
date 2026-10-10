@@ -67,8 +67,14 @@ internal static partial class WebUpdatePackageStager
         }
         foreach (var package in manifest.Packages)
         {
-            if (package.Rid is not ("linux-x64" or "linux-arm64" or "win-x64")
-                || string.IsNullOrWhiteSpace(package.Asset)
+            if (!IsSupportedRid(package.Rid))
+            {
+                // Forward compatibility: a newer release can carry packages for runtime
+                // identifiers this build does not support. They are ignored here and are
+                // never downloaded or installed by this instance.
+                continue;
+            }
+            if (string.IsNullOrWhiteSpace(package.Asset)
                 || !Uri.TryCreate(package.Url, UriKind.Absolute, out var assetUri)
                 || assetUri.Scheme != Uri.UriSchemeHttps
                 || string.IsNullOrWhiteSpace(package.Sha256)
@@ -83,7 +89,7 @@ internal static partial class WebUpdatePackageStager
 
     public static WebUpdatePackage RequirePackage(WebUpdateManifest manifest, string rid)
     {
-        if (rid is not ("linux-x64" or "linux-arm64" or "win-x64"))
+        if (!IsSupportedRid(rid))
             throw new InvalidDataException($"The Web release does not support runtime identifier {rid}.");
         return manifest.Packages.FirstOrDefault(package => package.Rid == rid)
             ?? throw new InvalidDataException($"The Web release has no package for runtime identifier {rid}.");
@@ -211,29 +217,40 @@ internal static partial class WebUpdatePackageStager
 
     // JSON RID alone cannot prove executable identity. Reject wrong-architecture,
     // truncated and script payloads before shutdown or process replacement.
+    internal static bool IsSupportedRid(string? rid) =>
+        rid is "linux-x64" or "linux-arm64" or "linux-riscv64" or "linux-loongarch64" or "win-x64" or "win-arm64";
+
     internal static string ExecutableNameForRid(string rid) => rid switch
     {
-        "linux-x64" or "linux-arm64" => LinuxExecutableName,
-        "win-x64" => WindowsExecutableName,
+        "linux-x64" or "linux-arm64" or "linux-riscv64" or "linux-loongarch64" => LinuxExecutableName,
+        "win-x64" or "win-arm64" => WindowsExecutableName,
         _ => throw new InvalidDataException($"Unsupported WebAPI runtime identifier: {rid}."),
     };
 
     internal static void RequireNativeExecutable(string path, string rid)
     {
         using var stream = File.OpenRead(path);
-        if (rid == "win-x64")
+        if (rid is "win-x64" or "win-arm64")
         {
-            RequireWindowsExecutable(stream);
+            RequireWindowsExecutable(stream, rid);
             return;
         }
-        if (rid is not ("linux-x64" or "linux-arm64"))
+        if (rid is not ("linux-x64" or "linux-arm64" or "linux-riscv64" or "linux-loongarch64"))
             throw new InvalidDataException($"Unsupported WebAPI runtime identifier: {rid}.");
 
+        var expectedMachine = rid switch
+        {
+            "linux-x64" => 62,
+            "linux-arm64" => 183,
+            "linux-riscv64" => 243,
+            "linux-loongarch64" => 258,
+            _ => throw new InvalidDataException($"Unsupported WebAPI runtime identifier: {rid}."),
+        };
         Span<byte> header = stackalloc byte[64];
         if (stream.Read(header) != header.Length
             || !header[..7].SequenceEqual(new byte[] { 0x7f, (byte)'E', (byte)'L', (byte)'F', 2, 1, 1 })
             || BinaryPrimitives.ReadUInt16LittleEndian(header[16..]) is not (2 or 3)
-            || BinaryPrimitives.ReadUInt16LittleEndian(header[18..]) != (rid == "linux-x64" ? 62 : rid == "linux-arm64" ? 183 : 0)
+            || BinaryPrimitives.ReadUInt16LittleEndian(header[18..]) != expectedMachine
             || BinaryPrimitives.ReadUInt32LittleEndian(header[20..]) != 1
             || BinaryPrimitives.ReadUInt16LittleEndian(header[52..]) != 64)
             throw new InvalidDataException("The WebAPI package executable must be a Linux ELF64 image for its declared runtime identifier.");
@@ -245,13 +262,19 @@ internal static partial class WebUpdatePackageStager
             throw new InvalidDataException("The WebAPI package executable has a truncated or invalid ELF program table.");
     }
 
-    private static void RequireWindowsExecutable(Stream stream)
+    private static void RequireWindowsExecutable(Stream stream, string rid)
     {
+        var expectedMachine = rid switch
+        {
+            "win-x64" => 0x8664,
+            "win-arm64" => 0xAA64,
+            _ => throw new InvalidDataException($"Unsupported WebAPI runtime identifier: {rid}."),
+        };
         Span<byte> dosHeader = stackalloc byte[64];
         if (stream.Length < dosHeader.Length || stream.Read(dosHeader) != dosHeader.Length
             || BinaryPrimitives.ReadUInt16LittleEndian(dosHeader) != 0x5A4D)
         {
-            throw new InvalidDataException("The WebAPI package executable must be a Windows PE32+ image for x64.");
+            throw new InvalidDataException("The WebAPI package executable must be a Windows PE32+ image for its declared runtime identifier.");
         }
 
         var peOffset = BinaryPrimitives.ReadUInt32LittleEndian(dosHeader[0x3C..]);
@@ -262,12 +285,12 @@ internal static partial class WebUpdatePackageStager
         Span<byte> peHeader = stackalloc byte[26];
         if (stream.Read(peHeader) != peHeader.Length
             || !peHeader[..4].SequenceEqual(new byte[] { (byte)'P', (byte)'E', 0, 0 })
-            || BinaryPrimitives.ReadUInt16LittleEndian(peHeader[4..]) != 0x8664
+            || BinaryPrimitives.ReadUInt16LittleEndian(peHeader[4..]) != expectedMachine
             || BinaryPrimitives.ReadUInt16LittleEndian(peHeader[6..]) == 0
             || BinaryPrimitives.ReadUInt16LittleEndian(peHeader[20..]) < 2
             || (BinaryPrimitives.ReadUInt16LittleEndian(peHeader[22..]) & 0x0002) == 0)
         {
-            throw new InvalidDataException("The WebAPI package executable must be a Windows PE32+ image for x64.");
+            throw new InvalidDataException("The WebAPI package executable must be a Windows PE32+ image for its declared runtime identifier.");
         }
 
         var optionalHeaderSize = BinaryPrimitives.ReadUInt16LittleEndian(peHeader[20..]);
@@ -278,7 +301,7 @@ internal static partial class WebUpdatePackageStager
         if (stream.Read(optionalHeaderMagic) != optionalHeaderMagic.Length
             || BinaryPrimitives.ReadUInt16LittleEndian(optionalHeaderMagic) != 0x20B)
         {
-            throw new InvalidDataException("The WebAPI package executable must be a Windows PE32+ image for x64.");
+            throw new InvalidDataException("The WebAPI package executable must be a Windows PE32+ image for its declared runtime identifier.");
         }
     }
 

@@ -12,28 +12,35 @@ make_publish_fixture() {
   local rid="$1"
   local publish="$temporary/publish-$rid"
   local app_executable="v2rayN.WebAPI" xray="bin/xray/xray" sing_box="bin/sing_box/sing-box" mihomo="bin/mihomo/mihomo"
-  if [[ "$rid" == win-x64 ]]; then
+  local pe_machine=""
+  case "$rid" in
+    win-x64) pe_machine="0x8664" ;;
+    win-arm64) pe_machine="0xAA64" ;;
+  esac
+  if [[ -n "$pe_machine" ]]; then
     app_executable="v2rayN.WebAPI.exe"
     xray="bin/xray/xray.exe"
     sing_box="bin/sing_box/sing-box.exe"
     mihomo="bin/mihomo/mihomo.exe"
   fi
   mkdir -p "$publish/bin/xray" "$publish/bin/sing_box" "$publish/bin/mihomo" "$publish/bin/srss"
-  if [[ "$rid" == win-x64 ]]; then
-    python3 - "$publish/$app_executable" "$publish/$xray" "$publish/$sing_box" "$publish/$mihomo" <<'PY'
+  if [[ -n "$pe_machine" ]]; then
+    python3 - "$publish/$app_executable" "$publish/$xray" "$publish/$sing_box" "$publish/$mihomo" "$pe_machine" <<'PY'
 from pathlib import Path
 import struct
 import sys
 
+names = sys.argv[1:-1]
+machine = int(sys.argv[-1], 16)
 image = bytearray(512)
 image[:2] = b"MZ"
 struct.pack_into("<I", image, 0x3C, 128)
 image[128:132] = b"PE\0\0"
-struct.pack_into("<HHH", image, 132, 0x8664, 1, 0)
+struct.pack_into("<HHH", image, 132, machine, 1, 0)
 struct.pack_into("<H", image, 148, 240)
 struct.pack_into("<H", image, 150, 0x0002)
 struct.pack_into("<H", image, 152, 0x020B)
-for name in sys.argv[1:]:
+for name in names:
     Path(name).write_bytes(image)
 PY
   else
@@ -48,8 +55,8 @@ PY
   # repository template may be copied into a full install ZIP.
   printf 'V2RAYN_WEB_API_KEY=fixture-secret\n' > "$publish/.env"
   printf 'unreviewed template\n' > "$publish/.env.example"
-  local assets=(bin/geosite.dat bin/geoip.dat bin/geoip.metadb bin/Country.mmdb)
-  if [[ "$rid" != win-x64 ]]; then assets+=(bin/sing_box/libcronet.so bin/srss/geosite-category-ads-all.srs); fi
+  local assets=(bin/geosite.dat bin/geoip.dat bin/geoip.metadb bin/Country.mmdb bin/srss/geosite-category-ads-all.srs)
+  if [[ "$rid" == linux-x64 || "$rid" == linux-arm64 ]]; then assets+=(bin/sing_box/libcronet.so); fi
   for asset in "${assets[@]}"; do
     printf 'asset\n' > "$publish/$asset"
   done
@@ -75,27 +82,41 @@ with open(path, "w", encoding="utf-8") as handle:
 PY
 }
 
-for rid in linux-x64 linux-arm64 win-x64; do
+for rid in linux-x64 linux-arm64 linux-riscv64 linux-loongarch64 win-x64 win-arm64; do
   make_publish_fixture "$rid"
   bash "$web_root/Scripts/package-native.sh" "$rid" "$temporary/publish-$rid" "$temporary/dist"
 done
 
 full_x64="$(python3 "$asset_tool" get --rid linux-x64 --field full)"
 full_arm64="$(python3 "$asset_tool" get --rid linux-arm64 --field full)"
+full_riscv64="$(python3 "$asset_tool" get --rid linux-riscv64 --field full)"
+full_loong64="$(python3 "$asset_tool" get --rid linux-loongarch64 --field full)"
 update_x64="$(python3 "$asset_tool" get --rid linux-x64 --field update)"
 update_arm64="$(python3 "$asset_tool" get --rid linux-arm64 --field update)"
+update_riscv64="$(python3 "$asset_tool" get --rid linux-riscv64 --field update)"
+update_loong64="$(python3 "$asset_tool" get --rid linux-loongarch64 --field update)"
 full_windows="$(python3 "$asset_tool" get --rid win-x64 --field full)"
 update_windows="$(python3 "$asset_tool" get --rid win-x64 --field update)"
+full_windows_arm64="$(python3 "$asset_tool" get --rid win-arm64 --field full)"
+update_windows_arm64="$(python3 "$asset_tool" get --rid win-arm64 --field update)"
 
-for asset in "$full_x64" "$full_arm64" "$update_x64" "$update_arm64" "$full_windows" "$update_windows"; do
+for asset in "$full_x64" "$full_arm64" "$full_riscv64" "$full_loong64" \
+  "$update_x64" "$update_arm64" "$update_riscv64" "$update_loong64" \
+  "$full_windows" "$update_windows" "$full_windows_arm64" "$update_windows_arm64"; do
   test -s "$temporary/dist/$asset"
 done
 test "$full_x64" = "v2rayN-linux-64-WebAPI.zip"
 test "$full_arm64" = "v2rayN-linux-arm64-WebAPI.zip"
+test "$full_riscv64" = "v2rayN-linux-riscv64-WebAPI.zip"
+test "$full_loong64" = "v2rayN-linux-loong64-WebAPI.zip"
 test "$update_x64" = "v2rayN-linux-64-WebAPI-update.zip"
 test "$update_arm64" = "v2rayN-linux-arm64-WebAPI-update.zip"
+test "$update_riscv64" = "v2rayN-linux-riscv64-WebAPI-update.zip"
+test "$update_loong64" = "v2rayN-linux-loong64-WebAPI-update.zip"
 test "$full_windows" = "v2rayN-windows-64-WebAPI.zip"
 test "$update_windows" = "v2rayN-windows-64-WebAPI-update.zip"
+test "$full_windows_arm64" = "v2rayN-windows-arm64-WebAPI.zip"
+test "$update_windows_arm64" = "v2rayN-windows-arm64-WebAPI-update.zip"
 
 python3 - "$temporary/dist/$full_x64" "$temporary/dist/$update_x64" "$temporary/dist/$full_windows" "$temporary/dist/$update_windows" "$web_root/.env.example" <<'PY'
 from pathlib import Path
@@ -160,14 +181,14 @@ if python3 "$web_root/Scripts/web-update-manifest.py" verify \
   exit 1
 fi
 
-python3 - "$temporary/dist/WebAPI-update.json" "$update_x64" "$update_arm64" "$update_windows" <<'PY'
+python3 - "$temporary/dist/WebAPI-update.json" "$update_x64" "$update_arm64" "$update_riscv64" "$update_loong64" "$update_windows" "$update_windows_arm64" <<'PY'
 import hashlib
 import json
 import sys
 from pathlib import Path
 
 manifest_path = Path(sys.argv[1])
-asset_x64, asset_arm64, asset_windows = sys.argv[2:]
+asset_x64, asset_arm64, asset_riscv64, asset_loong64, asset_windows, asset_windows_arm64 = sys.argv[2:]
 manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
 assert manifest["product"] == "v2rayN.WebAPI", manifest
 assert manifest["version"] == "7.25.3", manifest
@@ -176,7 +197,10 @@ assert manifest["buildDate"] == "2026-09-28T00:00:00Z", manifest
 expected = {
     "linux-x64": asset_x64,
     "linux-arm64": asset_arm64,
+    "linux-riscv64": asset_riscv64,
+    "linux-loongarch64": asset_loong64,
     "win-x64": asset_windows,
+    "win-arm64": asset_windows_arm64,
 }
 packages = {package["rid"]: package for package in manifest["packages"]}
 assert set(packages) == set(expected), packages
