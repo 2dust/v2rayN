@@ -290,6 +290,7 @@ if __name__ == "__main__":
         run_scenario(root / "replacement", previous, candidate, False)
         run_scenario(root / "rollback", previous, candidate, True)
         run_scenario(root / "invalid-executable", previous, candidate, False, True)
+        run_scenario(root / "localhost-replacement", previous, candidate, False, listen_host="localhost")
         if ipv6_loopback_available():
             run_scenario(root / "ipv6-only-replacement", previous, candidate, False, listen_host="::1")
         else:

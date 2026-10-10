@@ -479,7 +479,7 @@ public sealed partial class V2rayRuntime
         && GetWebUpdateDeployment().CanInstall
         && GetWebUpdateRuntimeInstallReason() is null;
 
-    private string? GetWebUpdateRuntimeInstallReason()
+    internal string? GetWebUpdateRuntimeInstallReason()
     {
         if (!WebProbeUriResolver.TryResolve(_configuration, out _))
         {

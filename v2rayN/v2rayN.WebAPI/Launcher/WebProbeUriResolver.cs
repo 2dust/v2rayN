@@ -8,13 +8,25 @@ namespace v2rayN.WebAPI.Launcher;
 /// Kestrel listeners. The diagnostic endpoint is loopback-only, so a probe is produced
 /// only for listeners that can be reached over a loopback address; listeners that cannot
 /// (HTTPS-only, an explicit non-loopback address, or malformed configuration) are
-/// rejected instead of being rewritten to a guessed address or port.
+/// rejected instead of being rewritten to a guessed address or port. The rule set is
+/// shared with the health diagnostics and the update helper: every produced URI passes
+/// <see cref="IsProbeableLoopbackUri"/>.
 /// </summary>
 public static class WebProbeUriResolver
 {
     public const string HealthPath = "/api/health";
 
     public sealed record WebProbeEndpoints(Uri HealthUri, Uri ApiUri);
+
+    /// <summary>
+    /// True when a URI can carry a verifiable health probe: plain HTTP to a host the
+    /// health diagnostics accept as local (localhost, 127.0.0.1 or ::1). The update
+    /// helper and the produced probe URIs both use this single rule.
+    /// </summary>
+    public static bool IsProbeableLoopbackUri(string? value) =>
+        Uri.TryCreate(value, UriKind.Absolute, out var uri)
+        && uri.Scheme == Uri.UriSchemeHttp
+        && WebSetupAccessPolicy.IsLocalHost(uri.Host);
 
     /// <summary>
     /// Resolves the health and API URLs for the first effective listener that can be probed
@@ -78,7 +90,9 @@ public static class WebProbeUriResolver
     {
         if (host.Equals("localhost", StringComparison.OrdinalIgnoreCase))
         {
-            return IPAddress.Loopback.ToString();
+            // Keep the configured name: resolving "localhost" covers both families and
+            // avoids forcing a configured name onto one IPv4 literal.
+            return "localhost";
         }
 
         // System.Uri keeps the brackets around IPv6 literals.

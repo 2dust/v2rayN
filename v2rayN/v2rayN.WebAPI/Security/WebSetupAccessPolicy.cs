@@ -17,6 +17,13 @@ public static class WebSetupAccessPolicy
         && IsAllowed(context.Connection.RemoteIpAddress, context.Request.Host.Host,
             HasForwardedHeaders(context.Request.Headers));
 
+    /// <summary>
+    /// The loopback peer + local Host pair required for per-instance health diagnostics.
+    /// The update/launcher probe rules (see WebProbeUriResolver) target exactly this pair.
+    /// </summary>
+    public static bool IsLocalDiagnosticSource(IPAddress? remoteAddress, string? host) =>
+        IsLoopbackAddress(remoteAddress) && IsLocalHost(host);
+
     public static bool IsLoopbackAddress(IPAddress? remoteAddress)
     {
         if (remoteAddress is null)
