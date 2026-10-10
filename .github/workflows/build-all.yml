@@ -39,7 +39,7 @@ jobs:
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             https://api.github.com/repos/${{ github.repository }}/actions/workflows/build-windows.yml/dispatches \
             -d "{
-              \"ref\": \"${{ github.ref_name }}\",
+              \"ref\": \"master\",
               \"inputs\": {
                 \"release_tag\": \"${{ inputs.release_tag }}\"
               }
@@ -53,7 +53,7 @@ jobs:
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             https://api.github.com/repos/${{ github.repository }}/actions/workflows/build-linux.yml/dispatches \
             -d "{
-              \"ref\": \"${{ github.ref_name }}\",
+              \"ref\": \"master\",
               \"inputs\": {
                 \"release_tag\": \"${{ inputs.release_tag }}\"
               }
@@ -67,7 +67,7 @@ jobs:
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             https://api.github.com/repos/${{ github.repository }}/actions/workflows/build-osx.yml/dispatches \
             -d "{
-              \"ref\": \"${{ github.ref_name }}\",
+              \"ref\": \"master\",
               \"inputs\": {
                 \"release_tag\": \"${{ inputs.release_tag }}\"
               }
@@ -81,7 +81,7 @@ jobs:
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             https://api.github.com/repos/${{ github.repository }}/actions/workflows/build-windows-desktop.yml/dispatches \
             -d "{
-              \"ref\": \"${{ github.ref_name }}\",
+              \"ref\": \"master\",
               \"inputs\": {
                 \"release_tag\": \"${{ inputs.release_tag }}\"
               }
@@ -95,7 +95,7 @@ jobs:
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             https://api.github.com/repos/${{ github.repository }}/actions/workflows/build-windows-x86.yml/dispatches \
             -d "{
-              \"ref\": \"${{ github.ref_name }}\",
+              \"ref\": \"master\",
               \"inputs\": {
                 \"release_tag\": \"${{ inputs.release_tag }}\"
               }
