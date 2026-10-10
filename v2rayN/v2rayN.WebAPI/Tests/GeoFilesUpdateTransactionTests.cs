@@ -311,7 +311,7 @@ public class GeoFilesUpdateTransactionTests
     {
         public TemporaryDirectory()
         {
-            Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"v2rayn-web-geofiles-test-{Guid.NewGuid():N}");
+            Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"v2rayn-WebAPI-geofiles-test-{Guid.NewGuid():N}");
             Directory.CreateDirectory(Path);
         }
 

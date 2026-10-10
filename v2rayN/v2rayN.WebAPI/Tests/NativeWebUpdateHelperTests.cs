@@ -10,12 +10,12 @@ public class NativeWebUpdateHelperTests
         await NativeWebUpdateHelper.IsUpdateHelperExecutableName("v2rayN.WebAPI").Should().BeTrue();
         await NativeWebUpdateHelper.IsUpdateHelperExecutableName("v2rayN.WebAPI.exe").Should().BeTrue();
         await NativeWebUpdateHelper.IsUpdateHelperExecutableName(
-            ".v2rayn-web-update-helper-" + Guid.NewGuid().ToString("N")).Should().BeTrue();
+            ".v2rayn-WebAPI-update-helper-" + Guid.NewGuid().ToString("N")).Should().BeTrue();
         await NativeWebUpdateHelper.IsUpdateHelperExecutableName(
-            ".v2rayn-web-update-helper-" + Guid.NewGuid().ToString("N") + ".exe").Should().BeTrue();
-        foreach (var name in new[] { "", "v2rayN.Web", "other", ".v2rayn-web-update-helper-",
-            ".v2rayn-web-update-helper-not-a-guid", ".v2rayn-web-update-helper-" + Guid.NewGuid().ToString("D"),
-            "../v2rayN.WebAPI", ".v2rayn-web-update-helper-" + Guid.NewGuid().ToString("N") + ".bak" })
+            ".v2rayn-WebAPI-update-helper-" + Guid.NewGuid().ToString("N") + ".exe").Should().BeTrue();
+        foreach (var name in new[] { "", "v2rayN.Web", "other", ".v2rayn-WebAPI-update-helper-",
+            ".v2rayn-WebAPI-update-helper-not-a-guid", ".v2rayn-WebAPI-update-helper-" + Guid.NewGuid().ToString("D"),
+            "../v2rayN.WebAPI", ".v2rayn-WebAPI-update-helper-" + Guid.NewGuid().ToString("N") + ".bak" })
         {
             await NativeWebUpdateHelper.IsUpdateHelperExecutableName(name).Should().BeFalse();
         }
@@ -65,7 +65,7 @@ public class NativeWebUpdateHelperTests
             try { NativeWebUpdateHelper.CreateIsolatedHelperExecutable(link); }
             catch (InvalidDataException) { rejected = true; }
             await rejected.Should().BeTrue();
-            await Directory.GetFiles(directory, ".v2rayn-web-update-helper-*").Length.Should().BeEqualTo(0);
+            await Directory.GetFiles(directory, ".v2rayn-WebAPI-update-helper-*").Length.Should().BeEqualTo(0);
             await (await File.ReadAllTextAsync(target)).Should().BeEqualTo("unchanged");
         }
         finally

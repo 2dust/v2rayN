@@ -37,7 +37,7 @@ internal static class NativeWebUpdateHelper
     private static readonly TimeSpan OwnerReleaseTimeout = TimeSpan.FromSeconds(45);
     private static readonly TimeSpan HealthTimeout = TimeSpan.FromSeconds(60);
     private static readonly TimeSpan PollInterval = TimeSpan.FromMilliseconds(200);
-    private const string IsolatedHelperPrefix = ".v2rayn-web-update-helper-";
+    private const string IsolatedHelperPrefix = ".v2rayn-WebAPI-update-helper-";
 
     public static async Task<int> RunAsync(string planPath)
     {
@@ -254,7 +254,7 @@ internal static class NativeWebUpdateHelper
                 UseShellExecute = false,
                 CreateNoWindow = true,
             };
-            startInfo.ArgumentList.Add("--apply-web-update");
+            startInfo.ArgumentList.Add("--apply-WebAPI-update");
             startInfo.ArgumentList.Add(planPath);
             using var worker = Process.Start(startInfo)
                 ?? throw new InvalidOperationException("The isolated native Web update helper could not be started.");
@@ -354,9 +354,7 @@ internal static class NativeWebUpdateHelper
     {
         var isLinux = OperatingSystem.IsLinux();
         var isWindows = OperatingSystem.IsWindows();
-        var isManagedLinuxService = isLinux && (WebStopper.IsManagedBySystemd(Environment.ProcessId)
-            || !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("INVOCATION_ID"))
-            || !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("JOURNAL_STREAM")));
+        var isManagedLinuxService = isLinux && LauncherEnvironment.IsSystemdManagedDeployment();
         if ((!isLinux && !isWindows) || plan is null
             || File.Exists("/.dockerenv") || File.Exists("/run/.containerenv")
             || !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("container"))
@@ -389,8 +387,8 @@ internal static class NativeWebUpdateHelper
         }
         var parent = Path.GetDirectoryName(install)
             ?? throw new InvalidDataException("The installation directory has no parent.");
-        EnsureSiblingDirectory(plan.CandidateDirectory, parent, ".v2rayn-web-candidate-");
-        EnsureSiblingDirectory(plan.BackupDirectory, parent, ".v2rayn-web-backup-");
+        EnsureSiblingDirectory(plan.CandidateDirectory, parent, ".v2rayn-WebAPI-candidate-");
+        EnsureSiblingDirectory(plan.BackupDirectory, parent, ".v2rayn-WebAPI-backup-");
         if (!Path.IsPathFullyQualified(plan.InstanceLockPath)
             || !Path.IsPathFullyQualified(plan.RuntimeIntentPath)
             || !Path.IsPathFullyQualified(plan.ProgressPath)
@@ -399,7 +397,7 @@ internal static class NativeWebUpdateHelper
             || !string.Equals(Path.GetFullPath(plan.RuntimeIntentPath),
                 Path.GetFullPath(V2rayRuntime.WebUpdateRuntimeStatePath), pathComparison)
             || !string.Equals(Path.GetFullPath(plan.ProgressPath),
-                Path.GetFullPath(Utils.GetTempPath("web-update-progress.json")), pathComparison)
+                Path.GetFullPath(Utils.GetTempPath("WebAPI-update-progress.json")), pathComparison)
             || !Directory.Exists(plan.CandidateDirectory)
             || !File.Exists(Path.Combine(plan.CandidateDirectory, executableName))
             || !File.Exists(Path.Combine(plan.CandidateDirectory, "v2rayN.WebAPI.build.json")))
@@ -416,7 +414,7 @@ internal static class NativeWebUpdateHelper
         {
             throw new InvalidDataException("The staged executable identity does not match the verified update plan.");
         }
-        var writableProbe = Path.Combine(install, $".v2rayn-web-helper-write-probe-{Guid.NewGuid():N}");
+        var writableProbe = Path.Combine(install, $".v2rayn-WebAPI-helper-write-probe-{Guid.NewGuid():N}");
         using (new FileStream(writableProbe, FileMode.CreateNew, FileAccess.Write, FileShare.None)) { }
         File.Delete(writableProbe);
         if (new DirectoryInfo(install).LinkTarget is not null
@@ -435,9 +433,7 @@ internal static class NativeWebUpdateHelper
             var isWindows = OperatingSystem.IsWindows();
             var pathComparison = isWindows ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
             return (isLinux || isWindows)
-                && (!isLinux || (!WebStopper.IsManagedBySystemd(Environment.ProcessId)
-                    && string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("INVOCATION_ID"))
-                    && string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("JOURNAL_STREAM"))))
+                && (!isLinux || !LauncherEnvironment.IsSystemdManagedDeployment())
                 && !File.Exists("/.dockerenv")
                 && !File.Exists("/run/.containerenv")
                 && string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("container"))
@@ -455,12 +451,12 @@ internal static class NativeWebUpdateHelper
                 && string.Equals(Path.GetFullPath(plan.RuntimeIntentPath),
                     Path.GetFullPath(V2rayRuntime.WebUpdateRuntimeStatePath), pathComparison)
                 && string.Equals(Path.GetFullPath(plan.ProgressPath),
-                    Path.GetFullPath(Utils.GetTempPath("web-update-progress.json")), pathComparison)
+                    Path.GetFullPath(Utils.GetTempPath("WebAPI-update-progress.json")), pathComparison)
                 && Uri.TryCreate(plan.HealthUri, UriKind.Absolute, out var uri)
                 && uri.Scheme == Uri.UriSchemeHttp && uri.Host is "127.0.0.1" or "localhost"
                 && WebUpdatePackageStager.IsValidVersion(plan.PreviousVersion)
                 && plan.HostArguments is not null
-                && !plan.HostArguments.Any(argument => argument is "--stop" or "--apply-web-update" or "--background" or "--background-child");
+                && !plan.HostArguments.Any(argument => argument is "--stop" or "--apply-WebAPI-update" or "--background" or "--background-child");
         }
         catch (Exception exception) when (exception is ArgumentException or IOException or UnauthorizedAccessException)
         {
@@ -514,7 +510,7 @@ internal static class NativeWebUpdateHelper
         if (!Directory.Exists(backup)) throw new DirectoryNotFoundException("The previous Web application backup is missing.");
 
         var previousIdentity = Path.Combine(backup, "v2rayN.WebAPI.build.json");
-        var restoredExecutable = Path.Combine(install, $".v2rayn-web-restore-{Guid.NewGuid():N}{Path.GetExtension(executableName)}");
+        var restoredExecutable = Path.Combine(install, $".v2rayn-WebAPI-restore-{Guid.NewGuid():N}{Path.GetExtension(executableName)}");
         var restoredIdentity = restoredExecutable + ".build.json";
         try
         {

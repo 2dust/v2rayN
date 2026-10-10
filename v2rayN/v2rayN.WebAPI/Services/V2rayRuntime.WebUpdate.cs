@@ -13,7 +13,7 @@ namespace v2rayN.WebAPI.Services;
 
 public sealed partial class V2rayRuntime
 {
-    private const string WebUpdateProgressFile = "web-update-progress.json";
+    private const string WebUpdateProgressFile = "WebAPI-update-progress.json";
     private Task? _webUpdateTask;
     private string? _latestWebUpdateVersion;
 
@@ -304,8 +304,8 @@ public sealed partial class V2rayRuntime
             ?? throw new InvalidOperationException("The current Web executable has no install directory.");
         var installParent = Path.GetDirectoryName(installDirectory)
             ?? throw new InvalidOperationException("The current Web install directory has no parent.");
-        var candidateDirectory = Path.Combine(installParent, $".v2rayn-web-candidate-{id}");
-        var backupDirectory = Path.Combine(installParent, $".v2rayn-web-backup-{id}");
+        var candidateDirectory = Path.Combine(installParent, $".v2rayn-WebAPI-candidate-{id}");
+        var backupDirectory = Path.Combine(installParent, $".v2rayn-WebAPI-backup-{id}");
 
         try
         {
@@ -412,7 +412,7 @@ public sealed partial class V2rayRuntime
             {
                 throw new PlatformNotSupportedException("Native Web self-update is supported on Linux and Windows x64.");
             }
-            startInfo.ArgumentList.Add("--apply-web-update");
+            startInfo.ArgumentList.Add("--apply-WebAPI-update");
             startInfo.ArgumentList.Add(planPath);
             Process helper;
             try
@@ -448,9 +448,7 @@ public sealed partial class V2rayRuntime
         var isContainer = File.Exists("/.dockerenv") || File.Exists("/run/.containerenv")
             || !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("container"))
             || !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER"));
-        var isSystemd = WebStopper.IsManagedBySystemd(Environment.ProcessId)
-            || !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("INVOCATION_ID"))
-            || !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("JOURNAL_STREAM"));
+        var isSystemd = LauncherEnvironment.IsSystemdManagedDeployment();
         var executable = Environment.ProcessPath;
         var expectedExecutableName = WebBuildIdentity.Current.Rid is "linux-x64" or "linux-arm64" or "win-x64"
             ? WebUpdatePackageStager.ExecutableNameForRid(WebBuildIdentity.Current.Rid)
@@ -494,7 +492,7 @@ public sealed partial class V2rayRuntime
             if (new DirectoryInfo(installDirectory).LinkTarget is not null
                 || new FileInfo(executablePath).LinkTarget is not null)
                 return false;
-            var probe = Path.Combine(installDirectory, $".v2rayn-web-write-probe-{Guid.NewGuid():N}");
+            var probe = Path.Combine(installDirectory, $".v2rayn-WebAPI-write-probe-{Guid.NewGuid():N}");
             using (new FileStream(probe, FileMode.CreateNew, FileAccess.Write, FileShare.None)) { }
             File.Delete(probe);
             return true;
@@ -532,7 +530,12 @@ public sealed partial class V2rayRuntime
     private static string[] GetCurrentHostArguments()
     {
         var args = Environment.GetCommandLineArgs().Skip(1).ToArray();
-        return WebLaunchOptions.Parse(args, OperatingSystem.IsLinux(), daemonEnvironment: false, containerEnvironment: false).HostArguments;
+        return WebLaunchOptions.Parse(
+            args,
+            OperatingSystem.IsLinux(),
+            daemonEnvironment: false,
+            containerEnvironment: false,
+            interactiveLaunch: false).HostArguments;
     }
 
     private Uri GetCurrentHealthUri(string[] hostArguments)

@@ -95,29 +95,29 @@ public class BackupArchiveValidationTests
         }
 
         var archive = CreateArchive(
-            ("backup_web/guiConfigs/guiNConfig.json", "{}"),
-            ("backup_web/guiConfigs/guiNDB.db", await File.ReadAllBytesAsync(database)),
-            ("backup_web/guiConfigs/web-auth.json", "attacker-provided-auth"));
-        var extracted = Path.Combine(directory.Path, "web-extracted");
+            ("backup_WebAPI/guiConfigs/guiNConfig.json", "{}"),
+            ("backup_WebAPI/guiConfigs/guiNDB.db", await File.ReadAllBytesAsync(database)),
+            ("backup_WebAPI/guiConfigs/WebAPI-auth.json", "attacker-provided-auth"));
+        var extracted = Path.Combine(directory.Path, "WebAPI-extracted");
         var current = Path.Combine(directory.Path, "current-config");
         var candidate = Path.Combine(directory.Path, "candidate-config");
         var backupCopy = Path.Combine(directory.Path, "backup-config");
         Directory.CreateDirectory(current);
-        await File.WriteAllTextAsync(Path.Combine(current, "web-auth.json"), "local-auth-verifier");
+        await File.WriteAllTextAsync(Path.Combine(current, "WebAPI-auth.json"), "local-auth-verifier");
         await File.WriteAllTextAsync(Path.Combine(current, "desktop-note"), "retain-local-config");
         V2rayRuntime.CopyConfigForBackup(current, backupCopy);
 
         try
         {
             await V2rayRuntime.IsSafeBackupArchive(archive).Should().BeTrue();
-            await File.Exists(Path.Combine(backupCopy, "web-auth.json")).Should().BeFalse();
+            await File.Exists(Path.Combine(backupCopy, "WebAPI-auth.json")).Should().BeFalse();
             await V2rayRuntime.TryExtractBackupConfig(archive, extracted).Should().BeTrue();
             await BackupDatabaseCompatibility.IsCompatible(Path.Combine(extracted, "guiNDB.db"), out _).Should().BeTrue();
-            await File.Exists(Path.Combine(extracted, "web-auth.json")).Should().BeFalse();
+            await File.Exists(Path.Combine(extracted, "WebAPI-auth.json")).Should().BeFalse();
 
             V2rayRuntime.PrepareRestoredConfigDirectory(extracted, current, candidate);
 
-            await (await File.ReadAllTextAsync(Path.Combine(candidate, "web-auth.json")))
+            await (await File.ReadAllTextAsync(Path.Combine(candidate, "WebAPI-auth.json")))
                 .Should().BeEqualTo("local-auth-verifier");
             await (await File.ReadAllTextAsync(Path.Combine(candidate, "desktop-note")))
                 .Should().BeEqualTo("retain-local-config");
@@ -171,7 +171,7 @@ public class BackupArchiveValidationTests
 
     private static string CreateArchive(params (string Name, object Content)[] files)
     {
-        var path = Path.Combine(Path.GetTempPath(), $"v2rayn-web-test-{Guid.NewGuid():N}.zip");
+        var path = Path.Combine(Path.GetTempPath(), $"v2rayn-WebAPI-test-{Guid.NewGuid():N}.zip");
         using var archive = ZipFile.Open(path, ZipArchiveMode.Create);
         foreach (var file in files)
         {
@@ -193,7 +193,7 @@ public class BackupArchiveValidationTests
     {
         public TemporaryDirectory()
         {
-            Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"v2rayn-web-backup-test-{Guid.NewGuid():N}");
+            Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"v2rayn-WebAPI-backup-test-{Guid.NewGuid():N}");
             Directory.CreateDirectory(Path);
         }
 

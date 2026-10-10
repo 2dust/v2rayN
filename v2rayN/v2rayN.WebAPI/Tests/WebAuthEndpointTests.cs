@@ -512,7 +512,7 @@ public class WebAuthEndpointTests
     {
         public TemporaryDirectory()
         {
-            Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"v2rayn-web-auth-api-{Guid.NewGuid():N}");
+            Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"v2rayn-WebAPI-auth-api-{Guid.NewGuid():N}");
             Directory.CreateDirectory(Path);
         }
 

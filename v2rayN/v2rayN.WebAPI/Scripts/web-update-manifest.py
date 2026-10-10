@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build or verify the v2rayN Web `web-update.json` release manifest.
+"""Build or verify the v2rayN WebAPI `WebAPI-update.json` release manifest.
 
 The manifest is published next to the official v2rayN Release assets. Every URL points at the
 official release tag in the repository that produced the assets, so the Web self-update never
@@ -11,8 +11,8 @@ and build identity; unrelated files are neither packaged nor touched by self-upd
 
 Usage:
   web-update-manifest.py write --version 7.25.4 --repository 2dust/v2rayN --commit <sha> \
-      --build-date 2026-09-28T00:00:00Z --dist dist --output dist/web-update.json
-  web-update-manifest.py verify --manifest dist/web-update.json --dist dist [--repository 2dust/v2rayN]
+      --build-date 2026-09-28T00:00:00Z --dist dist --output dist/WebAPI-update.json
+  web-update-manifest.py verify --manifest dist/WebAPI-update.json --dist dist [--repository 2dust/v2rayN]
 """
 
 from __future__ import annotations
@@ -305,7 +305,7 @@ def main(argv: list[str]) -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    write_parser = subparsers.add_parser("write", help="write web-update.json from the packaged assets")
+    write_parser = subparsers.add_parser("write", help="write WebAPI-update.json from the packaged assets")
     write_parser.add_argument("--version", required=True)
     write_parser.add_argument("--repository", required=True)
     write_parser.add_argument("--commit", required=True)
@@ -314,7 +314,7 @@ def main(argv: list[str]) -> None:
     write_parser.add_argument("--output", required=True)
     write_parser.set_defaults(func=write_manifest)
 
-    verify_parser = subparsers.add_parser("verify", help="verify web-update.json against the packaged assets")
+    verify_parser = subparsers.add_parser("verify", help="verify WebAPI-update.json against the packaged assets")
     verify_parser.add_argument("--manifest", required=True)
     verify_parser.add_argument("--dist", required=True)
     verify_parser.add_argument("--repository")

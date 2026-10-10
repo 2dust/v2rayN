@@ -18,8 +18,8 @@ public sealed partial class V2rayRuntime
     private const long MaxBackupArchiveBytes = 64L * 1024 * 1024;
     private const long MaxBackupExpandedBytes = 256L * 1024 * 1024;
     private const int MaxBackupEntries = 2048;
-    internal const string WebAuthFileName = "web-auth.json";
-    private const string RestoreRuntimeStateFileName = "v2rayn-web-restore-state.json";
+    internal const string WebAuthFileName = "WebAPI-auth.json";
+    private const string RestoreRuntimeStateFileName = "v2rayn-WebAPI-restore-state.json";
 
     public WebDavSettingsView GetWebDavSettings() => new(
         Config.WebDavItem.Url,
@@ -371,7 +371,7 @@ public sealed partial class V2rayRuntime
     }
 
     private static string RestoreRuntimeStatePath => Path.Combine(Utils.StartupPath(), RestoreRuntimeStateFileName);
-    internal static string WebUpdateRuntimeStatePath => Utils.GetTempPath("web-update-runtime-state.json");
+    internal static string WebUpdateRuntimeStatePath => Utils.GetTempPath("WebAPI-update-runtime-state.json");
 
     private static async Task WriteRestoreRuntimeStateAsync(RuntimeRestartIntent state)
     {

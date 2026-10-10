@@ -8,7 +8,7 @@ public class RuntimeMutationGateTests
     public async Task ConcurrentConfigWritesSerializeTheFixedTemporaryFile()
     {
         var gate = new RuntimeMutationGate();
-        var configPath = Path.Combine(Path.GetTempPath(), $"v2rayn-web-config-{Guid.NewGuid():N}.json");
+        var configPath = Path.Combine(Path.GetTempPath(), $"v2rayn-WebAPI-config-{Guid.NewGuid():N}.json");
         var tempPath = $"{configPath}_temp";
         var sharedConfig = new List<int>();
         var activeWriters = 0;

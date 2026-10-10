@@ -10,7 +10,7 @@ public class NativeWebUpdateWorkflowTests
     {
         var previousLocalData = Environment.GetEnvironmentVariable(ServiceLib.Global.LocalAppData);
         Environment.SetEnvironmentVariable(ServiceLib.Global.LocalAppData, "0");
-        var path = ServiceLib.Common.Utils.GetTempPath("web-update-progress.json");
+        var path = ServiceLib.Common.Utils.GetTempPath("WebAPI-update-progress.json");
         var previous = File.Exists(path) ? await File.ReadAllBytesAsync(path) : null;
         try
         {

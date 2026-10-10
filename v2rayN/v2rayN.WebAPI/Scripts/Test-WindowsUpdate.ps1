@@ -127,7 +127,7 @@ function Start-TestHelper([string]$HelperPath, [string]$PlanPath, [string]$Insta
         $startInfo.CreateNoWindow = $true
         $startInfo.RedirectStandardOutput = $true
         $startInfo.RedirectStandardError = $true
-        $startInfo.Arguments = '"--apply-web-update" "{0}"' -f $PlanPath.Replace('"', '\"')
+        $startInfo.Arguments = '"--apply-WebAPI-update" "{0}"' -f $PlanPath.Replace('"', '\"')
         $process = [Diagnostics.Process]::Start($startInfo)
         return [pscustomobject]@{
             Process = $process
@@ -151,8 +151,8 @@ function Wait-TestHealth([string]$Url, [string]$ExpectedVersion, [int]$TimeoutSe
                 $response = $client.GetAsync("$Url/api/health").GetAwaiter().GetResult()
                 $body = $response.Content.ReadAsStringAsync().GetAwaiter().GetResult()
                 if ([int]$response.StatusCode -eq 200) {
-                    $version = $response.Headers.GetValues('X-v2rayn-web-version') | Select-Object -First 1
-                    $ownerId = $response.Headers.GetValues('X-v2rayn-web-instance-pid') | Select-Object -First 1
+                    $version = $response.Headers.GetValues('X-v2rayn-WebAPI-version') | Select-Object -First 1
+                    $ownerId = $response.Headers.GetValues('X-v2rayn-WebAPI-instance-pid') | Select-Object -First 1
                     if ($version -eq $ExpectedVersion -and $ownerId) {
                         return [pscustomobject]@{ Version = $version; ProcessId = [int]$ownerId; Body = $body }
                     }
@@ -189,8 +189,8 @@ function Write-TestJson([string]$Path, $Value) {
 function Invoke-UpdateScenario([bool]$ExpectRollback) {
     $caseRoot = Join-Path $testRoot ([Guid]::NewGuid().ToString('N'))
     $install = Join-Path $caseRoot 'install'
-    $candidate = Join-Path $caseRoot ('.v2rayn-web-candidate-' + [Guid]::NewGuid().ToString('N'))
-    $backup = Join-Path $caseRoot ('.v2rayn-web-backup-' + [Guid]::NewGuid().ToString('N'))
+    $candidate = Join-Path $caseRoot ('.v2rayn-WebAPI-candidate-' + [Guid]::NewGuid().ToString('N'))
+    $backup = Join-Path $caseRoot ('.v2rayn-WebAPI-backup-' + [Guid]::NewGuid().ToString('N'))
     $core = Join-Path $install 'bin'
     $gui = Join-Path $install 'guiConfigs'
     $temps = Join-Path $install 'guiTemps'
@@ -235,8 +235,8 @@ function Invoke-UpdateScenario([bool]$ExpectRollback) {
         $previousHealth = Wait-TestHealth $url $previousAppIdentity.version
         if ($previousHealth.ProcessId -ne $owner.Id) { throw 'Previous Windows WebAPI lock/health PID mismatch.' }
 
-        $runtimeIntentPath = Join-Path $temps 'web-update-runtime-state.json'
-        $progressPath = Join-Path $temps 'web-update-progress.json'
+        $runtimeIntentPath = Join-Path $temps 'WebAPI-update-runtime-state.json'
+        $progressPath = Join-Path $temps 'WebAPI-update-progress.json'
         $planPath = Join-Path $temps 'windows-update-plan.json'
         Write-TestJson $runtimeIntentPath @{ wasRunning = $false; preferredProfileId = $null; reason = 'Windows update smoke' }
         Write-TestJson $planPath @{
@@ -255,7 +255,7 @@ function Invoke-UpdateScenario([bool]$ExpectRollback) {
             coreWasRunning = $false
         }
 
-        $helperPath = Join-Path $install ('.v2rayn-web-update-helper-' + [Guid]::NewGuid().ToString('N') + '.exe')
+        $helperPath = Join-Path $install ('.v2rayn-WebAPI-update-helper-' + [Guid]::NewGuid().ToString('N') + '.exe')
         Copy-Item -LiteralPath (Join-Path $install $executableName) -Destination $helperPath
         $helperResult = Start-TestHelper $helperPath $planPath $install $url $key $bundleRoot
         $helper = $helperResult.Process
@@ -271,10 +271,10 @@ function Invoke-UpdateScenario([bool]$ExpectRollback) {
                     $response = $healthClient.GetAsync("$url/api/health").GetAwaiter().GetResult()
                     $body = $response.Content.ReadAsStringAsync().GetAwaiter().GetResult()
                     if ([int]$response.StatusCode -eq 200) {
-                        $version = $response.Headers.GetValues('X-v2rayn-web-version') | Select-Object -First 1
-                        $instanceOwner = $response.Headers.GetValues('X-v2rayn-web-instance-pid') | Select-Object -First 1
-                        $coreState = $response.Headers.GetValues('X-v2rayn-web-core-state') | Select-Object -First 1
-                        $corePids = $response.Headers.GetValues('X-v2rayn-web-core-process-ids') | Select-Object -First 1
+                        $version = $response.Headers.GetValues('X-v2rayn-WebAPI-version') | Select-Object -First 1
+                        $instanceOwner = $response.Headers.GetValues('X-v2rayn-WebAPI-instance-pid') | Select-Object -First 1
+                        $coreState = $response.Headers.GetValues('X-v2rayn-WebAPI-core-state') | Select-Object -First 1
+                        $corePids = $response.Headers.GetValues('X-v2rayn-WebAPI-core-process-ids') | Select-Object -First 1
                         $snapshot = "version=$version; pid=$instanceOwner; coreState=$coreState; corePids=$corePids; runtimeIntent=$(Test-Path -LiteralPath $runtimeIntentPath)"
                         if ($observedHealth.Count -eq 0 -or $observedHealth[$observedHealth.Count - 1] -ne $snapshot) {
                             if ($observedHealth.Count -lt 20) { $observedHealth.Add($snapshot) }

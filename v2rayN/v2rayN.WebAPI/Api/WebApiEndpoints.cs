@@ -276,7 +276,7 @@ public static class WebApiEndpoints
 
     private static void MapEvents(WebApplication app)
     {
-        app.MapGet("/api/events", async (HttpContext context, EventHub events, WebSessionService sessions) =>
+        app.MapGet("/api/events", async (HttpContext context, EventHub events, WebSessionService sessions, IHostApplicationLifetime lifetime) =>
         {
             var session = context.Items.TryGetValue(WebSessionService.SessionSnapshotContextKey, out var sessionValue)
                 ? sessionValue as WebSessionSnapshot
@@ -288,9 +288,14 @@ public static class WebApiEndpoints
             }
 
             var revoked = session.RevocationToken;
+            var applicationStopping = lifetime.ApplicationStopping;
+            // The stream must end as soon as the host starts stopping: Kestrel's
+            // graceful stop waits for open requests, and an attached client would
+            // otherwise pin the whole host shutdown budget.
             using var linkedCancellation = CancellationTokenSource.CreateLinkedTokenSource(
                 context.RequestAborted,
-                revoked);
+                revoked,
+                applicationStopping);
             var cancellationToken = linkedCancellation.Token;
 
             context.Response.ContentType = "text/event-stream";
@@ -337,6 +342,11 @@ public static class WebApiEndpoints
             catch (OperationCanceledException) when (context.RequestAborted.IsCancellationRequested || revoked.IsCancellationRequested)
             {
                 await WriteUnauthorizedSseResponseAsync(context);
+            }
+            catch (OperationCanceledException) when (applicationStopping.IsCancellationRequested)
+            {
+                // The host is shutting down; end the stream quietly so the web
+                // server can finish its graceful stop instead of waiting for it.
             }
             finally
             {

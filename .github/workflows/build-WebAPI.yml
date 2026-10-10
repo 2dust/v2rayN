@@ -24,8 +24,8 @@ on:
       - 'v2rayN/Directory.Packages.props'
       - 'v2rayN/v2rayN.slnx'
       - 'global.json'
-      - '.github/workflows/build-web.yml'
-      - '.github/workflows/release-web.yml'
+      - '.github/workflows/build-WebAPI.yml'
+      - '.github/workflows/release-WebAPI.yml'
       - '.github/workflows/build-all.yml'
       - '.github/workflows/upload-sign.yml'
   push:
@@ -38,8 +38,8 @@ on:
       - 'v2rayN/Directory.Packages.props'
       - 'v2rayN/v2rayN.slnx'
       - 'global.json'
-      - '.github/workflows/build-web.yml'
-      - '.github/workflows/release-web.yml'
+      - '.github/workflows/build-WebAPI.yml'
+      - '.github/workflows/release-WebAPI.yml'
       - '.github/workflows/build-all.yml'
       - '.github/workflows/upload-sign.yml'
 permissions:
@@ -266,12 +266,12 @@ jobs:
           $publishDirectory = Join-Path $env:RUNNER_TEMP 'v2rayN.WebAPI-win-x64'
           $dist = Join-Path $env:RUNNER_TEMP 'v2rayN.WebAPI-win-x64-dist'
           python v2rayN/v2rayN.WebAPI/Scripts/web-release-assets.py package --rid win-x64 --publish $publishDirectory --dist $dist
-          $fullZip = Join-Path $dist 'v2rayN-windows-64-web.zip'
-          $appOnlyZip = Join-Path $dist 'v2rayN-windows-64-web-update.zip'
+          $fullZip = Join-Path $dist 'v2rayN-windows-64-WebAPI.zip'
+          $appOnlyZip = Join-Path $dist 'v2rayN-windows-64-WebAPI-update.zip'
           if (-not (Test-Path -LiteralPath $fullZip -PathType Leaf) -or -not (Test-Path -LiteralPath $appOnlyZip -PathType Leaf)) {
             throw 'Windows release ZIPs were not created.'
           }
-          $extracted = Join-Path $env:RUNNER_TEMP 'v2rayN-windows-64-web-smoke'
+          $extracted = Join-Path $env:RUNNER_TEMP 'v2rayN-windows-64-WebAPI-smoke'
           Expand-Archive -LiteralPath $fullZip -DestinationPath $extracted -Force
           & ./v2rayN/v2rayN.WebAPI/Scripts/Test-Windows.ps1 -PublishDirectory $extracted
           "Windows full-install ZIP: $fullZip"
@@ -360,7 +360,7 @@ jobs:
           context: .
           file: ./v2rayN/v2rayN.WebAPI/Containerfile
           platforms: ${{ matrix.platform }}
-          tags: v2rayn-web-api:ci
+          tags: v2rayn-webapi:ci
           build-args: |
             RID=${{ matrix.rid }}
             WEB_VERSION=${{ needs.identity.outputs.version }}
@@ -383,7 +383,7 @@ jobs:
           pattern: v2rayN.WebAPI-*
           path: release-assets
           merge-multiple: true
-      - name: Build and verify web-update.json
+      - name: Build and verify WebAPI-update.json
         env:
           RELEASE_TAG: ${{ needs.identity.outputs.tag }}
         run: |
@@ -394,20 +394,20 @@ jobs:
             --commit "${{ github.sha }}" \
             --build-date "${{ needs.identity.outputs.build_date }}" \
             --dist release-assets \
-            --output release-assets/web-update.json
+            --output release-assets/WebAPI-update.json
           python3 v2rayN/v2rayN.WebAPI/Scripts/web-update-manifest.py verify \
-            --manifest release-assets/web-update.json \
+            --manifest release-assets/WebAPI-update.json \
             --dist release-assets \
             --repository "${{ github.repository }}"
       - name: Smoke-test full API ZIP
-        run: bash v2rayN/v2rayN.WebAPI/Scripts/test-full-zip-runtime.sh release-assets/v2rayN-linux-64-web.zip
+        run: bash v2rayN/v2rayN.WebAPI/Scripts/test-full-zip-runtime.sh release-assets/v2rayN-linux-64-WebAPI.zip
       - uses: actions/upload-artifact@v7
         with:
-          name: web-release-packages
+          name: WebAPI-release-packages
           path: release-assets/*.zip
           if-no-files-found: error
       - uses: actions/upload-artifact@v7
         with:
-          name: web-release-manifest
-          path: release-assets/web-update.json
+          name: WebAPI-release-manifest
+          path: release-assets/WebAPI-update.json
           if-no-files-found: error

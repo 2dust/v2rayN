@@ -124,9 +124,9 @@ public static class WebApiWindowsSmokeNative
     if ($null -eq $health) { throw "Health check failed at $healthUrl. Last error: $lastRequestError" }
 
     $lockPath = Join-Path $runtimeDir 'v2rayN.WebAPI.instance.lock'
-    $webDataDir = Join-Path $runtimeDir 'webData'
+    $webApiDataDir = Join-Path $runtimeDir 'WebAPIData'
     $tempDataDir = Join-Path $runtimeDir 'guiTemps'
-    foreach ($path in @($lockPath, $webDataDir, $tempDataDir)) {
+    foreach ($path in @($lockPath, $webApiDataDir, $tempDataDir)) {
         if (-not (Test-Path -LiteralPath $path)) { throw "First-startup data path was not created: $path" }
     }
 

@@ -18,12 +18,12 @@ public class WebHealthEndpointTests
         var json = JsonSerializer.Serialize(response, new JsonSerializerOptions(JsonSerializerDefaults.Web));
 
         await json.Should().BeEqualTo("{\"status\":\"ok\"}");
-        await context.Response.Headers.ContainsKey("X-v2rayn-web-instance-pid").Should().BeFalse();
-        await context.Response.Headers.ContainsKey("X-v2rayn-web-version").Should().BeFalse();
-        await context.Response.Headers.ContainsKey("X-v2rayn-web-core-state").Should().BeFalse();
-        await context.Response.Headers.ContainsKey("X-v2rayn-web-core-process-ids").Should().BeFalse();
-        await context.Response.Headers.ContainsKey("X-v2rayn-web-core-profile-id").Should().BeFalse();
-        await context.Response.Headers.ContainsKey("X-v2rayn-web-shutdown-stage").Should().BeFalse();
+        await context.Response.Headers.ContainsKey("X-v2rayn-WebAPI-instance-pid").Should().BeFalse();
+        await context.Response.Headers.ContainsKey("X-v2rayn-WebAPI-version").Should().BeFalse();
+        await context.Response.Headers.ContainsKey("X-v2rayn-WebAPI-core-state").Should().BeFalse();
+        await context.Response.Headers.ContainsKey("X-v2rayn-WebAPI-core-process-ids").Should().BeFalse();
+        await context.Response.Headers.ContainsKey("X-v2rayn-WebAPI-core-profile-id").Should().BeFalse();
+        await context.Response.Headers.ContainsKey("X-v2rayn-WebAPI-shutdown-stage").Should().BeFalse();
     }
 
     [Test]
@@ -36,11 +36,11 @@ public class WebHealthEndpointTests
 
         _ = WebHealthEndpoint.CreateResponse(context, runtime);
 
-        await context.Response.Headers.ContainsKey("X-v2rayn-web-instance-pid").Should().BeTrue();
-        await context.Response.Headers.ContainsKey("X-v2rayn-web-version").Should().BeTrue();
-        await context.Response.Headers["X-v2rayn-web-core-state"].ToString().Should().BeEqualTo("stopped");
-        await context.Response.Headers.ContainsKey("X-v2rayn-web-core-process-ids").Should().BeTrue();
-        await context.Response.Headers.ContainsKey("X-v2rayn-web-core-profile-id").Should().BeTrue();
+        await context.Response.Headers.ContainsKey("X-v2rayn-WebAPI-instance-pid").Should().BeTrue();
+        await context.Response.Headers.ContainsKey("X-v2rayn-WebAPI-version").Should().BeTrue();
+        await context.Response.Headers["X-v2rayn-WebAPI-core-state"].ToString().Should().BeEqualTo("stopped");
+        await context.Response.Headers.ContainsKey("X-v2rayn-WebAPI-core-process-ids").Should().BeTrue();
+        await context.Response.Headers.ContainsKey("X-v2rayn-WebAPI-core-profile-id").Should().BeTrue();
     }
 
     [Test]
@@ -55,8 +55,8 @@ public class WebHealthEndpointTests
         var json = JsonSerializer.Serialize(response, new JsonSerializerOptions(JsonSerializerDefaults.Web));
 
         await json.Should().BeEqualTo("{\"status\":\"ok\"}");
-        await context.Response.Headers.ContainsKey("X-v2rayn-web-instance-pid").Should().BeFalse();
-        await context.Response.Headers.ContainsKey("X-v2rayn-web-core-process-ids").Should().BeFalse();
-        await context.Response.Headers.ContainsKey("X-v2rayn-web-core-profile-id").Should().BeFalse();
+        await context.Response.Headers.ContainsKey("X-v2rayn-WebAPI-instance-pid").Should().BeFalse();
+        await context.Response.Headers.ContainsKey("X-v2rayn-WebAPI-core-process-ids").Should().BeFalse();
+        await context.Response.Headers.ContainsKey("X-v2rayn-WebAPI-core-profile-id").Should().BeFalse();
     }
 }

@@ -18,14 +18,14 @@ internal static class WebHealthEndpoint
             && WebCorsPolicy.IsSameOriginRequest(context.Request)
             && !WebSetupAccessPolicy.HasForwardedHeaders(context.Request.Headers))
         {
-            context.Response.Headers["X-v2rayn-web-instance-pid"] = Environment.ProcessId.ToString(CultureInfo.InvariantCulture);
-            context.Response.Headers["X-v2rayn-web-version"] = WebBuildIdentity.Current.Version;
-            context.Response.Headers["X-v2rayn-web-core-state"] = runtime.GetCoreRuntimeState();
-            context.Response.Headers["X-v2rayn-web-core-process-ids"] = string.Join(',', runtime.GetCoreProcessIds());
-            context.Response.Headers["X-v2rayn-web-core-profile-id"] = runtime.GetCoreRuntimeProfileId() ?? string.Empty;
+            context.Response.Headers["X-v2rayn-WebAPI-instance-pid"] = Environment.ProcessId.ToString(CultureInfo.InvariantCulture);
+            context.Response.Headers["X-v2rayn-WebAPI-version"] = WebBuildIdentity.Current.Version;
+            context.Response.Headers["X-v2rayn-WebAPI-core-state"] = runtime.GetCoreRuntimeState();
+            context.Response.Headers["X-v2rayn-WebAPI-core-process-ids"] = string.Join(',', runtime.GetCoreProcessIds());
+            context.Response.Headers["X-v2rayn-WebAPI-core-profile-id"] = runtime.GetCoreRuntimeProfileId() ?? string.Empty;
             if (ShutdownDiagnostics.CurrentStage is { Length: > 0 } stage)
             {
-                context.Response.Headers["X-v2rayn-web-shutdown-stage"] = stage;
+                context.Response.Headers["X-v2rayn-WebAPI-shutdown-stage"] = stage;
             }
         }
 

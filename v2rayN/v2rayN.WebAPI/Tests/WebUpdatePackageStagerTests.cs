@@ -65,14 +65,14 @@ public class WebUpdatePackageStagerTests
     {
         var manifest = new WebUpdateManifest("v2rayN.WebAPI", "7.25.3", "0123456789abcdef", "2026-09-28T00:00:00Z",
         [
-            new WebUpdatePackage("linux-x64", "v2rayN-linux-64-web-update.zip",
-                "https://github.com/2dust/v2rayN/releases/download/7.25.3/v2rayN-linux-64-web-update.zip",
+            new WebUpdatePackage("linux-x64", "v2rayN-linux-64-WebAPI-update.zip",
+                "https://github.com/2dust/v2rayN/releases/download/7.25.3/v2rayN-linux-64-WebAPI-update.zip",
                 new string('a', 64), 1234),
-            new WebUpdatePackage("linux-arm64", "v2rayN-linux-arm64-web-update.zip",
-                "https://github.com/2dust/v2rayN/releases/download/7.25.3/v2rayN-linux-arm64-web-update.zip",
+            new WebUpdatePackage("linux-arm64", "v2rayN-linux-arm64-WebAPI-update.zip",
+                "https://github.com/2dust/v2rayN/releases/download/7.25.3/v2rayN-linux-arm64-WebAPI-update.zip",
                 new string('b', 64), 2345),
-            new WebUpdatePackage("win-x64", "v2rayN-windows-64-web-update.zip",
-                "https://github.com/2dust/v2rayN/releases/download/7.25.3/v2rayN-windows-64-web-update.zip",
+            new WebUpdatePackage("win-x64", "v2rayN-windows-64-WebAPI-update.zip",
+                "https://github.com/2dust/v2rayN/releases/download/7.25.3/v2rayN-windows-64-WebAPI-update.zip",
                 new string('c', 64), 3456),
         ]);
         var json = JsonSerializer.Serialize(manifest, new JsonSerializerOptions(JsonSerializerDefaults.Web));
@@ -122,7 +122,7 @@ public class WebUpdatePackageStagerTests
         await actualIdentity.Should().BeEqualTo(identity);
         await File.Exists(Path.Combine(extracted, "bin", "xray", "xray")).Should().BeFalse();
         await File.Exists(Path.Combine(extracted, "guiConfigs", "guiNConfig.json")).Should().BeFalse();
-        await File.Exists(Path.Combine(extracted, "webData", "web-auth.json")).Should().BeFalse();
+        await File.Exists(Path.Combine(extracted, "WebAPIData", "WebAPI-auth.json")).Should().BeFalse();
         await Directory.GetFiles(extracted, "*", SearchOption.AllDirectories).Length.Should().BeEqualTo(2);
     }
 
@@ -349,7 +349,7 @@ public class WebUpdatePackageStagerTests
     {
         public TemporaryDirectory()
         {
-            Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"v2rayn-web-package-test-{Guid.NewGuid():N}");
+            Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"v2rayn-WebAPI-package-test-{Guid.NewGuid():N}");
             Directory.CreateDirectory(Path);
         }
 

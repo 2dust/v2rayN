@@ -167,7 +167,7 @@ public class WebAuthRateLimitTests
     {
         public TemporaryDirectory()
         {
-            Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"v2rayn-web-rate-limit-{Guid.NewGuid():N}");
+            Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"v2rayn-WebAPI-rate-limit-{Guid.NewGuid():N}");
             Directory.CreateDirectory(Path);
         }
 

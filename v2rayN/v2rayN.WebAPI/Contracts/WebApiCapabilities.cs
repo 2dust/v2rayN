@@ -15,6 +15,6 @@ public static class WebApiCapabilities
         "backup.restore",
         "core.runtime",
         "core.updates",
-        "web.self-update",
+        "WebAPI.self-update",
     ];
 }

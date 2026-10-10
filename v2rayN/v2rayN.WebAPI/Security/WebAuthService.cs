@@ -188,7 +188,7 @@ public sealed class WebAuthService
             ?? throw new InvalidOperationException("Web auth config path has no parent directory.");
         Directory.CreateDirectory(directory);
 
-        var temporaryPath = Path.Combine(directory, $".web-auth-{Guid.NewGuid():N}.tmp");
+        var temporaryPath = Path.Combine(directory, $".WebAPI-auth-{Guid.NewGuid():N}.tmp");
         try
         {
             var options = new FileStreamOptions

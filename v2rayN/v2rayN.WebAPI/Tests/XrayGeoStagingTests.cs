@@ -7,7 +7,7 @@ public class XrayGeoStagingTests
     [Test]
     public async Task ApplyCopiesTheLatestGeoFilesAfterStaging()
     {
-        var root = Path.Combine(Path.GetTempPath(), $"v2rayn-web-xray-stage-{Guid.NewGuid():N}");
+        var root = Path.Combine(Path.GetTempPath(), $"v2rayn-WebAPI-xray-stage-{Guid.NewGuid():N}");
         var installPath = Path.Combine(root, "installed");
         var stagingPath = Path.Combine(root, "staging");
         Directory.CreateDirectory(installPath);

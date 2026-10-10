@@ -2,7 +2,7 @@
   <Folder Name="/GitHub Action/">
     <File Path="../.github/workflows/build-all.yml" />
     <File Path="../.github/workflows/build-linux.yml" />
-    <File Path="../.github/workflows/build-web.yml" />
+    <File Path="../.github/workflows/build-WebAPI.yml" />
     <File Path="../.github/workflows/build-osx.yml" />
     <File Path="../.github/workflows/build-windows-desktop.yml" />
     <File Path="../.github/workflows/build-windows.yml" />

@@ -12,7 +12,7 @@ public class WebUpdateReleaseSelectionTests
             "draft": false,
             "prerelease": false,
             "assets": [
-              { "name": "web-update.json", "browser_download_url": "https://github.com/2dust/v2rayN/releases/download/web-v7.25.9-web.3/web-update.json", "size": 512 }
+              { "name": "WebAPI-update.json", "browser_download_url": "https://github.com/2dust/v2rayN/releases/download/web-v7.25.9-web.3/WebAPI-update.json", "size": 512 }
             ]
           },
           {
@@ -20,7 +20,7 @@ public class WebUpdateReleaseSelectionTests
             "draft": true,
             "prerelease": false,
             "assets": [
-              { "name": "web-update.json", "browser_download_url": "https://github.com/2dust/v2rayN/releases/download/7.25.6/web-update.json", "size": 512 }
+              { "name": "WebAPI-update.json", "browser_download_url": "https://github.com/2dust/v2rayN/releases/download/7.25.6/WebAPI-update.json", "size": 512 }
             ]
           },
           {
@@ -28,7 +28,7 @@ public class WebUpdateReleaseSelectionTests
             "draft": false,
             "prerelease": true,
             "assets": [
-              { "name": "web-update.json", "browser_download_url": "https://github.com/2dust/v2rayN/releases/download/7.25.5/web-update.json", "size": 512 }
+              { "name": "WebAPI-update.json", "browser_download_url": "https://github.com/2dust/v2rayN/releases/download/7.25.5/WebAPI-update.json", "size": 512 }
             ]
           },
           {
@@ -44,8 +44,8 @@ public class WebUpdateReleaseSelectionTests
             "draft": false,
             "prerelease": false,
             "assets": [
-              { "name": "web-update.json", "browser_download_url": "https://github.com/2dust/v2rayN/releases/download/7.25.3/web-update.json", "size": 512 },
-              { "name": "v2rayN-linux-64-web-update.zip", "browser_download_url": "https://github.com/2dust/v2rayN/releases/download/7.25.3/v2rayN-linux-64-web-update.zip", "size": 4096 }
+              { "name": "WebAPI-update.json", "browser_download_url": "https://github.com/2dust/v2rayN/releases/download/7.25.3/WebAPI-update.json", "size": 512 },
+              { "name": "v2rayN-linux-64-WebAPI-update.zip", "browser_download_url": "https://github.com/2dust/v2rayN/releases/download/7.25.3/v2rayN-linux-64-WebAPI-update.zip", "size": 4096 }
             ]
           },
           {
@@ -53,7 +53,7 @@ public class WebUpdateReleaseSelectionTests
             "draft": false,
             "prerelease": false,
             "assets": [
-              { "name": "web-update.json", "browser_download_url": "https://github.com/2dust/v2rayN/releases/download/v7.25.7/web-update.json", "size": 512 }
+              { "name": "WebAPI-update.json", "browser_download_url": "https://github.com/2dust/v2rayN/releases/download/v7.25.7/WebAPI-update.json", "size": 512 }
             ]
           }
         ]
@@ -68,8 +68,8 @@ public class WebUpdateReleaseSelectionTests
         await selected.Tag.Should().BeEqualTo("7.25.3");
         await selected.Version.Should().BeEqualTo("7.25.3");
         await selected.IsPrerelease.Should().BeFalse();
-        await selected.ManifestUrl.Should().BeEqualTo("https://github.com/2dust/v2rayN/releases/download/7.25.3/web-update.json");
-        await selected.Assets.ContainsKey("v2rayN-linux-64-web-update.zip").Should().BeTrue();
+        await selected.ManifestUrl.Should().BeEqualTo("https://github.com/2dust/v2rayN/releases/download/7.25.3/WebAPI-update.json");
+        await selected.Assets.ContainsKey("v2rayN-linux-64-WebAPI-update.zip").Should().BeTrue();
 
         var withPrerelease = V2rayRuntime.ParseWebReleaseCandidates(ReleaseIndex, allowPrerelease: true);
         await withPrerelease.Count.Should().BeEqualTo(2);

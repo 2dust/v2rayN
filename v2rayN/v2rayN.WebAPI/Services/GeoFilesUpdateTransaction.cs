@@ -22,7 +22,7 @@ internal static class GeoFilesUpdateTransaction
             .Select(Path.GetFullPath)
             .Distinct(PathComparer)
             .ToArray();
-        var backupRoot = Path.Combine(Path.GetTempPath(), $"v2rayn-web-geofiles-{Guid.NewGuid():N}");
+        var backupRoot = Path.Combine(Path.GetTempPath(), $"v2rayn-WebAPI-geofiles-{Guid.NewGuid():N}");
         var backups = new Dictionary<string, GeoFileBackup>(PathComparer);
         var transactionCompleted = false;
         var rollbackCompleted = false;

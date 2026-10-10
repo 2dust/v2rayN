@@ -17,6 +17,13 @@ internal static class Program
 
     public static async Task<int> Main(string[] args)
     {
+        if (args.Contains(WebLaunchOptions.HelpFlag, StringComparer.Ordinal)
+            || args.Contains(WebLaunchOptions.HelpShortFlag, StringComparer.Ordinal))
+        {
+            Console.Out.WriteLine(LauncherMessages.Help(GetLauncherLocale()));
+            return 0;
+        }
+
         try
         {
             NativeEnvironmentFile.LoadFromExecutableDirectory(AppContext.BaseDirectory);
@@ -27,13 +34,23 @@ internal static class Program
             return 1;
         }
 
-        if (args.Length == 2 && args[0] == "--apply-web-update")
+        if (args.Length == 2 && args[0] == "--apply-WebAPI-update")
         {
             return await NativeWebUpdateHelper.RunAsync(args[1]);
         }
 
         var environment = ReadEnvironment();
+        var interactiveTerminal = !Console.IsInputRedirected;
+        if (interactiveTerminal)
+        {
+            // Record the launch context for detached children and later helper
+            // processes, which can no longer probe the terminal themselves.
+            Environment.SetEnvironmentVariable(LauncherEnvironment.InteractiveLaunchEnvironmentVariable, "1");
+        }
+
         var daemonEnvironment = LauncherEnvironment.IsDaemonEnvironment(environment);
+        var interactiveLaunch = interactiveTerminal || LauncherEnvironment.IsInteractiveLaunchMarker(environment);
+        var supervisedEnvironment = daemonEnvironment && !interactiveLaunch;
         var containerEnvironment = IsContainerEnvironment();
         var managementKey = environment.GetValueOrDefault(ManagementKeyEnvironmentVariable);
         if (!string.IsNullOrEmpty(managementKey)
@@ -45,7 +62,7 @@ internal static class Program
             return 1;
         }
 
-        if (WebDeploymentSecurityPolicy.GetStartupError(daemonEnvironment, containerEnvironment, managementKey) is { } startupError)
+        if (WebDeploymentSecurityPolicy.GetStartupError(supervisedEnvironment, containerEnvironment, managementKey) is { } startupError)
         {
             Console.Error.WriteLine(startupError);
             return 1;
@@ -56,7 +73,8 @@ internal static class Program
             args,
             OperatingSystem.IsLinux(),
             daemonEnvironment,
-            containerEnvironment);
+            containerEnvironment,
+            interactiveLaunch);
 
         if (launchOptions.Mode == WebLaunchMode.Stop)
         {
@@ -147,7 +165,7 @@ internal static class Program
         {
             var showForegroundPrompt = launchOptions.Mode == WebLaunchMode.Foreground
                 && args.Contains(WebLaunchOptions.ForegroundFlag, StringComparer.Ordinal)
-                && !daemonEnvironment
+                && !supervisedEnvironment
                 && !containerEnvironment;
             hostResult = await RunWebHostAsync(builder, launchOptions.HostArguments, showForegroundPrompt);
         }
@@ -160,7 +178,7 @@ internal static class Program
         var lifecyclePlan = WebLifecyclePlanner.Create(
             exitAction,
             OperatingSystem.IsLinux(),
-            daemonEnvironment || WebStopper.IsManagedBySystemd(Environment.ProcessId),
+            LauncherEnvironment.IsSystemdManagedDeployment(),
             containerEnvironment);
         if (lifecyclePlan.ShouldStartReplacement)
         {
@@ -193,6 +211,8 @@ internal static class Program
 
     private static async Task<WebHostRunResult> RunWebHostAsync(WebApplicationBuilder builder, string[] args, bool showForegroundPrompt)
     {
+        // "guiConfigs/web-auth.json" is the pre-rename legacy location; WebAuthStorage
+        // migrates it (and the previous private location) to WebAPIData/WebAPI-auth.json.
         var configPath = WebAuthStorage.MigrateAndGetPath(
             Utils.StartupPath(),
             Utils.GetConfigPath("web-auth.json"));
@@ -392,9 +412,7 @@ internal static class Program
     }
 
     private static Dictionary<string, string?> ReadEnvironment() =>
-        Environment.GetEnvironmentVariables()
-            .Cast<DictionaryEntry>()
-            .ToDictionary(entry => (string)entry.Key, entry => entry.Value?.ToString(), StringComparer.OrdinalIgnoreCase);
+        LauncherEnvironment.ReadCurrentEnvironment();
 
     private static LauncherLocale GetLauncherLocale()
     {

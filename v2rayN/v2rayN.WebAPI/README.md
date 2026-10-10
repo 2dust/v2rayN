@@ -21,6 +21,14 @@ chmod 600 .env
 ./v2rayN.WebAPI --foreground --no-open
 ```
 
+On Linux, a terminal launch without flags starts the API in the background, detached from the
+terminal, and prints its health endpoint. `--foreground` keeps it attached and stops it safely with
+Ctrl+C, `--stop` stops the instance running for the same data directory, and `--help` prints every
+option together with the common environment variables; `--no-open` suppresses the browser opener.
+Detached children and later helper processes keep the launch context, so an instance started from a
+terminal is never mistaken for a systemd-managed service (systemd exports `INVOCATION_ID` /
+`JOURNAL_STREAM` to everything launched from such a terminal).
+
 The default listener is `http://127.0.0.1:5080`. A local native install may temporarily leave
 `V2RAYN_WEB_API_KEY` empty when **all** listeners are loopback (`127.0.0.1`, `localhost`, or
 `[::1]`), then complete first-run setup through a direct loopback API client.
@@ -123,7 +131,7 @@ bash Scripts/verify.sh
 
 `Scripts/verify.sh` builds and tests the Backend, runs ServiceLib tests, checks startup/security,
 and exercises API ZIP/self-update package boundaries and real different-layout Linux update,
-rollback and invalid-executable rejection. The independent `build-web.yml` workflow
+rollback and invalid-executable rejection. The independent `build-WebAPI.yml` workflow
 runs these checks, Windows win-x64 build/startup/update smoke, native Linux builds, and Linux
 container builds on relevant PRs and pushes to `master`; it can also be dispatched manually or
 called by a release workflow. Releases include Linux x64/ARM64 and Windows x64 packages; Linux
@@ -159,7 +167,11 @@ health before discarding it. Systemd/container deployments remain check-only and
 The directory, project file, namespace, assembly/executable, embedded resource names, build
 identity file/product and updater target are now `v2rayN.WebAPI`. Launcher/update helpers,
 native/package scripts, Containerfile, solution registration, CI and tests use that identity.
-The lock is `v2rayN.WebAPI.instance.lock`; the build identity is `v2rayN.WebAPI.build.json`.
+The lock is `v2rayN.WebAPI.instance.lock`; the build identity is `v2rayN.WebAPI.build.json`;
+health headers are `X-v2rayn-WebAPI-*`; the update capability is `WebAPI.self-update`; update
+progress/runtime-state files are `WebAPI-update-progress.json` and
+`WebAPI-update-runtime-state.json`; workflow files are `build-WebAPI.yml` and
+`release-WebAPI.yml`.
 
 **Old experimental `v2rayN.Web` installs require a one-time manual reinstall.** Stop the old
 instance first (including its systemd/container supervisor), back up data and `.env`, install
@@ -178,35 +190,35 @@ preferences are preserved. This migrates preferences, not the executable or pack
 
 Intentional compatibility names remain: `V2RAYN_WEB_*` configuration (including the Management
 Key and allowed-origin variables), `WebVersion`/`WebCommit`/`WebBuildDate`/`WebRepository` build metadata,
-`webVersion` and related status fields, `web.self-update`, `/api/web-updates`, native health header
-names, `web-auth.json`, generic Web host/security class names, existing systemd unit /
-install-path examples, progress/intent file names, workflow file names, all release ZIP names and
-`web-update.json`. These are not stale executable assumptions.
+`webVersion` and related status fields, the `/api/web-updates` routes, generic Web host/security
+class names, existing systemd unit / install-path examples, and the legacy `guiConfigs/web-auth.json`
+location that `WebAuthStorage` migrates to `WebAPIData/WebAPI-auth.json`. These are not stale
+executable assumptions.
 
 ## Releases and containers
 
 `build-all.yml` ("release all platforms") dispatches the desktop platform workflows and calls
-`release-web.yml`; the WebAPI packages ride the same `upload-sign.yml` path and land in the same
-release as the desktop assets. `release-web.yml` can also be dispatched directly with a
-`release_tag` (`x.y.z`) to call `build-web.yml`, assemble and validate the Linux and Windows
+`release-WebAPI.yml`; the WebAPI packages ride the same `upload-sign.yml` path and land in the same
+release as the desktop assets. `release-WebAPI.yml` can also be dispatched directly with a
+`release_tag` (`x.y.z`) to call `build-WebAPI.yml`, assemble and validate the Linux and Windows
 WebAPI assets, then sign and upload them through the existing `upload-sign.yml` workflow. Signing
 uses the repository GPG key, so a fork that runs this flow publishes with its own
-`GPG_PRIVATE_KEY` secret. `build-web.yml` can also be dispatched with a tag for package-only
+`GPG_PRIVATE_KEY` secret. `build-WebAPI.yml` can also be dispatched with a tag for package-only
 verification. Web release orchestration and artifact names are RID-based, separately from
 containers and Desktop workflows. Windows x64 has full-install and app-only update ZIPs; Windows
 containers are not built.
 
 The API release provides architecture-specific full-install and app-only update ZIPs plus
-`web-update.json`:
+`WebAPI-update.json`:
 
-- `v2rayN-linux-64-web.zip` / `v2rayN-linux-arm64-web.zip` — API, runtime files, `.env.example`,
+- `v2rayN-linux-64-WebAPI.zip` / `v2rayN-linux-arm64-WebAPI.zip` — API, runtime files, `.env.example`,
   and Core bundle.
-- `v2rayN-linux-64-web-update.zip` / `v2rayN-linux-arm64-web-update.zip` — API executable and
+- `v2rayN-linux-64-WebAPI-update.zip` / `v2rayN-linux-arm64-WebAPI-update.zip` — API executable and
   build identity only; user data, Core files, credentials, and unrelated files are excluded.
-- `v2rayN-windows-64-web.zip` — Windows x64 API, runtime/Core files, and `.env.example`.
-- `v2rayN-windows-64-web-update.zip` — Windows API executable and build identity only; user data,
+- `v2rayN-windows-64-WebAPI.zip` — Windows x64 API, runtime/Core files, and `.env.example`.
+- `v2rayN-windows-64-WebAPI-update.zip` — Windows API executable and build identity only; user data,
   Core files, credentials, and unrelated files are excluded.
-- `web-update.json` — version, commit, runtime identifier, sizes, and SHA-256 digests.
+- `WebAPI-update.json` — version, commit, runtime identifier, sizes, and SHA-256 digests.
 
 For Docker/Podman, the included `Containerfile` builds only the API and Core runtime.
 The Compose example requires a non-empty Management Key.

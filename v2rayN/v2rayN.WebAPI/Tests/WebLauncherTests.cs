@@ -26,7 +26,8 @@ public class WebLauncherTests
             ["--stop", "--foreground", "--background", "--urls", "http://127.0.0.1:5090"],
             isLinux: true,
             daemonEnvironment: false,
-            containerEnvironment: false);
+            containerEnvironment: false,
+            interactiveLaunch: false);
 
         await (options.Mode == WebLaunchMode.Stop).Should().BeTrue();
         await options.HostArguments.SequenceEqual(["--urls", "http://127.0.0.1:5090"]).Should().BeTrue();
@@ -35,21 +36,21 @@ public class WebLauncherTests
     [Test]
     public async Task ForegroundFlagAlwaysSelectsForegroundMode()
     {
-        var options = WebLaunchOptions.Parse(["--foreground"], isLinux: true, daemonEnvironment: false, containerEnvironment: false);
+        var options = WebLaunchOptions.Parse(["--foreground"], isLinux: true, daemonEnvironment: false, containerEnvironment: false, interactiveLaunch: false);
         await (options.Mode == WebLaunchMode.Foreground).Should().BeTrue();
     }
 
     [Test]
     public async Task BackgroundFlagSelectsLauncherMode()
     {
-        var options = WebLaunchOptions.Parse(["--background"], isLinux: true, daemonEnvironment: true, containerEnvironment: true);
+        var options = WebLaunchOptions.Parse(["--background"], isLinux: true, daemonEnvironment: true, containerEnvironment: true, interactiveLaunch: false);
         await (options.Mode == WebLaunchMode.BackgroundLauncher).Should().BeTrue();
     }
 
     [Test]
     public async Task BackgroundChildRunsTheForegroundHostWithoutRecursiveLauncherArguments()
     {
-        var options = WebLaunchOptions.Parse(["--background-child", "--no-open", "--urls", "http://127.0.0.1:5090"], isLinux: true, daemonEnvironment: false, containerEnvironment: false);
+        var options = WebLaunchOptions.Parse(["--background-child", "--no-open", "--urls", "http://127.0.0.1:5090"], isLinux: true, daemonEnvironment: false, containerEnvironment: false, interactiveLaunch: false);
         await (options.Mode == WebLaunchMode.BackgroundChild).Should().BeTrue();
         await options.NoOpen.Should().BeTrue();
         await options.HostArguments.SequenceEqual(["--urls", "http://127.0.0.1:5090"]).Should().BeTrue();
@@ -58,22 +59,75 @@ public class WebLauncherTests
     [Test]
     public async Task SystemdAndContainerDefaultsRemainForeground()
     {
-        var systemd = WebLaunchOptions.Parse([], isLinux: true, daemonEnvironment: true, containerEnvironment: false);
-        var container = WebLaunchOptions.Parse([], isLinux: true, daemonEnvironment: false, containerEnvironment: true);
+        var systemd = WebLaunchOptions.Parse([], isLinux: true, daemonEnvironment: true, containerEnvironment: false, interactiveLaunch: false);
+        var container = WebLaunchOptions.Parse([], isLinux: true, daemonEnvironment: false, containerEnvironment: true, interactiveLaunch: false);
 
         await (systemd.Mode == WebLaunchMode.Foreground).Should().BeTrue();
         await (container.Mode == WebLaunchMode.Foreground).Should().BeTrue();
-        await (WebLaunchOptions.Parse(["--foreground"], true, true, true).Mode == WebLaunchMode.Foreground).Should().BeTrue();
+        await (WebLaunchOptions.Parse(["--foreground"], true, true, true, false).Mode == WebLaunchMode.Foreground).Should().BeTrue();
     }
 
     [Test]
     public async Task NativeLinuxDefaultUsesTheBackgroundLauncher()
     {
-        var desktop = WebLaunchOptions.Parse([], isLinux: true, daemonEnvironment: false, containerEnvironment: false);
-        var otherPlatform = WebLaunchOptions.Parse([], isLinux: false, daemonEnvironment: false, containerEnvironment: false);
+        var desktop = WebLaunchOptions.Parse([], isLinux: true, daemonEnvironment: false, containerEnvironment: false, interactiveLaunch: false);
+        var otherPlatform = WebLaunchOptions.Parse([], isLinux: false, daemonEnvironment: false, containerEnvironment: false, interactiveLaunch: false);
 
         await (desktop.Mode == WebLaunchMode.BackgroundLauncher).Should().BeTrue();
         await (otherPlatform.Mode == WebLaunchMode.Foreground).Should().BeTrue();
+    }
+
+    [Test]
+    public async Task InteractiveLaunchOverridesLeakedSystemdMarkersForTheDefaultLauncher()
+    {
+        // Terminals started by systemd export INVOCATION_ID/JOURNAL_STREAM to every
+        // command they run; commands run in such a terminal are still interactive.
+        var nestedTerminal = WebLaunchOptions.Parse(
+            [],
+            isLinux: true,
+            daemonEnvironment: true,
+            containerEnvironment: false,
+            interactiveLaunch: true);
+
+        await (nestedTerminal.Mode == WebLaunchMode.BackgroundLauncher).Should().BeTrue();
+    }
+
+    [Test]
+    public async Task InteractiveLaunchMarkerIsDetectedAndHelpFlagsAreNotForwarded()
+    {
+        await LauncherEnvironment.IsInteractiveLaunchMarker(
+            new Dictionary<string, string?> { [LauncherEnvironment.InteractiveLaunchEnvironmentVariable] = "1" })
+            .Should().BeTrue();
+        await LauncherEnvironment.IsInteractiveLaunchMarker(new Dictionary<string, string?>())
+            .Should().BeFalse();
+
+        var options = WebLaunchOptions.Parse(
+            ["--help"],
+            isLinux: true,
+            daemonEnvironment: false,
+            containerEnvironment: false,
+            interactiveLaunch: false);
+        await (options.HostArguments.Length == 0).Should().BeTrue();
+    }
+
+    [Test]
+    public async Task HelpTextListsTheDocumentedFlagsInEveryLocale()
+    {
+        foreach (var locale in new[]
+        {
+            LauncherLocale.SimplifiedChinese,
+            LauncherLocale.TraditionalChinese,
+            LauncherLocale.English,
+        })
+        {
+            var help = LauncherMessages.Help(locale);
+            await help.Contains("--foreground", StringComparison.Ordinal).Should().BeTrue();
+            await help.Contains("--background", StringComparison.Ordinal).Should().BeTrue();
+            await help.Contains("--no-open", StringComparison.Ordinal).Should().BeTrue();
+            await help.Contains("--stop", StringComparison.Ordinal).Should().BeTrue();
+            await help.Contains("--help", StringComparison.Ordinal).Should().BeTrue();
+            await help.Contains("V2RAYN_WEB_API_KEY", StringComparison.Ordinal).Should().BeTrue();
+        }
     }
 
     [Test]
@@ -451,7 +505,7 @@ public class WebLauncherTests
     {
         public TemporaryDirectory()
         {
-            Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"v2rayn-web-launcher-{Guid.NewGuid():N}");
+            Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"v2rayn-WebAPI-launcher-{Guid.NewGuid():N}");
             Directory.CreateDirectory(Path);
         }
 

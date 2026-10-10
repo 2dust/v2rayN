@@ -6,8 +6,8 @@ namespace v2rayN.WebAPI.Security;
 
 public static class WebAuthRateLimiting
 {
-    public const string LoginPolicy = "web-auth-login";
-    public const string SetupPolicy = "web-auth-setup";
+    public const string LoginPolicy = "WebAPI-auth-login";
+    public const string SetupPolicy = "WebAPI-auth-setup";
 
     public static void Configure(RateLimiterOptions options)
     {

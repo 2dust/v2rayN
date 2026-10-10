@@ -22,7 +22,7 @@ permissions:
 
 jobs:
   build:
-    uses: ./.github/workflows/build-web.yml
+    uses: ./.github/workflows/build-WebAPI.yml
     permissions:
       contents: read
     with:
@@ -36,8 +36,8 @@ jobs:
     uses: ./.github/workflows/upload-sign.yml
     with:
       release_tag: ${{ inputs.release_tag }}
-      artifact_name: web-release-packages
-      file_pattern: 'v2rayN-*-web*.zip'
+      artifact_name: WebAPI-release-packages
+      file_pattern: 'v2rayN-*-WebAPI*.zip'
     secrets: { GPG_PRIVATE_KEY: "${{ secrets.GPG_PRIVATE_KEY }}" }
 
   release-web-manifest:
@@ -48,6 +48,6 @@ jobs:
     uses: ./.github/workflows/upload-sign.yml
     with:
       release_tag: ${{ inputs.release_tag }}
-      artifact_name: web-release-manifest
-      file_pattern: 'web-update.json'
+      artifact_name: WebAPI-release-manifest
+      file_pattern: 'WebAPI-update.json'
     secrets: { GPG_PRIVATE_KEY: "${{ secrets.GPG_PRIVATE_KEY }}" }

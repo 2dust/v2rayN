@@ -277,7 +277,7 @@ public class RuntimeRestartRecoveryTests
     public async Task WebUpdateRuntimeIntentRemainsUntilTheExternalHealthVerifierCommitsIt()
     {
         using var directory = new TemporaryDirectory();
-        var path = Path.Combine(directory.Path, "web-update-runtime-state.json");
+        var path = Path.Combine(directory.Path, "WebAPI-update-runtime-state.json");
         await File.WriteAllTextAsync(path, JsonSerializer.Serialize(new RuntimeRestartIntent(true, "removed")));
         var intent = await V2rayRuntime.LoadRuntimeRestartIntentAsync(path, CancellationToken.None);
         var started = new List<string>();
@@ -328,7 +328,7 @@ public class RuntimeRestartRecoveryTests
     {
         public TemporaryDirectory()
         {
-            Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"v2rayn-web-restore-intent-{Guid.NewGuid():N}");
+            Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"v2rayn-WebAPI-restore-intent-{Guid.NewGuid():N}");
             Directory.CreateDirectory(Path);
         }
 

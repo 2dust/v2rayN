@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-archive="${1:?Usage: test-full-zip-runtime.sh <v2rayN-linux-64-web.zip>}"
+archive="${1:?Usage: test-full-zip-runtime.sh <v2rayN-linux-64-WebAPI.zip>}"
 archive="$(realpath "$archive")"
 test -s "$archive"
 command -v curl >/dev/null
@@ -115,10 +115,10 @@ if [[ "$healthy" != true ]]; then
   exit 1
 fi
 test "$(curl --noproxy '*' --silent --show-error -o /dev/null -w '%{http_code}' "http://127.0.0.1:$port/")" = 404
-grep -Fiq 'X-v2rayn-web-instance-pid:' "$temporary/health.headers"
-grep -Fiq "X-v2rayn-web-version: $expected_version" "$temporary/health.headers"
-grep -Fiq 'X-v2rayn-web-core-state: stopped' "$temporary/health.headers"
-grep -Fiq 'X-v2rayn-web-core-process-ids:' "$temporary/health.headers"
+grep -Fiq 'X-v2rayn-WebAPI-instance-pid:' "$temporary/health.headers"
+grep -Fiq "X-v2rayn-WebAPI-version: $expected_version" "$temporary/health.headers"
+grep -Fiq 'X-v2rayn-WebAPI-core-state: stopped' "$temporary/health.headers"
+grep -Fiq 'X-v2rayn-WebAPI-core-process-ids:' "$temporary/health.headers"
 
 login_body="$(python3 -c 'import json,sys; print(json.dumps({"key": sys.argv[1]}))' "$management_key")"
 curl --noproxy '*' --silent --show-error --fail \

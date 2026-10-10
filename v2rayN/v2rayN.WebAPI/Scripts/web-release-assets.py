@@ -5,9 +5,9 @@ The RID-to-asset map lives in `../Assets/web-assets.json`. The Web assembly embe
 file, so the runtime updater, the release manifest, and this packager never disagree about the
 release asset names:
 
-  linux-x64   -> v2rayN-linux-64-web.zip        + v2rayN-linux-64-web-update.zip
-  linux-arm64 -> v2rayN-linux-arm64-web.zip     + v2rayN-linux-arm64-web-update.zip
-  win-x64     -> v2rayN-windows-64-web.zip      + v2rayN-windows-64-web-update.zip
+  linux-x64   -> v2rayN-linux-64-WebAPI.zip        + v2rayN-linux-64-WebAPI-update.zip
+  linux-arm64 -> v2rayN-linux-arm64-WebAPI.zip     + v2rayN-linux-arm64-WebAPI-update.zip
+  win-x64     -> v2rayN-windows-64-WebAPI.zip      + v2rayN-windows-64-WebAPI-update.zip
 
 Usage:
   web-release-assets.py get --rid linux-x64 --field full

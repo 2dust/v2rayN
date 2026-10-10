@@ -39,7 +39,7 @@ def health(url):
 def wait_health(url, version):
     for _ in range(300):
         headers = health(url)
-        if headers.get("X-v2rayn-web-version") == version:
+        if headers.get("X-v2rayn-WebAPI-version") == version:
             return headers
         time.sleep(0.1)
     raise AssertionError("native instance failed its version health check")
@@ -85,15 +85,15 @@ def run_scenario(root, previous, candidate, rollback, reject_invalid=False):
     try:
         wait_health(url, before["version"])
         preserved = {str(p): fingerprint(p) for p in (install / "extra", install / "bin", scope / "bin")}
-        staged = root / (".v2rayn-web-candidate-" + secrets.token_hex(8))
-        backup = root / (".v2rayn-web-backup-" + secrets.token_hex(8))
+        staged = root / (".v2rayn-WebAPI-candidate-" + secrets.token_hex(8))
+        backup = root / (".v2rayn-WebAPI-backup-" + secrets.token_hex(8))
         staged.mkdir()
         (staged / (NAME + ".build.json")).write_text(json.dumps(after))
         shutil.copy2(candidate / NAME, staged / NAME)
         if reject_invalid:
             (staged / NAME).write_text("#!/bin/sh\nexit 1\n")
-        intent = temps / "web-update-runtime-state.json"
-        progress = temps / "web-update-progress.json"
+        intent = temps / "WebAPI-update-runtime-state.json"
+        progress = temps / "WebAPI-update-progress.json"
         intent.write_text(json.dumps({"wasRunning": False, "profileId": None}))
         plan_path = temps / "identity-update-plan.json"
         plan_path.write_text(json.dumps({
@@ -107,12 +107,12 @@ def run_scenario(root, previous, candidate, rollback, reject_invalid=False):
         if reject_invalid:
             owner.send_signal(signal.SIGTERM)
             owner.wait(timeout=40)
-        helper = subprocess.Popen([str(install / NAME), "--apply-web-update", str(plan_path)], env=env, stdout=log, stderr=log)
+        helper = subprocess.Popen([str(install / NAME), "--apply-WebAPI-update", str(plan_path)], env=env, stdout=log, stderr=log)
         if not reject_invalid:
             owner.send_signal(signal.SIGTERM)
             owner.wait(timeout=40)
         helper_code = helper.wait(timeout=100)
-        assert not list(install.glob(".v2rayn-web-update-helper-*")), "Isolated helper bundle was not cleaned after worker exit"
+        assert not list(install.glob(".v2rayn-WebAPI-update-helper-*")), "Isolated helper bundle was not cleaned after worker exit"
         failed = rollback or reject_invalid
         expected_helper_code = 1 if failed else 0
         if helper_code != expected_helper_code:

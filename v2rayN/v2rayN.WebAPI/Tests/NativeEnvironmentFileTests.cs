@@ -148,7 +148,7 @@ public class NativeEnvironmentFileTests
     {
         public TemporaryDirectory()
         {
-            Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"v2rayn-web-dotenv-test-{Guid.NewGuid():N}");
+            Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"v2rayn-WebAPI-dotenv-test-{Guid.NewGuid():N}");
             Directory.CreateDirectory(Path);
         }
 

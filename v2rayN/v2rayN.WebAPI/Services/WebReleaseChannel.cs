@@ -5,12 +5,12 @@ namespace v2rayN.WebAPI.Services;
 /// <summary>
 /// Describes the official v2rayN release channel used by the Web self-update.
 /// Official releases use the upstream release tag (for example <c>7.25.3</c>) and carry
-/// <c>web-update.json</c> plus the app-only ZIP archives as additional release assets.
+/// <c>WebAPI-update.json</c> plus the app-only ZIP archives as additional release assets.
 /// </summary>
 internal static partial class WebReleaseChannel
 {
     public const string DefaultRepository = "2dust/v2rayN";
-    public const string ManifestAssetName = "web-update.json";
+    public const string ManifestAssetName = "WebAPI-update.json";
     private const string ApiBase = "https://api.github.com/repos";
 
     public static bool IsValidRepository(string? value) =>

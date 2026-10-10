@@ -11,7 +11,7 @@ public class WebAuthServiceTests
     public async Task MissingEnvironmentAndPersistedKeyRequiresSetup()
     {
         using var directory = new TemporaryDirectory();
-        var auth = new WebAuthService(Path.Combine(directory.Path, "guiConfigs", "web-auth.json"), null);
+        var auth = new WebAuthService(Path.Combine(directory.Path, "guiConfigs", "WebAPI-auth.json"), null);
 
         await auth.SetupRequired.Should().BeTrue();
         await auth.EnvironmentKeyConfigured.Should().BeFalse();
@@ -22,7 +22,7 @@ public class WebAuthServiceTests
     public async Task EnvironmentKeyTakesPrecedenceWithoutPersistingIt()
     {
         using var directory = new TemporaryDirectory();
-        var path = Path.Combine(directory.Path, "guiConfigs", "web-auth.json");
+        var path = Path.Combine(directory.Path, "guiConfigs", "WebAPI-auth.json");
         var auth = new WebAuthService(path, ManagementKey);
 
         await auth.SetupRequired.Should().BeFalse();
@@ -36,7 +36,7 @@ public class WebAuthServiceTests
     public async Task SetupPersistsOnlySaltAndVerifierAndVerifiesTheKeyImmediately()
     {
         using var directory = new TemporaryDirectory();
-        var path = Path.Combine(directory.Path, "guiConfigs", "web-auth.json");
+        var path = Path.Combine(directory.Path, "guiConfigs", "WebAPI-auth.json");
         var auth = new WebAuthService(path, null);
 
         var result = await auth.SetupAsync(ManagementKey, ManagementKey, setupAccessAllowed: true);
@@ -62,7 +62,7 @@ public class WebAuthServiceTests
     public async Task SetupRejectsShortOrMismatchedKeys()
     {
         using var directory = new TemporaryDirectory();
-        var auth = new WebAuthService(Path.Combine(directory.Path, "web-auth.json"), null);
+        var auth = new WebAuthService(Path.Combine(directory.Path, "WebAPI-auth.json"), null);
 
         await ((await auth.SetupAsync("short", "short", setupAccessAllowed: true)) == WebSetupResult.KeyTooShort).Should().BeTrue();
         await ((await auth.SetupAsync(new string('x', WebAuthService.MaximumKeyLength + 1), new string('x', WebAuthService.MaximumKeyLength + 1), setupAccessAllowed: true)) == WebSetupResult.KeyTooLong).Should().BeTrue();
@@ -74,7 +74,7 @@ public class WebAuthServiceTests
     public async Task SetupCanOnlyBeCompletedOnce()
     {
         using var directory = new TemporaryDirectory();
-        var auth = new WebAuthService(Path.Combine(directory.Path, "web-auth.json"), null);
+        var auth = new WebAuthService(Path.Combine(directory.Path, "WebAPI-auth.json"), null);
 
         await ((await auth.SetupAsync(ManagementKey, ManagementKey, setupAccessAllowed: true)) == WebSetupResult.Created).Should().BeTrue();
         await ((await auth.SetupAsync("a-second-management-key", "a-second-management-key", setupAccessAllowed: true)) == WebSetupResult.AlreadyConfigured).Should().BeTrue();
@@ -86,7 +86,7 @@ public class WebAuthServiceTests
     public async Task SetupRejectsWhenRequestAccessPolicyDeniesIt()
     {
         using var directory = new TemporaryDirectory();
-        var auth = new WebAuthService(Path.Combine(directory.Path, "web-auth.json"), null);
+        var auth = new WebAuthService(Path.Combine(directory.Path, "WebAPI-auth.json"), null);
 
         await ((await auth.SetupAsync(ManagementKey, ManagementKey, setupAccessAllowed: false)) == WebSetupResult.Forbidden).Should().BeTrue();
         await auth.SetupRequired.Should().BeTrue();
@@ -96,7 +96,7 @@ public class WebAuthServiceTests
     public async Task PersistedVerifierSurvivesServiceRecreation()
     {
         using var directory = new TemporaryDirectory();
-        var path = Path.Combine(directory.Path, "guiConfigs", "web-auth.json");
+        var path = Path.Combine(directory.Path, "guiConfigs", "WebAPI-auth.json");
         var firstInstance = new WebAuthService(path, null);
         await ((await firstInstance.SetupAsync(ManagementKey, ManagementKey, setupAccessAllowed: true)) == WebSetupResult.Created).Should().BeTrue();
 
@@ -115,7 +115,7 @@ public class WebAuthServiceTests
 
         var authPath = WebAuthStorage.MigrateAndGetPath(directory.Path, legacyPath);
 
-        await authPath.Should().BeEqualTo(Path.Combine(directory.Path, "webData", "web-auth.json"));
+        await authPath.Should().BeEqualTo(Path.Combine(directory.Path, "WebAPIData", "WebAPI-auth.json"));
         await (await File.ReadAllTextAsync(authPath)).Should().BeEqualTo("local-verifier");
         await File.Exists(legacyPath).Should().BeFalse();
         if (OperatingSystem.IsLinux())
@@ -129,7 +129,7 @@ public class WebAuthServiceTests
     public async Task ExistingPrivateWebAuthCredentialWinsOverAStaleLegacyCopy()
     {
         using var directory = new TemporaryDirectory();
-        var privatePath = Path.Combine(directory.Path, "webData", "web-auth.json");
+        var privatePath = Path.Combine(directory.Path, "WebAPIData", "WebAPI-auth.json");
         var legacyPath = Path.Combine(directory.Path, "guiConfigs", "web-auth.json");
         Directory.CreateDirectory(Path.GetDirectoryName(privatePath)!);
         Directory.CreateDirectory(Path.GetDirectoryName(legacyPath)!);
@@ -143,11 +143,28 @@ public class WebAuthServiceTests
         await File.Exists(legacyPath).Should().BeFalse();
     }
 
+    [Test]
+    public async Task PreviousPrivateWebAuthCredentialMigratesToTheRenamedLocation()
+    {
+        using var directory = new TemporaryDirectory();
+        var previousPrivatePath = Path.Combine(directory.Path, "webData", "web-auth.json");
+        Directory.CreateDirectory(Path.GetDirectoryName(previousPrivatePath)!);
+        await File.WriteAllTextAsync(previousPrivatePath, "old-private-verifier");
+
+        var authPath = WebAuthStorage.MigrateAndGetPath(
+            directory.Path,
+            Path.Combine(directory.Path, "guiConfigs", "web-auth.json"));
+
+        await authPath.Should().BeEqualTo(Path.Combine(directory.Path, "WebAPIData", "WebAPI-auth.json"));
+        await (await File.ReadAllTextAsync(authPath)).Should().BeEqualTo("old-private-verifier");
+        await File.Exists(previousPrivatePath).Should().BeFalse();
+    }
+
     private sealed class TemporaryDirectory : IDisposable
     {
         public TemporaryDirectory()
         {
-            Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"v2rayn-web-auth-{Guid.NewGuid():N}");
+            Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"v2rayn-WebAPI-auth-{Guid.NewGuid():N}");
             Directory.CreateDirectory(Path);
         }
 

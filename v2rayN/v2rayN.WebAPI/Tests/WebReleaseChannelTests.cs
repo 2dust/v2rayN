@@ -39,7 +39,7 @@ public class WebReleaseChannelTests
     {
         var repository = "2dust/v2rayN";
         var tag = "7.25.3";
-        var asset = "v2rayN-linux-64-web-update.zip";
+        var asset = "v2rayN-linux-64-WebAPI-update.zip";
         var trusted = $"https://github.com/{repository}/releases/download/{tag}/{asset}";
 
         await WebReleaseChannel.IsTrustedAssetUrl(trusted, repository, tag, asset).Should().BeTrue();
@@ -51,7 +51,7 @@ public class WebReleaseChannelTests
         await WebReleaseChannel.IsTrustedAssetUrl("https://example.com/2dust/v2rayN/releases/download/7.25.3/" + asset,
             repository, tag, asset).Should().BeFalse();
         await WebReleaseChannel.IsTrustedAssetUrl(trusted, repository, "7.25.4", asset).Should().BeFalse();
-        await WebReleaseChannel.IsTrustedAssetUrl(trusted, repository, tag, "web-update.json").Should().BeFalse();
+        await WebReleaseChannel.IsTrustedAssetUrl(trusted, repository, tag, "WebAPI-update.json").Should().BeFalse();
         await WebReleaseChannel.IsTrustedAssetUrl("https://github.com/2dust/v2rayN/releases/download/7.25.3/sub/" + asset,
             repository, tag, asset).Should().BeFalse();
         await WebReleaseChannel.IsTrustedAssetUrl(null, repository, tag, asset).Should().BeFalse();
@@ -62,13 +62,13 @@ public class WebReleaseChannelTests
     {
         await WebUpdatePackageStager.ArtifactArch("linux-x64").Should().BeEqualTo("64");
         await WebUpdatePackageStager.ArtifactArch("linux-arm64").Should().BeEqualTo("arm64");
-        await WebUpdatePackageStager.FullInstallAssetName("linux-x64").Should().BeEqualTo("v2rayN-linux-64-web.zip");
-        await WebUpdatePackageStager.FullInstallAssetName("linux-arm64").Should().BeEqualTo("v2rayN-linux-arm64-web.zip");
-        await WebUpdatePackageStager.AppOnlyAssetName("linux-x64").Should().BeEqualTo("v2rayN-linux-64-web-update.zip");
-        await WebUpdatePackageStager.AppOnlyAssetName("linux-arm64").Should().BeEqualTo("v2rayN-linux-arm64-web-update.zip");
+        await WebUpdatePackageStager.FullInstallAssetName("linux-x64").Should().BeEqualTo("v2rayN-linux-64-WebAPI.zip");
+        await WebUpdatePackageStager.FullInstallAssetName("linux-arm64").Should().BeEqualTo("v2rayN-linux-arm64-WebAPI.zip");
+        await WebUpdatePackageStager.AppOnlyAssetName("linux-x64").Should().BeEqualTo("v2rayN-linux-64-WebAPI-update.zip");
+        await WebUpdatePackageStager.AppOnlyAssetName("linux-arm64").Should().BeEqualTo("v2rayN-linux-arm64-WebAPI-update.zip");
         await WebUpdatePackageStager.ArtifactArch("win-x64").Should().BeEqualTo("64");
-        await WebUpdatePackageStager.FullInstallAssetName("win-x64").Should().BeEqualTo("v2rayN-windows-64-web.zip");
-        await WebUpdatePackageStager.AppOnlyAssetName("win-x64").Should().BeEqualTo("v2rayN-windows-64-web-update.zip");
+        await WebUpdatePackageStager.FullInstallAssetName("win-x64").Should().BeEqualTo("v2rayN-windows-64-WebAPI.zip");
+        await WebUpdatePackageStager.AppOnlyAssetName("win-x64").Should().BeEqualTo("v2rayN-windows-64-WebAPI-update.zip");
         await WebUpdatePackageStager.FullInstallAssetName("linux-riscv64").Should().BeNull();
         await WebUpdatePackageStager.AppOnlyAssetName(null).Should().BeNull();
     }

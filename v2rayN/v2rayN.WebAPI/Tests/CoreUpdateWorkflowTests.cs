@@ -339,7 +339,7 @@ public class CoreUpdateWorkflowTests
     {
         public TemporaryDirectory()
         {
-            Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"v2rayn-web-core-update-test-{Guid.NewGuid():N}");
+            Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"v2rayn-WebAPI-core-update-test-{Guid.NewGuid():N}");
             Directory.CreateDirectory(Path);
         }
 

@@ -76,10 +76,55 @@ public class ShutdownCleanupSequenceTests
     {
         await (RuntimeShutdownBudgets.RuntimeCleanup < RuntimeShutdownBudgets.HostShutdown).Should().BeTrue();
         await (RuntimeShutdownBudgets.HostShutdown < RuntimeShutdownBudgets.LauncherWait).Should().BeTrue();
+        await (RuntimeShutdownBudgets.LateCleanup < RuntimeShutdownBudgets.RuntimeCleanup).Should().BeTrue();
         await (RuntimeShutdownBudgets.HostShutdown - RuntimeShutdownBudgets.RuntimeCleanup)
             .Should().BeEqualTo(TimeSpan.FromSeconds(5));
         await (RuntimeShutdownBudgets.LauncherWait - RuntimeShutdownBudgets.HostShutdown)
             .Should().BeEqualTo(TimeSpan.FromSeconds(10));
+    }
+
+    [Test]
+    public async Task LateShutdownRunsAReducedFreshCleanupAfterTheHostTokenWasCanceled()
+    {
+        using var canceled = new CancellationTokenSource();
+        canceled.Cancel();
+        var visited = new List<string>();
+        var messages = new List<string>();
+        var steps = new ShutdownCleanupStep[]
+        {
+            new("Core stop", _ => { visited.Add("Core stop"); return Task.FromResult(true); }),
+            new("database close", _ => { visited.Add("database close"); return Task.FromResult(true); }),
+        };
+
+        var completed = await ShutdownCleanupSequence.RunAsync(
+            steps,
+            RuntimeShutdownBudgets.RuntimeCleanup,
+            canceled.Token,
+            messages.Add);
+
+        await completed.Should().BeTrue();
+        await visited.SequenceEqual(["Core stop", "database close"]).Should().BeTrue();
+        await messages.Any(message => message.Contains("reduced cleanup", StringComparison.Ordinal)).Should().BeTrue();
+    }
+
+    [Test]
+    public async Task LateShutdownStillHonorsTheReducedBudgetInsteadOfTheFullOne()
+    {
+        var neverCompletingStep = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+        using var canceled = new CancellationTokenSource();
+        canceled.Cancel();
+        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+
+        var completed = await ShutdownCleanupSequence.RunAsync(
+            new ShutdownCleanupStep[] { new("Core stop", _ => neverCompletingStep.Task) },
+            RuntimeShutdownBudgets.RuntimeCleanup,
+            canceled.Token,
+            _ => { });
+
+        await completed.Should().BeFalse();
+        await stopwatch.Elapsed.Should().BeGreaterThanOrEqualTo(RuntimeShutdownBudgets.LateCleanup - TimeSpan.FromMilliseconds(100));
+        await stopwatch.Elapsed.Should().BeLessThan(RuntimeShutdownBudgets.LateCleanup + TimeSpan.FromSeconds(2));
+        neverCompletingStep.TrySetResult(true);
     }
 
     [Test]

@@ -9,6 +9,9 @@ internal static class RuntimeShutdownBudgets
     public static readonly TimeSpan RuntimeCleanup = TimeSpan.FromSeconds(20);
     public static readonly TimeSpan HostShutdown = TimeSpan.FromSeconds(25);
     public static readonly TimeSpan LauncherWait = TimeSpan.FromSeconds(35);
+    // Used when the host shutdown budget was already exhausted before cleanup
+    // started, for example while the web server drained long-lived connections.
+    public static readonly TimeSpan LateCleanup = TimeSpan.FromSeconds(5);
 }
 
 internal static class ShutdownDiagnostics
@@ -72,6 +75,17 @@ internal static class ShutdownCleanupSequence
         Action<string> log,
         Action<string?>? stageChanged = null)
     {
+        if (cancellationToken.IsCancellationRequested)
+        {
+            // The host token can already be canceled when cleanup starts, for
+            // example while the web server drains long-lived stream connections.
+            // Cleanup is still worth a short, fresh window: it stops the Core
+            // child and saves shared state instead of skipping both.
+            log("Shutdown started after the host shutdown budget was exhausted; running a reduced cleanup with a fresh budget.");
+            budget = RuntimeShutdownBudgets.LateCleanup;
+            cancellationToken = CancellationToken.None;
+        }
+
         using var deadline = new ShutdownDeadline(budget, cancellationToken);
         foreach (var step in steps)
         {

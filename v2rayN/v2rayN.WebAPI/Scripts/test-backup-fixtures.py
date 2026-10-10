@@ -240,7 +240,7 @@ def add_auth_file_to_web_archive(source: Path, destination: Path) -> None:
     with zipfile.ZipFile(source) as original, zipfile.ZipFile(destination, "w", zipfile.ZIP_DEFLATED) as malicious:
         for entry in original.infolist():
             malicious.writestr(entry, original.read(entry.filename))
-        malicious.writestr("restore-fixture/guiConfigs/web-auth.json", b"attacker-controlled-auth")
+        malicious.writestr("restore-fixture/guiConfigs/WebAPI-auth.json", b"attacker-controlled-auth")
 
 
 def install_fake_cores(startup_path: Path) -> None:
@@ -526,15 +526,15 @@ def main() -> int:
             require(setup_status == 200 and setup.get("setupRequired") is False,
                     "Could not initialize the isolated fixture Web host.")
             token = setup["token"]
-            auth_path = next(data_home.rglob("web-auth.json"))
+            auth_path = next(data_home.rglob("WebAPI-auth.json"))
             auth_bytes = auth_path.read_bytes()
             install_fake_cores(auth_path.parent.parent)
 
             backup_status, normal_backup = host.request("GET", "/api/backup/download", token=token)
             require(backup_status == 200 and isinstance(normal_backup, bytes), "Could not create an isolated Web backup.")
             with zipfile.ZipFile(__import__("io").BytesIO(normal_backup)) as archive:
-                require(not any(name.lower().endswith("/web-auth.json") for name in archive.namelist()),
-                        "A normal Web backup unexpectedly contains web-auth.json.")
+                require(not any(name.lower().endswith("/WebAPI-auth.json") for name in archive.namelist()),
+                        "A normal Web backup unexpectedly contains WebAPI-auth.json.")
 
             host.stop_current_gracefully()
             host.start(mode="background-child")

@@ -15,12 +15,15 @@ public sealed record WebLaunchOptions(WebLaunchMode Mode, bool NoOpen, string[] 
     public const string BackgroundFlag = "--background";
     public const string NoOpenFlag = "--no-open";
     public const string BackgroundChildFlag = "--background-child";
+    public const string HelpFlag = "--help";
+    public const string HelpShortFlag = "-h";
 
     public static WebLaunchOptions Parse(
         string[] arguments,
         bool isLinux,
         bool daemonEnvironment,
-        bool containerEnvironment)
+        bool containerEnvironment,
+        bool interactiveLaunch)
     {
         var mode = arguments.Contains(StopFlag, StringComparer.Ordinal)
             ? WebLaunchMode.Stop
@@ -30,7 +33,7 @@ public sealed record WebLaunchOptions(WebLaunchMode Mode, bool NoOpen, string[] 
                     ? WebLaunchMode.Foreground
                     : arguments.Contains(BackgroundFlag, StringComparer.Ordinal)
                         ? WebLaunchMode.BackgroundLauncher
-                        : isLinux && !daemonEnvironment && !containerEnvironment
+                        : isLinux && !containerEnvironment && (!daemonEnvironment || interactiveLaunch)
                             ? WebLaunchMode.BackgroundLauncher
                             : WebLaunchMode.Foreground;
 
@@ -39,7 +42,9 @@ public sealed record WebLaunchOptions(WebLaunchMode Mode, bool NoOpen, string[] 
                 and not ForegroundFlag
                 and not BackgroundFlag
                 and not NoOpenFlag
-                and not BackgroundChildFlag)
+                and not BackgroundChildFlag
+                and not HelpFlag
+                and not HelpShortFlag)
             .ToArray();
         return new WebLaunchOptions(
             mode,
@@ -50,6 +55,12 @@ public sealed record WebLaunchOptions(WebLaunchMode Mode, bool NoOpen, string[] 
 
 public static class LauncherEnvironment
 {
+    // Set when the launch chain started in an interactive terminal and inherited
+    // by every later child, helper, and replacement process. Terminals that were
+    // started by systemd export INVOCATION_ID/JOURNAL_STREAM to everything they
+    // run, so the launch context is recorded once instead of being probed again.
+    public const string InteractiveLaunchEnvironmentVariable = "V2RAYN_WEB_INTERACTIVE_LAUNCH";
+
     public static bool IsDaemonEnvironment(IReadOnlyDictionary<string, string?> environment)
     {
         return HasValue(environment, "INVOCATION_ID")
@@ -60,6 +71,37 @@ public static class LauncherEnvironment
     public static bool IsContainerEnvironment(IReadOnlyDictionary<string, string?> environment) =>
         HasValue(environment, "DOTNET_RUNNING_IN_CONTAINER")
         || HasValue(environment, "container");
+
+    public static bool IsInteractiveLaunchMarker(IReadOnlyDictionary<string, string?> environment) =>
+        HasValue(environment, InteractiveLaunchEnvironmentVariable);
+
+    /// <summary>
+    /// True when this process runs with an interactive terminal attached or the
+    /// launch chain was marked as interactive by the process that had one.
+    /// </summary>
+    public static bool IsInteractiveLaunch(IReadOnlyDictionary<string, string?> environment) =>
+        !Console.IsInputRedirected || IsInteractiveLaunchMarker(environment);
+
+    /// <summary>
+    /// True when systemd markers or the service cgroup claim this process, unless
+    /// the markers merely leaked into a terminal (or its detached children),
+    /// where no external supervisor exists.
+    /// </summary>
+    public static bool IsSystemdManagedDeployment()
+    {
+        if (WebStopper.IsManagedBySystemd(Environment.ProcessId))
+        {
+            return true;
+        }
+
+        var environment = ReadCurrentEnvironment();
+        return IsDaemonEnvironment(environment) && !IsInteractiveLaunch(environment);
+    }
+
+    public static Dictionary<string, string?> ReadCurrentEnvironment() =>
+        Environment.GetEnvironmentVariables()
+            .Cast<System.Collections.DictionaryEntry>()
+            .ToDictionary(entry => (string)entry.Key, entry => entry.Value?.ToString(), StringComparer.OrdinalIgnoreCase);
 
     private static bool HasValue(IReadOnlyDictionary<string, string?> environment, string key) =>
         environment.TryGetValue(key, out var value) && !string.IsNullOrWhiteSpace(value);
@@ -121,6 +163,8 @@ public static class LauncherMessages
     }
 
     public static string StopUnsupported(LauncherLocale locale) => Get("stopUnsupported", locale);
+
+    public static string Help(LauncherLocale locale) => Get("help", locale);
 
     public static string StartFailed(LauncherLocale locale) => Get("startFailed", locale);
 

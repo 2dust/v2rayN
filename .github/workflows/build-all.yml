@@ -22,7 +22,7 @@ jobs:
 
   release-web:
     if: inputs.release_tag != ''
-    uses: ./.github/workflows/release-web.yml
+    uses: ./.github/workflows/release-WebAPI.yml
     with:
       release_tag: ${{ inputs.release_tag }}
     secrets: inherit

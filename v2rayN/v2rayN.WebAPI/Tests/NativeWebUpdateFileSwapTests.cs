@@ -29,7 +29,7 @@ public class NativeWebUpdateFileSwapTests
 
         await view.ReadByte(0).Should().BeEqualTo((byte)'n');
         await (await File.ReadAllTextAsync(Path.Combine(plan.InstallDirectory, ExecutableName))).Should().BeEqualTo("old-web");
-        await Directory.GetFiles(plan.InstallDirectory, ".v2rayn-web-restore-*").Length.Should().BeEqualTo(0);
+        await Directory.GetFiles(plan.InstallDirectory, ".v2rayn-WebAPI-restore-*").Length.Should().BeEqualTo(0);
     }
 
     [Test]
@@ -81,8 +81,8 @@ public class NativeWebUpdateFileSwapTests
     {
         var install = Path.Combine(root, "native");
         var parent = Path.GetDirectoryName(install)!;
-        var candidate = Path.Combine(parent, ".v2rayn-web-candidate-test");
-        var backup = Path.Combine(parent, ".v2rayn-web-backup-test");
+        var candidate = Path.Combine(parent, ".v2rayn-WebAPI-candidate-test");
+        var backup = Path.Combine(parent, ".v2rayn-WebAPI-backup-test");
         Directory.CreateDirectory(Path.Combine(install, "extra", "nested"));
         Directory.CreateDirectory(Path.Combine(install, "bin", "xray"));
         Directory.CreateDirectory(Path.Combine(install, "guiConfigs"));
@@ -129,7 +129,7 @@ public class NativeWebUpdateFileSwapTests
     {
         public TemporaryDirectory()
         {
-            Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"v2rayn-web-swap-test-{Guid.NewGuid():N}");
+            Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"v2rayn-WebAPI-swap-test-{Guid.NewGuid():N}");
             Directory.CreateDirectory(Path);
         }
 

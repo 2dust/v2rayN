@@ -512,7 +512,7 @@ public class RegionalPresetStagingTests
     {
         public TemporaryDirectory()
         {
-            Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"v2rayn-web-regional-preset-test-{Guid.NewGuid():N}");
+            Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"v2rayn-WebAPI-regional-preset-test-{Guid.NewGuid():N}");
             Directory.CreateDirectory(Path);
         }
 

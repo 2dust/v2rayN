@@ -39,27 +39,27 @@ public sealed class HttpWebHealthProbe : IWebHealthProbe
         try
         {
             using var response = await _client.GetAsync(healthUri, cancellationToken);
-            var instanceProcessId = response.Headers.TryGetValues("X-v2rayn-web-instance-pid", out var values)
+            var instanceProcessId = response.Headers.TryGetValues("X-v2rayn-WebAPI-instance-pid", out var values)
                 && int.TryParse(values.FirstOrDefault(), out var parsedProcessId)
                     ? parsedProcessId
                     : (int?)null;
-            var shutdownStage = response.Headers.TryGetValues("X-v2rayn-web-shutdown-stage", out var stageValues)
+            var shutdownStage = response.Headers.TryGetValues("X-v2rayn-WebAPI-shutdown-stage", out var stageValues)
                 ? stageValues.FirstOrDefault()
                 : null;
-            var coreProcessIds = response.Headers.TryGetValues("X-v2rayn-web-core-process-ids", out var processValues)
+            var coreProcessIds = response.Headers.TryGetValues("X-v2rayn-WebAPI-core-process-ids", out var processValues)
                 ? processValues.FirstOrDefault()?.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
                     .Select(value => int.TryParse(value, out var processId) ? processId : 0)
                     .Where(processId => processId > 0)
                     .Distinct()
                     .ToArray()
                 : [];
-            var coreState = response.Headers.TryGetValues("X-v2rayn-web-core-state", out var stateValues)
+            var coreState = response.Headers.TryGetValues("X-v2rayn-WebAPI-core-state", out var stateValues)
                 ? stateValues.FirstOrDefault()
                 : null;
-            var webVersion = response.Headers.TryGetValues("X-v2rayn-web-version", out var versionValues)
+            var webVersion = response.Headers.TryGetValues("X-v2rayn-WebAPI-version", out var versionValues)
                 ? versionValues.FirstOrDefault()
                 : null;
-            var coreProfileId = response.Headers.TryGetValues("X-v2rayn-web-core-profile-id", out var profileValues)
+            var coreProfileId = response.Headers.TryGetValues("X-v2rayn-WebAPI-core-profile-id", out var profileValues)
                 ? profileValues.FirstOrDefault()
                 : null;
             return new WebHealthProbeResult(response.IsSuccessStatusCode, instanceProcessId, shutdownStage,
