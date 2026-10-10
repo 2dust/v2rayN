@@ -532,19 +532,46 @@ jobs:
           "$publish/v2rayN.WebAPI" --help | head -n 5
           export V2RAYN_WEB_API_KEY=ci-smoke-key-0123456789abcdef
           export ASPNETCORE_URLS=http://127.0.0.1:5080
-          ( cd "$publish" && ./v2rayN.WebAPI --foreground --no-open > /tmp/smoke.log 2>&1 & echo $! > /tmp/smoke.pid )
+          cd "$publish"
+          ./v2rayN.WebAPI --foreground --no-open > /tmp/smoke.log 2>&1 &
+          app_pid=$!
+          echo "$app_pid" > /tmp/smoke.pid
+          echo "riscv64 API smoke application PID: $app_pid"
           ok=0
           for i in $(seq 1 90); do
-            if curl -fsS http://127.0.0.1:5080/api/health >/dev/null 2>&1; then ok=1; break; fi
+            if curl --noproxy '*' -fsS http://127.0.0.1:5080/api/health >/dev/null 2>&1; then ok=1; break; fi
+            if ! kill -0 "$app_pid" 2>/dev/null; then break; fi
             sleep 1
           done
           if [ "$ok" != 1 ]; then
-            tail -n 60 /tmp/smoke.log
-            kill -9 "$(cat /tmp/smoke.pid)" 2>/dev/null || true
+            echo 'riscv64 API smoke did not become healthy'
+            tail -n 60 /tmp/smoke.log || true
+            kill -TERM "$app_pid" 2>/dev/null || true
+            sleep 1
+            kill -KILL "$app_pid" 2>/dev/null || true
             exit 1
           fi
-          kill -TERM "$(cat /tmp/smoke.pid)"
-          sleep 2
+          kill -TERM "$app_pid"
+          stopped=0
+          for i in $(seq 1 30); do
+            if ! kill -0 "$app_pid" 2>/dev/null; then stopped=1; break; fi
+            sleep 1
+          done
+          if [ "$stopped" != 1 ]; then
+            echo 'riscv64 API smoke did not exit within 30s after SIGTERM'
+            tail -n 60 /tmp/smoke.log || true
+            kill -KILL "$app_pid" 2>/dev/null || true
+            exit 1
+          fi
+          set +e
+          wait "$app_pid"
+          exit_code=$?
+          set -e
+          if [ "$exit_code" -ne 0 ]; then
+            echo "riscv64 API smoke exited with status $exit_code after SIGTERM"
+            tail -n 60 /tmp/smoke.log || true
+            exit 1
+          fi
           echo 'linux-riscv64 native API smoke OK'
       - uses: actions/upload-artifact@v7
         with:
@@ -649,14 +676,41 @@ jobs:
             ./v2rayN.WebAPI --help >/dev/null || rc=9
             V2RAYN_WEB_API_KEY=ci-smoke-key-0123456789abcdef ASPNETCORE_URLS=http://127.0.0.1:5080 ./v2rayN.WebAPI --foreground --no-open > /tmp/smoke.log 2>&1 &
             APP=$!
+            echo "$APP" > /tmp/smoke.pid
             ok=0
             for i in $(seq 1 90); do
-              if curl -fsS http://127.0.0.1:5080/api/health >/dev/null 2>&1; then ok=1; break; fi
+              if curl --noproxy '*' -fsS http://127.0.0.1:5080/api/health >/dev/null 2>&1; then ok=1; break; fi
+              if ! kill -0 "$APP" 2>/dev/null; then break; fi
               sleep 1
             done
-            if [ "$ok" != 1 ]; then tail -n 60 /tmp/smoke.log; rc=9; fi
-            kill -TERM "$APP" 2>/dev/null || true
-            sleep 2
+            if [ "$ok" != 1 ]; then
+              echo 'loongarch64 API smoke did not become healthy'
+              tail -n 60 /tmp/smoke.log
+              kill -KILL "$APP" 2>/dev/null || true
+              rc=9
+            fi
+            if [ "$rc" = 0 ]; then
+              kill -TERM "$APP"
+              exited=0
+              for i in $(seq 1 60); do
+                if ! kill -0 "$APP" 2>/dev/null; then exited=1; break; fi
+                sleep 1
+              done
+              if [ "$exited" != 1 ]; then
+                echo 'loongarch64 API smoke did not exit within 60s after SIGTERM'
+                tail -n 60 /tmp/smoke.log
+                kill -KILL "$APP" 2>/dev/null || true
+                rc=9
+              else
+                wait "$APP"
+                app_rc=$?
+                if [ "$app_rc" != 0 ]; then
+                  echo "loongarch64 API smoke exited with status $app_rc after SIGTERM"
+                  tail -n 60 /tmp/smoke.log
+                  rc=9
+                fi
+              fi
+            fi
           fi
           if [ "$rc" != 0 ]; then echo '=== publish.log ==='; tail -n 120 /tmp/publish.log 2>/dev/null; fi
           echo "__WEBAPI_DONE__$rc"
