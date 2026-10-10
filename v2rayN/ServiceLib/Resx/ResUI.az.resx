@@ -1080,6 +1080,9 @@
   <data name="TbSettingsTunStack" xml:space="preserve">
     <value>Stek</value>
   </data>
+  <data name="TbSettingsTunDnsMode" xml:space="preserve">
+    <value>DNS rejimi</value>
+  </data>
   <data name="TbMtu" xml:space="preserve">
     <value>MTU</value>
   </data>

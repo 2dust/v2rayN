@@ -113,23 +113,27 @@ public partial class CoreConfigSingboxService
                 }
             }
 
+            var disableDnsHijack = string.Equals(_config.TunModeItem.DnsMode, "disabled", StringComparison.OrdinalIgnoreCase);
             if (_config.Inbound.First().SniffingEnabled)
             {
                 _coreConfig.route.rules.Add(new()
                 {
                     action = "sniff"
                 });
-                _coreConfig.route.rules.Add(new()
+                if (!disableDnsHijack)
                 {
-                    type = "logical",
-                    mode = "or",
-                    action = "hijack-dns",
-                    rules =
-                    [
-                        new() { port = [53] },
-                        new() { protocol = ["dns"] },
-                    ],
-                });
+                    _coreConfig.route.rules.Add(new()
+                    {
+                        type = "logical",
+                        mode = "or",
+                        action = "hijack-dns",
+                        rules =
+                        [
+                            new() { port = [53] },
+                            new() { protocol = ["dns"] },
+                        ],
+                    });
+                }
                 if (_config.CoreBasicItem.EnableFinalFragment)
                 {
                     _coreConfig.route.rules.Add(new()
@@ -142,11 +146,14 @@ public partial class CoreConfigSingboxService
             }
             else
             {
-                _coreConfig.route.rules.Add(new()
+                if (!disableDnsHijack)
                 {
-                    port = [53],
-                    action = "hijack-dns",
-                });
+                    _coreConfig.route.rules.Add(new()
+                    {
+                        port = [53],
+                        action = "hijack-dns",
+                    });
+                }
                 if (_config.CoreBasicItem.EnableFinalFragment)
                 {
                     _coreConfig.route.rules.Add(new()

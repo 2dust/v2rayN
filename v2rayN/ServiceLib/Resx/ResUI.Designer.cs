@@ -4868,6 +4868,15 @@ namespace ServiceLib.Resx {
                 return ResourceManager.GetString("TbSettingsTunAutoRoute", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   查找类似 DNS mode 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsTunDnsMode {
+            get {
+                return ResourceManager.GetString("TbSettingsTunDnsMode", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   查找类似 Tun Mode settings 的本地化字符串。
