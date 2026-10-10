@@ -161,6 +161,15 @@ public class DownloadService
     /// <summary>
     /// Gets redirect target URL without following redirects automatically.
     /// </summary>
+    /// <remarks>
+    /// The redirect target comes from the network and is therefore untrusted.
+    /// 返回前会做以下校验，任一不通过即拒绝：
+    ///   · 不允许从 HTTPS 降级到 HTTP（防中间人把下载引向明文通道）
+    ///   · 不允许指向回环 / 内网 / 链路本地地址（防 SSRF）
+    /// 目标主机与原主机不同时不拒绝，但会记入日志（供排查）。
+    /// 之所以不做固定主机白名单：<c>coreInfo.Url</c> 允许用户配置镜像，
+    /// 固定白名单会把镜像用户挡死。
+    /// </remarks>
     public async Task<string?> UrlRedirectAsync(string url, bool blProxy, CancellationToken cancellationToken = default)
     {
         var webRequestHandler = new SocketsHttpHandler
@@ -179,7 +188,7 @@ public class DownloadService
         var response = await client.GetAsync(url, cancellationToken);
         if (response.StatusCode == HttpStatusCode.Redirect && response.Headers.Location is not null)
         {
-            return response.Headers.Location.ToString();
+            return ValidateRedirectTarget(url, response.Headers.Location);
         }
         else
         {
@@ -187,6 +196,89 @@ public class DownloadService
             Logging.SaveLog("StatusCode error: " + url);
             return null;
         }
+    }
+
+    /// <summary>
+    /// 校验重定向目标是否可接受。返回 null 表示拒绝。
+    /// </summary>
+    internal static string? ValidateRedirectTarget(string originalUrl, Uri location)
+    {
+        Uri origin;
+        try
+        {
+            origin = new Uri(originalUrl);
+        }
+        catch (UriFormatException)
+        {
+            return null;
+        }
+
+        var target = location.IsAbsoluteUri ? location : new Uri(origin, location);
+
+        // 1) 不允许协议降级
+        if (origin.Scheme == Uri.UriSchemeHttps && target.Scheme != Uri.UriSchemeHttps)
+        {
+            Logging.SaveLog($"Redirect downgrade rejected: {origin} -> {target}");
+            return null;
+        }
+
+        // 2) 不允许指向回环 / 内网 / 链路本地地址
+        if (IsNonPublicHost(target.Host))
+        {
+            Logging.SaveLog($"Redirect to non-public host rejected: {target.Host}");
+            return null;
+        }
+
+        // 3) 主机变化只记录，不拒绝
+        if (!string.Equals(target.Host, origin.Host, StringComparison.OrdinalIgnoreCase))
+        {
+            Logging.SaveLog($"Redirect host changed: {origin.Host} -> {target.Host}");
+        }
+
+        return target.ToString();
+    }
+
+    /// <summary>
+    /// 判断主机是否属于回环 / 内网 / 链路本地等不可信范围。
+    /// </summary>
+    private static bool IsNonPublicHost(string host)
+    {
+        if (host.IsNullOrEmpty())
+        {
+            return true;
+        }
+        if (host.Equals("localhost", StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+        if (!IPAddress.TryParse(host, out var ip))
+        {
+            return false;
+        }
+        if (IPAddress.IsLoopback(ip))
+        {
+            return true;
+        }
+        if (ip.IsIPv6LinkLocal || ip.IsIPv6SiteLocal)
+        {
+            return true;
+        }
+
+        var bytes = ip.GetAddressBytes();
+        return ip.AddressFamily switch
+        {
+            AddressFamily.InterNetwork => bytes[0] switch
+            {
+                10 => true,                                   // 10.0.0.0/8
+                127 => true,                                  // 127.0.0.0/8
+                169 when bytes[1] == 254 => true,             // 169.254.0.0/16
+                172 when bytes[1] >= 16 && bytes[1] <= 31 => true, // 172.16.0.0/12
+                192 when bytes[1] == 168 => true,             // 192.168.0.0/16
+                _ => false,
+            },
+            AddressFamily.InterNetworkV6 => (bytes[0] & 0xFE) == 0xFC, // fc00::/7
+            _ => false,
+        };
     }
 
     /// <summary>
