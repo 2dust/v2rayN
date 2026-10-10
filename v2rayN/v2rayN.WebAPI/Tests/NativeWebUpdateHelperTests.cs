@@ -5,6 +5,54 @@ namespace v2rayN.WebAPI.Tests;
 public class NativeWebUpdateHelperTests
 {
     [Test]
+    public async Task TransientFileOperationFailuresAreRetriedBeforeTheUpdateGivesUp()
+    {
+        var attempts = 0;
+        NativeWebUpdateHelper.WithTransientFileRetry(
+            () =>
+            {
+                attempts++;
+                if (attempts < 3)
+                {
+                    throw new IOException("The process cannot access the file because it is being used by another process.");
+                }
+            },
+            "test file replacement",
+            retryWindow: TimeSpan.FromSeconds(2),
+            retryDelay: TimeSpan.FromMilliseconds(10));
+
+        await (attempts == 3).Should().BeTrue();
+    }
+
+    [Test]
+    public async Task PermanentFileOperationFailuresSurfaceTheOperationAndCauseAfterRetries()
+    {
+        var attempts = 0;
+        IOException? failure = null;
+        try
+        {
+            NativeWebUpdateHelper.WithTransientFileRetry(
+                () =>
+                {
+                    attempts++;
+                    throw new UnauthorizedAccessException("Access is denied.");
+                },
+                "replacing the installed Web executable 'C:/install/v2rayN.WebAPI.exe'",
+                retryWindow: TimeSpan.FromMilliseconds(120),
+                retryDelay: TimeSpan.FromMilliseconds(10));
+        }
+        catch (IOException exception)
+        {
+            failure = exception;
+        }
+
+        await (failure is not null).Should().BeTrue();
+        await failure!.Message.Contains("replacing the installed Web executable").Should().BeTrue();
+        await failure.Message.Contains("Access is denied.").Should().BeTrue();
+        await (attempts > 1).Should().BeTrue();
+    }
+
+    [Test]
     public async Task OnlyTheInstalledExecutableAndGuidNamedWorkersAreAccepted()
     {
         await NativeWebUpdateHelper.IsUpdateHelperExecutableName("v2rayN.WebAPI").Should().BeTrue();

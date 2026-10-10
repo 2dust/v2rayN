@@ -37,6 +37,8 @@ internal static class NativeWebUpdateHelper
     private static readonly TimeSpan OwnerReleaseTimeout = TimeSpan.FromSeconds(45);
     private static readonly TimeSpan HealthTimeout = TimeSpan.FromSeconds(60);
     private static readonly TimeSpan PollInterval = TimeSpan.FromMilliseconds(200);
+    private static readonly TimeSpan FileReplaceRetryWindow = TimeSpan.FromSeconds(15);
+    private static readonly TimeSpan FileReplaceRetryDelay = TimeSpan.FromMilliseconds(250);
     private const string IsolatedHelperPrefix = ".v2rayn-WebAPI-update-helper-";
 
     public static async Task<int> RunAsync(string planPath)
@@ -475,6 +477,40 @@ internal static class NativeWebUpdateHelper
         }
     }
 
+    // Windows can transiently deny replacing a freshly written executable while
+    // antivirus or the search indexer holds it open. Retry for a bounded window so
+    // a transient lock cannot fail the update or its rollback; permanent failures
+    // surface with the operation and cause instead of a bare access-denied code.
+    internal static void WithTransientFileRetry(
+        Action operation,
+        string description,
+        TimeSpan? retryWindow = null,
+        TimeSpan? retryDelay = null)
+    {
+        var window = retryWindow ?? FileReplaceRetryWindow;
+        var delay = retryDelay ?? FileReplaceRetryDelay;
+        var deadline = DateTime.UtcNow + window;
+        while (true)
+        {
+            try
+            {
+                operation();
+                return;
+            }
+            catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+            {
+                if (DateTime.UtcNow >= deadline)
+                {
+                    throw new IOException(
+                        $"{description} failed after retrying for {window.TotalSeconds:0.#}s: {exception.Message}",
+                        exception);
+                }
+
+                Thread.Sleep(delay);
+            }
+        }
+    }
+
     internal static void CopyCurrentAppToBackup(NativeWebUpdatePlan plan)
     {
         var executableName = WebUpdatePackageStager.ExecutableNameForRid(plan.Rid);
@@ -496,10 +532,16 @@ internal static class NativeWebUpdateHelper
         var install = plan.InstallDirectory;
         var candidate = plan.CandidateDirectory;
         var executableName = WebUpdatePackageStager.ExecutableNameForRid(plan.Rid);
+        var installedExecutable = Path.Combine(install, executableName);
+        var installedIdentity = Path.Combine(install, "v2rayN.WebAPI.build.json");
 
-        File.Move(Path.Combine(candidate, executableName), Path.Combine(install, executableName), overwrite: true);
-        File.Move(Path.Combine(candidate, "v2rayN.WebAPI.build.json"), Path.Combine(install, "v2rayN.WebAPI.build.json"), overwrite: true);
-        SetExecutableMode(Path.Combine(install, executableName));
+        WithTransientFileRetry(
+            () => File.Move(Path.Combine(candidate, executableName), installedExecutable, overwrite: true),
+            $"Replacing the installed Web executable '{installedExecutable}'");
+        WithTransientFileRetry(
+            () => File.Move(Path.Combine(candidate, "v2rayN.WebAPI.build.json"), installedIdentity, overwrite: true),
+            $"Replacing the installed Web build identity '{installedIdentity}'");
+        SetExecutableMode(installedExecutable);
     }
 
     internal static void RestorePreviousApp(NativeWebUpdatePlan plan)
@@ -512,20 +554,37 @@ internal static class NativeWebUpdateHelper
         var previousIdentity = Path.Combine(backup, "v2rayN.WebAPI.build.json");
         var restoredExecutable = Path.Combine(install, $".v2rayn-WebAPI-restore-{Guid.NewGuid():N}{Path.GetExtension(executableName)}");
         var restoredIdentity = restoredExecutable + ".build.json";
+        var installedExecutable = Path.Combine(install, executableName);
+        var installedIdentity = Path.Combine(install, "v2rayN.WebAPI.build.json");
         try
         {
             // Never truncate an executable inode: the single-file helper may still
             // have bundled assemblies mapped from it. Restore by atomic rename,
             // just like the forward swap, so existing mappings remain unchanged.
-            File.Copy(Path.Combine(backup, executableName), restoredExecutable);
+            WithTransientFileRetry(
+                () => File.Copy(Path.Combine(backup, executableName), restoredExecutable),
+                $"Staging the previous Web executable '{restoredExecutable}'");
             if (File.Exists(previousIdentity))
-                File.Copy(previousIdentity, restoredIdentity);
+            {
+                WithTransientFileRetry(
+                    () => File.Copy(previousIdentity, restoredIdentity),
+                    $"Staging the previous Web build identity '{restoredIdentity}'");
+            }
+
             SetExecutableMode(restoredExecutable);
-            File.Move(restoredExecutable, Path.Combine(install, executableName), overwrite: true);
+            WithTransientFileRetry(
+                () => File.Move(restoredExecutable, installedExecutable, overwrite: true),
+                $"Restoring the previous Web executable '{installedExecutable}'");
             if (File.Exists(restoredIdentity))
-                File.Move(restoredIdentity, Path.Combine(install, "v2rayN.WebAPI.build.json"), overwrite: true);
+            {
+                WithTransientFileRetry(
+                    () => File.Move(restoredIdentity, installedIdentity, overwrite: true),
+                    $"Restoring the previous Web build identity '{installedIdentity}'");
+            }
             else
-                TryDeleteFile(Path.Combine(install, "v2rayN.WebAPI.build.json"));
+            {
+                TryDeleteFile(installedIdentity);
+            }
         }
         finally
         {
