@@ -5,7 +5,6 @@ public class SsSIP008
     public List<SsServer>? servers { get; set; }
 }
 
-[Serializable]
 public class SsServer
 {
     public string? remarks { get; set; }

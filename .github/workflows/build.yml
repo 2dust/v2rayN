@@ -10,6 +10,10 @@ on:
         required: false
         type: string
         default: './v2rayN.Desktop/v2rayN.Desktop.csproj'
+      isAot:
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   build:
@@ -27,7 +31,6 @@ jobs:
         )
       }}
     env:
-      Output: "${{ github.workspace }}/${{ matrix.arch }}"
       RID: |-
         ${{
           case(
@@ -41,6 +44,7 @@ jobs:
         ${{
           case(
             inputs.target == 'windows', '-p:EnableWindowsTargeting=true',
+            inputs.target == 'linux', (matrix.arch == 'arm64' && '-p:LinkerFlavor=lld -p:ObjCopyName=llvm-objcopy' || ''),
             ''
           )
         }}
@@ -71,25 +75,65 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v6
       with:
-        dotnet-version: 10.0.1xx
-        
-    - name: Build v2rayN
+        dotnet-version: 10.0.x
+
+    - name: Install dependencies
       shell: bash
-      working-directory: ./v2rayN
-      run: dotnet publish $Project -c Release -r $RID -p:SelfContained=true $ExtOpt -o $Output
+      if: inputs.target == 'linux' && inputs.isAot
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y clang zlib1g-dev build-essential
+
+    - name: Install dependencies cross-arch
+      shell: bash
+      if: inputs.target == 'linux' && inputs.isAot && matrix.arch == 'arm64'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y lld llvm binutils-aarch64-linux-gnu gcc-aarch64-linux-gnu g++-aarch64-linux-gnu libc6-dev-arm64-cross
+
+    - name: Set AOT Environment Variable
+      shell: bash
+      run: |
+        if [ "${{ inputs.isAot }}" = "true" ]; then
+          echo "DOTNET_AOT_ARG=-p:IsAot=true" >> $GITHUB_ENV
+        else
+          echo "DOTNET_AOT_ARG=-p:IsAot=false" >> $GITHUB_ENV
+        fi
+
+    - name: Set OUTPUT Environment Variable
+      shell: bash
+      run: |
+        RAW_PATH="${{ github.workspace }}/${{ matrix.arch }}${{ inputs.isAot && '-aot' || '' }}"
+        echo "OUTPUT=${RAW_PATH//\\//}" >> "$GITHUB_ENV"
 
     - name: Build AmazTool
       shell: bash
       working-directory: ./v2rayN
-      run: dotnet publish ./AmazTool/AmazTool.csproj -c Release -r $RID -p:SelfContained=true -p:PublishTrimmed=true $ExtOpt -o $Output
+      run: dotnet publish ./AmazTool/AmazTool.csproj -c Release -r $RID -p:SelfContained=true -p:PublishTrimmed=true $ExtOpt ${{ env.DOTNET_AOT_ARG }} -o ${{ env.OUTPUT }}
+
+    - name: Build v2rayN WPF
+      shell: bash
+      if: inputs.project == './v2rayN/v2rayN.csproj'
+      working-directory: ./v2rayN
+      run: dotnet publish $Project -c Release -r $RID -p:SelfContained=true $ExtOpt -o ${{ env.OUTPUT }}
+
+    - name: Build v2rayN Avalonia
+      shell: bash
+      if: inputs.project == './v2rayN.Desktop/v2rayN.Desktop.csproj'
+      working-directory: ./v2rayN
+      run: dotnet publish $Project -c Release -r $RID -p:SelfContained=true $ExtOpt ${{ env.DOTNET_AOT_ARG }} -o ${{ env.OUTPUT }}
 
     - name: Remove Debug Symbols
       shell: bash
       run: |
-        find ${{ matrix.arch }} -type f -name '*.pdb' -delete
+        find ${{ env.OUTPUT }} -type f -name '*.pdb' -delete
+        find ${{ env.OUTPUT }} -type f -name '*.debug' -delete
+        find ${{ env.OUTPUT }} -type f -name '*.dbg' -delete
+        find ${{ env.OUTPUT }} -type f -name '*.sym' -delete
+        find ${{ env.OUTPUT }} -name '*.dSYM' -exec rm -rf {} +
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v7
       with:
-        name: ${{ matrix.arch }}
-        path: ${{ matrix.arch }}
+        name: ${{ matrix.arch }}${{ inputs.isAot && '-aot' || '' }}
+        path: ${{ env.OUTPUT }}

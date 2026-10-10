@@ -523,7 +523,7 @@ public partial class CoreConfigSingboxService
                         transport.type = nameof(ETransport.http);
                         transport.host = transportExtra.Host.IsNullOrEmpty()
                             ? null
-                            : Utils.String2List(transportExtra.Host);
+                            : JsonUtils.SerializeToArray(Utils.String2List(transportExtra.Host));
                         transport.path = transportExtra.Path.NullIfEmpty();
                         if (!useragentValue.IsNullOrEmpty())
                         {

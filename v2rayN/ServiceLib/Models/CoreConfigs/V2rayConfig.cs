@@ -3,7 +3,7 @@ namespace ServiceLib.Models.CoreConfigs;
 public class V2rayConfig
 {
     public Log4Ray log { get; set; }
-    public object dns { get; set; }
+    public JsonObject? dns { get; set; }
     public FakeDns4Ray? fakedns { get; set; }
     public List<Inbounds4Ray> inbounds { get; set; }
     public List<Outbounds4Ray> outbounds { get; set; }
@@ -130,7 +130,7 @@ public class Outboundsettings4Ray
 
     public string? secretKey { get; set; }
 
-    public object? address { get; set; }
+    public JsonNode? address { get; set; }
 
     public int? port { get; set; }
 
@@ -142,7 +142,7 @@ public class Outboundsettings4Ray
 
     public string? email { get; set; }
 
-    public object? headers { get; set; }
+    public JsonNode? headers { get; set; }
 
     public List<WireguardPeer4Ray>? peers { get; set; }
 
@@ -199,8 +199,8 @@ public class Response4Ray
 
 public class Dns4Ray
 {
-    public Dictionary<string, object>? hosts { get; set; }
-    public List<object> servers { get; set; }
+    public Dictionary<string, JsonNode>? hosts { get; set; }
+    public List<JsonNode> servers { get; set; }
     public bool? serveStale { get; set; }
     public bool? enableParallelQuery { get; set; }
     public string? queryStrategy { get; set; }
@@ -226,7 +226,6 @@ public class Routing4Ray
     public List<BalancersItem4Ray>? balancers { get; set; }
 }
 
-[Serializable]
 public class RulesItem4Ray
 {
     public string? type { get; set; }
@@ -321,7 +320,7 @@ public class StreamSettings4Ray
     public HysteriaSettings4Ray? hysteriaSettings { get; set; }
     public MasqueSettings4Ray? masqueSettings { get; set; }
 
-    public object? finalmask { get; set; }
+    public JsonObject? finalmask { get; set; }
 
     public Sockopt4Ray? sockopt { get; set; }
 }
@@ -363,9 +362,9 @@ public class Header4Ray
 {
     public string type { get; set; }
 
-    public object request { get; set; }
+    public JsonObject request { get; set; }
 
-    public object response { get; set; }
+    public JsonObject response { get; set; }
 }
 
 public class KcpSettings4Ray
@@ -411,7 +410,7 @@ public class XhttpSettings4Ray
     public string? path { get; set; }
     public string? host { get; set; }
     public string? mode { get; set; }
-    public object? extra { get; set; }
+    public JsonObject? extra { get; set; }
 }
 
 public class HttpSettings4Ray

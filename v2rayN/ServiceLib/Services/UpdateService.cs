@@ -335,8 +335,12 @@ public partial class UpdateService(Config config, Func<bool, string, Task> updat
             //Check for avalonia desktop windows version
             if (File.Exists(Path.Combine(Utils.GetBaseDirectory(), "libHarfBuzzSharp.dll")))
             {
-                return url?.Replace(".zip", "-desktop.zip");
+                url = url?.Replace(".zip", "-desktop.zip");
             }
+
+#if V2RAYN_IS_AOT
+            url = url?.Replace(".zip", "-aot.zip");
+#endif
 
             return url;
         }

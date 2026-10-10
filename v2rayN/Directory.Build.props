@@ -29,4 +29,19 @@
         <PublishSingleFile>true</PublishSingleFile>
         <PublishReadyToRun>false</PublishReadyToRun>
     </PropertyGroup>
+
+    <PropertyGroup>
+        <IsAot Condition="'$(IsAot)' == ''">false</IsAot>
+        <IsPackaged Condition="'$(IsPackaged)' == ''">false</IsPackaged>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(IsAot)' == 'true'">
+        <PublishAot>true</PublishAot>
+        <PublishTrimmed>true</PublishTrimmed>
+        <DefineConstants>$(DefineConstants);V2RAYN_IS_AOT</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(IsPackaged)' == 'true'">
+        <DefineConstants>$(DefineConstants);V2RAYN_IS_PACKAGED</DefineConstants>
+    </PropertyGroup>
 </Project>

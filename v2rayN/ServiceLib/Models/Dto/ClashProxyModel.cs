@@ -1,6 +1,5 @@
 namespace ServiceLib.Models.Dto;
 
-[Serializable]
 public partial class ClashProxyModel : ReactiveObject
 {
     public string Name { get; set; }

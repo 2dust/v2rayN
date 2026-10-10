@@ -1,4 +1,4 @@
-using System.Security.Principal;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ServiceLib.Handler;
 
@@ -87,6 +87,7 @@ public static class AutoStartupHandler
     [SupportedOSPlatform("windows")]
     public static void AutoStartTaskService(string taskName, string fileName, string description)
     {
+#if false
         if (taskName.IsNullOrEmpty())
         {
             return;
@@ -117,6 +118,78 @@ public static class AutoStartupHandler
         task.Actions.Add(new Microsoft.Win32.TaskScheduler.ExecAction(fileName.AppendQuotes(), null, Path.GetDirectoryName(fileName)));
 
         taskService.RootFolder.RegisterTaskDefinition(taskName, task);
+#endif
+        if (string.IsNullOrEmpty(taskName))
+        {
+            return;
+        }
+
+        RunSchtasks($"/Delete /TN \"{taskName}\" /F");
+
+        if (string.IsNullOrEmpty(fileName))
+        {
+            return;
+        }
+
+        var workingDir = Path.GetDirectoryName(fileName) ?? string.Empty;
+
+        var taskXml = EmbedUtils.GetEmbedText(Global.TaskXmlTemplateFileName);
+
+        taskXml = taskXml
+            .Replace("{{DESCRIPTION}}", System.Security.SecurityElement.Escape(description ?? ""))
+            .Replace("{{EXEC_PATH}}", System.Security.SecurityElement.Escape(fileName ?? ""))
+            .Replace("{{ARGUMENTS}}", string.Empty)
+            .Replace("{{WORKING_DIRECTORY}}", System.Security.SecurityElement.Escape(workingDir ?? ""));
+
+        var taskXmlFileName = Utils.GetTempPath($"{Utils.GetGuid(false)}.xml");
+
+        File.WriteAllText(taskXmlFileName, taskXml);
+
+        RunSchtasks(
+            "/Create",
+            "/TN", taskName,
+            "/XML", taskXmlFileName,
+            "/F"
+        );
+    }
+
+    private static bool RunSchtasks(params string[] arguments)
+    {
+        var psi = new ProcessStartInfo
+        {
+            FileName = "schtasks.exe",
+            UseShellExecute = false,
+            CreateNoWindow = true,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+        };
+
+        foreach (var argument in arguments)
+        {
+            psi.ArgumentList.Add(argument);
+        }
+
+        using var process = Process.Start(psi);
+
+        if (process == null)
+        {
+            return false;
+        }
+
+        process.WaitForExit();
+
+        var output = process.StandardOutput.ReadToEnd();
+        var error = process.StandardError.ReadToEnd();
+        if (!string.IsNullOrEmpty(output))
+        {
+            Logging.SaveLog($"RunSchtasks output: {output}");
+        }
+        if (!string.IsNullOrEmpty(error))
+        {
+            Logging.SaveLog($"RunSchtasks error: {error}");
+        }
+
+        return process.ExitCode == 0;
     }
 
     private static string GetAutoRunNameWindows()
@@ -124,7 +197,7 @@ public static class AutoStartupHandler
         return $"{Global.AutoRunName}_{Utils.GetMd5(Utils.StartupPath())}";
     }
 
-    #endregion Windows
+#endregion Windows
 
     #region Linux
 
