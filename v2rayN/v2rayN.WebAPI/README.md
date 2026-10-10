@@ -125,17 +125,18 @@ Requires the .NET 10 SDK. No Node.js or npm is used by the Backend build, tests,
 Containerfile, or API release packaging.
 
 ```sh
-bash Scripts/publish-native.sh linux-x64
+bash Scripts/publish-native.sh linux-x64   # also linux-arm64 / linux-riscv64 / linux-loongarch64
 bash Scripts/verify.sh
 ```
 
 `Scripts/verify.sh` builds and tests the Backend, runs ServiceLib tests, checks startup/security,
 and exercises API ZIP/self-update package boundaries and real different-layout Linux update,
 rollback and invalid-executable rejection. The independent `build-WebAPI.yml` workflow
-runs these checks, Windows win-x64 build/startup/update smoke, native Linux builds, and Linux
-container builds on relevant PRs and pushes to `master`; it can also be dispatched manually or
-called by a release workflow. Releases include Linux x64/ARM64 and Windows x64 packages; Linux
-containers are built for amd64 and arm64.
+runs these checks, Windows x64/ARM64 build/startup smoke (the self-update replacement smoke stays
+on win-x64), native Linux builds, and Linux container builds on relevant PRs and pushes to
+`master`; it can also be dispatched manually or called by a release workflow. Releases include
+Linux x64/ARM64/RISC-V 64/LoongArch 64 and Windows x64/ARM64 packages; Linux containers are built
+for amd64 and arm64.
 
 `Scripts/test-native-update-identity.py <previous-publish-dir> <candidate-publish-dir>` additionally
 exercises real native helper replacement and health-mismatch rollback with two distinct versions,
@@ -180,9 +181,10 @@ Do not run the two executables against the same data directory. There is no cros
 helper, executable alias or silent in-place migration. Old-product manifests/packages are not
 accepted by the new updater; new `WebAPI → WebAPI` updates preserve the transactional helper,
 health/PID/lock checks, atomic replacement/rollback and executable/Core/data boundaries.
-Package staging checks Linux ELF64 headers/program tables or Windows PE32+ AMD64 headers against
-the declared RID before replacement; a script, truncated image, or wrong-architecture candidate
-cannot reach shutdown/swap merely by carrying the correct JSON identity.
+Package staging checks Linux ELF64 headers/program tables (x86-64, AArch64, RISC-V, LoongArch) or
+Windows PE32+ headers (AMD64, ARM64) against the declared RID before replacement; a script,
+truncated image, or wrong-architecture candidate cannot reach shutdown/swap merely by carrying
+the correct JSON identity.
 
 API-owned `SelectedCoreTypes` and `CheckPreReleaseCoreTypes` entries `v2rayN.Web` are normalized
 to `v2rayN.WebAPI` at startup; legacy settings payloads are also normalized. Desktop/Core/hidden
@@ -205,20 +207,27 @@ WebAPI assets, then sign and upload them through the existing `upload-sign.yml` 
 uses the repository GPG key, so a fork that runs this flow publishes with its own
 `GPG_PRIVATE_KEY` secret. `build-WebAPI.yml` can also be dispatched with a tag for package-only
 verification. Web release orchestration and artifact names are RID-based, separately from
-containers and Desktop workflows. Windows x64 has full-install and app-only update ZIPs; Windows
+containers and Desktop workflows. riscv64 builds on RISC-V runners with the community .NET SDK;
+loongarch64 builds inside the QEMU loong64 VM with the official Loongson SDK; both run a native
+smoke before packaging. Windows x64/ARM64 have full-install and app-only update ZIPs; Windows
 containers are not built.
 
 The API release provides architecture-specific full-install and app-only update ZIPs plus
 `WebAPI-update.json`:
 
-- `v2rayN-linux-64-WebAPI.zip` / `v2rayN-linux-arm64-WebAPI.zip` — API, runtime files, `.env.example`,
-  and Core bundle.
-- `v2rayN-linux-64-WebAPI-update.zip` / `v2rayN-linux-arm64-WebAPI-update.zip` — API executable and
-  build identity only; user data, Core files, credentials, and unrelated files are excluded.
-- `v2rayN-windows-64-WebAPI.zip` — Windows x64 API, runtime/Core files, and `.env.example`.
-- `v2rayN-windows-64-WebAPI-update.zip` — Windows API executable and build identity only; user data,
-  Core files, credentials, and unrelated files are excluded.
-- `WebAPI-update.json` — version, commit, runtime identifier, sizes, and SHA-256 digests.
+- `v2rayN-linux-64-WebAPI.zip` / `v2rayN-linux-arm64-WebAPI.zip` / `v2rayN-linux-riscv64-WebAPI.zip`
+  / `v2rayN-linux-loong64-WebAPI.zip` — API, runtime files, `.env.example`, and Core bundle.
+- `v2rayN-linux-64-WebAPI-update.zip` / `v2rayN-linux-arm64-WebAPI-update.zip` /
+  `v2rayN-linux-riscv64-WebAPI-update.zip` / `v2rayN-linux-loong64-WebAPI-update.zip` — API
+  executable and build identity only; user data, Core files, credentials, and unrelated files are
+  excluded.
+- `v2rayN-windows-64-WebAPI.zip` / `v2rayN-windows-arm64-WebAPI.zip` — Windows API, runtime/Core
+  files, and `.env.example`.
+- `v2rayN-windows-64-WebAPI-update.zip` / `v2rayN-windows-arm64-WebAPI-update.zip` — Windows API
+  executable and build identity only; user data, Core files, credentials, and unrelated files are
+  excluded.
+- `WebAPI-update.json` — version, commit, per-RID asset names, sizes, and SHA-256 digests. A RID
+  entry a build does not recognize is ignored instead of rejecting the manifest.
 
 For Docker/Podman, the included `Containerfile` builds only the API and Core runtime.
 The Compose example requires a non-empty Management Key.
