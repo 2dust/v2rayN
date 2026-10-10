@@ -84,7 +84,15 @@ internal static class Program
                 return 1;
             }
 
-            var (stopHealthUri, _) = GetLauncherUris(launchOptions.HostArguments);
+            // The stop probe must follow the same configuration sources as the running
+            // instance (process/.env environment and command line), so build the same
+            // configuration the host would have used.
+            var stopConfiguration = WebApplication.CreateBuilder(new WebApplicationOptions
+            {
+                Args = launchOptions.HostArguments,
+                ContentRootPath = AppContext.BaseDirectory,
+            }).Configuration;
+            var (stopHealthUri, _) = GetLauncherUris(stopConfiguration);
             var stopper = new WebStopper(new HttpWebHealthProbe(), new LinuxProcessSignalSender());
             var result = await stopper.StopAsync(GetInstanceLockPath(), stopHealthUri);
             Console.Out.WriteLine(LauncherMessages.StopMessage(result, GetLauncherLocale(), stopper.LastObservedShutdownStage));
@@ -124,7 +132,13 @@ internal static class Program
                 return 1;
             }
 
-            var (healthUri, apiUri) = GetLauncherUris(launchOptions.HostArguments);
+            var (healthUri, apiUri) = GetLauncherUris(builder.Configuration);
+            if (healthUri is null || apiUri is null)
+            {
+                Console.Error.WriteLine(LauncherMessages.StartUnprobeable(GetLauncherLocale()));
+                return 1;
+            }
+
             var launcher = new WebLauncher(new HttpWebHealthProbe(), new LinuxXdgBrowserOpener(), GetLauncherLocale());
             var processPath = Environment.ProcessPath;
             if (string.IsNullOrWhiteSpace(processPath))
@@ -167,7 +181,7 @@ internal static class Program
                 && args.Contains(WebLaunchOptions.ForegroundFlag, StringComparer.Ordinal)
                 && !supervisedEnvironment
                 && !containerEnvironment;
-            hostResult = await RunWebHostAsync(builder, launchOptions.HostArguments, showForegroundPrompt);
+            hostResult = await RunWebHostAsync(builder, showForegroundPrompt);
         }
 
         // The host cleanup is complete and the old owner has disposed this lock. The
@@ -195,13 +209,21 @@ internal static class Program
                 return 1;
             }
 
+            var (restartHealthUri, _) = GetLauncherUris(builder.Configuration);
+            if (restartHealthUri is null)
+            {
+                WriteNativeRestartDiagnostic(
+                    "Restore requested a native Web restart, but the configured listeners have no loopback HTTP health endpoint to verify the replacement.");
+                return 1;
+            }
+
             var coordinator = new NativeWebRestartCoordinator(
                 new HttpWebHealthProbe(),
                 new LinuxReplacementProcessStarter(),
                 new FileWebInstanceOwnershipProbe());
             var handoff = await coordinator.StartReplacementAfterOwnerReleaseAsync(
                 GetInstanceLockPath(),
-                GetLauncherUris(launchOptions.HostArguments).HealthUri,
+                restartHealthUri,
                 command);
             WriteNativeRestartDiagnostic(handoff.Message, handoff.Success, handoff.ReplacementProcessId);
             return handoff.Success ? hostResult.ExitCode : 1;
@@ -209,7 +231,7 @@ internal static class Program
         return hostResult.ExitCode;
     }
 
-    private static async Task<WebHostRunResult> RunWebHostAsync(WebApplicationBuilder builder, string[] args, bool showForegroundPrompt)
+    private static async Task<WebHostRunResult> RunWebHostAsync(WebApplicationBuilder builder, bool showForegroundPrompt)
     {
         // "guiConfigs/web-auth.json" is the pre-rename legacy location; WebAuthStorage
         // migrates it (and the previous private location) to WebAPIData/WebAPI-auth.json.
@@ -321,9 +343,13 @@ internal static class Program
 
         if (showForegroundPrompt)
         {
-            var (_, apiUri) = GetLauncherUris(args);
-            app.Lifetime.ApplicationStarted.Register(() =>
-                Console.Out.WriteLine(LauncherMessages.ForegroundStarted(apiUri.ToString(), GetLauncherLocale())));
+            var (_, apiUri) = GetLauncherUris(builder.Configuration);
+            if (apiUri is not null)
+            {
+                var displayUri = apiUri.ToString();
+                app.Lifetime.ApplicationStarted.Register(() =>
+                    Console.Out.WriteLine(LauncherMessages.ForegroundStarted(displayUri, GetLauncherLocale())));
+            }
         }
 
         await app.RunAsync();
@@ -371,36 +397,16 @@ internal static class Program
     private static string GetInstanceLockPath() =>
         Path.Combine(Utils.StartupPath(), "v2rayN.WebAPI.instance.lock");
 
-    private static (Uri HealthUri, Uri ApiUri) GetLauncherUris(string[] hostArguments)
+    internal static (Uri? HealthUri, Uri? ApiUri) GetLauncherUris(IConfiguration configuration)
     {
-        var configuredUrl = hostArguments
-            .Select((argument, index) => (argument, index))
-            .Where(item => item.argument == "--urls" && item.index + 1 < hostArguments.Length)
-            .Select(item => hostArguments[item.index + 1])
-            .FirstOrDefault()
-            ?? hostArguments.FirstOrDefault(argument => argument.StartsWith("--urls=", StringComparison.Ordinal))?[7..]
-            ?? Environment.GetEnvironmentVariable("ASPNETCORE_URLS")
-            ?? Environment.GetEnvironmentVariable("ASPNETCORE_HTTP_PORTS")?.Split(';', StringSplitOptions.RemoveEmptyEntries)
-                .Select(port => $"http://127.0.0.1:{port}").FirstOrDefault();
-
-        var baseUri = new Uri("http://127.0.0.1:5080");
-        if (!string.IsNullOrWhiteSpace(configuredUrl))
+        if (WebProbeUriResolver.TryResolve(configuration, out var endpoints))
         {
-            foreach (var item in configuredUrl.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
-            {
-                var normalized = item.Replace("*", "127.0.0.1", StringComparison.Ordinal)
-                    .Replace("+", "127.0.0.1", StringComparison.Ordinal);
-                if (Uri.TryCreate(normalized, UriKind.Absolute, out var candidate)
-                    && (candidate.Scheme == Uri.UriSchemeHttp || candidate.Scheme == Uri.UriSchemeHttps))
-                {
-                    baseUri = new UriBuilder(candidate) { Host = "127.0.0.1", Path = "/" }.Uri;
-                    break;
-                }
-            }
+            return (endpoints.HealthUri, endpoints.ApiUri);
         }
 
-        var healthUri = new Uri(baseUri, "api/health");
-        return (healthUri, healthUri);
+        // Never guess a loopback address or port: a probe that does not match the
+        // configured listeners would verify (or stop) the wrong process.
+        return (null, null);
     }
 
     private static bool IsContainerEnvironment()

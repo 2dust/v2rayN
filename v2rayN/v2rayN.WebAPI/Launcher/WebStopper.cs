@@ -9,6 +9,7 @@ public enum WebStopResult
 {
     NotRunning,
     Stopped,
+    ProbeUnavailable,
     IdentityUnverified,
     SupervisorManaged,
     CoreProcessStillRunning,
@@ -65,7 +66,7 @@ public sealed class WebStopper
 
     public async Task<WebStopResult> StopAsync(
         string lockPath,
-        Uri healthUri,
+        Uri? healthUri,
         CancellationToken cancellationToken = default)
     {
         if (!IsLockHeld(lockPath))
@@ -82,6 +83,14 @@ public sealed class WebStopper
         if (IsManagedBySystemd(ownerProcessId.Value))
         {
             return WebStopResult.SupervisorManaged;
+        }
+
+        // A null probe means the configured listeners have no loopback HTTP health
+        // endpoint; without it the owner identity cannot be confirmed, so no signal
+        // may be sent.
+        if (healthUri is null)
+        {
+            return WebStopResult.ProbeUnavailable;
         }
 
         var health = await _healthProbe.ProbeAsync(healthUri, cancellationToken);

@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using ServiceLib.Common;
+using v2rayN.WebAPI.Security;
 using v2rayN.WebAPI.Services;
 
 namespace v2rayN.WebAPI.Launcher;
@@ -352,6 +353,15 @@ internal static class NativeWebUpdateHelper
     [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
     private static extern bool MoveFileEx(string existingFileName, string? newFileName, int flags);
 
+    /// <summary>
+    /// The detached helper may only probe loopback HTTP health endpoints: the health
+    /// diagnostics it verifies require a loopback peer and a local Host header.
+    /// </summary>
+    internal static bool IsProbeableLoopbackUri(string? value) =>
+        Uri.TryCreate(value, UriKind.Absolute, out var uri)
+        && uri.Scheme == Uri.UriSchemeHttp
+        && WebSetupAccessPolicy.IsLocalHost(uri.Host);
+
     private static void ValidatePlan(NativeWebUpdatePlan? plan)
     {
         var isLinux = OperatingSystem.IsLinux();
@@ -367,9 +377,7 @@ internal static class NativeWebUpdateHelper
             || !WebUpdatePackageStager.IsSupportedRid(plan.Rid)
             || plan.Rid != System.Runtime.InteropServices.RuntimeInformation.RuntimeIdentifier
             || string.IsNullOrWhiteSpace(plan.ExpectedCommit)
-            || !Uri.TryCreate(plan.HealthUri, UriKind.Absolute, out var healthUri)
-            || healthUri.Scheme != Uri.UriSchemeHttp
-            || healthUri.Host is not ("127.0.0.1" or "localhost"))
+            || !IsProbeableLoopbackUri(plan.HealthUri))
         {
             throw new InvalidDataException("The update plan has an unsupported target or identity.");
         }
@@ -454,8 +462,7 @@ internal static class NativeWebUpdateHelper
                     Path.GetFullPath(V2rayRuntime.WebUpdateRuntimeStatePath), pathComparison)
                 && string.Equals(Path.GetFullPath(plan.ProgressPath),
                     Path.GetFullPath(Utils.GetTempPath("WebAPI-update-progress.json")), pathComparison)
-                && Uri.TryCreate(plan.HealthUri, UriKind.Absolute, out var uri)
-                && uri.Scheme == Uri.UriSchemeHttp && uri.Host is "127.0.0.1" or "localhost"
+                && IsProbeableLoopbackUri(plan.HealthUri)
                 && WebUpdatePackageStager.IsValidVersion(plan.PreviousVersion)
                 && plan.HostArguments is not null
                 && !plan.HostArguments.Any(argument => argument is "--stop" or "--apply-WebAPI-update" or "--background" or "--background-child");

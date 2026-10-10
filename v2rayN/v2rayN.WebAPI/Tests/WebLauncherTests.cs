@@ -332,6 +332,27 @@ public class WebLauncherTests
     }
 
     [Test]
+    public async Task StopWithoutAProbeEndpointNeverSignals()
+    {
+        if (!OperatingSystem.IsLinux()) return;
+
+        using var directory = new TemporaryDirectory();
+        var lockPath = Path.Combine(directory.Path, "instance.lock");
+        using var heldLock = await AcquireLockWithOwnerAsync(lockPath, 123);
+        var signals = new FakeSignalSender();
+        var stopper = new WebStopper(new FakeHealthProbe(true, 123), signals);
+
+        var result = await stopper.StopAsync(lockPath, healthUri: null);
+
+        await (result == WebStopResult.ProbeUnavailable).Should().BeTrue();
+        await (signals.ProcessIds.Count == 0).Should().BeTrue();
+
+        var notRunning = await stopper.StopAsync(
+            Path.Combine(directory.Path, "missing-instance.lock"), healthUri: null);
+        await (notRunning == WebStopResult.NotRunning).Should().BeTrue();
+    }
+
+    [Test]
     public async Task StopTimesOutWithoutEscalatingBeyondOneSigTerm()
     {
         if (!OperatingSystem.IsLinux()) return;
@@ -425,6 +446,14 @@ public class WebLauncherTests
             .Contains("systemctl stop", StringComparison.Ordinal).Should().BeTrue();
         await LauncherMessages.StopMessage(WebStopResult.CoreProcessStillRunning, LauncherLocale.SimplifiedChinese)
             .Contains("Core", StringComparison.Ordinal).Should().BeTrue();
+        await LauncherMessages.StopMessage(WebStopResult.ProbeUnavailable, LauncherLocale.English)
+            .Contains("loopback HTTP health endpoint", StringComparison.Ordinal).Should().BeTrue();
+        await LauncherMessages.StopMessage(WebStopResult.ProbeUnavailable, LauncherLocale.SimplifiedChinese)
+            .Contains("回环 HTTP 健康端点", StringComparison.Ordinal).Should().BeTrue();
+        await LauncherMessages.StopMessage(WebStopResult.ProbeUnavailable, LauncherLocale.TraditionalChinese)
+            .Contains("回送 HTTP 健康端點", StringComparison.Ordinal).Should().BeTrue();
+        await LauncherMessages.StartUnprobeable(LauncherLocale.English)
+            .Contains("--foreground", StringComparison.Ordinal).Should().BeTrue();
         if (OperatingSystem.IsLinux())
         {
             await (LauncherMessages.ExecutableCommand("/usr/share/dotnet/dotnet", "/opt/v2rayn/v2rayN.WebAPI.dll")

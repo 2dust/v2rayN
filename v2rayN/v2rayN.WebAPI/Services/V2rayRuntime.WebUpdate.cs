@@ -358,12 +358,20 @@ public sealed partial class V2rayRuntime
         var progressPath = Utils.GetTempPath(WebUpdateProgressFile);
         var planPath = Utils.GetTempPath($"web-update-plan-{Guid.NewGuid():N}.json");
         var hostArguments = GetCurrentHostArguments();
+        // Never stop the current instance before its listener configuration has a
+        // loopback HTTP probe: the detached helper verifies the replacement (and its
+        // rollback) through that exact endpoint.
+        if (!WebProbeUriResolver.TryResolve(_configuration, out var probeEndpoints))
+        {
+            throw new InvalidOperationException(
+                "The current listener configuration has no loopback HTTP health endpoint, so the update cannot be verified safely.");
+        }
         var plan = new NativeWebUpdatePlan(
             stage.InstallDirectory,
             stage.CandidateDirectory,
             stage.BackupDirectory,
             Path.Combine(Utils.StartupPath(), "v2rayN.WebAPI.instance.lock"),
-            GetCurrentHealthUri(hostArguments).ToString(),
+            probeEndpoints.HealthUri.ToString(),
             hostArguments,
             stage.Manifest.Version,
             stage.Manifest.Commit,
@@ -473,6 +481,14 @@ public sealed partial class V2rayRuntime
 
     private string? GetWebUpdateRuntimeInstallReason()
     {
+        if (!WebProbeUriResolver.TryResolve(_configuration, out _))
+        {
+            // The update helper verifies both the replacement and its rollback through
+            // the loopback health endpoint; an unprobeable listener would strand the
+            // service, so installing is refused before anything is stopped.
+            return "maintenance.webUpdateProbeUnavailable";
+        }
+
         var snapshot = CurrentCoreRuntime;
         var activeChild = HasTrackedCoreProcesses;
         if (snapshot.State is CoreRuntimeState.Starting or CoreRuntimeState.Stopping or CoreRuntimeState.Restarting)
@@ -536,26 +552,6 @@ public sealed partial class V2rayRuntime
             daemonEnvironment: false,
             containerEnvironment: false,
             interactiveLaunch: false).HostArguments;
-    }
-
-    private Uri GetCurrentHealthUri(string[] hostArguments)
-    {
-        var url = _configuration[Microsoft.AspNetCore.Hosting.WebHostDefaults.ServerUrlsKey]
-            ?? hostArguments.Select((argument, index) => (argument, index))
-                .Where(item => item.argument == "--urls" && item.index + 1 < hostArguments.Length)
-                .Select(item => hostArguments[item.index + 1]).FirstOrDefault()
-            ?? hostArguments.FirstOrDefault(argument => argument.StartsWith("--urls=", StringComparison.Ordinal))?[7..]
-            ?? Environment.GetEnvironmentVariable("ASPNETCORE_URLS")
-            ?? "http://127.0.0.1:5080";
-        foreach (var item in url.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
-        {
-            var normalized = item.Replace("*", "127.0.0.1", StringComparison.Ordinal)
-                .Replace("+", "127.0.0.1", StringComparison.Ordinal);
-            if (Uri.TryCreate(normalized, UriKind.Absolute, out var uri)
-                && uri.Scheme == Uri.UriSchemeHttp)
-                return new UriBuilder(uri) { Host = "127.0.0.1", Path = "/api/health" }.Uri;
-        }
-        return new Uri("http://127.0.0.1:5080/api/health");
     }
 
     private static void CopyVerifiedWebApp(string source, string destination, string rid)

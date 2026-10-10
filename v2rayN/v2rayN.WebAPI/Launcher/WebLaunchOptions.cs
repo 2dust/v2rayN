@@ -149,6 +149,7 @@ public static class LauncherMessages
         {
             WebStopResult.NotRunning => "stopNotRunning",
             WebStopResult.Stopped => "stopSucceeded",
+            WebStopResult.ProbeUnavailable => "stopUnprobeable",
             WebStopResult.IdentityUnverified => "stopIdentityUnverified",
             WebStopResult.SupervisorManaged => "stopSupervisorManaged",
             WebStopResult.CoreProcessStillRunning => "stopCoreStillRunning",
@@ -167,6 +168,8 @@ public static class LauncherMessages
     public static string Help(LauncherLocale locale) => Get("help", locale);
 
     public static string StartFailed(LauncherLocale locale) => Get("startFailed", locale);
+
+    public static string StartUnprobeable(LauncherLocale locale) => Get("startUnprobeable", locale);
 
     public static string ExistingUnhealthy(LauncherLocale locale) => Get("existingUnhealthy", locale);
 
