@@ -1,0 +1,26 @@
+services:
+  v2rayn-web:
+    build:
+      context: ../..
+      dockerfile: v2rayN/v2rayN.WebAPI/Containerfile
+      args:
+        RID: ${V2RAYN_BUILD_RID:-linux-x64}
+    image: localhost/v2rayn-web:latest
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_URLS: http://0.0.0.0:5080
+      V2RAYN_WEB_API_KEY: ${V2RAYN_WEB_API_KEY:?Set V2RAYN_WEB_API_KEY in your environment}
+      V2RAYN_WEB_ALLOWED_ORIGINS: ${V2RAYN_WEB_ALLOWED_ORIGINS:-}
+      V2RAYN_WEB_AUTOSTART: "true"
+      V2RAYN_WEB_PROXY_PORT: ${V2RAYN_PROXY_PORT:-10808}
+      V2RAYN_WEB_PROXY_LISTEN_ALL: "true"
+      V2RAYN_DATA_HOME: /data
+    ports:
+      - "127.0.0.1:${V2RAYN_WEB_PORT:-5080}:5080/tcp"
+      - "127.0.0.1:${V2RAYN_PROXY_PORT:-10808}:${V2RAYN_PROXY_PORT:-10808}/tcp"
+      - "127.0.0.1:${V2RAYN_PROXY_PORT:-10808}:${V2RAYN_PROXY_PORT:-10808}/udp"
+    volumes:
+      - v2rayn-data:/data
+
+volumes:
+  v2rayn-data:

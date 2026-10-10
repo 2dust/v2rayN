@@ -1,0 +1,124 @@
+using v2rayN.WebAPI.Launcher;
+
+namespace v2rayN.WebAPI.Tests;
+
+public class NativeWebUpdateHelperTests
+{
+    [Test]
+    public async Task TransientFileOperationFailuresAreRetriedBeforeTheUpdateGivesUp()
+    {
+        var attempts = 0;
+        NativeWebUpdateHelper.WithTransientFileRetry(
+            () =>
+            {
+                attempts++;
+                if (attempts < 3)
+                {
+                    throw new IOException("The process cannot access the file because it is being used by another process.");
+                }
+            },
+            "test file replacement",
+            retryWindow: TimeSpan.FromSeconds(2),
+            retryDelay: TimeSpan.FromMilliseconds(10));
+
+        await (attempts == 3).Should().BeTrue();
+    }
+
+    [Test]
+    public async Task PermanentFileOperationFailuresSurfaceTheOperationAndCauseAfterRetries()
+    {
+        var attempts = 0;
+        IOException? failure = null;
+        try
+        {
+            NativeWebUpdateHelper.WithTransientFileRetry(
+                () =>
+                {
+                    attempts++;
+                    throw new UnauthorizedAccessException("Access is denied.");
+                },
+                "replacing the installed Web executable 'C:/install/v2rayN.WebAPI.exe'",
+                retryWindow: TimeSpan.FromMilliseconds(120),
+                retryDelay: TimeSpan.FromMilliseconds(10));
+        }
+        catch (IOException exception)
+        {
+            failure = exception;
+        }
+
+        await (failure is not null).Should().BeTrue();
+        await failure!.Message.Contains("replacing the installed Web executable").Should().BeTrue();
+        await failure.Message.Contains("Access is denied.").Should().BeTrue();
+        await (attempts > 1).Should().BeTrue();
+    }
+
+    [Test]
+    public async Task OnlyTheInstalledExecutableAndGuidNamedWorkersAreAccepted()
+    {
+        await NativeWebUpdateHelper.IsUpdateHelperExecutableName("v2rayN.WebAPI").Should().BeTrue();
+        await NativeWebUpdateHelper.IsUpdateHelperExecutableName("v2rayN.WebAPI.exe").Should().BeTrue();
+        await NativeWebUpdateHelper.IsUpdateHelperExecutableName(
+            ".v2rayn-WebAPI-update-helper-" + Guid.NewGuid().ToString("N")).Should().BeTrue();
+        await NativeWebUpdateHelper.IsUpdateHelperExecutableName(
+            ".v2rayn-WebAPI-update-helper-" + Guid.NewGuid().ToString("N") + ".exe").Should().BeTrue();
+        foreach (var name in new[] { "", "v2rayN.Web", "other", ".v2rayn-WebAPI-update-helper-",
+            ".v2rayn-WebAPI-update-helper-not-a-guid", ".v2rayn-WebAPI-update-helper-" + Guid.NewGuid().ToString("D"),
+            "../v2rayN.WebAPI", ".v2rayn-WebAPI-update-helper-" + Guid.NewGuid().ToString("N") + ".bak" })
+        {
+            await NativeWebUpdateHelper.IsUpdateHelperExecutableName(name).Should().BeFalse();
+        }
+    }
+
+    [Test]
+    public async Task WorkerBundleStaysBesideTheInstallAndSurvivesExecutableReplacement()
+    {
+        var directory = Path.Combine(Path.GetTempPath(), $"webapi-helper-copy-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(directory);
+        try
+        {
+            var executable = Path.Combine(directory, OperatingSystem.IsWindows() ? "v2rayN.WebAPI.exe" : "v2rayN.WebAPI");
+            await File.WriteAllTextAsync(executable, "original-bundle");
+            var helper = NativeWebUpdateHelper.CreateIsolatedHelperExecutable(executable);
+            await Path.GetDirectoryName(helper).Should().BeEqualTo(directory);
+            await NativeWebUpdateHelper.IsUpdateHelperExecutableName(Path.GetFileName(helper)).Should().BeTrue();
+            if (OperatingSystem.IsLinux())
+                await File.GetUnixFileMode(helper).Should().BeEqualTo(
+                    UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
+
+            var candidate = Path.Combine(directory, "candidate");
+            await File.WriteAllTextAsync(candidate, "different-bundle-layout");
+            File.Move(candidate, executable, overwrite: true);
+            await (await File.ReadAllTextAsync(helper)).Should().BeEqualTo("original-bundle");
+            await (await File.ReadAllTextAsync(executable)).Should().BeEqualTo("different-bundle-layout");
+        }
+        finally
+        {
+            Directory.Delete(directory, recursive: true);
+        }
+    }
+
+    [Test]
+    public async Task SymlinkManagedExecutablesCannotCreateWorkers()
+    {
+        if (!OperatingSystem.IsLinux()) return;
+        var directory = Path.Combine(Path.GetTempPath(), $"webapi-helper-link-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(directory);
+        try
+        {
+            var target = Path.Combine(directory, "target");
+            await File.WriteAllTextAsync(target, "unchanged");
+            var link = Path.Combine(directory, "v2rayN.WebAPI");
+            File.CreateSymbolicLink(link, target);
+            var rejected = false;
+            try { NativeWebUpdateHelper.CreateIsolatedHelperExecutable(link); }
+            catch (InvalidDataException) { rejected = true; }
+            await rejected.Should().BeTrue();
+            await Directory.GetFiles(directory, ".v2rayn-WebAPI-update-helper-*").Length.Should().BeEqualTo(0);
+            await (await File.ReadAllTextAsync(target)).Should().BeEqualTo("unchanged");
+        }
+        finally
+        {
+            Directory.Delete(directory, recursive: true);
+        }
+    }
+}

@@ -1,0 +1,2 @@
+This directory is copied to the Web application's output as `bin/`.
+ServiceLib's CoreManager copies bundled core files from that directory into its writable data path.

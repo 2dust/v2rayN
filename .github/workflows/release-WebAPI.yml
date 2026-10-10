@@ -1,0 +1,53 @@
+name: release v2rayN.WebAPI
+
+on:
+  workflow_call:
+    inputs:
+      release_tag:
+        required: true
+        type: string
+    secrets:
+      GPG_PRIVATE_KEY:
+        required: false
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Release tag (for example 7.x.y).'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  build:
+    uses: ./.github/workflows/build-WebAPI.yml
+    permissions:
+      contents: read
+    with:
+      release_tag: ${{ inputs.release_tag }}
+
+  release-web-packages:
+    name: sign and upload Web API packages
+    # Upload through the shared signing flow, exactly like the desktop packages.
+    if: inputs.release_tag != ''
+    needs: build
+    uses: ./.github/workflows/upload-sign.yml
+    with:
+      release_tag: ${{ inputs.release_tag }}
+      artifact_name: WebAPI-release-packages
+      file_pattern: 'v2rayN-*-WebAPI*.zip'
+    secrets: { GPG_PRIVATE_KEY: "${{ secrets.GPG_PRIVATE_KEY }}" }
+
+  release-web-manifest:
+    name: sign and upload Web update manifest
+    if: inputs.release_tag != ''
+    # Advertise the update only after its packages and manifest have been uploaded.
+    needs: [build, release-web-packages]
+    uses: ./.github/workflows/upload-sign.yml
+    with:
+      release_tag: ${{ inputs.release_tag }}
+      artifact_name: WebAPI-release-manifest
+      file_pattern: 'WebAPI-update.json'
+    secrets: { GPG_PRIVATE_KEY: "${{ secrets.GPG_PRIVATE_KEY }}" }
