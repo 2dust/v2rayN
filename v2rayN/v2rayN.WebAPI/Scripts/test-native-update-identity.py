@@ -176,13 +176,10 @@ def ipv6_loopback_available():
         return False
 
 
-def run_refusal_scenario(root, previous):
-    """An instance whose listeners have no loopback HTTP probe must refuse self-updates
-    and keep serving instead of stopping itself for an unverifiable replacement."""
-    host = primary_ipv4()
-    if host is None:
-        print("Skipped the update-refusal scenario: no non-loopback IPv4 address is available.")
-        return
+def run_refusal_scenario(root, previous, host, label):
+    """An instance whose listener cannot be verified through the shared loopback probe
+    rule must refuse self-updates and keep serving instead of stopping itself for an
+    unverifiable replacement."""
     root.mkdir()
     install = root / "install"
     install.mkdir()
@@ -275,7 +272,7 @@ def run_refusal_scenario(root, previous):
             "a refused update must not start publishing update progress"
         assert not list(root.glob(".v2rayn-WebAPI-candidate-*")), "no update candidate may be staged"
         assert not list(install.parent.glob(".v2rayn-WebAPI-update-helper-*")), "no update helper may be started"
-        print("Native WebAPI unprobeable-listener refusal passed (canInstall=false with a clear reason, current instance keeps running).")
+        print(f"Native WebAPI unprobeable-listener refusal passed ({label}; canInstall=false with a clear reason, current instance keeps running).")
     finally:
         if owner.poll() is None:
             owner.send_signal(signal.SIGTERM)
@@ -295,7 +292,14 @@ if __name__ == "__main__":
             run_scenario(root / "ipv6-only-replacement", previous, candidate, False, listen_host="::1")
         else:
             print("Skipped the IPv6-only update scenario: IPv6 loopback is not available.")
-        run_refusal_scenario(root / "probe-refused", previous)
+        primary = primary_ipv4()
+        if primary is not None:
+            run_refusal_scenario(root / "probe-refused", previous, primary, "explicit non-loopback address")
+        else:
+            print("Skipped the non-loopback refusal scenario: no non-loopback IPv4 address is available.")
+        run_refusal_scenario(
+            root / "loopback-alias-refused", previous, "127.0.0.2",
+            "unverifiable loopback alias 127.0.0.2")
     except Exception:
         print(f"Failed fixture retained for diagnosis: {root}", file=sys.stderr)
         raise

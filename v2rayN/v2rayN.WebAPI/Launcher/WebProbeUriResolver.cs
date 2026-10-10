@@ -83,7 +83,9 @@ public static class WebProbeUriResolver
         }
 
         healthUri = new UriBuilder(Uri.UriSchemeHttp, probeHost, uri.Port, HealthPath).Uri;
-        return true;
+        // Gate the generated probe through the same rule the health diagnostics and the
+        // update helper use; loopback aliases such as 127.0.0.2 are not verifiable there.
+        return IsProbeableLoopbackUri(healthUri.ToString());
     }
 
     private static string? MapToLoopbackHost(string host)

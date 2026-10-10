@@ -14,6 +14,8 @@ public class WebProbeUriResolverTests
     [Arguments("http://[::1]:5080", "http://[::1]:5080/api/health")]
     [Arguments("http://0.0.0.0:5080", "http://127.0.0.1:5080/api/health")]
     [Arguments("http://[::]:5080", "http://[::1]:5080/api/health")]
+    [Arguments("http://127.0.0.2:5080", null)]
+    [Arguments("http://127.255.255.254:5080", null)]
     [Arguments("http://*:5080", "http://localhost:5080/api/health")]
     [Arguments("http://+:5080", "http://localhost:5080/api/health")]
     [Arguments("http://nas:5080", "http://localhost:5080/api/health")]
@@ -64,6 +66,12 @@ public class WebProbeUriResolverTests
         await WebProbeUriResolver.TryResolve(
             Config(("urls", "http://192.168.1.20:5080;http://[::1]:5091")), out var mixed).Should().BeTrue();
         await mixed.HealthUri.ToString().Should().BeEqualTo("http://[::1]:5091/api/health");
+
+        // A loopback alias cannot be verified, so the resolver falls through to the
+        // next verifiable listener instead of producing an unverifiable probe.
+        await WebProbeUriResolver.TryResolve(
+            Config(("urls", "http://127.0.0.2:5080;http://127.0.0.1:5092")), out var aliasMixed).Should().BeTrue();
+        await aliasMixed.HealthUri.ToString().Should().BeEqualTo("http://127.0.0.1:5092/api/health");
     }
 
     [Test]
@@ -114,11 +122,22 @@ public class WebProbeUriResolverTests
     [Arguments("http://[::1]:5080/api/health", true)]
     [Arguments("https://[::1]:5443/api/health", false)]
     [Arguments("http://0.0.0.0:5080/api/health", false)]
+    [Arguments("http://127.0.0.2:5080/api/health", false)]
     [Arguments("http://192.168.1.20:5080/api/health", false)]
     [Arguments("not-a-uri", false)]
     public async Task UpdatePlansOnlyAcceptLoopbackHttpHealthUris(string healthUri, bool accepted)
     {
         await WebProbeUriResolver.IsProbeableLoopbackUri(healthUri).Should().BeEqualTo(accepted);
+    }
+
+    [Test]
+    public async Task LoopbackAliasListenersCannotProduceAProbe()
+    {
+        foreach (var listenUrl in new[] { "http://127.0.0.2:5080", "http://127.1.2.3:5080", "http://127.255.255.254:5080" })
+        {
+            await WebProbeUriResolver.TryCreateHealthUri(listenUrl, out _).Should().BeFalse();
+            await WebProbeUriResolver.TryResolve(Config(("urls", listenUrl)), out _).Should().BeFalse();
+        }
     }
 
     [Test]
@@ -162,6 +181,11 @@ public class WebProbeUriResolverTests
 
         var nonLoopback = new V2rayRuntime(null!, null!, Config(("urls", "http://192.168.1.20:5080")), null!, null!);
         await nonLoopback.GetWebUpdateRuntimeInstallReason().Should().BeEqualTo("maintenance.webUpdateProbeUnavailable");
+
+        // 127.0.0.2 is loopback for the OS but is not verifiable by the health
+        // diagnostics or the update helper, so installing must be refused up front.
+        var loopbackAlias = new V2rayRuntime(null!, null!, Config(("urls", "http://127.0.0.2:5080")), null!, null!);
+        await loopbackAlias.GetWebUpdateRuntimeInstallReason().Should().BeEqualTo("maintenance.webUpdateProbeUnavailable");
 
         var probeable = new V2rayRuntime(null!, null!, Config(("urls", "http://localhost:5080")), null!, null!);
         await (probeable.GetWebUpdateRuntimeInstallReason() is null).Should().BeTrue();
