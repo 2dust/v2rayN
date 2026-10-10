@@ -587,6 +587,12 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     private List<List<ServerTestItem>> GetTestBatchItem(List<ServerTestItem> lstSelected, int pageSize)
     {
         List<List<ServerTestItem>> lstTest = [];
+        if (lstSelected.Count == 0)
+        {
+            return lstTest;
+        }
+
+        pageSize = Math.Max(pageSize, 1);
         var lst1 = lstSelected.Where(t => t.CoreType == ECoreType.Xray).ToList();
         var lst2 = lstSelected.Where(t => t.CoreType == ECoreType.sing_box).ToList();
 
