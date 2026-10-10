@@ -1062,6 +1062,9 @@
   <data name="TbSettingsTunStack" xml:space="preserve">
     <value>Hálózati verem</value>
   </data>
+  <data name="TbSettingsTunDnsMode" xml:space="preserve">
+    <value>DNS-mód</value>
+  </data>
   <data name="TbMtu" xml:space="preserve">
     <value>MTU</value>
   </data>

@@ -1059,6 +1059,9 @@
   <data name="TbSettingsTunStack" xml:space="preserve">
     <value>Pile de protocoles</value>
   </data>
+  <data name="TbSettingsTunDnsMode" xml:space="preserve">
+    <value>Mode DNS</value>
+  </data>
   <data name="TbMtu" xml:space="preserve">
     <value>MTU</value>
   </data>
