@@ -875,36 +875,25 @@ public class Utils
     }
 
     /// <summary>
-    /// Whether the host can reach the IPv6 internet without the tunnel: it holds a globally
-    /// routable address (2000::/3), or it has an IPv6 default gateway. The gateway covers hosts
-    /// behind NAT66, which hold only unique local addresses yet still reach the IPv6 internet.
-    /// A host with neither has no IPv6 traffic that could bypass the tunnel, and no IPv6 path
-    /// that traffic sent into the tunnel could come back out of.
+    /// Whether the host holds a globally routable IPv6 address, that is one inside 2000::/3.
+    /// Link-local and unique local addresses are excluded: they never reach the IPv6 internet,
+    /// so a host holding only those has no IPv6 traffic that could bypass the tunnel, and no
+    /// IPv6 path that traffic sent into the tunnel could come back out of.
     /// </summary>
-    public static bool HasIPv6Connectivity()
+    public static bool HasGlobalIPv6Address()
     {
         try
         {
-            var interfaces = NetworkInterface.GetAllNetworkInterfaces()
+            return NetworkInterface.GetAllNetworkInterfaces()
                 .Where(ni => ni.OperationalStatus == OperationalStatus.Up
                              && ni.NetworkInterfaceType != NetworkInterfaceType.Loopback)
-                .Select(ni => ni.GetIPProperties())
-                .ToList();
-            return interfaces.SelectMany(p => p.UnicastAddresses).Any(ua => IsGlobalUnicastIPv6(ua.Address))
-                   || interfaces.SelectMany(p => p.GatewayAddresses).Any(ga => IsIPv6Gateway(ga.Address));
+                .SelectMany(ni => ni.GetIPProperties().UnicastAddresses)
+                .Any(ua => IsGlobalUnicastIPv6(ua.Address));
         }
         catch
         {
             return true;
         }
-    }
-
-    // A default route without a next hop, such as the one the tunnel itself installs, reports
-    // :: as its gateway and says nothing about connectivity.
-    private static bool IsIPv6Gateway(IPAddress address)
-    {
-        return address.AddressFamily == AddressFamily.InterNetworkV6
-               && !address.Equals(IPAddress.IPv6Any);
     }
 
     private static bool IsGlobalUnicastIPv6(IPAddress address)

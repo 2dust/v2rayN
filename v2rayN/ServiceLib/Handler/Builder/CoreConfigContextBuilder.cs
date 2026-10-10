@@ -50,7 +50,7 @@ public class CoreConfigContextBuilder
             IsWindows = Utils.IsWindows(),
             IsMacOS = Utils.IsMacOS(),
             IsLinux = Utils.IsLinux(),
-            HasIPv6Connectivity = Utils.HasIPv6Connectivity(),
+            HasGlobalIPv6Address = Utils.HasGlobalIPv6Address(),
             ProtectCoreTypeList = config.TunModeItem.EnableTun ? [ECoreType.Xray, ECoreType.sing_box] : []
         };
         var validatorResult = NodeValidatorResult.Empty();

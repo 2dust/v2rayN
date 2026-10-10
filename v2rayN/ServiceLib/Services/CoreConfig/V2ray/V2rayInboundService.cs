@@ -67,11 +67,9 @@ public partial class CoreConfigV2rayService
 
                 var address = _config.TunModeItem.IPv4Address.NullIfEmpty() ?? Global.TunIPv4Address.First();
                 tunInbound.settings.gateway = [address];
-                // Leaving ::/0 out of the routing table makes IPv6 follow the system default route and
-                // bypass the tunnel entirely, so route it whenever the user enabled IPv6 on the tunnel,
-                // and otherwise whenever the host has IPv6 connectivity. Only a host without either is
-                // skipped: it has nothing to leak, and IPv6 sent into the tunnel would have no way out.
-                var routeIPv6 = _config.TunModeItem.EnableIPv6Address || context.HasIPv6Connectivity;
+                // Without ::/0, IPv6 bypasses the tunnel. Skip it only when the host has no global IPv6
+                // address and EnableIPv6Address is off; NAT66 hosts have only ULA addresses.
+                var routeIPv6 = _config.TunModeItem.EnableIPv6Address || context.HasGlobalIPv6Address;
                 tunInbound.settings.autoSystemRoutingTable = routeIPv6
                     ? ["0.0.0.0/0", "::/0"]
                     : ["0.0.0.0/0"];

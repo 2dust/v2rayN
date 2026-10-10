@@ -201,7 +201,7 @@ internal static class CoreConfigTestFactory
     }
 
     public static CoreConfigContext CreateContext(Config config, ProfileItem node, ECoreType runCoreType,
-        bool hasIPv6Connectivity = true)
+        bool hasGlobalIPv6Address = true)
     {
         return new CoreConfigContext
         {
@@ -222,7 +222,7 @@ internal static class CoreConfigTestFactory
             FullConfigTemplate = null,
             IsTunEnabled = config.TunModeItem.EnableTun,
             ProtectDomainList = [],
-            HasIPv6Connectivity = hasIPv6Connectivity,
+            HasGlobalIPv6Address = hasGlobalIPv6Address,
         };
     }
 
