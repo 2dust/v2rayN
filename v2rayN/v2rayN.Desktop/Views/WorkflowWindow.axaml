@@ -1,0 +1,67 @@
+<Window
+    x:Class="v2rayN.Desktop.Views.WorkflowWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dd="clr-namespace:v2rayN.Desktop.DesignData"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    Title="{x:Static resx:ResUI.menuWorkflowSetting}"
+    Width="900"
+    Height="600"
+    x:DataType="vms:WorkflowViewModel"
+    Design.DataContext="{x:Static dd:DesignData.Workflow}"
+    ShowInTaskbar="False"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <DockPanel Margin="{StaticResource Margin8}">
+        <Menu Margin="{StaticResource Margin4}" DockPanel.Dock="Top">
+            <MenuItem x:Name="menuWorkflowAdd" Header="{x:Static resx:ResUI.menuWorkflowAdd}" />
+            <MenuItem x:Name="menuWorkflowEdit" Header="{x:Static resx:ResUI.menuWorkflowEdit}" />
+            <MenuItem x:Name="menuWorkflowDelete" Header="{x:Static resx:ResUI.menuWorkflowDelete}" />
+            <MenuItem x:Name="menuWorkflowRun" Header="{x:Static resx:ResUI.menuWorkflowRun}" />
+            <MenuItem x:Name="menuClose" Header="{x:Static resx:ResUI.menuClose}" />
+        </Menu>
+
+        <DataGrid
+            x:Name="lstWorkflow"
+            AutoGenerateColumns="False"
+            BorderThickness="1"
+            CanUserResizeColumns="True"
+            GridLinesVisibility="All"
+            HeadersVisibility="Column"
+            IsReadOnly="True"
+            ItemsSource="{Binding WorkflowItems}">
+            <DataGrid.KeyBindings>
+                <KeyBinding Command="{Binding DeleteCmd}" Gesture="Delete" />
+            </DataGrid.KeyBindings>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem x:Name="menuWorkflowAdd2" Header="{x:Static resx:ResUI.menuWorkflowAdd}" />
+                    <MenuItem x:Name="menuWorkflowEdit2" Header="{x:Static resx:ResUI.menuWorkflowEdit}" />
+                    <MenuItem x:Name="menuWorkflowDelete2" Header="{x:Static resx:ResUI.menuWorkflowDelete}" />
+                    <MenuItem x:Name="menuWorkflowRun2" Header="{x:Static resx:ResUI.menuWorkflowRun}" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Width="*"
+                    Binding="{Binding Remarks}"
+                    Header="{x:Static resx:ResUI.LvWorkflowRemarks}" />
+                <DataGridCheckBoxColumn
+                    Width="100"
+                    Binding="{Binding Enabled}"
+                    Header="{x:Static resx:ResUI.LvWorkflowEnabled}" />
+                <DataGridTextColumn
+                    Width="80"
+                    Binding="{Binding Sort}"
+                    Header="{x:Static resx:ResUI.LvWorkflowSort}" />
+                <DataGridTextColumn
+                    Width="2*"
+                    Binding="{Binding StepsDisplay}"
+                    Header="{x:Static resx:ResUI.LvWorkflowSteps}" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</Window>

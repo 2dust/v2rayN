@@ -32,6 +32,8 @@ public class SimpleViewLocator : IViewLocator
         Register<SubEditViewModel, SubEditWindow>();
         Register<SubSettingViewModel, SubSettingWindow>();
         Register<ThemeSettingViewModel, ThemeSettingView>();
+        Register<WorkflowViewModel, WorkflowWindow>();
+        Register<WorkflowEditViewModel, WorkflowEditWindow>();
     }
 
     public static SimpleViewLocator Instance => _instance.Value;
