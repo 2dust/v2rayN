@@ -164,6 +164,10 @@ function Wait-TestHealth {
                 $response = $client.GetAsync("$Url/api/health").GetAwaiter().GetResult()
                 $body = $response.Content.ReadAsStringAsync().GetAwaiter().GetResult()
                 if ([int]$response.StatusCode -eq 200) {
+                    # The original startup smoke parsed the body and required status "ok";
+                    # keep that assertion for both modes instead of trusting the 200 alone.
+                    $healthBody = $body | ConvertFrom-Json
+                    if ($healthBody.status -ne 'ok') { throw "Unexpected health response: $body" }
                     if (-not $ExpectedVersion) {
                         return [pscustomobject]@{ Version = $null; ProcessId = $null; Body = $body }
                     }
