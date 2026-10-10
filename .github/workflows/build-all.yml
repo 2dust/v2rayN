@@ -20,7 +20,7 @@ jobs:
     secrets:
       GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
 
-  release-web:
+  release-WebAPI:
     if: inputs.release_tag != ''
     uses: ./.github/workflows/release-WebAPI.yml
     with:
