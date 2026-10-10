@@ -638,7 +638,11 @@ jobs:
           if [ $rc -eq 0 ]; then
             mkdir -p /workspace/publish/linux-loongarch64/bin
             cp -a /workspace/core-bundle/. /workspace/publish/linux-loongarch64/bin/
-            cd /workspace/publish/linux-loongarch64 || exit 9
+            # Smoke a VM-local copy: the shared publish tree must stay exactly the packaging
+            # input, without runtime lock/data files owned by the VM user.
+            rm -rf /root/websmoke
+            cp -a /workspace/publish/linux-loongarch64 /root/websmoke
+            cd /root/websmoke || exit 9
             ./bin/xray/xray -version >/dev/null || rc=9
             ./bin/sing_box/sing-box version >/dev/null || rc=9
             ./bin/mihomo/mihomo -v >/dev/null || rc=9
@@ -749,6 +753,20 @@ jobs:
             eof { exit 1 }
           }
           EOF
+      - name: Verify the loongarch64 publish tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          publish="$GITHUB_WORKSPACE/publish/linux-loongarch64"
+          test -x "$publish/v2rayN.WebAPI"
+          test -f "$publish/v2rayN.WebAPI.build.json"
+          unreadable="$(find "$publish" ! -readable -print -quit)"
+          if [ -n "$unreadable" ]; then
+            echo "The loongarch64 publish tree contains unreadable entries:"
+            find "$publish" ! -readable -print | head -n 20
+            exit 1
+          fi
+          echo "loongarch64 publish tree is complete and readable"
       - name: Package API install and self-update ZIPs
         shell: bash
         run: |
