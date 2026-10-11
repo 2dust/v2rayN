@@ -28,7 +28,13 @@ internal class UpgradeApp
                 if (path.StartsWith(Utils.GetPath(Utils.V2rayN)))
                 {
                     pp?.Kill();
-                    pp?.WaitForExit(1000);
+                    // Wait long enough for the old instance to release its file handles:
+                    // a 1s budget made upgrades fail intermittently when the process was slow.
+                    pp?.WaitForExit(5000);
+                    if (pp != null && !pp.HasExited)
+                    {
+                        Console.WriteLine("warning: previous instance is still running after 5s");
+                    }
                 }
             }
         }
