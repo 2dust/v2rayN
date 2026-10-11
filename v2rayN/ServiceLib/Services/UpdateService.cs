@@ -566,6 +566,24 @@ public partial class UpdateService(Config config, Func<bool, string, Task> updat
                         var tmpFileName = tmpFilePathDict[request.FilePath];
                         if (File.Exists(tmpFileName))
                         {
+                            // Some mirrors/proxies answer with an HTML error page, and that used
+                            // to be copied straight over the working geo file. Validate first.
+                            var tmpInfo = new FileInfo(tmpFileName);
+                            var head = new byte[64];
+                            using (var fs = File.OpenRead(tmpFileName))
+                            {
+                                fs.Read(head, 0, head.Length);
+                            }
+                            var headText = System.Text.Encoding.ASCII.GetString(head);
+                            if (tmpInfo.Length < 1024
+                                || headText.Contains("<html", StringComparison.OrdinalIgnoreCase)
+                                || headText.Contains("<!DOCTYPE", StringComparison.OrdinalIgnoreCase))
+                            {
+                                _ = UpdateFunc(false, $"geo file looks invalid ({tmpInfo.Length} bytes) - keeping the existing one");
+                                File.Delete(tmpFileName);
+                                continue;
+                            }
+
                             File.Copy(tmpFileName, request.FilePath, true);
                             File.Delete(tmpFileName);
                         }
