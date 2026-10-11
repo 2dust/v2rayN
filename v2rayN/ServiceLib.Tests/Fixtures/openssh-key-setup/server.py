@@ -3,13 +3,19 @@ import http.server
 import ssl
 import subprocess
 import threading
+import time
 
 
 class Handler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
-        self.send_response(200)
+        if self.path == "/slow":
+            time.sleep(20)
+        self.send_response(403 if self.path == "/denied" else 200)
         self.end_headers()
-        self.wfile.write(b"ssh-key-setup-ok")
+        try:
+            self.wfile.write(b"ssh-key-setup-ok")
+        except (BrokenPipeError, ConnectionResetError):
+            pass
 
     def log_message(self, *_):
         pass

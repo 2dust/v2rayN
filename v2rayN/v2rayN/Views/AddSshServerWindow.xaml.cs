@@ -26,6 +26,12 @@ public partial class AddSshServerWindow
             }).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.PrivateKeyAuth, v => v.chkPrivateKey.IsChecked).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.Status, v => v.txtStatus.Text).DisposeWith(disposables);
+            this.OneWayBind(ViewModel, vm => vm.TestStatus, v => v.txtTestStatus.Text).DisposeWith(disposables);
+            this.WhenAnyValue(v => v.ViewModel.IsTesting).Subscribe(testing =>
+            {
+                btnTest.Visibility = testing ? Visibility.Collapsed : Visibility.Visible;
+                btnStopTest.Visibility = testing ? Visibility.Visible : Visibility.Collapsed;
+            }).DisposeWith(disposables);
             this.WhenAnyValue(v => v.ViewModel.PrivateKeyAuth).Subscribe(useKey =>
             {
                 keyPanel.Visibility = useKey ? Visibility.Visible : Visibility.Collapsed;
@@ -35,8 +41,11 @@ public partial class AddSshServerWindow
             {
                 form.IsEnabled = !busy;
                 btnSave.IsEnabled = !busy;
+                btnTest.IsEnabled = !busy;
             }).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.TestCmd, v => v.btnTest).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.StopTestCmd, v => v.btnStopTest).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.FetchCmd, v => v.btnFetch).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.TrustCmd, v => v.btnTrust).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.BrowseCmd, v => v.btnBrowse).DisposeWith(disposables);

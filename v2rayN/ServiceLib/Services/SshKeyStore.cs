@@ -245,7 +245,7 @@ public sealed class SshKeyStore
         else if ((File.GetUnixFileMode(path) & (UnixFileMode)63) != 0) throw new SshSetupException("keyPermissions");
     }
 
-    private static FileStream CreatePrivateFile(string path)
+    internal static FileStream CreatePrivateFile(string path)
     {
         if (OperatingSystem.IsWindows()) return CreateWindowsFile(path);
         return new FileStream(path, new FileStreamOptions

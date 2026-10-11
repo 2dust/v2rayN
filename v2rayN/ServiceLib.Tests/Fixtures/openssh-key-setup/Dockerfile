@@ -10,4 +10,4 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
        'AllowTcpForwarding yes' 'HostKey /etc/ssh/ssh_host_ed25519_key' 'LogLevel ERROR' > /etc/ssh/sshd_config
 COPY server.py /fixture-server.py
 # Only disposable credentials and an ephemeral loopback-published SSH port; no host mounts.
-CMD ["sh", "-c", "ssh-keygen -A >/dev/null && openssl req -x509 -newkey rsa:2048 -nodes -keyout /tmp/key.pem -out /tmp/cert.pem -subj /CN=localhost -days 1 >/dev/null 2>&1 && python3 /fixture-server.py & wait"]
+CMD ["sh", "-c", "ssh-keygen -A >/dev/null && openssl req -x509 -newkey rsa:2048 -nodes -keyout /tmp/key.pem -out /tmp/cert.pem -subj /CN=localhost -addext 'subjectAltName=DNS:localhost,IP:127.0.0.1' -days 1 >/dev/null 2>&1 && python3 /fixture-server.py & wait"]

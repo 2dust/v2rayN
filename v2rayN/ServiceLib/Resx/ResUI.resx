@@ -1940,7 +1940,7 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="SshSetupPassphrase" xml:space="preserve"><value>Private-key passphrase (optional for new keys)</value></data>
   <data name="SshConfirmPassphrase" xml:space="preserve"><value>Confirm new private-key passphrase</value></data>
   <data name="SshSetupNotice" xml:space="preserve"><value>Reusing a key first tests key-only login. If refused, enter the server password to install its public key. Save the node to remember your selection. Canceling does not undo an already installed public key.</value></data>
-  <data name="SshSetupVerified" xml:space="preserve"><value>Key login verified. Save this node to use the selected key. Proxy forwarding can be checked with the node test.</value></data>
+  <data name="SshSetupVerified" xml:space="preserve"><value>Key login verified. Use Test connection to check proxy access, then save the node to use this key.</value></data>
   <data name="SshManualKey" xml:space="preserve"><value>Public key / manual installation</value></data>
   <data name="SshManualHelp" xml:space="preserve"><value>Automatic installation requires a Linux/OpenSSH account with command access and standard ~/.ssh/authorized_keys. For other environments, copy the public key below and append it to that account's authorized_keys; keep existing keys and options. Then retry verification.</value></data>
   <data name="SshRemoteMayRemain" xml:space="preserve"><value>The public key may already be installed. Cancellation does not undo remote writes. Retry with this same key; existing authorization is checked before appending.</value></data>
@@ -1964,4 +1964,31 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="SshErrorStorage" xml:space="preserve"><value>Cannot safely save or read local key data. Check disk space and permissions.</value></data>
   <data name="SshErrorConnection" xml:space="preserve"><value>SSH connection failed. Check reachability and server policy. Password installation was not attempted after a connection error.</value></data>
   <data name="SshErrorTimeout" xml:space="preserve"><value>SSH key setup timed out. A remote write may have completed; retry using the same key.</value></data>
+  <data name="SshTestConnection" xml:space="preserve"><value>Test connection</value></data>
+  <data name="SshStopTest" xml:space="preserve"><value>Stop test</value></data>
+  <data name="SshTestTarget" xml:space="preserve"><value>Test URL</value></data>
+  <data name="SshTestLogin" xml:space="preserve"><value>SSH login</value></data>
+  <data name="SshTestProxy" xml:space="preserve"><value>Proxy access</value></data>
+  <data name="SshTestWaiting" xml:space="preserve"><value>Waiting</value></data>
+  <data name="SshTestRunning" xml:space="preserve"><value>Testing…</value></data>
+  <data name="SshTestPassed" xml:space="preserve"><value>Passed</value></data>
+  <data name="SshTestResponded" xml:space="preserve"><value>Target responded</value></data>
+  <data name="SshTestFailed" xml:space="preserve"><value>Failed</value></data>
+  <data name="SshTestCancelled" xml:space="preserve"><value>Stopped</value></data>
+  <data name="SshTestSkipped" xml:space="preserve"><value>Not tested</value></data>
+  <data name="SshTestError_testUrl" xml:space="preserve"><value>Set a valid HTTP/HTTPS test URL without embedded credentials in Settings.</value></data>
+  <data name="SshTestError_configuration" xml:space="preserve"><value>Check the endpoint, credentials, key file and confirmed server identity.</value></data>
+  <data name="SshTestError_authentication" xml:space="preserve"><value>The selected authentication method was refused. Check the username, credentials and server policy.</value></data>
+  <data name="SshTestError_hostKey" xml:space="preserve"><value>Server identity does not match the confirmed key. No replacement was trusted.</value></data>
+  <data name="SshTestError_invalidKey" xml:space="preserve"><value>Cannot read or unlock this private key. Check the file and passphrase.</value></data>
+  <data name="SshTestError_keyChanged" xml:space="preserve"><value>The private key changed. Select and verify it again.</value></data>
+  <data name="SshTestError_keyPermissions" xml:space="preserve"><value>Private-key permissions are unsafe. Check the file permissions.</value></data>
+  <data name="SshTestError_connection" xml:space="preserve"><value>Cannot connect to SSH. Check the address, port and network.</value></data>
+  <data name="SshTestError_coreMissing" xml:space="preserve"><value>sing-box is missing; proxy access was not tested.</value></data>
+  <data name="SshTestError_coreStart" xml:space="preserve"><value>Test core could not start or exited. Check sing-box compatibility and executable permissions.</value></data>
+  <data name="SshTestError_forwarding" xml:space="preserve"><value>Proxy request failed. Check SSH TCP forwarding permission and target reachability.</value></data>
+  <data name="SshTestError_tls" xml:space="preserve"><value>HTTPS certificate or TLS verification failed.</value></data>
+  <data name="SshTestError_timeout" xml:space="preserve"><value>This test stage timed out.</value></data>
+  <data name="SshTestError_storage" xml:space="preserve"><value>Cannot safely read or clean up temporary test files. Check local permissions and disk space.</value></data>
+  <data name="SshTestError_cancelled" xml:space="preserve"><value>Test stopped; the form has been retained.</value></data>
 </root>

@@ -52,7 +52,7 @@ public sealed class SshKeyInstaller(SshKeyStore store)
                 Record("verifyingExisting");
                 try
                 {
-                    using var verified = await ConnectAsync(target, new PrivateKeyAuthenticationMethod(target.Username, privateKey), token);
+                    using var verified = await SshPinnedConnection.ConnectAsync(target, new PrivateKeyAuthenticationMethod(target.Username, privateKey), token);
                     Record("verified");
                     return new(key, true);
                 }
@@ -66,7 +66,7 @@ public sealed class SshKeyInstaller(SshKeyStore store)
             progress?.Report("connecting");
             Record("passwordAuthentication");
             passwordAttempted = true;
-            using (var authenticated = await ConnectAsync(target, new PasswordAuthenticationMethod(target.Username, password), token))
+            using (var authenticated = await SshPinnedConnection.ConnectAsync(target, new PasswordAuthenticationMethod(target.Username, password), token))
             {
                 if (generate)
                 {
@@ -87,7 +87,7 @@ public sealed class SshKeyInstaller(SshKeyStore store)
             checkingInstalledKey = true;
             progress?.Report("verifying");
             using (var privateKey = store.Open(key, passphrase))
-            using (var verified = await ConnectAsync(target, new PrivateKeyAuthenticationMethod(target.Username, privateKey), token)) { }
+            using (var verified = await SshPinnedConnection.ConnectAsync(target, new PrivateKeyAuthenticationMethod(target.Username, privateKey), token)) { }
             Record("verified");
             return new(key, true, RemoteMayHaveChanged: remote);
         }
@@ -112,8 +112,16 @@ public sealed class SshKeyInstaller(SshKeyStore store)
         finally { Gate.Release(); }
     }
 
-    private static async Task<SshClient> ConnectAsync(SshSetupTarget target, AuthenticationMethod authentication, CancellationToken token)
+}
+
+internal static class SshPinnedConnection
+{
+    internal static async Task<SshClient> ConnectAsync(SshSetupTarget target, AuthenticationMethod authentication, CancellationToken token)
     {
+        if (SshProfileService.ParseHostKey(target.HostKey.PublicKey, target.HostKey.Algorithm) != target.HostKey)
+            throw new SshSetupException("hostKey");
+        using var deadline = CancellationTokenSource.CreateLinkedTokenSource(token);
+        deadline.CancelAfter(TimeSpan.FromSeconds(12));
         var info = new ConnectionInfo(target.Address, target.Port, target.Username, authentication)
         { Timeout = TimeSpan.FromSeconds(12) };
         // Limit negotiation to the algorithm which was actually confirmed by the user.
@@ -129,13 +137,15 @@ public sealed class SshKeyInstaller(SshKeyStore store)
         };
         try
         {
-            await client.ConnectAsync(token);
+            await client.ConnectAsync(deadline.Token);
             return client;
         }
         catch
         {
             client.Dispose();
             if (mismatch) throw new SshSetupException("hostKey");
+            if (deadline.IsCancellationRequested && !token.IsCancellationRequested)
+                throw new SshSetupException("timeout");
             throw;
         }
     }

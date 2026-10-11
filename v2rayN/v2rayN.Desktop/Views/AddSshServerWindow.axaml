@@ -8,9 +8,14 @@
     Title="{x:Static resx:SshStrings.Title}" Width="660" Height="740"
     ShowInTaskbar="False" WindowStartupLocation="CenterOwner">
     <DockPanel Margin="20">
-        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button x:Name="btnSave" Content="{x:Static resx:ResUI.TbConfirm}" MinWidth="90" Margin="4" />
-            <Button x:Name="btnCancel" Content="{x:Static resx:ResUI.TbCancel}" MinWidth="90" Margin="4" />
+        <StackPanel DockPanel.Dock="Bottom">
+            <TextBlock x:Name="txtTestStatus" TextWrapping="Wrap" Margin="0,6" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="btnTest" Content="{x:Static resx:SshStrings.TestConnection}" MinWidth="90" Margin="4" />
+                <Button x:Name="btnStopTest" Content="{x:Static resx:SshStrings.StopTest}" MinWidth="90" Margin="4" IsVisible="False" />
+                <Button x:Name="btnSave" Content="{x:Static resx:ResUI.TbConfirm}" MinWidth="90" Margin="4" />
+                <Button x:Name="btnCancel" Content="{x:Static resx:ResUI.TbCancel}" MinWidth="90" Margin="4" />
+            </StackPanel>
         </StackPanel>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel x:Name="form">
@@ -36,8 +41,8 @@
                     </DockPanel>
                     <TextBlock Text="{x:Static resx:SshStrings.Passphrase}" Margin="0,6,0,2" />
                     <TextBox x:Name="txtPassphrase" PasswordChar="●" />
+                    <Button x:Name="btnSetupKey" Content="{x:Static resx:SshStrings.SetupKey}" HorizontalAlignment="Left" Margin="0,8" />
                 </StackPanel>
-                <Button x:Name="btnSetupKey" Content="{x:Static resx:SshStrings.SetupKey}" HorizontalAlignment="Left" Margin="0,8" />
                 <TextBlock Text="{x:Static resx:SshStrings.HostKey}" Margin="0,12,0,2" />
                 <TextBox x:Name="txtHostKey" TextWrapping="Wrap" MinHeight="64" AcceptsReturn="True" />
                 <WrapPanel Margin="0,6,0,6">

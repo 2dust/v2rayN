@@ -10,10 +10,37 @@ private key may also require its passphrase.
 New nodes default to **password authentication**. Saving a password node lets the
 core authenticate automatically; setting up public-key login is optional.
 
+## Test before saving
+
+The editor's **Test connection** button works with password and private-key
+authentication. It confirms the server identity before authentication, then shows
+two separate results: **SSH login** and **Proxy access**, with elapsed time and the
+connectivity test URL selected in Settings. Testing uses the current draft; it
+does not save or activate a node, change the shared default key, or update node
+speed-test history.
+
+Proxy access uses a separate, short-lived sing-box process and an authenticated
+loopback listener. Every request goes through this SSH node, independently of
+normal routing rules and system proxy settings. A successful HTTP response passes;
+other status codes (including redirects) are displayed as **Target responded**,
+without following redirects. HTTPS certificate validation stays enabled. Successful
+SSH login alone does not prove the account permits TCP forwarding. Missing or
+incompatible sing-box, authentication refusal, TLS failure and request timeout
+are reported separately.
+
+The form is locked during a test. **Stop test** keeps the form open and retains its
+inputs; closing the editor also cancels the test. Temporary credential files use
+restricted permissions and are removed along with the test process on completion,
+failure or cancellation. Changing connection inputs clears old results; changing
+the alias does not. A passing test is optional, and saving remains a separate action.
+Timeouts are 12 seconds for SSH, 5 for core startup, 5 for HTTP, and 30 seconds
+overall after identity confirmation.
+
 ## One-click key login
 
-Fill in the server address, port and login username, then select **Configure key
-login**. Confirm the server fingerprint through a trusted channel before any
+Fill in the server address, port and login username, enable **Use private-key
+authentication**, then select **Configure key login**. This button is hidden in
+password mode. Confirm the server fingerprint through a trusted channel before any
 credentials are sent. The setup window fixes this endpoint and account for the
 duration of the operation.
 
@@ -45,8 +72,8 @@ Successful verification fills the editor's private-key path and authentication
 mode. **Save the node** to persist it. Setup does not activate the node or change
 the running proxy. The saved selection becomes the first shared-key candidate
 for later nodes; each setup still offers reuse or generation. Public-key login
-success is separate from forwarding permission: use the normal node connectivity
-test to check HTTP/HTTPS proxying.
+success is separate from forwarding permission: use **Test connection** in the
+editor before saving, or the normal node connectivity test after saving.
 
 ### Storage and recovery
 
@@ -143,8 +170,14 @@ sing-box HTTP/HTTPS forwarding:
 docker build -t v2rayn-ssh-key-setup:test v2rayN/ServiceLib.Tests/Fixtures/openssh-key-setup
 SSH_SETUP_DOCKER_IMAGE=v2rayn-ssh-key-setup:test \
 SSH_TEST_SINGBOX=/absolute/path/to/sing-box \
-dotnet run --project v2rayN/ServiceLib.Tests -- --treenode-filter '/*/*/SshKeySetup*/*'
+dotnet run --project v2rayN/ServiceLib.Tests -- --treenode-filter '/*/*/Ssh*/*'
 ```
+
+Draft connection tests also exercise rejected TCP forwarding, HTTP 403 responses,
+trusted and untrusted TLS, wrong passwords/passphrases, missing/exited cores,
+timeouts, cancellation/retry, draft isolation and temporary-process/file cleanup.
+The TLS fixture adds its ephemeral certificate only to a test-specific trust
+store; production certificate validation is unchanged.
 
 Coverage includes endpoint-bound trust, explicit acceptance/cancellation,
 Ed25519/ECDSA/RSA key exchange, no authentication during probing, cancellation of

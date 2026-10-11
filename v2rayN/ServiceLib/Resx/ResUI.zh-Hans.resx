@@ -1932,7 +1932,7 @@
   <data name="SshSetupPassphrase" xml:space="preserve"><value>私钥口令（生成新密钥时可不填）</value></data>
   <data name="SshConfirmPassphrase" xml:space="preserve"><value>再次输入新私钥口令</value></data>
   <data name="SshSetupNotice" xml:space="preserve"><value>复用时先尝试私钥登录，被拒绝后再输入服务器密码安装公钥。保存节点后记住所选密钥。取消不会撤销已完成的公钥安装。</value></data>
-  <data name="SshSetupVerified" xml:space="preserve"><value>密钥登录已验证。点击保存后节点使用该私钥；代理转发请使用节点测试验证。</value></data>
+  <data name="SshSetupVerified" xml:space="preserve"><value>密钥登录已验证。可点击「测试连接」验证代理访问，点击「确定」后节点使用该私钥。</value></data>
   <data name="SshManualKey" xml:space="preserve"><value>公钥 / 手动安装</value></data>
   <data name="SshManualHelp" xml:space="preserve"><value>自动安装需要支持执行命令的 Linux/OpenSSH 账号及标准 ~/.ssh/authorized_keys。其他环境可复制下方公钥，追加到该账号的授权文件，保留已有密钥与限制选项，再重试验证。</value></data>
   <data name="SshRemoteMayRemain" xml:space="preserve"><value>公钥可能已经安装。取消不会撤销远端写入；重试会复用此密钥，先检查已有授权再追加。</value></data>
@@ -1956,4 +1956,31 @@
   <data name="SshErrorStorage" xml:space="preserve"><value>无法安全保存或读取本地密钥数据，请检查磁盘空间与权限。</value></data>
   <data name="SshErrorConnection" xml:space="preserve"><value>SSH 连接失败，请检查网络及服务器策略；不会因连接错误自动尝试密码安装。</value></data>
   <data name="SshErrorTimeout" xml:space="preserve"><value>免密配置超时，远端写入可能已完成，请使用同一把密钥重试。</value></data>
+  <data name="SshTestConnection" xml:space="preserve"><value>测试连接</value></data>
+  <data name="SshStopTest" xml:space="preserve"><value>停止测试</value></data>
+  <data name="SshTestTarget" xml:space="preserve"><value>测试网址</value></data>
+  <data name="SshTestLogin" xml:space="preserve"><value>SSH 登录</value></data>
+  <data name="SshTestProxy" xml:space="preserve"><value>代理访问</value></data>
+  <data name="SshTestWaiting" xml:space="preserve"><value>等待中</value></data>
+  <data name="SshTestRunning" xml:space="preserve"><value>正在验证…</value></data>
+  <data name="SshTestPassed" xml:space="preserve"><value>通过</value></data>
+  <data name="SshTestResponded" xml:space="preserve"><value>目标已响应</value></data>
+  <data name="SshTestFailed" xml:space="preserve"><value>失败</value></data>
+  <data name="SshTestCancelled" xml:space="preserve"><value>已停止</value></data>
+  <data name="SshTestSkipped" xml:space="preserve"><value>未测试</value></data>
+  <data name="SshTestError_testUrl" xml:space="preserve"><value>请在设置中填写有效的 HTTP/HTTPS 测试网址，网址不能包含登录凭据。</value></data>
+  <data name="SshTestError_configuration" xml:space="preserve"><value>请检查服务器地址、凭据、私钥文件及已确认的服务器身份。</value></data>
+  <data name="SshTestError_authentication" xml:space="preserve"><value>所选认证方式被拒绝，请检查用户名、凭据及服务端认证策略。</value></data>
+  <data name="SshTestError_hostKey" xml:space="preserve"><value>服务器身份与已确认的公钥不符，未信任新公钥。</value></data>
+  <data name="SshTestError_invalidKey" xml:space="preserve"><value>无法读取或解锁私钥，请检查文件和私钥口令。</value></data>
+  <data name="SshTestError_keyChanged" xml:space="preserve"><value>私钥文件已变化，请重新选择并验证。</value></data>
+  <data name="SshTestError_keyPermissions" xml:space="preserve"><value>私钥权限不安全，请检查文件访问权限。</value></data>
+  <data name="SshTestError_connection" xml:space="preserve"><value>无法连接 SSH，请检查地址、端口和网络。</value></data>
+  <data name="SshTestError_coreMissing" xml:space="preserve"><value>未找到 sing-box，代理访问未完成测试。</value></data>
+  <data name="SshTestError_coreStart" xml:space="preserve"><value>测试核心无法启动或已退出，请检查 sing-box 版本兼容性及执行权限。</value></data>
+  <data name="SshTestError_forwarding" xml:space="preserve"><value>代理请求失败，请检查 SSH TCP 转发权限及目标网站是否可访问。</value></data>
+  <data name="SshTestError_tls" xml:space="preserve"><value>HTTPS 证书或 TLS 校验失败。</value></data>
+  <data name="SshTestError_timeout" xml:space="preserve"><value>当前测试阶段超时。</value></data>
+  <data name="SshTestError_storage" xml:space="preserve"><value>无法安全读取或清理临时测试文件，请检查本地权限与磁盘空间。</value></data>
+  <data name="SshTestError_cancelled" xml:space="preserve"><value>测试已停止，表单内容已保留。</value></data>
 </root>

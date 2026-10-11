@@ -22,6 +22,12 @@ public partial class AddSshServerWindow : WindowBase<AddSshServerViewModel>
             this.Bind(ViewModel, vm => vm.Passphrase, v => v.txtPassphrase.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.PrivateKeyAuth, v => v.chkPrivateKey.IsChecked).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.Status, v => v.txtStatus.Text).DisposeWith(disposables);
+            this.OneWayBind(ViewModel, vm => vm.TestStatus, v => v.txtTestStatus.Text).DisposeWith(disposables);
+            this.WhenAnyValue(v => v.ViewModel.IsTesting).Subscribe(testing =>
+            {
+                btnTest.IsVisible = !testing;
+                btnStopTest.IsVisible = testing;
+            }).DisposeWith(disposables);
             this.WhenAnyValue(v => v.ViewModel.PrivateKeyAuth).Subscribe(useKey =>
             {
                 keyPanel.IsVisible = useKey;
@@ -31,8 +37,11 @@ public partial class AddSshServerWindow : WindowBase<AddSshServerViewModel>
             {
                 form.IsEnabled = !busy;
                 btnSave.IsEnabled = !busy;
+                btnTest.IsEnabled = !busy;
             }).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.TestCmd, v => v.btnTest).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.StopTestCmd, v => v.btnStopTest).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.FetchCmd, v => v.btnFetch).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.TrustCmd, v => v.btnTrust).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.BrowseCmd, v => v.btnBrowse).DisposeWith(disposables);

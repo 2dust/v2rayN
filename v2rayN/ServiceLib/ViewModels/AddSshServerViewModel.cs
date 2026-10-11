@@ -18,6 +18,10 @@ public partial class AddSshServerViewModel : MyReactiveObject, ICloseable
     [Reactive] public partial string HostKey { get; set; }
     [Reactive] public partial string Status { get; set; }
     [Reactive] public partial bool IsBusy { get; set; }
+    [Reactive] public partial bool IsTesting { get; set; }
+    [Reactive] public partial string TestStatus { get; set; } = "";
+    public ReactiveCommand<RxVoid, RxVoid> TestCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> StopTestCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> SaveCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> FetchCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> TrustCmd { get; }
@@ -31,9 +35,12 @@ public partial class AddSshServerViewModel : MyReactiveObject, ICloseable
     private string? _trustedAddress;
     private int? _trustedPort;
     private SshHostKey? _trustedKey;
+    private readonly ISshConnectionTestService _testService;
+    private long _testRevision;
 
-    public AddSshServerViewModel(ProfileItem item)
+    public AddSshServerViewModel(ProfileItem item, ISshConnectionTestService? testService = null)
     {
+        _testService = testService ?? new SshConnectionTestService();
         _config = AppManager.Instance.Config;
         SelectedSource = item.IndexId.IsNullOrEmpty() ? item : JsonUtils.DeepCopy(item);
         var extra = item.GetProtocolExtra();
@@ -59,6 +66,11 @@ public partial class AddSshServerViewModel : MyReactiveObject, ICloseable
         catch { }
         this.WhenAnyValue(x => x.Address, x => x.Port, x => x.HostKey)
             .Subscribe(_ => RefreshTrust());
+        this.WhenAnyValue(x => x.Address, x => x.Port, x => x.Username).Subscribe(_ => InvalidateTest());
+        this.WhenAnyValue(x => x.Password, x => x.PrivateKeyAuth, x => x.PrivateKeyPath).Subscribe(_ => InvalidateTest());
+        this.WhenAnyValue(x => x.Passphrase, x => x.HostKey).Subscribe(_ => InvalidateTest());
+        TestCmd = ReactiveCommand.CreateFromTask(() => RunAsync(TestConnectionAsync));
+        StopTestCmd = ReactiveCommand.Create(() => { if (IsTesting) _operation?.Cancel(); });
         SaveCmd = ReactiveCommand.CreateFromTask(() => RunAsync(SaveAsync));
         FetchCmd = ReactiveCommand.CreateFromTask(() => RunAsync(() => ConfirmAsync(true)));
         TrustCmd = ReactiveCommand.CreateFromTask(() => RunAsync(() => ConfirmAsync(false)));
@@ -82,6 +94,7 @@ public partial class AddSshServerViewModel : MyReactiveObject, ICloseable
 
     private async Task SetupKeyAsync()
     {
+        if (!PrivateKeyAuth) return;
         if (string.IsNullOrWhiteSpace(Address) || string.IsNullOrWhiteSpace(Username)
             || !int.TryParse(Port, out var port) || port is < 1 or > 65535)
         { Status = SshStrings.InvalidEndpoint; return; }
@@ -130,7 +143,34 @@ public partial class AddSshServerViewModel : MyReactiveObject, ICloseable
         try { await action(); }
         catch (OperationCanceledException) { Status = SshStrings.Cancelled; }
         catch { Status = SshStrings.FetchFailed; } // Never show exception text containing credentials.
-        finally { _operation = null; IsBusy = false; }
+        finally { _operation = null; IsTesting = false; IsBusy = false; }
+    }
+
+    private async Task TestConnectionAsync()
+    {
+        IsTesting = true;
+        InvalidateTest();
+        if (SshProfileService.Validate(CreateDraftSnapshot(), requireTrust: false) is { } error)
+        { Status = error; return; }
+        if (_trustedKey == null) await ConfirmAsync(true);
+        if (_closed || _trustedKey == null) return;
+        var token = _operation!.Token;
+        token.ThrowIfCancellationRequested();
+        var snapshot = CreateDraftSnapshot();
+        var url = _config.SpeedTestItem.SpeedPingTestUrl;
+        var revision = _testRevision;
+        var progress = new Progress<SshConnectionTestResult>(result =>
+        {
+            if (!_closed && IsTesting && revision == _testRevision) TestStatus = SshStrings.TestResult(result);
+        });
+        var result = await Task.Run(() => _testService.TestAsync(snapshot, url, progress, token));
+        if (!_closed && revision == _testRevision) TestStatus = SshStrings.TestResult(result);
+    }
+
+    private void InvalidateTest()
+    {
+        _testRevision++;
+        TestStatus = "";
     }
 
     private async Task ConfirmAsync(bool fetch)
@@ -156,7 +196,7 @@ public partial class AddSshServerViewModel : MyReactiveObject, ICloseable
         if (_closed || Address.Trim() != address || Port != port.ToString() || HostKey != input) return;
         var confirmed = await ConfirmHostKeyInteraction.HandleSafe(
             $"{SshStrings.ConfirmKey}\n\n{address}:{port}\n{key.Algorithm}\n{key.Fingerprint}");
-        if (!confirmed || _closed || Address.Trim() != address || Port != port.ToString() || HostKey != input)
+        if (!confirmed || _closed || _operation!.IsCancellationRequested || Address.Trim() != address || Port != port.ToString() || HostKey != input)
         {
             RefreshTrust();
             return;
@@ -168,15 +208,24 @@ public partial class AddSshServerViewModel : MyReactiveObject, ICloseable
         RefreshTrust();
     }
 
-    private void UpdateSource()
+    public ProfileItem CreateDraftSnapshot()
     {
-        SelectedSource.ConfigType = EConfigType.SSH;
-        SelectedSource.Remarks = Remarks.Trim();
-        SelectedSource.Address = Address.Trim();
-        SelectedSource.Port = int.TryParse(Port, out var port) ? port : 0;
-        SelectedSource.Username = Username.Trim();
-        SelectedSource.Password = PrivateKeyAuth ? "" : Password;
-        SelectedSource.SetProtocolExtra(SelectedSource.GetProtocolExtra() with
+        var snapshot = JsonUtils.DeepCopy(SelectedSource);
+        ApplyDraft(snapshot);
+        return snapshot;
+    }
+
+    private void UpdateSource() => ApplyDraft(SelectedSource);
+
+    private void ApplyDraft(ProfileItem source)
+    {
+        source.ConfigType = EConfigType.SSH;
+        source.Remarks = Remarks.Trim();
+        source.Address = Address.Trim();
+        source.Port = int.TryParse(Port, out var port) ? port : 0;
+        source.Username = Username.Trim();
+        source.Password = PrivateKeyAuth ? "" : Password;
+        source.SetProtocolExtra(source.GetProtocolExtra() with
         {
             SshPrivateKeyAuth = PrivateKeyAuth,
             SshPrivateKeyPath = PrivateKeyAuth ? PrivateKeyPath : null,

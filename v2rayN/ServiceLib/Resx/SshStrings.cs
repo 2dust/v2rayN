@@ -3,6 +3,20 @@ namespace ServiceLib.Resx;
 public static class SshStrings
 {
     private static string Get(string name) => ResUI.ResourceManager.GetString("Ssh" + name, ResUI.Culture) ?? name;
+    public static string TestConnection => Get(nameof(TestConnection));
+    public static string StopTest => Get(nameof(StopTest));
+    public static string TestResult(SshConnectionTestResult result)
+    {
+        string Stage(string name, SshTestStage stage)
+        {
+            var state = Get("Test" + stage.State);
+            var detail = stage.Error == null ? "" : " · " + Get("TestError_" + stage.Error);
+            var http = stage.HttpStatus == null ? "" : $" · HTTP {stage.HttpStatus}";
+            var elapsed = stage.State is SshTestState.Running or SshTestState.Waiting or SshTestState.Skipped ? "" : $" · {stage.ElapsedMs} ms";
+            return $"{Get(name)}: {state}{http}{elapsed}{detail}";
+        }
+        return $"{Get("TestTarget")}: {result.Url}\n{Stage("TestLogin", result.Login)}\n{Stage("TestProxy", result.Proxy)}";
+    }
     public static string SetupTitle => Get(nameof(SetupTitle));
     public static string SetupKey => Get(nameof(SetupKey));
     public static string KeysFound => Get(nameof(KeysFound));
