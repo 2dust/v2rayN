@@ -65,7 +65,8 @@
                     materialDesign:HintAssist.Hint="{x:Static resx:ResUI.MsgServerTitle}"
                     materialDesign:TextFieldAssist.HasClearButton="True"
                     AutomationProperties.Name="{x:Static resx:ResUI.MsgServerTitle}"
-                    Style="{StaticResource DefTextBox}" />
+                    Style="{StaticResource DefTextBox}"
+                    ToolTip="{x:Static resx:ResUI.MsgServerTitle}" />
 
                 <Button
                     x:Name="btnAutofitColumnWidth"

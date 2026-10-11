@@ -399,6 +399,9 @@
   <data name="MsgServerTitle" xml:space="preserve">
     <value>過濾器，按 Enter 執行</value>
   </data>
+  <data name="menuCheckAndUpdate" xml:space="preserve">
+    <value>檢查並更新</value>
+  </data>
   <data name="menuCheckUpdate" xml:space="preserve">
     <value>檢查更新</value>
   </data>

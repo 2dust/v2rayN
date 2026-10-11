@@ -229,7 +229,7 @@ public sealed class CoreInfoManager
                     DownloadUrlLinuxLoong64 = urlSingbox + "/download/{0}/sing-box-{1}-linux-loong64.tar.gz",
                     DownloadUrlOSX64 = urlSingbox + "/download/{0}/sing-box-{1}-darwin-amd64.tar.gz",
                     DownloadUrlOSXArm64 = urlSingbox + "/download/{0}/sing-box-{1}-darwin-arm64.tar.gz",
-                    LockedMaxVersion = new SemanticVersion(1, 14, int.MaxValue),
+                    //LockedMaxVersion = new SemanticVersion(1, 14, int.MaxValue),
                     Match = "sing-box",
                     VersionArg = "version",
                 },

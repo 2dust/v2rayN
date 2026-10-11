@@ -399,6 +399,9 @@
   <data name="MsgServerTitle" xml:space="preserve">
     <value>过滤器，按回车执行</value>
   </data>
+  <data name="menuCheckAndUpdate" xml:space="preserve">
+    <value>检查并更新</value>
+  </data>
   <data name="menuCheckUpdate" xml:space="preserve">
     <value>检查更新</value>
   </data>

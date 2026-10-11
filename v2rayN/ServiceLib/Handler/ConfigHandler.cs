@@ -1796,7 +1796,7 @@ public static class ConfigHandler
         }
         if (lstProfiles.Count > 0)
         {
-            var count = await AddBatchCustomServers(config, lstProfiles, subid, isSub);
+            var count = await AddBatchCustomServers(config, lstProfiles, subid, isSub, subItem);
             if (count > 0)
             {
                 return count;
@@ -1842,7 +1842,7 @@ public static class ConfigHandler
 
         if (lstProfiles?.Count > 0)
         {
-            var count = await AddBatchCustomServers(config, lstProfiles, subid, isSub);
+            var count = await AddBatchCustomServers(config, lstProfiles, subid, isSub, subItem);
             if (count > 0)
             {
                 return count;
@@ -1856,7 +1856,8 @@ public static class ConfigHandler
         Config config,
         List<ProfileItem> lstProfiles,
         string subid,
-        bool isSub)
+        bool isSub,
+        SubItem? subItem)
     {
         var count = 0;
         foreach (var it in lstProfiles)
@@ -1866,6 +1867,7 @@ public static class ConfigHandler
 
             if (it.ConfigType == EConfigType.Custom)
             {
+                it.PreSocksPort = subItem?.PreSocksPort;
                 if (await AddCustomServer(config, it, true) == 0)
                 {
                     count++;
