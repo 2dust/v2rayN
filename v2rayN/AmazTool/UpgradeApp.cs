@@ -6,6 +6,12 @@ namespace AmazTool;
 
 internal class UpgradeApp
 {
+    /// <summary>Upper bound on the number of entries extracted from an upgrade package.</summary>
+    private const int MaxEntryCount = 20000;
+
+    /// <summary>Upper bound on the total uncompressed size of an upgrade package.</summary>
+    private const long MaxTotalUncompressedBytes = 4L * 1024 * 1024 * 1024; // 4 GB
+
     public static void Upgrade(string fileName)
     {
         Console.WriteLine($"{Resx.Resource.StartUnzipping}\n{fileName}");
@@ -47,6 +53,8 @@ internal class UpgradeApp
         Console.WriteLine(Resx.Resource.StartUnzipping);
         StringBuilder sb = new();
         var thisAppOldFile = $"{Utils.GetExePath()}.tmp";
+        var entryCount = 0;
+        long totalBytes = 0;
         try
         {
             File.Delete(thisAppOldFile);
@@ -65,6 +73,20 @@ internal class UpgradeApp
                     }
 
                     Console.WriteLine(entry.FullName);
+
+                    // Guard against a small package expanding into a huge tree or filling the disk.
+                    entryCount++;
+                    if (entryCount > MaxEntryCount)
+                    {
+                        Console.WriteLine($"too many entries (limit {MaxEntryCount})");
+                        return;
+                    }
+                    totalBytes += entry.Length;
+                    if (totalBytes > MaxTotalUncompressedBytes)
+                    {
+                        Console.WriteLine($"uncompressed size exceeds {MaxTotalUncompressedBytes} bytes");
+                        return;
+                    }
 
                     var lst = entry.FullName.Split(splitKey);
                     if (lst.Length == 1)
