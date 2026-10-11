@@ -13,8 +13,16 @@ git push origin v7.25.5-ssh-preview.1
 
 `Version` 必须与 `v2rayN/Directory.Build.props` 一致，序号为正整数。
 标签必须属于 feature 分支，工作流从标签对应的提交构建，不会转到 `master`。
-也可重跑失败的 Actions；工作流进入默认分支后，可以手动选择标签并传入同名
-`release_tag`，标签与所选 ref 必须指向同一个提交。
+如果 fork 尚未自动注册新工作流，可通过已有的 `release all platforms` 入口启动：
+
+```bash
+gh workflow run build-all.yml --repo idefav/v2rayN \
+  --ref v7.25.5-ssh-preview.1 -f release_tag=v7.25.5-ssh-preview.1
+```
+
+该入口识别 `-ssh-preview.` 标签后转入 feature 打包流程，不触发上游发布任务。
+也可重跑失败的 Actions；新工作流进入默认分支后，可以直接手动选择标签并传入同名
+`release_tag`。标签与所选 ref 必须指向同一个提交。
 
 发布内容：
 

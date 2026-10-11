@@ -12,8 +12,14 @@ permissions:
   contents: write
 
 jobs:
+  feature-preview:
+    if: contains(inputs.release_tag, '-ssh-preview.')
+    uses: ./.github/workflows/release-feature.yml
+    with:
+      release_tag: ${{ inputs.release_tag }}
+
   public-key:
-    if: inputs.release_tag != ''
+    if: inputs.release_tag != '' && !contains(inputs.release_tag, '-ssh-preview.')
     uses: ./.github/workflows/pub-key.yml
     with:
       release_tag: ${{ inputs.release_tag }}
@@ -21,6 +27,7 @@ jobs:
       GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
 
   update:
+    if: inputs.release_tag != '' && !contains(inputs.release_tag, '-ssh-preview.')
     runs-on: ubuntu-latest
     steps:
 

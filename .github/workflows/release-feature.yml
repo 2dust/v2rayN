@@ -10,6 +10,11 @@ on:
         description: Existing preview tag pointing to the selected ref
         required: true
         type: string
+  workflow_call:
+    inputs:
+      release_tag:
+        required: true
+        type: string
 
 permissions:
   contents: read
