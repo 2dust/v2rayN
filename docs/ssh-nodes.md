@@ -10,6 +10,33 @@ private key may also require its passphrase.
 New nodes default to **password authentication**. Saving a password node lets the
 core authenticate automatically; setting up public-key login is optional.
 
+## Interface examples
+
+These macOS screenshots use the Simplified Chinese interface, a disposable
+OpenSSH server at `localhost`, and temporary demo keys. They contain no production
+server addresses, personal key paths, or visible passwords/private-key contents.
+
+<details>
+<summary>Password authentication and separate SSH login / proxy access results</summary>
+
+![Password authentication with successful SSH login and HTTP proxy checks](images/ssh/ssh-password-test.zh-Hans.jpg)
+
+</details>
+
+<details>
+<summary>Private-key authentication and the conditional Configure key login entry</summary>
+
+![Private-key authentication with Configure key login and successful connection checks](images/ssh/ssh-private-key-test.zh-Hans.jpg)
+
+</details>
+
+<details>
+<summary>Reuse or generate a key, with fingerprints and encryption state</summary>
+
+![Local key selection showing unencrypted and encrypted demo keys](images/ssh/ssh-key-selection.zh-Hans.jpg)
+
+</details>
+
 ## Test before saving
 
 The editor's **Test connection** button works with password and private-key
