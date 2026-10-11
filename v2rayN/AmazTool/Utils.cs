@@ -24,6 +24,28 @@ internal class Utils
         return Path.Combine(startupPath, fileName);
     }
 
+    public static bool IsPathUnderDirectory(string baseDir, string targetPath)
+    {
+        if (string.IsNullOrWhiteSpace(baseDir) || string.IsNullOrWhiteSpace(targetPath))
+        {
+            return false;
+        }
+
+        var baseFull = Path.GetFullPath(baseDir);
+        var targetFull = Path.GetFullPath(targetPath);
+
+        baseFull = baseFull.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar) + Path.DirectorySeparatorChar;
+
+        return targetFull.StartsWith(baseFull, GetPathComparison());
+    }
+
+    public static StringComparison GetPathComparison()
+    {
+        return OperatingSystem.IsWindows()
+            ? StringComparison.OrdinalIgnoreCase
+            : StringComparison.Ordinal;
+    }
+
     public static string V2rayN => "v2rayN";
 
     public static void StartV2RayN()
