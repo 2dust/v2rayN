@@ -150,15 +150,8 @@ public class SshConnectionIntegrationTests
             }
             Clean();
             Check((await service.TestAsync(node, http, null, default)).Proxy.State == SshTestState.Passed, "retry after cancellation");
-            await Docker("exec", name, "sh", "-c", "sed -i 's/AllowTcpForwarding yes/AllowTcpForwarding no/' /etc/ssh/sshd_config; pkill -HUP -x sshd");
+            await Docker("exec", name, "sh", "-c", "sed -i 's/AllowTcpForwarding yes/AllowTcpForwarding no/' /etc/ssh/sshd_config && python3 /fixture-reload.py");
             var noForward = await service.TestAsync(node, http, null, default);
-            // SIGHUP briefly closes the listening socket while sshd re-executes.
-            // Retry only that fixture startup failure; forwarding assertions still run once login succeeds.
-            for (var i = 0; i < 50 && noForward.Login.Error == "connection"; i++)
-            {
-                await Task.Delay(100);
-                noForward = await service.TestAsync(node, http, null, default);
-            }
             Check(noForward.Login.State == SshTestState.Passed && noForward.Proxy.Error == "forwarding", "authentication success does not imply forwarding permission: " + JsonUtils.Serialize(noForward));
             Clean();
 

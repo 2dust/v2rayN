@@ -139,11 +139,11 @@ public class SshKeySetupIntegrationTests
             await Docker("exec", name, "chmod", "600", "/home/fixture/.ssh/authorized_keys");
 
             // Public-key auth disabled: installation can succeed but must not become a verified selection.
-            await Docker("exec", name, "sh", "-c", "sed -i 's/PubkeyAuthentication yes/PubkeyAuthentication no/' /etc/ssh/sshd_config; pkill -HUP -x sshd");
+            await Docker("exec", name, "sh", "-c", "sed -i 's/PubkeyAuthentication yes/PubkeyAuthentication no/' /etc/ssh/sshd_config && python3 /fixture-reload.py");
             var unverified = await installer.ConfigureAsync(target, conflictKey, false, null, password, null, default);
             Check(!unverified.Verified && unverified.RemoteMayHaveChanged && unverified.Error == "verifyFailed", "installation alone is not success");
             var installedBeforeRetry = await ReadAuthorized();
-            await Docker("exec", name, "sh", "-c", "sed -i 's/PubkeyAuthentication no/PubkeyAuthentication yes/' /etc/ssh/sshd_config; pkill -HUP -x sshd");
+            await Docker("exec", name, "sh", "-c", "sed -i 's/PubkeyAuthentication no/PubkeyAuthentication yes/' /etc/ssh/sshd_config && python3 /fixture-reload.py");
             var recovered = await installer.ConfigureAsync(target, conflictKey, false, null, null, null, default);
             Check(recovered.Verified && await ReadAuthorized() == installedBeforeRetry, "retry recovers same key without duplicate authorization");
 

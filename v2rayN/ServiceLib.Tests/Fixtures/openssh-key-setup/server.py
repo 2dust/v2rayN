@@ -28,4 +28,4 @@ for port in (18080, 18443):
         context.load_cert_chain("/tmp/cert.pem", "/tmp/key.pem")
         server.socket = context.wrap_socket(server.socket, server_side=True)
     threading.Thread(target=server.serve_forever, daemon=True).start()
-subprocess.run(["/usr/sbin/sshd", "-D", "-e"], check=True)
+subprocess.run(["/usr/sbin/sshd", "-D", "-E", "/tmp/fixture-sshd.log"], check=True)
