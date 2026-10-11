@@ -2,25 +2,25 @@ namespace ServiceLib.Handler.Data;
 
 public class ConfigDbQuery
 {
-    public static async Task<List<SubItem>?> SubItems()
+    public static Task<List<SubItem>?> SubItems()
     {
-        return await SQLiteHelper.Instance.TableAsync<SubItem>().OrderBy(t => t.Sort).ToListAsync();
+        return SQLiteHelper.Instance.FetchOrderedAsync<SubItem>(t => t.Sort);
     }
 
-    public static async Task<SubItem?> GetSubItem(string? subid)
+    public static Task<SubItem?> GetSubItem(string? subid)
     {
-        return await SQLiteHelper.Instance.TableAsync<SubItem>().FirstOrDefaultAsync(t => t.Id == subid);
+        return SQLiteHelper.Instance.FirstOrDefaultAsync<SubItem>(t => t.Id == subid);
     }
 
-    public static async Task<List<ProfileItem>?> ProfileItems(string subid)
+    public static Task<List<ProfileItem>?> ProfileItems(string subid)
     {
         if (subid.IsNullOrEmpty())
         {
-            return await SQLiteHelper.Instance.TableAsync<ProfileItem>().ToListAsync();
+            return SQLiteHelper.Instance.FetchAllAsync<ProfileItem>();
         }
         else
         {
-            return await SQLiteHelper.Instance.TableAsync<ProfileItem>().Where(t => t.Subid == subid).ToListAsync();
+            return SQLiteHelper.Instance.FetchPagedAsync<ProfileItem>(t => t.Subid == subid);
         }
     }
 
@@ -31,41 +31,16 @@ public class ConfigDbQuery
 
     public static async Task<List<ProfileItemModel>?> ProfileModels(string subid, string filter)
     {
-        var sql = @$"select a.IndexId
-                           ,a.ConfigType
-                           ,a.Remarks
-                           ,a.Address
-                           ,a.Port
-                           ,a.Network
-                           ,a.StreamSecurity
-                           ,a.Subid
-                           ,b.remarks as subRemarks
-                        from ProfileItem a
-                        left join SubItem b on a.subid = b.id
-                        where 1=1 ";
-        if (subid.IsNotEmpty())
-        {
-            sql += $" and a.subid = '{subid}'";
-        }
-        if (filter.IsNotEmpty())
-        {
-            if (filter.Contains('\''))
-            {
-                filter = filter.Replace("'", "");
-            }
-            sql += string.Format(" and (a.remarks like '%{0}%' or a.address like '%{0}%') ", filter);
-        }
-
-        return await SQLiteHelper.Instance.QueryAsync<ProfileItemModel>(sql);
+        return await SQLiteHelper.Instance.FetchProfileModelsAsync(subid, filter);
     }
 
-    public static async Task<ProfileItem?> GetProfileItem(string indexId)
+    public static Task<ProfileItem?> GetProfileItem(string indexId)
     {
         if (indexId.IsNullOrEmpty())
         {
-            return null;
+            return Task.FromResult<ProfileItem?>(null);
         }
-        return await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(it => it.IndexId == indexId);
+        return SQLiteHelper.Instance.FirstOrDefaultAsync<ProfileItem>(it => it.IndexId == indexId);
     }
 
     public static async Task<List<ProfileItem>> GetProfileItemsByIndexIds(IEnumerable<string> indexIds)
@@ -78,18 +53,14 @@ public class ConfigDbQuery
 
         if (ids.Count <= Global.SqliteMaxBatchSize)
         {
-            return await SQLiteHelper.Instance.TableAsync<ProfileItem>()
-                .Where(it => ids.Contains(it.IndexId))
-                .ToListAsync();
+            return await SQLiteHelper.Instance.FetchAsync<ProfileItem>(it => ids.Contains(it.IndexId));
         }
 
         var items = new List<ProfileItem>();
         for (var size = 0; size < ids.Count; size += Global.SqliteMaxBatchSize)
         {
             var chunk = ids.Skip(size).Take(Global.SqliteMaxBatchSize).ToList();
-            var chunkItems = await SQLiteHelper.Instance.TableAsync<ProfileItem>()
-                .Where(it => chunk.Contains(it.IndexId))
-                .ToListAsync();
+            var chunkItems = await SQLiteHelper.Instance.FetchAsync<ProfileItem>(it => chunk.Contains(it.IndexId));
 
             items.AddRange(chunkItems);
         }
@@ -114,42 +85,42 @@ public class ConfigDbQuery
             .ToList();
     }
 
-    public static async Task<ProfileItem?> GetProfileItemViaRemarks(string? remarks)
+    public static Task<ProfileItem?> GetProfileItemViaRemarks(string? remarks)
     {
         if (remarks.IsNullOrEmpty())
         {
-            return null;
+            return Task.FromResult<ProfileItem?>(null);
         }
-        return await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(it => it.Remarks == remarks);
+        return SQLiteHelper.Instance.FirstOrDefaultAsync<ProfileItem>(it => it.Remarks == remarks);
     }
 
-    public static async Task<List<RoutingItem>?> RoutingItems()
+    public static Task<List<RoutingItem>?> RoutingItems()
     {
-        return await SQLiteHelper.Instance.TableAsync<RoutingItem>().OrderBy(t => t.Sort).ToListAsync();
+        return SQLiteHelper.Instance.FetchOrderedAsync<RoutingItem>(t => t.Sort);
     }
 
-    public static async Task<RoutingItem?> GetRoutingItem(string id)
+    public static Task<RoutingItem?> GetRoutingItem(string id)
     {
-        return await SQLiteHelper.Instance.TableAsync<RoutingItem>().FirstOrDefaultAsync(it => it.Id == id);
+        return SQLiteHelper.Instance.FirstOrDefaultAsync<RoutingItem>(it => it.Id == id);
     }
 
-    public static async Task<List<DNSItem>?> DNSItems()
+    public static Task<List<DNSItem>?> DNSItems()
     {
-        return await SQLiteHelper.Instance.TableAsync<DNSItem>().ToListAsync();
+        return SQLiteHelper.Instance.FetchAllAsync<DNSItem>();
     }
 
-    public static async Task<DNSItem?> GetDNSItem(ECoreType eCoreType)
+    public static Task<DNSItem?> GetDNSItem(ECoreType eCoreType)
     {
-        return await SQLiteHelper.Instance.TableAsync<DNSItem>().FirstOrDefaultAsync(it => it.CoreType == eCoreType);
+        return SQLiteHelper.Instance.FirstOrDefaultAsync<DNSItem>(it => it.CoreType == eCoreType);
     }
 
-    public static async Task<List<FullConfigTemplateItem>?> FullConfigTemplateItem()
+    public static Task<List<FullConfigTemplateItem>?> FullConfigTemplateItem()
     {
-        return await SQLiteHelper.Instance.TableAsync<FullConfigTemplateItem>().ToListAsync();
+        return SQLiteHelper.Instance.FetchAllAsync<FullConfigTemplateItem>();
     }
 
-    public static async Task<FullConfigTemplateItem?> GetFullConfigTemplateItem(ECoreType eCoreType)
+    public static Task<FullConfigTemplateItem?> GetFullConfigTemplateItem(ECoreType eCoreType)
     {
-        return await SQLiteHelper.Instance.TableAsync<FullConfigTemplateItem>().FirstOrDefaultAsync(it => it.CoreType == eCoreType);
+        return SQLiteHelper.Instance.FirstOrDefaultAsync<FullConfigTemplateItem>(it => it.CoreType == eCoreType);
     }
 }

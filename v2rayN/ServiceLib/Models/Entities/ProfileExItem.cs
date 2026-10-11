@@ -2,7 +2,7 @@ namespace ServiceLib.Models.Entities;
 
 public class ProfileExItem
 {
-    [PrimaryKey]
+    [Key]
     public string IndexId { get; set; }
 
     public int Delay { get; set; }

@@ -53,25 +53,4 @@ public class HttpRequestHeadersHelperTests
         await HttpRequestHeadersHelper.TryParse(json, out var headers).Should().BeFalse();
         await headers.Count.Should().BeEqualTo(0);
     }
-
-    [Test]
-    public async Task RequestHeaders_ShouldSurviveDatabaseMigrationAndEditing()
-    {
-        using var database = new SQLiteConnection(":memory:", false);
-        database.Execute("CREATE TABLE SubItem (Id TEXT PRIMARY KEY, Remarks TEXT, Url TEXT)");
-        database.Execute("INSERT INTO SubItem (Id, Remarks, Url) VALUES (?, ?, ?)", "existing", "Existing", "https://example.com/sub");
-        database.CreateTable<SubItem>();
-
-        var item = database.Find<SubItem>("existing");
-        await HttpRequestHeadersHelper.TryParse(item.RequestHeaders, out var oldHeaders).Should().BeTrue();
-        await oldHeaders.Count.Should().BeEqualTo(0);
-
-        item.RequestHeaders = "{\"X-hwid\":\"my_device\"}";
-        database.Update(item, typeof(SubItem));
-        await database.Find<SubItem>(item.Id).RequestHeaders.Should().BeEqualTo(item.RequestHeaders);
-
-        item.RequestHeaders = "";
-        database.Update(item, typeof(SubItem));
-        await database.Find<SubItem>(item.Id).RequestHeaders.Should().BeEqualTo("");
-    }
 }

@@ -1968,7 +1968,7 @@ public static class ConfigDbHandler
     public static async Task<int> AddSubItem(string url)
     {
         //already exists
-        var count = await SQLiteHelper.Instance.TableAsync<SubItem>().CountAsync(e => e.Url == url);
+        var count = await SQLiteHelper.Instance.CountAsync<SubItem>(e => e.Url == url);
         if (count > 0)
         {
             return 0;
@@ -2039,7 +2039,7 @@ public static class ConfigDbHandler
             if (item.Sort <= 0)
             {
                 var maxSort = 0;
-                if (await SQLiteHelper.Instance.TableAsync<SubItem>().CountAsync() > 0)
+                if (await SQLiteHelper.Instance.CountAsync<SubItem>() > 0)
                 {
                     var lstSubs = await ConfigDbQuery.SubItems();
                     maxSort = lstSubs.LastOrDefault()?.Sort ?? 0;
@@ -2070,14 +2070,14 @@ public static class ConfigDbHandler
         {
             return -1;
         }
-        var customProfile = await SQLiteHelper.Instance.TableAsync<ProfileItem>().Where(t => t.Subid == subid && (t.ConfigType == EConfigType.Custom || t.ConfigType == EConfigType.Outbound)).ToListAsync();
+        var customProfile = await SQLiteHelper.Instance.FetchAsync<ProfileItem>(t => t.Subid == subid && (t.ConfigType == EConfigType.Custom || t.ConfigType == EConfigType.Outbound));
         if (isSub)
         {
-            await SQLiteHelper.Instance.ExecuteAsync($"delete from ProfileItem where isSub = 1 and subid = '{subid}'");
+            await SQLiteHelper.Instance.DeleteWhereAsync<ProfileItem>(t => t.IsSub && t.Subid == subid);
         }
         else
         {
-            await SQLiteHelper.Instance.ExecuteAsync($"delete from ProfileItem where subid = '{subid}'");
+            await SQLiteHelper.Instance.DeleteWhereAsync<ProfileItem>(t => t.Subid == subid);
         }
         foreach (var item in customProfile)
         {
@@ -2316,10 +2316,10 @@ public static class ConfigDbHandler
     /// <returns>The default routing item</returns>
     public static async Task<RoutingItem> GetDefaultRouting()
     {
-        var item = await SQLiteHelper.Instance.TableAsync<RoutingItem>().FirstOrDefaultAsync(it => it.IsActive == true);
+        var item = await SQLiteHelper.Instance.FirstOrDefaultAsync<RoutingItem>(it => it.IsActive == true);
         if (item is null)
         {
-            var item2 = await SQLiteHelper.Instance.TableAsync<RoutingItem>().FirstOrDefaultAsync();
+            var item2 = await SQLiteHelper.Instance.FirstOrDefaultAsync<RoutingItem>();
             await SetDefaultRouting(item2);
             return item2;
         }
@@ -2795,12 +2795,13 @@ public static class ConfigDbHandler
 
         while (true)
         {
-            var sql = $"SELECT * FROM ProfileItem " +
-                $"WHERE ConfigVersion < 3 " +
-                $"AND ConfigType NOT IN ({(int)EConfigType.PolicyGroup}, {(int)EConfigType.ProxyChain}) " +
-                $"LIMIT {pageSize} OFFSET {offset}";
-            var batch = await SQLiteHelper.Instance.QueryAsync<ProfileItem>(sql);
-            if (batch is null || batch.Count == 0)
+            var batch = await SQLiteHelper.Instance.FetchPagedAsync<ProfileItem>(
+                t => t.ConfigVersion < 3
+                     && t.ConfigType != EConfigType.PolicyGroup
+                     && t.ConfigType != EConfigType.ProxyChain,
+                pageSize,
+                offset);
+            if (batch is not { Count: > 0 })
             {
                 break;
             }
@@ -2822,9 +2823,8 @@ public static class ConfigDbHandler
 
         while (true)
         {
-            var sql = $"SELECT * FROM ProfileItem WHERE ConfigVersion = 3 LIMIT {pageSize} OFFSET {offset}";
-            var batch = await SQLiteHelper.Instance.QueryAsync<ProfileItem>(sql);
-            if (batch is null || batch.Count == 0)
+            var batch = await SQLiteHelper.Instance.FetchPagedAsync<ProfileItem>(t => t.ConfigVersion == 3, pageSize, offset);
+            if (batch is not { Count: > 0 })
             {
                 break;
             }
@@ -3028,13 +3028,12 @@ public static class ConfigDbHandler
 
     private static async Task<bool> MigrateProfileExtraGroupV2ToV3()
     {
-        var list = await SQLiteHelper.Instance.TableAsync<ProfileGroupItem>().ToListAsync();
+        var list = await SQLiteHelper.Instance.FetchAllAsync<ProfileGroupItem>();
         var groupItems = new ConcurrentDictionary<string, ProfileGroupItem>(list.Where(t => !string.IsNullOrEmpty(t.IndexId)).ToDictionary(t => t.IndexId!));
 
-        var sql = $"SELECT * FROM ProfileItem WHERE ConfigVersion < 3 AND ConfigType IN ({(int)EConfigType.PolicyGroup}, {(int)EConfigType.ProxyChain})";
-        var items = await SQLiteHelper.Instance.QueryAsync<ProfileItem>(sql);
+        var items = await SQLiteHelper.Instance.FetchAsync<ProfileItem>(t => t.ConfigVersion < 3 && (t.ConfigType == EConfigType.PolicyGroup || t.ConfigType == EConfigType.ProxyChain));
 
-        if (items is null || items.Count == 0)
+        if (items is not { Count: > 0 })
         {
             Logging.SaveLog("MigrateProfileExtraGroup: No items to migrate.");
             return true;

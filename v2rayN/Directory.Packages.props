@@ -23,8 +23,10 @@
     <PackageVersion Include="Semi.Avalonia.AvaloniaEdit" Version="12.0.0" />
     <PackageVersion Include="Semi.Avalonia.DataGrid" Version="12.1.0.2" />
     <PackageVersion Include="NLog" Version="6.2.2" />
-    <PackageVersion Include="sqlite-net-e" Version="1.11.285" />
     <PackageVersion Include="Repobot.SQLite.Unofficial" Version="3.54.1" />
+    <PackageVersion Include="SQLite.Framework.Base" Version="7.2.0" />
+    <PackageVersion Include="SQLite.Framework.SourceGenerator" Version="7.2.0" />
+    <PackageVersion Include="SQLitePCLRaw.provider.e_sqlite3" Version="3.0.5" />
     <PackageVersion Include="TUnit" Version="1.87.12" />
     <PackageVersion Include="TUnit.Assertions.Should" Version="1.72.16-beta" />
     <PackageVersion Include="WebDav.Client" Version="2.9.0" />

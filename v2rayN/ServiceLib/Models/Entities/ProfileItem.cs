@@ -152,7 +152,7 @@ public class ProfileItem
 
     #endregion function
 
-    [PrimaryKey]
+    [Key]
     public string IndexId { get; set; }
 
     public EConfigType ConfigType { get; set; }

@@ -1,5 +1,8 @@
 using System.IO.Compression;
 using SQLite;
+using SQLite.Framework;
+using SQLite.Framework.Enums;
+using SQLitePCL;
 using v2rayN.WebAPI.Services;
 
 namespace v2rayN.WebAPI.Tests;
@@ -40,16 +43,22 @@ public class BackupArchiveValidationTests
     public async Task DesktopBackupSchemaWithOlderNullableColumnsIsAccepted()
     {
         using var directory = new TemporaryDirectory();
-        var database = Path.Combine(directory.Path, "desktop.db");
-        using (var connection = new SQLiteConnection(database))
+        raw.SetProvider(new SQLite3Provider_e_sqlite3());
+        var databasePath = Path.Combine(directory.Path, "desktop.db");
+        var options = new SQLiteOptionsBuilder(databasePath)
+            .Build();
+        using (var connection = new SQLiteDatabase(options))
         {
             connection.Execute("CREATE TABLE SubItem (Id varchar primary key not null, Remarks varchar, Url varchar);");
-            connection.Execute("INSERT INTO SubItem (Id, Remarks, Url) VALUES (?, ?, ?);", "legacy-sub", "Legacy", "https://example.test");
+            connection.Execute(
+                "INSERT INTO SubItem (Id, Remarks, Url) VALUES (@Id, @Remarks, @Url);",
+                new { Id = "legacy-sub", Remarks = "Legacy", Url = "https://example.test" }
+            );
         }
 
         var archive = CreateArchive(
             ("v2rayN_20260925/guiConfigs/guiNConfig.json", "{}"),
-            ("v2rayN_20260925/guiConfigs/guiNDB.db", await File.ReadAllBytesAsync(database)));
+            ("v2rayN_20260925/guiConfigs/guiNDB.db", await File.ReadAllBytesAsync(databasePath)));
         var extracted = Path.Combine(directory.Path, "desktop-extracted");
         try
         {
@@ -67,13 +76,24 @@ public class BackupArchiveValidationTests
     public async Task ServiceLibAddsMissingColumnsWithoutDroppingDesktopRowsOrUnknownColumns()
     {
         using var directory = new TemporaryDirectory();
-        var database = Path.Combine(directory.Path, "upgrade.db");
-        using var connection = new SQLiteConnection(database);
+        raw.SetProvider(new SQLite3Provider_e_sqlite3());
+        var databasePath = Path.Combine(directory.Path, "upgrade.db");
+        var options = new SQLiteOptionsBuilder(databasePath)
+            .Build();
+        using var connection = new SQLiteDatabase(options);
         connection.Execute("CREATE TABLE SubItem (Id varchar primary key not null, Remarks varchar, Url varchar, DesktopOnly varchar);");
-        connection.Execute("INSERT INTO SubItem (Id, Remarks, Url, DesktopOnly) VALUES (?, ?, ?, ?);",
-            "legacy-sub", "Desktop subscription", "https://example.test", "preserve-me");
+        connection.Execute(
+            "INSERT INTO SubItem (Id, Remarks, Url, DesktopOnly) VALUES (@Id, @Remarks, @Url, @DesktopOnly);",
+            new
+            {
+                Id = "legacy-sub",
+                Remarks = "Desktop subscription",
+                Url = "https://example.test",
+                DesktopOnly = "preserve-me",
+            }
+        );
 
-        connection.CreateTable<ServiceLib.Models.Entities.SubItem>();
+        connection.Schema.CreateTable<ServiceLib.Models.Entities.SubItem>();
 
         var restored = connection.Table<ServiceLib.Models.Entities.SubItem>().First();
         var columns = connection.Query<TableColumnRow>("PRAGMA table_info(\"SubItem\");");
@@ -86,17 +106,29 @@ public class BackupArchiveValidationTests
     public async Task WebBackupSchemaAndEmbeddedAuthAreCompatibleButCannotReplaceLocalAuth()
     {
         using var directory = new TemporaryDirectory();
-        var database = Path.Combine(directory.Path, "web.db");
-        using (var connection = new SQLiteConnection(database))
+        raw.SetProvider(new SQLite3Provider_e_sqlite3());
+        var databasePath = Path.Combine(directory.Path, "web.db");
+        var options = new SQLiteOptionsBuilder(databasePath)
+            .Build();
+        using (var connection = new SQLiteDatabase(options))
         {
             connection.Execute("CREATE TABLE SubItem (Id varchar primary key not null, Remarks varchar, Url varchar, RequestHeaders varchar);");
             connection.Execute("CREATE TABLE ProfileExItem (IndexId varchar primary key not null, Delay integer, IpInfo varchar);");
-            connection.Execute("INSERT INTO SubItem (Id, Remarks, Url, RequestHeaders) VALUES (?, ?, ?, ?);", "web-sub", "Web", "https://example.test", "{}");
+            connection.Execute(
+                "INSERT INTO SubItem (Id, Remarks, Url, RequestHeaders) VALUES (@Id, @Remarks, @Url, @RequestHeaders);",
+                new
+                {
+                    Id = "web-sub",
+                    Remarks = "Web",
+                    Url = "https://example.test",
+                    RequestHeaders = "{}",
+                }
+            );
         }
 
         var archive = CreateArchive(
             ("backup_WebAPI/guiConfigs/guiNConfig.json", "{}"),
-            ("backup_WebAPI/guiConfigs/guiNDB.db", await File.ReadAllBytesAsync(database)),
+            ("backup_WebAPI/guiConfigs/guiNDB.db", await File.ReadAllBytesAsync(databasePath)),
             ("backup_WebAPI/guiConfigs/WebAPI-auth.json", "attacker-provided-auth"));
         var extracted = Path.Combine(directory.Path, "WebAPI-extracted");
         var current = Path.Combine(directory.Path, "current-config");
@@ -133,13 +165,16 @@ public class BackupArchiveValidationTests
     public async Task DatabaseWithMissingPrimaryKeyIsRejectedBeforeRestore()
     {
         using var directory = new TemporaryDirectory();
-        var database = Path.Combine(directory.Path, "invalid.db");
-        using (var connection = new SQLiteConnection(database))
+        raw.SetProvider(new SQLite3Provider_e_sqlite3());
+        var databasePath = Path.Combine(directory.Path, "invalid.db");
+        var options = new SQLiteOptionsBuilder(databasePath)
+            .Build();
+        using (var connection = new SQLiteDatabase(options))
         {
             connection.Execute("CREATE TABLE SubItem (Remarks varchar, Url varchar);");
         }
 
-        await BackupDatabaseCompatibility.IsCompatible(database, out _).Should().BeFalse();
+        await BackupDatabaseCompatibility.IsCompatible(databasePath, out _).Should().BeFalse();
     }
 
     [Test]

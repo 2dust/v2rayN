@@ -2,6 +2,7 @@ global using System.Collections.Concurrent;
 global using System.Collections.ObjectModel;
 global using System.Collections.Specialized;
 global using System.ComponentModel;
+global using System.ComponentModel.DataAnnotations;
 global using System.Diagnostics;
 global using System.Net;
 global using System.Net.NetworkInformation;

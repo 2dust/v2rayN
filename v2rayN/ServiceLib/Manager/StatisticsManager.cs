@@ -43,7 +43,7 @@ public class StatisticsManager
 
     public async Task ClearAllServerStatistics()
     {
-        await SQLiteHelper.Instance.ExecuteAsync($"delete from ServerStatItem ");
+        await SQLiteHelper.Instance.DeleteAllAsync<ServerStatItem>();
         _serverStatItem = null;
         _lstServerStat = [];
     }
@@ -89,12 +89,14 @@ public class StatisticsManager
 
     private async Task InitData()
     {
-        await SQLiteHelper.Instance.ExecuteAsync($"delete from ServerStatItem where indexId not in ( select indexId from ProfileItem )");
+        //await SQLiteHelper.Instance.ExecuteAsync($"delete from ServerStatItem where indexId not in ( select indexId from ProfileItem )");
+
+        await SQLiteHelper.Instance.DeleteOrphanServerStatsAsync();
 
         var ticks = DateTime.Now.Date.Ticks;
-        await SQLiteHelper.Instance.ExecuteAsync($"update ServerStatItem set todayUp = 0,todayDown=0,dateNow={ticks} where dateNow<>{ticks}");
+        await SQLiteHelper.Instance.ResetServerStatTodayAsync(ticks);
 
-        _lstServerStat = await SQLiteHelper.Instance.TableAsync<ServerStatItem>().ToListAsync();
+        _lstServerStat = await SQLiteHelper.Instance.FetchAllAsync<ServerStatItem>();
     }
 
     private async Task UpdateServerStatHandler(ServerSpeedItem server)
