@@ -37,6 +37,7 @@
                     <TextBlock Text="{x:Static resx:SshStrings.Passphrase}" Margin="0,6,0,2" />
                     <TextBox x:Name="txtPassphrase" PasswordChar="●" />
                 </StackPanel>
+                <Button x:Name="btnSetupKey" Content="{x:Static resx:SshStrings.SetupKey}" HorizontalAlignment="Left" Margin="0,8" />
                 <TextBlock Text="{x:Static resx:SshStrings.HostKey}" Margin="0,12,0,2" />
                 <TextBox x:Name="txtHostKey" TextWrapping="Wrap" MinHeight="64" AcceptsReturn="True" />
                 <WrapPanel Margin="0,6,0,6">

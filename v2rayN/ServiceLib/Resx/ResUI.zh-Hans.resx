@@ -1917,4 +1917,43 @@
   <data name="SshDnsUnsupported" xml:space="preserve"><value>SSH 需要 TCP DNS 传输，请将经代理的自定义 DNS 服务器改为 TCP、TLS 或 HTTPS。</value></data>
   <data name="SshTcpOnly" xml:space="preserve"><value>仅支持 TCP 代理。本地端口、DNS 和路由由 v2rayN 自动配置。</value></data>
   <data name="SshLoginPassword" xml:space="preserve"><value>SSH 登录密码</value></data>
+  <data name="SshSetupTitle" xml:space="preserve"><value>一键配置免密</value></data>
+  <data name="SshSetupKey" xml:space="preserve"><value>一键配置免密…</value></data>
+  <data name="SshKeysFound" xml:space="preserve"><value>发现本地私钥。请选择复用已有私钥，或重新生成私钥。</value></data>
+  <data name="SshNoKeysFound" xml:space="preserve"><value>未发现本地私钥。可以生成新密钥，或手动选择私钥。</value></data>
+  <data name="SshReuseKey" xml:space="preserve"><value>复用已有私钥</value></data>
+  <data name="SshGenerateKey" xml:space="preserve"><value>重新生成私钥（保留旧密钥）</value></data>
+  <data name="SshKeyLocked" xml:space="preserve"><value>已加密，需输入私钥口令</value></data>
+  <data name="SshKeyUnencrypted" xml:space="preserve"><value>未加密</value></data>
+  <data name="SshSamePublicKey" xml:space="preserve"><value>与其他候选为同一公钥</value></data>
+  <data name="SshSetupRun" xml:space="preserve"><value>验证 / 安装公钥</value></data>
+  <data name="SshSetupCancel" xml:space="preserve"><value>取消</value></data>
+  <data name="SshSetupPassword" xml:space="preserve"><value>服务器密码（仅用于本次安装）</value></data>
+  <data name="SshSetupPassphrase" xml:space="preserve"><value>私钥口令（生成新密钥时可不填）</value></data>
+  <data name="SshConfirmPassphrase" xml:space="preserve"><value>再次输入新私钥口令</value></data>
+  <data name="SshSetupNotice" xml:space="preserve"><value>复用时先尝试私钥登录，被拒绝后再输入服务器密码安装公钥。保存节点后记住所选密钥。取消不会撤销已完成的公钥安装。</value></data>
+  <data name="SshSetupVerified" xml:space="preserve"><value>密钥登录已验证。点击保存后节点使用该私钥；代理转发请使用节点测试验证。</value></data>
+  <data name="SshManualKey" xml:space="preserve"><value>公钥 / 手动安装</value></data>
+  <data name="SshManualHelp" xml:space="preserve"><value>自动安装需要支持执行命令的 Linux/OpenSSH 账号及标准 ~/.ssh/authorized_keys。其他环境可复制下方公钥，追加到该账号的授权文件，保留已有密钥与限制选项，再重试验证。</value></data>
+  <data name="SshRemoteMayRemain" xml:space="preserve"><value>公钥可能已经安装。取消不会撤销远端写入；重试会复用此密钥，先检查已有授权再追加。</value></data>
+  <data name="SshDefaultKeySaveFailed" xml:space="preserve"><value>节点已保存，但默认密钥偏好保存失败，请检查本机密钥目录权限。</value></data>
+  <data name="SshStageConnecting" xml:space="preserve"><value>正在使用服务器密码连接…</value></data>
+  <data name="SshStageGenerating" xml:space="preserve"><value>正在生成并保存私钥…</value></data>
+  <data name="SshStageInstalling" xml:space="preserve"><value>正在检查并安装公钥…</value></data>
+  <data name="SshStageVerifying" xml:space="preserve"><value>正在验证独立私钥登录…</value></data>
+  <data name="SshErrorKeyPermissions" xml:space="preserve"><value>私钥权限过宽或路径不安全，请自行检查权限；不会自动修改外部文件。</value></data>
+  <data name="SshErrorKeyChanged" xml:space="preserve"><value>密钥文件与已选指纹不一致，请重新选择并核验所需密钥。</value></data>
+  <data name="SshErrorInvalidKey" xml:space="preserve"><value>无法读取或解锁此私钥，请检查文件格式、路径和私钥口令。</value></data>
+  <data name="SshErrorBusy" xml:space="preserve"><value>另一个免密配置操作尚未结束，请等待完成。</value></data>
+  <data name="SshErrorPasswordRequired" xml:space="preserve"><value>需要服务器账号密码。若服务器尚未接受此私钥，可输入密码安装公钥。</value></data>
+  <data name="SshErrorPassphraseMismatch" xml:space="preserve"><value>两次输入的私钥口令不一致。</value></data>
+  <data name="SshErrorAuthentication" xml:space="preserve"><value>服务器密码认证失败，请检查账号、密码及服务端是否允许密码登录。</value></data>
+  <data name="SshErrorHostKey" xml:space="preserve"><value>服务器身份校验失败，未接受主机密钥变更。</value></data>
+  <data name="SshErrorRemoteUnsupported" xml:space="preserve"><value>此账号的环境或授权文件权限不支持自动安装，请参考下方手动安装说明。</value></data>
+  <data name="SshErrorRemoteConflict" xml:space="preserve"><value>远端授权文件发生变化或回读校验失败，不会覆盖文件；请检查后重试。</value></data>
+  <data name="SshErrorAuthorizedKeys" xml:space="preserve"><value>远端授权文件包含不支持或格式异常的条目，已停止自动修改。</value></data>
+  <data name="SshErrorVerifyFailed" xml:space="preserve"><value>公钥已安装，但独立私钥登录被拒绝，请检查服务端公钥认证策略。</value></data>
+  <data name="SshErrorStorage" xml:space="preserve"><value>无法安全保存或读取本地密钥数据，请检查磁盘空间与权限。</value></data>
+  <data name="SshErrorConnection" xml:space="preserve"><value>SSH 连接失败，请检查网络及服务器策略；不会因连接错误自动尝试密码安装。</value></data>
+  <data name="SshErrorTimeout" xml:space="preserve"><value>免密配置超时，远端写入可能已完成，请使用同一把密钥重试。</value></data>
 </root>

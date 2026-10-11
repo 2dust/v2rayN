@@ -40,6 +40,14 @@ public partial class AddSshServerWindow
             this.BindCommand(ViewModel, vm => vm.FetchCmd, v => v.btnFetch).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.TrustCmd, v => v.btnTrust).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.BrowseCmd, v => v.btnBrowse).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.SetupKeyCmd, v => v.btnSetupKey).DisposeWith(disposables);
+            this.WhenAnyValue(v => v.ViewModel.Password).Subscribe(value => { if (txtPassword.Password != value) txtPassword.Password = value; }).DisposeWith(disposables);
+            this.WhenAnyValue(v => v.ViewModel.Passphrase).Subscribe(value => { if (txtPassphrase.Password != value) txtPassphrase.Password = value; }).DisposeWith(disposables);
+            ViewModel.SetupKeyInteraction.RegisterHandler(interaction =>
+            {
+                new SshKeySetupWindow(interaction.Input) { Owner = this }.ShowDialog();
+                interaction.SetOutput(interaction.Input.Result);
+            }).DisposeWith(disposables);
             ViewModel.BrowseKeyInteraction.RegisterHandler(interaction =>
             {
                 interaction.SetOutput(UI.OpenFileDialog(out var path, "All|*.*") == true ? path : null);

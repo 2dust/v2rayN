@@ -1,0 +1,50 @@
+<base:WindowBase x:Class="v2rayN.Views.SshKeySetupWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:base="clr-namespace:v2rayN.Base"
+    xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
+    xmlns:services="clr-namespace:ServiceLib.Services;assembly=ServiceLib"
+    xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
+    x:TypeArguments="vms:SshKeySetupViewModel" Style="{StaticResource WindowGlobal}"
+    Title="{x:Static resx:SshStrings.SetupTitle}" Width="720" Height="820"
+    ShowInTaskbar="False" WindowStartupLocation="CenterOwner">
+    <DockPanel Margin="20">
+        <StackPanel DockPanel.Dock="Bottom">
+            <TextBlock x:Name="txtStatus" TextWrapping="Wrap" Margin="0,8" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="btnRun" Content="{x:Static resx:SshStrings.SetupRun}" MinWidth="140" Margin="4" />
+                <Button x:Name="btnCancel" Content="{x:Static resx:SshStrings.SetupCancel}" MinWidth="90" Margin="4" />
+            </StackPanel>
+        </StackPanel>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel x:Name="form">
+                <TextBlock x:Name="txtTarget" TextWrapping="Wrap" FontWeight="Bold" Margin="0,0,0,8" />
+                <TextBlock Text="{x:Static resx:SshStrings.SetupNotice}" TextWrapping="Wrap" Margin="0,0,0,12" />
+                <TextBlock x:Name="txtDiscovery" TextWrapping="Wrap" Margin="0,0,0,8" />
+                <RadioButton x:Name="radioReuse" GroupName="keyChoice" Content="{x:Static resx:SshStrings.ReuseKey}" Margin="0,4" />
+                <ListBox x:Name="listKeys" MaxHeight="200" MinHeight="80" Margin="0,4">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate >
+                            <TextBlock Text="{Binding Display}" TextWrapping="Wrap" Margin="4" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Button x:Name="btnBrowse" Content="{x:Static resx:ResUI.TbBrowse}" HorizontalAlignment="Left" Margin="0,4" />
+                <RadioButton x:Name="radioGenerate" GroupName="keyChoice" Content="{x:Static resx:SshStrings.GenerateKey}" Margin="0,8" />
+                <TextBlock Text="{x:Static resx:SshStrings.SetupPassphrase}" TextWrapping="Wrap" Margin="0,6,0,2" />
+                <PasswordBox x:Name="txtPassphrase" />
+                <StackPanel x:Name="confirmationPanel">
+                    <TextBlock Text="{x:Static resx:SshStrings.ConfirmPassphrase}" Margin="0,6,0,2" />
+                    <PasswordBox x:Name="txtConfirmation" />
+                </StackPanel>
+                <StackPanel x:Name="passwordPanel">
+                    <TextBlock Text="{x:Static resx:SshStrings.SetupPassword}" Margin="0,6,0,2" />
+                    <PasswordBox x:Name="txtPassword" />
+                </StackPanel>
+                <TextBlock Text="{x:Static resx:SshStrings.ManualKey}" FontWeight="Bold" Margin="0,18,0,4" />
+                <TextBlock Text="{x:Static resx:SshStrings.ManualHelp}" TextWrapping="Wrap" Margin="0,4" />
+                <TextBox x:Name="txtPublicKey" IsReadOnly="True" TextWrapping="Wrap" AcceptsReturn="True" MinHeight="64" Margin="0,4" />
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</base:WindowBase>

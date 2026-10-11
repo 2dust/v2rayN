@@ -1925,4 +1925,43 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="SshDnsUnsupported" xml:space="preserve"><value>SSH requires TCP DNS transport. Change the proxied custom DNS server to TCP, TLS or HTTPS.</value></data>
   <data name="SshTcpOnly" xml:space="preserve"><value>TCP proxy only. Local port, DNS and routing follow v2rayN settings.</value></data>
   <data name="SshLoginPassword" xml:space="preserve"><value>SSH login password</value></data>
+  <data name="SshSetupTitle" xml:space="preserve"><value>Configure key login</value></data>
+  <data name="SshSetupKey" xml:space="preserve"><value>Configure key login…</value></data>
+  <data name="SshKeysFound" xml:space="preserve"><value>Local private keys found. Choose a key to reuse, or generate a new key.</value></data>
+  <data name="SshNoKeysFound" xml:space="preserve"><value>No private keys found. Generate a new key or browse for one.</value></data>
+  <data name="SshReuseKey" xml:space="preserve"><value>Reuse a local private key</value></data>
+  <data name="SshGenerateKey" xml:space="preserve"><value>Generate a new private key (keep existing keys)</value></data>
+  <data name="SshKeyLocked" xml:space="preserve"><value>Encrypted; passphrase required</value></data>
+  <data name="SshKeyUnencrypted" xml:space="preserve"><value>Unencrypted</value></data>
+  <data name="SshSamePublicKey" xml:space="preserve"><value>Same public key as another candidate</value></data>
+  <data name="SshSetupRun" xml:space="preserve"><value>Verify / install public key</value></data>
+  <data name="SshSetupCancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="SshSetupPassword" xml:space="preserve"><value>Server password (used only for this installation)</value></data>
+  <data name="SshSetupPassphrase" xml:space="preserve"><value>Private-key passphrase (optional for new keys)</value></data>
+  <data name="SshConfirmPassphrase" xml:space="preserve"><value>Confirm new private-key passphrase</value></data>
+  <data name="SshSetupNotice" xml:space="preserve"><value>Reusing a key first tests key-only login. If refused, enter the server password to install its public key. Save the node to remember your selection. Canceling does not undo an already installed public key.</value></data>
+  <data name="SshSetupVerified" xml:space="preserve"><value>Key login verified. Save this node to use the selected key. Proxy forwarding can be checked with the node test.</value></data>
+  <data name="SshManualKey" xml:space="preserve"><value>Public key / manual installation</value></data>
+  <data name="SshManualHelp" xml:space="preserve"><value>Automatic installation requires a Linux/OpenSSH account with command access and standard ~/.ssh/authorized_keys. For other environments, copy the public key below and append it to that account's authorized_keys; keep existing keys and options. Then retry verification.</value></data>
+  <data name="SshRemoteMayRemain" xml:space="preserve"><value>The public key may already be installed. Cancellation does not undo remote writes. Retry with this same key; existing authorization is checked before appending.</value></data>
+  <data name="SshDefaultKeySaveFailed" xml:space="preserve"><value>Node saved, but the default key preference could not be saved. Check the local key directory permissions.</value></data>
+  <data name="SshStageConnecting" xml:space="preserve"><value>Connecting with server password…</value></data>
+  <data name="SshStageGenerating" xml:space="preserve"><value>Generating and saving a private key…</value></data>
+  <data name="SshStageInstalling" xml:space="preserve"><value>Checking and installing the public key…</value></data>
+  <data name="SshStageVerifying" xml:space="preserve"><value>Verifying key-only login…</value></data>
+  <data name="SshErrorKeyPermissions" xml:space="preserve"><value>Private-key permissions are too broad or its path is unsafe. Fix permissions yourself; external files are not modified.</value></data>
+  <data name="SshErrorKeyChanged" xml:space="preserve"><value>This key file no longer matches the selected fingerprint. Select and verify the intended key again.</value></data>
+  <data name="SshErrorInvalidKey" xml:space="preserve"><value>Cannot read or unlock this supported private key. Check its format, path and passphrase.</value></data>
+  <data name="SshErrorBusy" xml:space="preserve"><value>Another key setup is still running. Wait for it to finish.</value></data>
+  <data name="SshErrorPasswordRequired" xml:space="preserve"><value>The server has not accepted this key. Enter its account password to install the public key.</value></data>
+  <data name="SshErrorPassphraseMismatch" xml:space="preserve"><value>The two private-key passphrases do not match.</value></data>
+  <data name="SshErrorAuthentication" xml:space="preserve"><value>Server password authentication failed. Check the account and whether password login is allowed.</value></data>
+  <data name="SshErrorHostKey" xml:space="preserve"><value>Server identity verification failed. No host-key change was accepted.</value></data>
+  <data name="SshErrorRemoteUnsupported" xml:space="preserve"><value>Automatic installation is unavailable for this account or its authorization file permissions. Use the manual instructions below.</value></data>
+  <data name="SshErrorRemoteConflict" xml:space="preserve"><value>The remote authorization file changed or readback failed. Nothing will be overwritten; retry after checking the server.</value></data>
+  <data name="SshErrorAuthorizedKeys" xml:space="preserve"><value>The remote authorization file has unsupported or malformed entries. Automatic modification stopped.</value></data>
+  <data name="SshErrorVerifyFailed" xml:space="preserve"><value>The public key was installed, but key-only login was refused. Check server public-key authentication policy.</value></data>
+  <data name="SshErrorStorage" xml:space="preserve"><value>Cannot safely save or read local key data. Check disk space and permissions.</value></data>
+  <data name="SshErrorConnection" xml:space="preserve"><value>SSH connection failed. Check reachability and server policy. Password installation was not attempted after a connection error.</value></data>
+  <data name="SshErrorTimeout" xml:space="preserve"><value>SSH key setup timed out. A remote write may have completed; retry using the same key.</value></data>
 </root>

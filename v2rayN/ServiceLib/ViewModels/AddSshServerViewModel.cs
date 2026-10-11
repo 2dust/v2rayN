@@ -5,6 +5,7 @@ public partial class AddSshServerViewModel : MyReactiveObject, ICloseable
     public event EventHandler? RequestClose;
     public Interaction<RxVoid, string?> BrowseKeyInteraction { get; } = new();
     public Interaction<string, bool> ConfirmHostKeyInteraction { get; } = new();
+    public Interaction<SshKeySetupViewModel, SshSetupSelection?> SetupKeyInteraction { get; } = new();
     public ProfileItem SelectedSource { get; }
     [Reactive] public partial string Remarks { get; set; }
     [Reactive] public partial string Address { get; set; }
@@ -21,6 +22,10 @@ public partial class AddSshServerViewModel : MyReactiveObject, ICloseable
     public ReactiveCommand<RxVoid, RxVoid> FetchCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> TrustCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> BrowseCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SetupKeyCmd { get; }
+    private readonly SshKeyStore _keyStore = new();
+    private SshLocalKey? _setupKey;
+    private SshKeySetupViewModel? _setupDialog;
     private CancellationTokenSource? _operation;
     private bool _closed;
     private string? _trustedAddress;
@@ -37,7 +42,7 @@ public partial class AddSshServerViewModel : MyReactiveObject, ICloseable
         Port = (item.Port == 0 ? 22 : item.Port).ToString();
         Username = item.Username;
         Password = item.Password;
-        PrivateKeyAuth = extra.SshPrivateKeyAuth ?? item.IndexId.IsNullOrEmpty();
+        PrivateKeyAuth = extra.SshPrivateKeyAuth ?? false;
         PrivateKeyPath = extra.SshPrivateKeyPath ?? "";
         Passphrase = extra.SshPrivateKeyPassphrase ?? "";
         HostKey = extra.SshHostKey ?? "";
@@ -57,6 +62,7 @@ public partial class AddSshServerViewModel : MyReactiveObject, ICloseable
         SaveCmd = ReactiveCommand.CreateFromTask(() => RunAsync(SaveAsync));
         FetchCmd = ReactiveCommand.CreateFromTask(() => RunAsync(() => ConfirmAsync(true)));
         TrustCmd = ReactiveCommand.CreateFromTask(() => RunAsync(() => ConfirmAsync(false)));
+        SetupKeyCmd = ReactiveCommand.CreateFromTask(() => RunAsync(SetupKeyAsync));
         BrowseCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             if (IsBusy) return;
@@ -69,6 +75,39 @@ public partial class AddSshServerViewModel : MyReactiveObject, ICloseable
     {
         _closed = true;
         _operation?.Cancel();
+        _setupDialog?.Cancel();
+        Password = "";
+        Passphrase = "";
+    }
+
+    private async Task SetupKeyAsync()
+    {
+        if (string.IsNullOrWhiteSpace(Address) || string.IsNullOrWhiteSpace(Username)
+            || !int.TryParse(Port, out var port) || port is < 1 or > 65535)
+        { Status = SshStrings.InvalidEndpoint; return; }
+        var address = Address.Trim();
+        var username = Username.Trim();
+        var profiles = await AppManager.Instance.ProfileItems("") ?? [];
+        var paths = new[] { PrivateKeyPath }.Concat(profiles.Where(p => p.ConfigType == EConfigType.SSH)
+            .Select(p => p.GetProtocolExtra().SshPrivateKeyPath)).ToArray();
+        var candidates = await Task.Run(() => _keyStore.Discover(paths, Utils.GetHomePath()), _operation!.Token);
+        if (_trustedKey == null) await ConfirmAsync(true);
+        if (_closed || _trustedKey == null || address != Address.Trim() || username != Username.Trim() || port.ToString() != Port) return;
+        var trusted = _trustedKey;
+        _setupDialog = new(new(address, port, username, trusted), candidates, _keyStore);
+        try
+        {
+            var result = await SetupKeyInteraction.HandleSafe(_setupDialog);
+            if (_closed || result == null || _trustedKey != trusted || address != Address.Trim()
+                || username != Username.Trim() || port.ToString() != Port) return;
+            _setupKey = result.Key;
+            PrivateKeyPath = result.Key.Path;
+            Passphrase = result.Passphrase;
+            PrivateKeyAuth = true;
+            Password = "";
+            Status = SshStrings.SetupVerified;
+        }
+        finally { _setupDialog = null; }
     }
 
     private void RefreshTrust()
@@ -151,6 +190,11 @@ public partial class AddSshServerViewModel : MyReactiveObject, ICloseable
 
     private async Task SaveAsync()
     {
+        if (PrivateKeyAuth && _setupKey?.Path == PrivateKeyPath)
+        {
+            try { using var key = _keyStore.Open(_setupKey, Passphrase); }
+            catch (SshSetupException e) { Status = SshStrings.SetupError(e.Code); return; }
+        }
         UpdateSource();
         if (SshProfileService.Validate(SelectedSource, requireTrust: false) is { } error)
         {
@@ -166,7 +210,14 @@ public partial class AddSshServerViewModel : MyReactiveObject, ICloseable
         if (SelectedSource.Remarks.Length == 0)
             SelectedSource.Remarks = $"{Username}@{Address}:{Port}";
         if (await ConfigHandler.AddServer(_config, SelectedSource) == 0 && !_closed)
+        {
+            if (PrivateKeyAuth && _setupKey?.Path == PrivateKeyPath)
+            {
+                try { _keyStore.SaveDefault(_setupKey); }
+                catch { Status = SshStrings.DefaultKeySaveFailed; return; }
+            }
             RequestClose?.Invoke(this, EventArgs.Empty);
+        }
         else Status = ResUI.OperationFailed;
     }
 }

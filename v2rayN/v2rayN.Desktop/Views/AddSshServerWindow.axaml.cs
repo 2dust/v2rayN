@@ -36,6 +36,13 @@ public partial class AddSshServerWindow : WindowBase<AddSshServerViewModel>
             this.BindCommand(ViewModel, vm => vm.FetchCmd, v => v.btnFetch).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.TrustCmd, v => v.btnTrust).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.BrowseCmd, v => v.btnBrowse).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.SetupKeyCmd, v => v.btnSetupKey).DisposeWith(disposables);
+            ViewModel.SetupKeyInteraction.RegisterHandler(async interaction =>
+            {
+                var window = new SshKeySetupWindow(interaction.Input);
+                await window.ShowDialog(this);
+                interaction.SetOutput(interaction.Input.Result);
+            }).DisposeWith(disposables);
             ViewModel.BrowseKeyInteraction.RegisterHandler(async interaction =>
                 interaction.SetOutput(await UI.OpenFileDialog(null))).DisposeWith(disposables);
             ViewModel.ConfirmHostKeyInteraction.RegisterHandler(async interaction =>

@@ -2,6 +2,62 @@ namespace ServiceLib.Resx;
 
 public static class SshStrings
 {
+    private static string Get(string name) => ResUI.ResourceManager.GetString("Ssh" + name, ResUI.Culture) ?? name;
+    public static string SetupTitle => Get(nameof(SetupTitle));
+    public static string SetupKey => Get(nameof(SetupKey));
+    public static string KeysFound => Get(nameof(KeysFound));
+    public static string NoKeysFound => Get(nameof(NoKeysFound));
+    public static string ReuseKey => Get(nameof(ReuseKey));
+    public static string GenerateKey => Get(nameof(GenerateKey));
+    public static string KeyLocked => Get(nameof(KeyLocked));
+    public static string KeyUnencrypted => Get(nameof(KeyUnencrypted));
+    public static string SamePublicKey => Get(nameof(SamePublicKey));
+    public static string SetupRun => Get(nameof(SetupRun));
+    public static string SetupCancel => Get(nameof(SetupCancel));
+    public static string SetupPassword => Get(nameof(SetupPassword));
+    public static string SetupPassphrase => Get(nameof(SetupPassphrase));
+    public static string ConfirmPassphrase => Get(nameof(ConfirmPassphrase));
+    public static string SetupNotice => Get(nameof(SetupNotice));
+    public static string SetupVerified => Get(nameof(SetupVerified));
+    public static string ManualKey => Get(nameof(ManualKey));
+    public static string ManualHelp => Get(nameof(ManualHelp));
+    public static string RemoteMayRemain => Get(nameof(RemoteMayRemain));
+    public static string DefaultKeySaveFailed => Get(nameof(DefaultKeySaveFailed));
+    public static string StageConnecting => Get(nameof(StageConnecting));
+    public static string StageGenerating => Get(nameof(StageGenerating));
+    public static string StageInstalling => Get(nameof(StageInstalling));
+    public static string StageVerifying => Get(nameof(StageVerifying));
+    public static string ErrorKeyPermissions => Get(nameof(ErrorKeyPermissions));
+    public static string ErrorKeyChanged => Get(nameof(ErrorKeyChanged));
+    public static string ErrorInvalidKey => Get(nameof(ErrorInvalidKey));
+    public static string ErrorBusy => Get(nameof(ErrorBusy));
+    public static string ErrorPasswordRequired => Get(nameof(ErrorPasswordRequired));
+    public static string ErrorPassphraseMismatch => Get(nameof(ErrorPassphraseMismatch));
+    public static string ErrorAuthentication => Get(nameof(ErrorAuthentication));
+    public static string ErrorHostKey => Get(nameof(ErrorHostKey));
+    public static string ErrorRemoteUnsupported => Get(nameof(ErrorRemoteUnsupported));
+    public static string ErrorRemoteConflict => Get(nameof(ErrorRemoteConflict));
+    public static string ErrorAuthorizedKeys => Get(nameof(ErrorAuthorizedKeys));
+    public static string ErrorVerifyFailed => Get(nameof(ErrorVerifyFailed));
+    public static string ErrorStorage => Get(nameof(ErrorStorage));
+    public static string ErrorConnection => Get(nameof(ErrorConnection));
+    public static string ErrorTimeout => Get(nameof(ErrorTimeout));
+    public static string SetupStage(string stage) => stage switch
+    {
+        "connecting" => StageConnecting, "generating" => StageGenerating,
+        "installing" => StageInstalling, _ => StageVerifying,
+    };
+    public static string SetupError(string code) => code switch
+    {
+        "keyPermissions" => ErrorKeyPermissions, "keyChanged" => ErrorKeyChanged,
+        "invalidKey" => ErrorInvalidKey, "busy" => ErrorBusy, "endpoint" => InvalidEndpoint,
+        "passwordRequired" => ErrorPasswordRequired, "passphraseMismatch" => ErrorPassphraseMismatch,
+        "authentication" => ErrorAuthentication, "hostKey" => ErrorHostKey,
+        "remoteUnsupported" => ErrorRemoteUnsupported, "remoteConflict" => ErrorRemoteConflict,
+        "authorizedKeys" => ErrorAuthorizedKeys, "verifyFailed" => ErrorVerifyFailed,
+        "storage" => ErrorStorage, "timeout" => ErrorTimeout, "cancelled" => Cancelled,
+        _ => ErrorConnection,
+    };
     public static string LoginPassword => ResUI.ResourceManager.GetString("SshLoginPassword", ResUI.Culture) ?? "Password";
     public static string Title => ResUI.ResourceManager.GetString("SshTitle", ResUI.Culture) ?? "SshTitle";
     public static string PrivateKeyAuth => ResUI.ResourceManager.GetString("SshPrivateKeyAuth", ResUI.Culture) ?? "SshPrivateKeyAuth";
