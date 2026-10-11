@@ -1,13 +1,19 @@
 #!/bin/bash
 
+set -euo pipefail
+
 Arch="$1"
 OutputPath="$2"
 Version="$3"
+CoreBinRef="${CORE_BIN_REF:-master}"
+SevenZip="$(command -v 7z || command -v 7zz)"
 
 FileName="v2rayN-${Arch}.zip"
-wget -nv -O $FileName "https://github.com/2dust/v2rayN-core-bin/raw/refs/heads/master/$FileName"
-7z x $FileName
-cp -rf v2rayN-${Arch}/* $OutputPath
+curl --fail --location --retry 3 -o "$FileName" "https://raw.githubusercontent.com/2dust/v2rayN-core-bin/${CoreBinRef}/$FileName"
+"$SevenZip" x -y "$FileName"
+if [[ ! "v2rayN-${Arch}" -ef "$OutputPath" ]]; then
+    cp -R "v2rayN-${Arch}/." "$OutputPath/"
+fi
 
 PackagePath="v2rayN-Package-${Arch}"
 mkdir -p "$PackagePath/v2rayN.app/Contents/Resources"
@@ -15,6 +21,8 @@ cp -rf "$OutputPath" "$PackagePath/v2rayN.app/Contents/MacOS"
 cp -f "$PackagePath/v2rayN.app/Contents/MacOS/v2rayN.icns" "$PackagePath/v2rayN.app/Contents/Resources/AppIcon.icns"
 echo "When this file exists, app will not store configs under this folder" > "$PackagePath/v2rayN.app/Contents/MacOS/NotStoreConfigHere.txt"
 chmod +x "$PackagePath/v2rayN.app/Contents/MacOS/v2rayN"
+chmod +x "$PackagePath/v2rayN.app/Contents/MacOS/AmazTool"
+chmod -R +x "$PackagePath/v2rayN.app/Contents/MacOS/bin"
 
 cat >"$PackagePath/v2rayN.app/Contents/Info.plist" <<-EOF
 <?xml version="1.0" encoding="UTF-8"?>

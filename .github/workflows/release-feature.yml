@@ -1,0 +1,243 @@
+name: release SSH feature preview
+
+on:
+  push:
+    tags:
+      - 'v*-ssh-preview.*'
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Existing preview tag pointing to the selected ref
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ssh-preview-${{ inputs.release_tag || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    outputs:
+      tag: ${{ steps.metadata.outputs.tag }}
+      version: ${{ steps.metadata.outputs.version }}
+      core_ref: ${{ steps.metadata.outputs.core_ref }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Validate source and resolve core bundle
+        id: metadata
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.release_tag || github.ref_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          version=$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' v2rayN/Directory.Build.props)
+          [[ "$RELEASE_TAG" == "v${version}-ssh-preview."* ]]
+          sequence=${RELEASE_TAG#"v${version}-ssh-preview."}
+          [[ "$sequence" =~ ^[1-9][0-9]*$ ]]
+          [[ "$(git rev-parse "refs/tags/$RELEASE_TAG^{commit}")" == "$GITHUB_SHA" ]]
+          git merge-base --is-ancestor "$GITHUB_SHA" origin/feature/native-ssh-profiles
+          core_ref=$(gh api repos/2dust/v2rayN-core-bin/commits/master --jq .sha)
+          echo "tag=$RELEASE_TAG" >> "$GITHUB_OUTPUT"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "core_ref=$core_ref" >> "$GITHUB_OUTPUT"
+
+  test:
+    needs: validate
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.1xx
+      - name: Prepare isolated SSH integration fixtures
+        env:
+          CORE_BIN_REF: ${{ needs.validate.outputs.core_ref }}
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/ssh-python"
+          "$RUNNER_TEMP/ssh-python/bin/pip" install paramiko
+          curl --fail --location --retry 3 -o "$RUNNER_TEMP/core.zip" \
+            "https://raw.githubusercontent.com/2dust/v2rayN-core-bin/$CORE_BIN_REF/v2rayN-linux-64.zip"
+          unzip -q "$RUNNER_TEMP/core.zip" 'v2rayN-linux-64/bin/sing_box/*' -d "$RUNNER_TEMP/core"
+          core="$RUNNER_TEMP/core/v2rayN-linux-64/bin/sing_box/sing-box"
+          chmod +x "$core"
+          "$core" version
+          docker build -t v2rayn-ssh-test v2rayN/ServiceLib.Tests/Fixtures/openssh-key-setup
+          echo "SSH_TEST_PYTHON=$RUNNER_TEMP/ssh-python/bin/python" >> "$GITHUB_ENV"
+          echo "SSH_TEST_SINGBOX=$core" >> "$GITHUB_ENV"
+          echo 'SSH_SETUP_DOCKER_IMAGE=v2rayn-ssh-test' >> "$GITHUB_ENV"
+      - name: Run unit and SSH integration tests
+        run: dotnet test --project ./v2rayN/ServiceLib.Tests -c Release --results-directory ./TestResults -- --report-trx
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: preview-test-results
+          path: TestResults
+
+  build:
+    needs: validate
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: windows
+            platform: windows
+            project: ./v2rayN/v2rayN.csproj
+          - target: windows-desktop
+            platform: windows
+            project: ./v2rayN.Desktop/v2rayN.Desktop.csproj
+          - target: linux
+            platform: linux
+            project: ./v2rayN.Desktop/v2rayN.Desktop.csproj
+          - target: macos
+            platform: macos
+            project: ./v2rayN.Desktop/v2rayN.Desktop.csproj
+    uses: ./.github/workflows/build.yml
+    with:
+      target: ${{ matrix.platform }}
+      project: ${{ matrix.project }}
+      artifact_prefix: preview-build-${{ matrix.target }}-
+
+  package-zip:
+    needs: [validate, build]
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [windows, windows-desktop, linux, macos]
+        arch: [x64, arm64]
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: preview-build-${{ matrix.target }}-${{ matrix.arch }}
+          path: publish
+      - name: Package app with pinned cores
+        env:
+          TARGET: ${{ matrix.target }}
+          ARCH: ${{ matrix.arch }}
+          CORE_BIN_REF: ${{ needs.validate.outputs.core_ref }}
+        run: |
+          set -euo pipefail
+          platform=${TARGET%-desktop}
+          arch=$ARCH
+          [[ "$arch" != x64 ]] || arch=64
+          root="v2rayN-$platform-$arch"
+          name=$root
+          [[ "$TARGET" != windows-desktop ]] || name="$name-desktop"
+          curl --fail --location --retry 3 -o core.zip \
+            "https://raw.githubusercontent.com/2dust/v2rayN-core-bin/$CORE_BIN_REF/$root.zip"
+          unzip -q core.zip
+          cp -R publish/. "$root/"
+          if [[ "$platform" != windows ]]; then
+            chmod +x "$root/v2rayN" "$root/AmazTool"
+            chmod -R +x "$root/bin"
+          fi
+          mkdir dist
+          7z a -tzip "dist/$name.zip" "$root" -mx1
+          7z t "dist/$name.zip"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: preview-package-${{ matrix.target }}-${{ matrix.arch }}
+          path: dist/*.zip
+          if-no-files-found: error
+
+  package-dmg:
+    needs: [validate, build]
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [x64, arm64]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          name: preview-build-macos-${{ matrix.arch }}
+          path: publish
+      - name: Install packaging tools
+        run: brew install create-dmg sevenzip
+      - name: Package DMG
+        env:
+          ARCH: ${{ matrix.arch }}
+          VERSION: ${{ needs.validate.outputs.version }}
+          CORE_BIN_REF: ${{ needs.validate.outputs.core_ref }}
+        run: |
+          set -euo pipefail
+          arch=$ARCH
+          [[ "$arch" != x64 ]] || arch=64
+          bash package-osx.sh "macos-$arch" publish "$VERSION"
+          hdiutil verify "v2rayN-macos-$arch.dmg"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: preview-package-dmg-${{ matrix.arch }}
+          path: v2rayN*.dmg
+          if-no-files-found: error
+
+  release:
+    needs: [validate, test, package-zip, package-dmg]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: preview-package-*
+          merge-multiple: true
+          path: dist
+      - name: Verify complete asset set and generate checksums
+        working-directory: dist
+        run: |
+          set -euo pipefail
+          for arch in 64 arm64; do
+            for platform in windows linux macos; do
+              test -s "v2rayN-$platform-$arch.zip"
+            done
+            test -s "v2rayN-windows-$arch-desktop.zip"
+            test -s "v2rayN-macos-$arch.dmg"
+          done
+          [[ $(find . -maxdepth 1 -type f | wc -l) -eq 10 ]]
+          sha256sum *.zip *.dmg > SHA256SUMS
+          sha256sum --check SHA256SUMS
+      - name: Publish preview after all checks pass
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ needs.validate.outputs.tag }}
+          CORE_BIN_REF: ${{ needs.validate.outputs.core_ref }}
+        run: |
+          set -euo pipefail
+          cat > notes.md <<EOF
+          SSH feature 测试版，来自 \`feature/native-ssh-profiles\`。
+
+          - 原生 SSH 节点：密码、私钥及加密私钥认证。
+          - 共用 SSH 密钥选择、一键配置免密登录。
+          - 编辑器内分别测试 SSH 登录与代理访问。
+          - Windows WPF / Avalonia、Linux、macOS：x64 / arm64 ZIP；macOS 另有 DMG。
+          - 安装包包含运行时及代理核心；\`SHA256SUMS\` 用于校验下载文件。
+          - 此版本未配置 GPG 发布签名，macOS 包未经 Apple 开发者签名及公证。
+
+          源码提交：\`$GITHUB_SHA\`
+          核心包提交：\`$CORE_BIN_REF\`（2dust/v2rayN-core-bin）
+          验证：单元测试、隔离 SSH 集成测试、全部平台编译与包完整性检查。
+
+          [SSH 使用说明](https://github.com/$GH_REPO/blob/$RELEASE_TAG/docs/ssh-key-setup.zh-Hans.md)
+          · [构建记录](https://github.com/$GH_REPO/actions/runs/$GITHUB_RUN_ID)
+          EOF
+          # A failed upload may leave a draft; never overwrite a published release.
+          if gh release view "$RELEASE_TAG" --json isDraft > existing.json 2>/dev/null; then
+            jq -e '.isDraft == true' existing.json
+            gh release edit "$RELEASE_TAG" --notes-file notes.md --prerelease --latest=false
+          else
+            gh release create "$RELEASE_TAG" --verify-tag --draft --prerelease --latest=false \
+              --title "$RELEASE_TAG — SSH 测试版" --notes-file notes.md
+          fi
+          gh release upload "$RELEASE_TAG" dist/* --clobber
+          [[ $(gh release view "$RELEASE_TAG" --json assets --jq '.assets | length') -eq 11 ]]
+          gh release edit "$RELEASE_TAG" --draft=false --prerelease --latest=false

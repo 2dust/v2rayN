@@ -10,6 +10,10 @@ on:
         required: false
         type: string
         default: './v2rayN.Desktop/v2rayN.Desktop.csproj'
+      artifact_prefix:
+        required: false
+        type: string
+        default: ''
 
 jobs:
   build:
@@ -91,5 +95,5 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v7
       with:
-        name: ${{ matrix.arch }}
+        name: ${{ inputs.artifact_prefix }}${{ matrix.arch }}
         path: ${{ matrix.arch }}
