@@ -40,9 +40,9 @@ internal class UpgradeApp
 
         Console.WriteLine(Resx.Resource.StartUnzipping);
         StringBuilder sb = new();
+        var thisAppOldFile = $"{Utils.GetExePath()}.tmp";
         try
         {
-            var thisAppOldFile = $"{Utils.GetExePath()}.tmp";
             File.Delete(thisAppOldFile);
             var splitKey = "/";
             var allowedBaseDir = Utils.StartupPath();
@@ -86,7 +86,13 @@ internal class UpgradeApp
                         continue;
                     }
 
-                    TryExtractToFile(entry, entryOutputPath);
+                    if (!TryExtractToFile(entry, entryOutputPath))
+                    {
+                        // A failed extraction used to be dropped silently, so an
+                        // upgrade could look successful with files missing.
+                        sb.AppendLine($"[warn] failed to extract: {entry.FullName}");
+                        continue;
+                    }
 
                     Console.WriteLine(entryOutputPath);
                 }
@@ -109,6 +115,10 @@ internal class UpgradeApp
 
         Console.WriteLine(Resx.Resource.Restartv2rayN);
         Utils.Waiting(2);
+
+        // The .tmp copy is only needed during the swap; a failed or interrupted
+        // upgrade used to leave it behind permanently.
+        try { File.Delete(thisAppOldFile); } catch { }
 
         Utils.StartV2RayN();
     }
