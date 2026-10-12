@@ -55,7 +55,6 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
 
         // Keyboard shortcuts when focus is within grid
         AddHandler(KeyDownEvent, AddGroupServerWindow_KeyDown, RoutingStrategies.Tunnel);
-        lstChild.LoadingRow += LstChild_LoadingRow;
     }
 
     private void InitializeData(ProfileItem profileItem)
@@ -75,11 +74,6 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
                 }
                 break;
         }
-    }
-
-    private void LstChild_LoadingRow(object? sender, DataGridRowEventArgs e)
-    {
-        e.Row.Header = $" {e.Row.Index + 1}";
     }
 
     private void Window_Loaded(object? sender, RoutedEventArgs e)
