@@ -6,11 +6,11 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="Avalonia.AvaloniaEdit" Version="12.0.0" />
-    <PackageVersion Include="Avalonia.Controls.DataGrid" Version="12.1.2" />
     <PackageVersion Include="Avalonia.Desktop" Version="12.1.4" />
     <PackageVersion Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.3" />
     <PackageVersion Include="DialogHost.Avalonia" Version="0.12.3" />
     <PackageVersion Include="IPNetwork2" Version="4.3.0" />
+    <PackageVersion Include="ProDataGrid" Version="12.1.0.6" />
     <PackageVersion Include="ReactiveUI.Avalonia" Version="12.1.2" />
     <PackageVersion Include="CliWrap" Version="3.10.5" />
     <PackageVersion Include="Downloader" Version="5.10.1" />
