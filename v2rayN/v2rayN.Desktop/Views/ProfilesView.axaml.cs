@@ -1,4 +1,4 @@
-using Avalonia.VisualTree;
+using Avalonia.Controls.DataGridDragDrop;
 using DialogHostAvalonia;
 using v2rayN.Desktop.Common;
 
@@ -8,6 +8,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
 {
     private static Config _config;
     private static readonly string _tag = "ProfilesView";
+    private bool _isDndRegistered = false;
 
     public ProfilesView()
     {
@@ -23,16 +24,16 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         lstProfiles.DoubleTapped += LstProfiles_DoubleTapped;
         lstProfiles.LoadingRow += LstProfiles_LoadingRow;
         lstProfiles.Sorting += LstProfiles_Sorting;
-        if (_config.UiItem.EnableDragDropSort)
-        {
-            lstProfiles.SetValue(DragDrop.AllowDropProperty, true);
+        //if (_config.UiItem.EnableDragDropSort)
+        //{
+        //    lstProfiles.SetValue(DragDrop.AllowDropProperty, true);
 
-            lstProfiles.AddHandler(PointerPressedEvent, LstProfiles_PointerPressed, RoutingStrategies.Bubble, true);
-            lstProfiles.AddHandler(PointerMovedEvent, LstProfiles_PointerMoved, RoutingStrategies.Bubble, true);
-            lstProfiles.AddHandler(PointerReleasedEvent, LstProfiles_PointerReleased, RoutingStrategies.Bubble, true);
-            lstProfiles.AddHandler(DragDrop.DragOverEvent, LstProfiles_DragOver, RoutingStrategies.Bubble);
-            lstProfiles.AddHandler(DragDrop.DropEvent, LstProfiles_Drop, RoutingStrategies.Bubble);
-        }
+        //    lstProfiles.AddHandler(PointerPressedEvent, LstProfiles_PointerPressed, RoutingStrategies.Bubble, true);
+        //    lstProfiles.AddHandler(PointerMovedEvent, LstProfiles_PointerMoved, RoutingStrategies.Bubble, true);
+        //    lstProfiles.AddHandler(PointerReleasedEvent, LstProfiles_PointerReleased, RoutingStrategies.Bubble, true);
+        //    lstProfiles.AddHandler(DragDrop.DragOverEvent, LstProfiles_DragOver, RoutingStrategies.Bubble);
+        //    lstProfiles.AddHandler(DragDrop.DropEvent, LstProfiles_Drop, RoutingStrategies.Bubble);
+        //}
 
         this.WhenActivated(disposables =>
         {
@@ -83,6 +84,22 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
             this.BindCommand(ViewModel, vm => vm.Export2ShareUrlCmd, v => v.menuExport2ShareUrl).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.Export2ShareUrlBase64Cmd, v => v.menuExport2ShareUrlBase64).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.Export2InnerUriCmd, v => v.menuExport2InnerUri).DisposeWith(disposables);
+
+            if (_config.UiItem.EnableDragDropSort && !_isDndRegistered)
+            {
+                lstProfiles.CanUserReorderRows = true;
+                lstProfiles.RowDragHandle = DataGridRowDragHandle.RowHeaderAndRow;
+                lstProfiles.RowDragHandleVisible = true;
+                var rowDragDropOptions = new DataGridRowDragDropOptions()
+                {
+                    AllowedEffects = DragDropEffects.Move,
+                    DragSelectedRows = true,
+                    SuppressSelectionDragFromDragHandle = true,
+                };
+                lstProfiles.RowDragDropOptions = rowDragDropOptions;
+                lstProfiles.RowDropHandler = new ProfileRowDropHandler(ViewModel);
+                _isDndRegistered = true;
+            }
 
             ViewModel.ShowYesNoInteraction.RegisterHandler(async interaction =>
             {
@@ -435,140 +452,174 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
 
     #endregion UI
 
-    #region Drag and Drop
+    //#region Drag and Drop
 
-    private static readonly DataFormat<ProfileItemModel> LstProfilesRowFormat =
-        DataFormat.CreateInProcessFormat<ProfileItemModel>("LstProfilesRow");
+    //private static readonly DataFormat<ProfileItemModel> LstProfilesRowFormat =
+    //    DataFormat.CreateInProcessFormat<ProfileItemModel>("LstProfilesRow");
 
-    private (Point, PointerPressedEventArgs)? _dragStartPoint;
+    //private (Point, PointerPressedEventArgs)? _dragStartPoint;
 
-    private void LstProfiles_PointerPressed(object? sender, PointerPressedEventArgs e)
+    //private void LstProfiles_PointerPressed(object? sender, PointerPressedEventArgs e)
+    //{
+    //    var properties = e.GetCurrentPoint(this).Properties;
+    //    if (properties.IsLeftButtonPressed)
+    //    {
+    //        _dragStartPoint = (e.GetPosition(this), e);
+    //    }
+    //}
+
+    //private async void LstProfiles_PointerMoved(object? sender, PointerEventArgs e)
+    //{
+    //    try
+    //    {
+    //        if (_dragStartPoint == null)
+    //        {
+    //            return;
+    //        }
+
+    //        var properties = e.GetCurrentPoint(this).Properties;
+    //        if (!properties.IsLeftButtonPressed)
+    //        {
+    //            _dragStartPoint = null;
+    //            return;
+    //        }
+
+    //        var currentPoint = e.GetPosition(this);
+    //        var startPoint = _dragStartPoint.Value.Item1;
+    //        var delta = startPoint - currentPoint;
+
+    //        var threshold = new Vector(4, 4);
+
+    //        if (!(Math.Abs(delta.X) >= threshold.X) && !(Math.Abs(delta.Y) >= threshold.Y))
+    //        {
+    //            return;
+    //        }
+    //        var dragStartEventArgs = _dragStartPoint.Value.Item2;
+    //        _dragStartPoint = null;
+
+    //        if (e.Source is not Visual visualSource)
+    //        {
+    //            return;
+    //        }
+    //        var row = visualSource.FindAncestorOfType<DataGridRow>(true);
+    //        if (row?.DataContext == null)
+    //        {
+    //            return;
+    //        }
+
+    //        e.Handled = true;
+
+    //        var dragData = new DataTransfer();
+    //        var item = DataTransferItem.Create(LstProfilesRowFormat, row.DataContext as ProfileItemModel);
+
+    //        dragData.Add(item);
+
+    //        await DragDrop.DoDragDropAsync(dragStartEventArgs, dragData, DragDropEffects.Move);
+    //    }
+    //    catch
+    //    {
+    //        // Ignore
+    //    }
+    //}
+
+    //private void LstProfiles_PointerReleased(object? sender, PointerReleasedEventArgs e)
+    //{
+    //    _dragStartPoint = null;
+    //}
+
+    //private void LstProfiles_DragOver(object? sender, DragEventArgs e)
+    //{
+    //    if (!e.DataTransfer.Contains(LstProfilesRowFormat))
+    //    {
+    //        e.DragEffects = DragDropEffects.None;
+    //        return;
+    //    }
+    //    e.DragEffects = DragDropEffects.Move;
+    //}
+
+    //private void LstProfiles_Drop(object? sender, DragEventArgs e)
+    //{
+    //    if (!e.DataTransfer.Contains(LstProfilesRowFormat))
+    //    {
+    //        return;
+    //    }
+    //    ProfileItemModel? sourceItem = null;
+    //    foreach (var item in e.DataTransfer.Items)
+    //    {
+    //        if (!item.Formats.Contains(LstProfilesRowFormat))
+    //        {
+    //            continue;
+    //        }
+    //        if (item.TryGetRaw(LstProfilesRowFormat) is not ProfileItemModel model)
+    //        {
+    //            continue;
+    //        }
+    //        sourceItem = model;
+    //        break;
+    //    }
+    //    if (sourceItem == null)
+    //    {
+    //        return;
+    //    }
+    //    if (e.Source is not Visual visualTarget)
+    //    {
+    //        return;
+    //    }
+
+    //    var targetRow = visualTarget.FindAncestorOfType<DataGridRow>(true);
+    //    if (targetRow is not { DataContext: ProfileItemModel targetItem })
+    //    {
+    //        return;
+    //    }
+    //    if (ReferenceEquals(sourceItem, targetItem))
+    //    {
+    //        return;
+    //    }
+    //    if (lstProfiles.ItemsSource is not IList<ProfileItemModel> items)
+    //    {
+    //        return;
+    //    }
+    //    var oldIndex = items.IndexOf(sourceItem);
+    //    var newIndex = items.IndexOf(targetItem);
+    //    if (oldIndex >= 0 && newIndex >= 0)
+    //    {
+    //        ViewModel?.MoveServerTo(oldIndex, targetItem);
+    //    }
+    //}
+
+    //#endregion Drag and Drop
+
+    private sealed class ProfileRowDropHandler(ProfilesViewModel viewModel) : IDataGridRowDropHandler
     {
-        var properties = e.GetCurrentPoint(this).Properties;
-        if (properties.IsLeftButtonPressed)
+        private readonly DataGridRowReorderHandler _reorderHandler = new();
+
+        public bool Validate(DataGridRowDropEventArgs args)
         {
-            _dragStartPoint = (e.GetPosition(this), e);
+            ArgumentNullException.ThrowIfNull(args);
+            return _reorderHandler.Validate(args);
+        }
+
+        public bool Execute(DataGridRowDropEventArgs args)
+        {
+            ArgumentNullException.ThrowIfNull(args);
+
+            if (!_reorderHandler.Execute(args))
+            {
+                return false;
+            }
+
+            if (viewModel?.ProfileItems != null)
+            {
+                for (var index = 0; index < viewModel.ProfileItems.Count; index++)
+                {
+                    var item = viewModel.ProfileItems[index];
+                    var sort = (index + 1) * 10;
+                    item.Sort = sort;
+                    ProfileExManager.Instance.SetSort(item.IndexId, sort);
+                }
+            }
+
+            return true;
         }
     }
-
-    private async void LstProfiles_PointerMoved(object? sender, PointerEventArgs e)
-    {
-        try
-        {
-            if (_dragStartPoint == null)
-            {
-                return;
-            }
-
-            var properties = e.GetCurrentPoint(this).Properties;
-            if (!properties.IsLeftButtonPressed)
-            {
-                _dragStartPoint = null;
-                return;
-            }
-
-            var currentPoint = e.GetPosition(this);
-            var startPoint = _dragStartPoint.Value.Item1;
-            var delta = startPoint - currentPoint;
-
-            var threshold = new Vector(4, 4);
-
-            if (!(Math.Abs(delta.X) >= threshold.X) && !(Math.Abs(delta.Y) >= threshold.Y))
-            {
-                return;
-            }
-            var dragStartEventArgs = _dragStartPoint.Value.Item2;
-            _dragStartPoint = null;
-
-            if (e.Source is not Visual visualSource)
-            {
-                return;
-            }
-            var row = visualSource.FindAncestorOfType<DataGridRow>(true);
-            if (row?.DataContext == null)
-            {
-                return;
-            }
-
-            e.Handled = true;
-
-            var dragData = new DataTransfer();
-            var item = DataTransferItem.Create(LstProfilesRowFormat, row.DataContext as ProfileItemModel);
-
-            dragData.Add(item);
-
-            await DragDrop.DoDragDropAsync(dragStartEventArgs, dragData, DragDropEffects.Move);
-        }
-        catch
-        {
-            // Ignore
-        }
-    }
-
-    private void LstProfiles_PointerReleased(object? sender, PointerReleasedEventArgs e)
-    {
-        _dragStartPoint = null;
-    }
-
-    private void LstProfiles_DragOver(object? sender, DragEventArgs e)
-    {
-        if (!e.DataTransfer.Contains(LstProfilesRowFormat))
-        {
-            e.DragEffects = DragDropEffects.None;
-            return;
-        }
-        e.DragEffects = DragDropEffects.Move;
-    }
-
-    private void LstProfiles_Drop(object? sender, DragEventArgs e)
-    {
-        if (!e.DataTransfer.Contains(LstProfilesRowFormat))
-        {
-            return;
-        }
-        ProfileItemModel? sourceItem = null;
-        foreach (var item in e.DataTransfer.Items)
-        {
-            if (!item.Formats.Contains(LstProfilesRowFormat))
-            {
-                continue;
-            }
-            if (item.TryGetRaw(LstProfilesRowFormat) is not ProfileItemModel model)
-            {
-                continue;
-            }
-            sourceItem = model;
-            break;
-        }
-        if (sourceItem == null)
-        {
-            return;
-        }
-        if (e.Source is not Visual visualTarget)
-        {
-            return;
-        }
-
-        var targetRow = visualTarget.FindAncestorOfType<DataGridRow>(true);
-        if (targetRow is not { DataContext: ProfileItemModel targetItem })
-        {
-            return;
-        }
-        if (ReferenceEquals(sourceItem, targetItem))
-        {
-            return;
-        }
-        if (lstProfiles.ItemsSource is not IList<ProfileItemModel> items)
-        {
-            return;
-        }
-        var oldIndex = items.IndexOf(sourceItem);
-        var newIndex = items.IndexOf(targetItem);
-        if (oldIndex >= 0 && newIndex >= 0)
-        {
-            ViewModel?.MoveServerTo(oldIndex, targetItem);
-        }
-    }
-
-    #endregion Drag and Drop
 }

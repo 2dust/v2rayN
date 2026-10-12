@@ -1897,4 +1897,7 @@
   <data name="menuAddMasqueServer" xml:space="preserve">
     <value>添加 [MASQUE]</value>
   </data>
+  <data name="menuColumns" xml:space="preserve">
+    <value>列</value>
+  </data>
 </root>

@@ -16,6 +16,48 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <conv:DelayColorConverter x:Key="DelayColorConverter" />
+
+        <ControlTheme x:Key="{x:Type DataGridColumnChooser}" TargetType="DataGridColumnChooser">
+            <Setter Property="ItemTemplate">
+                <Setter.Value>
+                    <DataTemplate x:DataType="DataGridColumnChooserItem">
+                        <CheckBox
+                            Margin="0,2"
+                            Content="{Binding Header}"
+                            IsChecked="{Binding IsVisible, Mode=TwoWay}"
+                            IsEnabled="{Binding CanUserHide}" />
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate>
+                        <StackPanel Spacing="4" />
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Button Classes="IconButton Success" ToolTip.Tip="{TemplateBinding ToolTip.Tip}">
+                            <Button.Flyout>
+                                <Flyout Placement="BottomEdgeAlignedLeft">
+                                    <Border
+                                        MaxWidth="260"
+                                        MaxHeight="360"
+                                        Padding="8">
+                                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                            <ItemsPresenter />
+                                        </ScrollViewer>
+                                    </Border>
+                                </Flyout>
+                            </Button.Flyout>
+                            <ContentPresenter Content="{TemplateBinding Header}" ContentTemplate="{TemplateBinding HeaderTemplate}" />
+                        </Button>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </ControlTheme>
     </UserControl.Resources>
     <Grid>
         <DockPanel>
@@ -79,6 +121,15 @@
                         </Button.Content>
                     </Button>
 
+                    <DataGridColumnChooser
+                        Margin="{StaticResource MarginLr4}"
+                        DataGrid="{Binding ElementName=lstProfiles}"
+                        ToolTip.Tip="{x:Static resx:ResUI.menuColumns}">
+                        <DataGridColumnChooser.Header>
+                            <PathIcon Data="{StaticResource SemiIconSetting}" />
+                        </DataGridColumnChooser.Header>
+                    </DataGridColumnChooser>
+
                     <Button
                         x:Name="btnFastRealPing"
                         Margin="{StaticResource MarginLr4}"
@@ -97,20 +148,27 @@
                             <PathIcon Data="{StaticResource building_ping}" />
                         </Button.Content>
                     </Button>
+
                 </StackPanel>
 
             </WrapPanel>
+
             <DataGrid
                 x:Name="lstProfiles"
                 AutoGenerateColumns="False"
                 BorderThickness="1"
+                CanUserAddRows="False"
+                CanUserDeleteRows="False"
+                CanUserHideColumns="True"
                 CanUserReorderColumns="True"
                 CanUserResizeColumns="True"
                 Classes.InsetContent="True"
+                FrozenColumnCount="2"
                 GridLinesVisibility="All"
                 HeadersVisibility="All"
-                IsReadOnly="True"
-                ItemsSource="{Binding ProfileItems}">
+                IsReadOnly="False"
+                ItemsSource="{Binding ProfileItems}"
+                ShowRowNumbers="True">
                 <DataGrid.KeyBindings>
                     <KeyBinding Command="{Binding Export2ShareUrlCmd}" Gesture="Ctrl+C" />
                     <KeyBinding Command="{Binding SetDefaultServerCmd}" Gesture="Enter" />
@@ -212,12 +270,13 @@
                         Width="80"
                         Binding="{Binding ConfigType}"
                         Header="{x:Static resx:ResUI.LvServiceType}"
+                        IsReadOnly="True"
                         Tag="ConfigType" />
 
-                    <DataGridTemplateColumn SortMemberPath="Remarks" Tag="Remarks">
-                        <DataGridTemplateColumn.Header>
-                            <TextBlock Text="{x:Static resx:ResUI.LvRemarks}" />
-                        </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn
+                        Header="{x:Static resx:ResUI.LvRemarks}"
+                        SortMemberPath="Remarks"
+                        Tag="Remarks">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Margin="{StaticResource MarginLr8}" Orientation="Horizontal">
@@ -240,31 +299,36 @@
                         Width="120"
                         Binding="{Binding Address}"
                         Header="{x:Static resx:ResUI.LvAddress}"
+                        IsReadOnly="True"
                         Tag="Address" />
                     <DataGridTextColumn
                         Width="60"
                         Binding="{Binding Port}"
                         Header="{x:Static resx:ResUI.LvPort}"
+                        IsReadOnly="True"
                         Tag="Port" />
                     <DataGridTextColumn
                         Width="100"
                         Binding="{Binding Network}"
                         Header="{x:Static resx:ResUI.LvTransportProtocol}"
+                        IsReadOnly="True"
                         Tag="Network" />
                     <DataGridTextColumn
                         Width="100"
                         Binding="{Binding StreamSecurity}"
                         Header="{x:Static resx:ResUI.LvTLS}"
+                        IsReadOnly="True"
                         Tag="StreamSecurity" />
                     <DataGridTextColumn
                         Width="100"
                         Binding="{Binding SubRemarks}"
                         Header="{x:Static resx:ResUI.LvSubscription}"
+                        IsReadOnly="True"
                         Tag="SubRemarks" />
-                    <DataGridTemplateColumn SortMemberPath="Delay" Tag="DelayVal">
-                        <DataGridTemplateColumn.Header>
-                            <TextBlock Text="{x:Static resx:ResUI.LvTestDelay}" />
-                        </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn
+                        Header="{x:Static resx:ResUI.LvTestDelay}"
+                        SortMemberPath="Delay"
+                        Tag="DelayVal">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock
@@ -280,12 +344,13 @@
                         Width="100"
                         Binding="{Binding SpeedVal}"
                         Header="{x:Static resx:ResUI.LvTestSpeed}"
+                        IsReadOnly="True"
                         Tag="SpeedVal" />
 
-                    <DataGridTemplateColumn SortMemberPath="IpInfo" Tag="IpInfo">
-                        <DataGridTemplateColumn.Header>
-                            <TextBlock Text="{x:Static resx:ResUI.LvTestIpInfo}" />
-                        </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn
+                        Header="{x:Static resx:ResUI.LvTestIpInfo}"
+                        SortMemberPath="IpInfo"
+                        Tag="IpInfo">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <SelectableTextBlock
@@ -300,21 +365,25 @@
                         Width="100"
                         Binding="{Binding TodayUp}"
                         Header="{x:Static resx:ResUI.LvTodayUploadDataAmount}"
+                        IsReadOnly="True"
                         Tag="TodayUp" />
                     <DataGridTextColumn
                         Width="100"
                         Binding="{Binding TodayDown}"
                         Header="{x:Static resx:ResUI.LvTodayDownloadDataAmount}"
+                        IsReadOnly="True"
                         Tag="TodayDown" />
                     <DataGridTextColumn
                         Width="100"
                         Binding="{Binding TotalUp}"
                         Header="{x:Static resx:ResUI.LvTotalUploadDataAmount}"
+                        IsReadOnly="True"
                         Tag="TotalUp" />
                     <DataGridTextColumn
                         Width="100"
                         Binding="{Binding TotalDown}"
                         Header="{x:Static resx:ResUI.LvTotalDownloadDataAmount}"
+                        IsReadOnly="True"
                         Tag="TotalDown" />
                 </DataGrid.Columns>
             </DataGrid>
