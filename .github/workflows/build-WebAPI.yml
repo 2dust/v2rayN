@@ -252,6 +252,13 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw "sing-box.exe smoke failed: $LASTEXITCODE" }
           & (Join-Path $candidateBin 'mihomo\mihomo.exe') -v
           if ($LASTEXITCODE -ne 0) { throw "mihomo.exe smoke failed: $LASTEXITCODE" }
+      - name: Smoke-test Windows backup restore handoff and Core intent recovery
+        if: inputs.release_tag != ''
+        shell: pwsh
+        run: |
+          & ./v2rayN/v2rayN.WebAPI/Tests/Integration/Test-Windows.ps1 `
+            -Mode restore `
+            -PublishDirectory (Join-Path $env:RUNNER_TEMP 'v2rayN.WebAPI-win-x64')
       - name: Smoke-test Windows self-update replacement and rollback
         if: inputs.release_tag != ''
         shell: pwsh

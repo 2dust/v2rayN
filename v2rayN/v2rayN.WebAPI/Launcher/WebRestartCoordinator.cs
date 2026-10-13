@@ -32,7 +32,7 @@ public static class WebLifecyclePlanner
 {
     public static WebLifecyclePlan Create(
         WebLifecycleAction action,
-        bool isLinux,
+        bool supportsNativeRestart,
         bool daemonEnvironment,
         bool containerEnvironment)
     {
@@ -40,14 +40,18 @@ public static class WebLifecyclePlanner
             ? WebLifecycleOwner.None
             : daemonEnvironment || containerEnvironment
                 ? WebLifecycleOwner.ExternalSupervisor
-                : isLinux
+                : supportsNativeRestart
                     ? WebLifecycleOwner.NativeProcess
                     : WebLifecycleOwner.None;
         return new WebLifecyclePlan(action, owner);
     }
 }
 
-public sealed record WebReplacementCommand(string LauncherPath, string[] Arguments, string WorkingDirectory)
+public sealed record WebReplacementCommand(
+    string LauncherPath,
+    string[] Arguments,
+    string WorkingDirectory,
+    bool CreateNoWindow = false)
 {
     public ProcessStartInfo ToProcessStartInfo()
     {
@@ -56,6 +60,7 @@ public sealed record WebReplacementCommand(string LauncherPath, string[] Argumen
             FileName = LauncherPath,
             WorkingDirectory = WorkingDirectory,
             UseShellExecute = false,
+            CreateNoWindow = CreateNoWindow,
         };
         foreach (var argument in Arguments)
         {
@@ -76,14 +81,32 @@ public sealed record WebReplacementCommand(string LauncherPath, string[] Argumen
         string? setsidPath,
         string? processPath,
         string? managedEntryPoint,
+        IEnumerable<string> hostArguments) =>
+        CreateNative(
+            isLinux: true,
+            isWindows: false,
+            setsidPath,
+            processPath,
+            managedEntryPoint,
+            hostArguments);
+
+    public static WebReplacementCommand? CreateNative(
+        bool isLinux,
+        bool isWindows,
+        string? setsidPath,
+        string? processPath,
+        string? managedEntryPoint,
         IEnumerable<string> hostArguments)
     {
-        if (string.IsNullOrWhiteSpace(setsidPath) || string.IsNullOrWhiteSpace(processPath))
+        if ((!isLinux && !isWindows)
+            || string.IsNullOrWhiteSpace(processPath)
+            || (isLinux && string.IsNullOrWhiteSpace(setsidPath)))
         {
             return null;
         }
 
         var arguments = new List<string>();
+        var launcherPath = isLinux ? setsidPath! : processPath;
         if (Path.GetFileNameWithoutExtension(processPath).Equals("dotnet", StringComparison.OrdinalIgnoreCase))
         {
             if (string.IsNullOrWhiteSpace(managedEntryPoint)
@@ -92,17 +115,24 @@ public sealed record WebReplacementCommand(string LauncherPath, string[] Argumen
                 return null;
             }
 
-            arguments.Add(Path.GetFullPath(processPath));
+            if (isLinux)
+            {
+                arguments.Add(Path.GetFullPath(processPath));
+            }
             arguments.Add(Path.GetFullPath(managedEntryPoint));
         }
-        else
+        else if (isLinux)
         {
             arguments.Add(Path.GetFullPath(processPath));
         }
 
         arguments.Add(WebLaunchOptions.BackgroundChildFlag);
         arguments.AddRange(hostArguments);
-        return new WebReplacementCommand(Path.GetFullPath(setsidPath), arguments.ToArray(), Environment.CurrentDirectory);
+        return new WebReplacementCommand(
+            Path.GetFullPath(launcherPath),
+            arguments.ToArray(),
+            Environment.CurrentDirectory,
+            CreateNoWindow: isWindows);
     }
 }
 
@@ -131,7 +161,7 @@ public sealed class FileWebInstanceOwnershipProbe : IWebInstanceOwnershipProbe
     public int? ReadOwnerProcessId(string lockPath) => WebInstanceLock.ReadOwnerProcessId(lockPath);
 }
 
-public sealed class LinuxReplacementProcessStarter : IWebReplacementProcessStarter
+public sealed class NativeReplacementProcessStarter : IWebReplacementProcessStarter
 {
     public IWebReplacementProcess? Start(WebReplacementCommand command)
     {
@@ -216,7 +246,8 @@ public sealed class NativeWebRestartCoordinator
         string lockPath,
         Uri healthUri,
         WebReplacementCommand command,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        bool? expectedCoreRunning = null)
     {
         var timeout = Stopwatch.StartNew();
         while (_ownershipProbe.IsLockHeld(lockPath))
@@ -250,12 +281,18 @@ public sealed class NativeWebRestartCoordinator
                 if (_ownershipProbe.IsLockHeld(lockPath))
                 {
                     var ownerProcessId = _ownershipProbe.ReadOwnerProcessId(lockPath);
-                    if (ownerProcessId.HasValue)
+                    if (ownerProcessId == replacement.Id)
                     {
                         var health = await _healthProbe.ProbeAsync(healthUri, cancellationToken);
-                        if (health.IsHealthy && health.InstanceProcessId == ownerProcessId)
+                        if (health.IsHealthy && health.InstanceProcessId == replacement.Id)
                         {
-                            return new(true, "The native replacement Web instance is healthy.", ownerProcessId);
+                            if (expectedCoreRunning is bool wasRunning && !CoreIntentMatches(health, wasRunning))
+                            {
+                                return new(false,
+                                    $"The native replacement Web instance is healthy, but the previous Core {(wasRunning ? "running" : "stopped")} intent was not restored.",
+                                    replacement.Id);
+                            }
+                            return new(true, "The native replacement Web instance is healthy.", replacement.Id);
                         }
                     }
                 }
@@ -277,6 +314,18 @@ public sealed class NativeWebRestartCoordinator
             }
             return new(false, "The native replacement Web instance did not become healthy before the startup timeout.", replacement.Id);
         }
+    }
+
+    private static bool CoreIntentMatches(WebHealthProbeResult health, bool expectedRunning)
+    {
+        if (!string.Equals(health.CoreState, expectedRunning ? "running" : "stopped", StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        return expectedRunning
+            ? health.CoreProcessIds is { Count: > 0 }
+            : health.CoreProcessIds is { Count: 0 };
     }
 
     private static TimeSpan Min(TimeSpan left, TimeSpan right) => left < right ? left : right;

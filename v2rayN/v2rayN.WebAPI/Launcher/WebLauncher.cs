@@ -331,6 +331,15 @@ public static class BackgroundChildProcess
 {
     public static void DetachStandardHandles()
     {
+        if (OperatingSystem.IsWindows())
+        {
+            _ = FreeConsole();
+            Console.SetIn(TextReader.Null);
+            Console.SetOut(TextWriter.Null);
+            Console.SetError(TextWriter.Null);
+            return;
+        }
+
         if (!OperatingSystem.IsLinux())
         {
             return;
@@ -365,4 +374,8 @@ public static class BackgroundChildProcess
 
     [DllImport("libc", EntryPoint = "close", SetLastError = true)]
     private static extern int Close(int descriptor);
+
+    [DllImport("kernel32.dll", EntryPoint = "FreeConsole", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool FreeConsole();
 }

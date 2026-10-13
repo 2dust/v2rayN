@@ -31,6 +31,7 @@ export NUGET_PACKAGES="${NUGET_PACKAGES:-$web_root/.packages/nuget}"
 bash "$web_root/Scripts/publish-native.sh" linux-x64 "$output_dir"
 test -x "$output_dir/v2rayN.WebAPI"
 bash "$web_root/Tests/Integration/test-startup-security.sh" "$output_dir/v2rayN.WebAPI"
+bash "$web_root/Tests/Integration/test-backup-restore-preflight.sh" "$output_dir/v2rayN.WebAPI"
 bash "$web_root/Tests/Integration/test-release-packaging.sh"
 smoke_dir="$(mktemp -d "${TMPDIR:-/tmp}/v2rayn-api-package-smoke.XXXXXX")"
 trap 'rm -rf "$smoke_dir"' EXIT HUP INT TERM

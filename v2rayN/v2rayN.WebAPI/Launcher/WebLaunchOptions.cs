@@ -72,6 +72,14 @@ public static class LauncherEnvironment
         HasValue(environment, "DOTNET_RUNNING_IN_CONTAINER")
         || HasValue(environment, "container");
 
+    public static bool IsCurrentContainerEnvironment()
+    {
+        var environment = ReadCurrentEnvironment();
+        return IsContainerEnvironment(environment)
+            || File.Exists("/.dockerenv")
+            || File.Exists("/run/.containerenv");
+    }
+
     public static bool IsInteractiveLaunchMarker(IReadOnlyDictionary<string, string?> environment) =>
         HasValue(environment, InteractiveLaunchEnvironmentVariable);
 
