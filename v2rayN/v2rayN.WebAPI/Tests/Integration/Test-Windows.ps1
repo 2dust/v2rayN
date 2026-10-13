@@ -705,7 +705,26 @@ try {
 } finally {
     Restore-TestEnvironment
     if ($success) {
-        Remove-Item -LiteralPath $testRoot -Recurse -Force
+        $removed = $false
+        $cleanupError = $null
+        for ($attempt = 0; $attempt -lt 10; $attempt++) {
+            try {
+                if (Test-Path -LiteralPath $testRoot) {
+                    Remove-Item -LiteralPath $testRoot -Recurse -Force -ErrorAction Stop
+                }
+                if (-not (Test-Path -LiteralPath $testRoot)) {
+                    $removed = $true
+                    break
+                }
+                throw 'The isolated Windows smoke directory still exists.'
+            } catch {
+                $cleanupError = $_.Exception.Message
+                if ($attempt -lt 9) { Start-Sleep -Milliseconds 500 }
+            }
+        }
+        if (-not $removed) {
+            Write-Warning "Windows $Mode smoke passed, but isolated temp cleanup was deferred at $testRoot : $cleanupError"
+        }
     } else {
         Write-Warning "Windows $Mode test failed; isolated files were retained at $testRoot"
     }
