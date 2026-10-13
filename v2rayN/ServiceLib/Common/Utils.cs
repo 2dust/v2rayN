@@ -1441,7 +1441,11 @@ public class Utils
             if (File.Exists(fileName))
             {
                 var currentMode = File.GetUnixFileMode(fileName);
-                File.SetUnixFileMode(fileName, currentMode | UnixFileMode.UserExecute | UnixFileMode.GroupExecute | UnixFileMode.OtherExecute);
+                var executableMode = currentMode | UnixFileMode.UserExecute | UnixFileMode.GroupExecute | UnixFileMode.OtherExecute;
+                if (currentMode != executableMode)
+                {
+                    File.SetUnixFileMode(fileName, executableMode);
+                }
                 return true;
             }
         }
