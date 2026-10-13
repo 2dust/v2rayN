@@ -235,6 +235,12 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
             {
                 ViewModel?.Reload();
             }
+            else if (e.Key == Key.Escape && !DialogHost.IsDialogOpen(null))
+            {
+                // Esc closes the main window, exactly like clicking the close button
+                // (on Linux this hides it to the tray per the "Hide2TrayWhenClose" setting).
+                ShowHideWindow(false);
+            }
         }
     }
 
