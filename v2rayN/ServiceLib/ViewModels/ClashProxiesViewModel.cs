@@ -2,7 +2,7 @@ namespace ServiceLib.ViewModels;
 
 public partial class ClashProxiesViewModel : MyReactiveObject
 {
-    private readonly int _delayTimeout = 99999999;
+    private const int _delayTimeout = 99999999;
     private ClashItem _clashItem = new();
 
     public ClashProxiesViewModel()
@@ -235,6 +235,11 @@ public partial class ClashProxiesViewModel : MyReactiveObject
         {
             return;
         }
+        var dicCurrentDetails = new Dictionary<string, ClashProxyModel>();
+        foreach (var item in ProxyDetails)
+        {
+            dicCurrentDetails.TryAdd(item.Name, item);
+        }
         var lstDetails = new List<ClashProxyModel>();
         foreach (var item in proxy.all)
         {
@@ -243,15 +248,29 @@ public partial class ClashProxiesViewModel : MyReactiveObject
             {
                 continue;
             }
-            var delay = proxy2.history?.Count > 0 ? proxy2.history.Last().delay : -1;
+            var delay = -1;
+            var hasData = false;
+
+            if (proxy2.history is { Count: > 0 })
+            {
+                delay = proxy2.history.Last().delay;
+                hasData = true;
+            }
+            else if (dicCurrentDetails.TryGetValue(item, out var detail))
+            {
+                delay = detail.Delay;
+                hasData = true;
+            }
+
+            var isValidDelay = delay is > 0 and not _delayTimeout;
 
             lstDetails.Add(new ClashProxyModel
             {
                 IsActive = item == proxy.now,
                 Name = item,
                 Type = proxy2.type,
-                Delay = delay <= 0 ? _delayTimeout : delay,
-                DelayName = delay <= 0 ? string.Empty : $"{delay}ms",
+                Delay = isValidDelay ? delay : _delayTimeout,
+                DelayName = !hasData ? string.Empty : (isValidDelay ? $"{delay}ms" : "-1"),
             });
         }
         // sort
@@ -362,8 +381,9 @@ public partial class ClashProxiesViewModel : MyReactiveObject
         {
             return;
         }
-        detail.Delay = Convert.ToInt32(result.Delay);
-        detail.DelayName = $"{detail.Delay}ms";
+        var isValid = int.TryParse(result.Delay, out var delay) && delay > 0 && delay != _delayTimeout;
+        detail.Delay = isValid ? delay : _delayTimeout;
+        detail.DelayName = isValid ? $"{delay}ms" : "-1";
         await Task.CompletedTask;
     }
 
