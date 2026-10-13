@@ -8,6 +8,12 @@ public partial class StatusBarViewModel : MyReactiveObject
     public EventChannel<bool> SubscriptionsUpdateRequested { get; } = new();
     public EventChannel<bool?> ShowHideWindowRequested { get; } = new();
 
+    // On Linux the tray icon is a StatusNotifierItem, which has no double-click event: the host
+    // (KDE Plasma, waybar, ...) delivers a double click as two Activate calls. Both of them would
+    // toggle the window, so it popped up and was hidden again immediately. Timestamp of the last
+    // handled activation, used to coalesce such duplicate clicks into a single toggle.
+    private long _lastNotifyLeftClickTicks;
+
     private static readonly Lazy<StatusBarViewModel> _instance = new(() => new());
     public static StatusBarViewModel Instance => _instance.Value;
 
@@ -146,6 +152,17 @@ public partial class StatusBarViewModel : MyReactiveObject
 
         NotifyLeftClickCmd = ReactiveCommand.CreateFromTask(async () =>
         {
+            if (Utils.IsLinux())
+            {
+                var ticks = Environment.TickCount64;
+                if (ticks - _lastNotifyLeftClickTicks < 600)
+                {
+                    // part of a double click: its first activation already toggled the window
+                    return;
+                }
+                _lastNotifyLeftClickTicks = ticks;
+            }
+
             ShowHideWindowRequested.Publish(null);
             await Task.CompletedTask;
         });
