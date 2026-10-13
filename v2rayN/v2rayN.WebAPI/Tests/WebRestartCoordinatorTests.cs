@@ -53,6 +53,29 @@ public class WebRestartCoordinatorTests
     }
 
     [Test]
+    public async Task NativeWindowsRestoreStartsTheExecutableWithoutLinuxSetsid()
+    {
+        var executable = "/opt/v2rayN.WebAPI.exe";
+        var command = WebReplacementCommand.CreateNative(
+            isLinux: false,
+            isWindows: true,
+            setsidPath: null,
+            processPath: executable,
+            managedEntryPoint: null,
+            hostArguments: ["--urls", "http://127.0.0.1:5080"]);
+
+        await (command is not null).Should().BeTrue();
+        await command!.LauncherPath.Should().BeEqualTo(Path.GetFullPath(executable));
+        await command.CreateNoWindow.Should().BeTrue();
+        await command.Arguments.SequenceEqual([
+            WebLaunchOptions.BackgroundChildFlag,
+            "--urls",
+            "http://127.0.0.1:5080",
+        ]).Should().BeTrue();
+        await command.ToProcessStartInfo().UseShellExecute.Should().BeFalse();
+    }
+
+    [Test]
     public async Task SystemdAndContainerOwnRestartWhileNativeLinuxOwnsItsReplacement()
     {
         var systemd = WebLifecyclePlanner.Create(WebLifecycleAction.RestoreAndRestart, true, daemonEnvironment: true, containerEnvironment: false);
@@ -170,6 +193,35 @@ public class WebRestartCoordinatorTests
         await result.Message.Should().Contain("exited before its Web health endpoint");
         await starter.StartCount.Should().BeEqualTo(1);
         await ownership.IsLockHeld(otherScope).Should().BeTrue();
+    }
+
+    [Test]
+    public async Task HandoffDoesNotAcceptAHealthyDifferentLockOwnerAsTheReplacement()
+    {
+        const string lockPath = "/data/current/v2rayN.WebAPI.instance.lock";
+        var ownership = new FakeOwnershipProbe();
+        ownership.Set(lockPath, held: false, owner: null);
+        var starter = new FakeProcessStarter(() =>
+        {
+            ownership.Set(lockPath, held: true, owner: 789);
+            return (new FakeReplacementProcess(456), true);
+        });
+        var coordinator = new NativeWebRestartCoordinator(
+            new FakeHealthProbe(789),
+            starter,
+            ownership,
+            timeout: TimeSpan.FromMilliseconds(30),
+            pollInterval: TimeSpan.FromMilliseconds(2));
+
+        var result = await coordinator.StartReplacementAfterOwnerReleaseAsync(
+            lockPath,
+            new Uri("http://127.0.0.1:5080/api/health"),
+            NewCommand());
+
+        await result.Success.Should().BeFalse();
+        await result.Message.Should().Contain("did not become healthy");
+        await result.ReplacementProcessId.Should().BeEqualTo(456);
+        await starter.StartCount.Should().BeEqualTo(1);
     }
 
     private static WebReplacementCommand NewCommand() => new(

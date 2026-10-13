@@ -8,6 +8,7 @@ using ServiceLib.Helper;
 using ServiceLib.Manager;
 using ServiceLib.Models.Configs;
 using v2rayN.WebAPI.Contracts;
+using v2rayN.WebAPI.Launcher;
 
 namespace v2rayN.WebAPI.Services;
 
@@ -20,6 +21,9 @@ public sealed partial class V2rayRuntime
     private const int MaxBackupEntries = 2048;
     internal const string WebAuthFileName = "WebAPI-auth.json";
     private const string RestoreRuntimeStateFileName = "v2rayn-WebAPI-restore-state.json";
+    private NativeWebRestoreReplacement? _nativeRestoreReplacement;
+
+    public NativeWebRestoreReplacement? NativeRestoreReplacement => _nativeRestoreReplacement;
 
     public WebDavSettingsView GetWebDavSettings() => new(
         Config.WebDavItem.Url,
@@ -189,50 +193,56 @@ public sealed partial class V2rayRuntime
                 return OperationView.Fail("backup_database_incompatible", ApiMessageKeys.BackupDatabaseIncompatible);
             }
 
-            var (backupResult, safetyBackupPath) = await CreateBackupArchiveAsync();
-            if (!backupResult.Success || safetyBackupPath is null)
+            _nativeRestoreReplacement = null;
+            var preflight = EvaluateNativeRestorePreflight();
+            return await BackupRestorePreflightGate.ExecuteAsync(preflight, async () =>
             {
-                return OperationView.Fail("backup_safety_copy_failed", ApiMessageKeys.BackupRestoreFailed);
-            }
+                _nativeRestoreReplacement = preflight.Replacement;
+                var (backupResult, safetyBackupPath) = await CreateBackupArchiveAsync();
+                if (!backupResult.Success || safetyBackupPath is null)
+                {
+                    return OperationView.Fail("backup_safety_copy_failed", ApiMessageKeys.BackupRestoreFailed);
+                }
 
-            var previousRuntime = CurrentCoreRuntime;
-            restoreState = new RuntimeRestartIntent(
-                previousRuntime.State == CoreRuntimeState.Running,
-                previousRuntime.ProfileId);
-            await WriteRestoreRuntimeStateAsync(restoreState);
-            restoreStateWritten = true;
-            SetCoreRuntime(previousRuntime with { State = CoreRuntimeState.Stopping, LastFailure = null });
-            await StopCoreMonitorAsync();
-            await StopCoreAndConfirmAsync(cancellationToken);
-            SetCoreRuntime(CoreRuntimeSnapshot.Stopped);
-            await ProfileExManager.Instance.SaveTo();
-            await StatisticsManager.Instance.SaveTo();
-            StatisticsManager.Instance.Close();
-            await _mutations.RunAsync(() => EnsureConfigSaveSucceededAsync(() => ConfigHandler.SaveConfig(Config)), cancellationToken);
-            await SQLiteHelper.Instance.DisposeDbConnectionAsync();
-            databaseClosed = true;
+                var previousRuntime = CurrentCoreRuntime;
+                restoreState = new RuntimeRestartIntent(
+                    previousRuntime.State == CoreRuntimeState.Running,
+                    previousRuntime.ProfileId);
+                await WriteRestoreRuntimeStateAsync(restoreState);
+                restoreStateWritten = true;
+                SetCoreRuntime(previousRuntime with { State = CoreRuntimeState.Stopping, LastFailure = null });
+                await StopCoreMonitorAsync();
+                await StopCoreAndConfirmAsync(cancellationToken);
+                SetCoreRuntime(CoreRuntimeSnapshot.Stopped);
+                await ProfileExManager.Instance.SaveTo();
+                await StatisticsManager.Instance.SaveTo();
+                StatisticsManager.Instance.Close();
+                await _mutations.RunAsync(() => EnsureConfigSaveSucceededAsync(() => ConfigHandler.SaveConfig(Config)), cancellationToken);
+                await SQLiteHelper.Instance.DisposeDbConnectionAsync();
+                databaseClosed = true;
 
-            var configPath = Utils.GetConfigPath();
-            var configParent = Path.GetDirectoryName(configPath)
-                ?? throw new InvalidOperationException("The configuration directory has no parent directory.");
-            var candidatePath = Path.Combine(configParent, $".guiConfigs-restore-{Guid.NewGuid():N}");
-            var displacedPath = Path.Combine(configParent, $".guiConfigs-before-restore-{Guid.NewGuid():N}");
-            try
-            {
-                PrepareRestoredConfigDirectory(stagingRoot, configPath, candidatePath);
-                ReplaceConfigDirectory(candidatePath, configPath, displacedPath);
-            }
-            finally
-            {
-                TryDeleteRestoreDirectory(candidatePath, "restore candidate");
-                TryDeleteRestoreDirectory(displacedPath, "displaced configuration");
-            }
+                var configPath = Utils.GetConfigPath();
+                var configParent = Path.GetDirectoryName(configPath)
+                    ?? throw new InvalidOperationException("The configuration directory has no parent directory.");
+                var candidatePath = Path.Combine(configParent, $".guiConfigs-restore-{Guid.NewGuid():N}");
+                var displacedPath = Path.Combine(configParent, $".guiConfigs-before-restore-{Guid.NewGuid():N}");
+                try
+                {
+                    PrepareRestoredConfigDirectory(stagingRoot, configPath, candidatePath);
+                    ReplaceConfigDirectory(candidatePath, configPath, displacedPath);
+                }
+                finally
+                {
+                    TryDeleteRestoreDirectory(candidatePath, "restore candidate");
+                    TryDeleteRestoreDirectory(displacedPath, "displaced configuration");
+                }
 
-            _restoring = true;
-            _operations.RejectNewOperations();
-            RequestHostShutdownForRestore();
-            return OperationView.Ok(ApiMessageKeys.BackupRestoreStarted,
-                new { restartRequired = true, safetyBackup = Path.GetFileName(safetyBackupPath) });
+                _restoring = true;
+                _operations.RejectNewOperations();
+                RequestHostShutdownForRestore();
+                return OperationView.Ok(ApiMessageKeys.BackupRestoreStarted,
+                    new { restartRequired = true, safetyBackup = Path.GetFileName(safetyBackupPath) });
+            });
         }
         catch (Exception exception)
         {
@@ -289,6 +299,23 @@ public sealed partial class V2rayRuntime
                 }
             }
         }
+    }
+
+    private NativeWebRestorePreflightResult EvaluateNativeRestorePreflight()
+    {
+        var processPath = Environment.ProcessPath;
+        var processArguments = Environment.GetCommandLineArgs();
+        return NativeWebRestorePreflight.Evaluate(
+            _configuration,
+            isLinux: OperatingSystem.IsLinux(),
+            isWindows: OperatingSystem.IsWindows(),
+            externalSupervisor: LauncherEnvironment.IsSystemdManagedDeployment(),
+            containerEnvironment: LauncherEnvironment.IsCurrentContainerEnvironment(),
+            setsidPath: OperatingSystem.IsLinux() ? LinuxXdgBrowserOpener.FindExecutable("setsid") : null,
+            processPath: processPath,
+            managedEntryPoint: WebReplacementCommand.GetManagedEntryPoint(processPath, processArguments),
+            hostArguments: GetCurrentHostArguments(),
+            coreWasRunning: CurrentCoreRuntime.State == CoreRuntimeState.Running);
     }
 
     // Restore failed before database replacement: bring the pre-restore Core runtime intent

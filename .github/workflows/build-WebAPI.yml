@@ -99,17 +99,21 @@ jobs:
       - name: Verify API build, backend and ServiceLib tests, native startup and package boundaries
         run: bash v2rayN/v2rayN.WebAPI/Scripts/verify.sh "$RUNNER_TEMP/v2rayN.WebAPI-verify"
       - name: Check patch whitespace
-        if: github.event_name == 'pull_request' || github.event_name == 'push'
+        if: github.event_name == 'pull_request' || github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         shell: bash
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before || '' }}
         run: |
           set -euo pipefail
-          if [[ "$BASE_SHA" =~ ^0+$ ]]; then
+          base_sha="$BASE_SHA"
+          if [[ -z "$base_sha" ]]; then
+            base_sha="$(git rev-parse HEAD^)"
+          fi
+          if [[ "$base_sha" =~ ^0+$ ]]; then
             empty_tree="$(git hash-object -t tree -w /dev/null)"
             git diff --check "$empty_tree" HEAD
           else
-            git diff --check "$BASE_SHA...HEAD"
+            git diff --check "$base_sha...HEAD"
           fi
 
   windows:
@@ -252,6 +256,13 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw "sing-box.exe smoke failed: $LASTEXITCODE" }
           & (Join-Path $candidateBin 'mihomo\mihomo.exe') -v
           if ($LASTEXITCODE -ne 0) { throw "mihomo.exe smoke failed: $LASTEXITCODE" }
+      - name: Smoke-test Windows backup restore handoff and Core intent recovery
+        if: inputs.release_tag != ''
+        shell: pwsh
+        run: |
+          & ./v2rayN/v2rayN.WebAPI/Tests/Integration/Test-Windows.ps1 `
+            -Mode restore `
+            -PublishDirectory (Join-Path $env:RUNNER_TEMP 'v2rayN.WebAPI-win-x64')
       - name: Smoke-test Windows self-update replacement and rollback
         if: inputs.release_tag != ''
         shell: pwsh

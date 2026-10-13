@@ -51,7 +51,7 @@ internal static class Program
         var daemonEnvironment = LauncherEnvironment.IsDaemonEnvironment(environment);
         var interactiveLaunch = interactiveTerminal || LauncherEnvironment.IsInteractiveLaunchMarker(environment);
         var supervisedEnvironment = daemonEnvironment && !interactiveLaunch;
-        var containerEnvironment = IsContainerEnvironment();
+        var containerEnvironment = LauncherEnvironment.IsCurrentContainerEnvironment();
         var managementKey = environment.GetValueOrDefault(ManagementKeyEnvironmentVariable);
         if (!string.IsNullOrEmpty(managementKey)
             && (managementKey.Length < WebAuthService.MinimumKeyLength
@@ -191,40 +191,27 @@ internal static class Program
             : WebLifecycleAction.Shutdown;
         var lifecyclePlan = WebLifecyclePlanner.Create(
             exitAction,
-            OperatingSystem.IsLinux(),
+            supportsNativeRestart: OperatingSystem.IsLinux() || OperatingSystem.IsWindows(),
             LauncherEnvironment.IsSystemdManagedDeployment(),
             containerEnvironment);
         if (lifecyclePlan.ShouldStartReplacement)
         {
-            var processPath = Environment.ProcessPath;
-            var commandLine = Environment.GetCommandLineArgs();
-            var command = WebReplacementCommand.Create(
-                LinuxXdgBrowserOpener.FindExecutable("setsid"),
-                processPath,
-                WebReplacementCommand.GetManagedEntryPoint(processPath, commandLine),
-                launchOptions.HostArguments);
-            if (command is null)
+            var replacement = hostResult.NativeRestoreReplacement;
+            if (replacement is null)
             {
-                WriteNativeRestartDiagnostic("Restore requested a native Web restart, but the executable entry point or setsid could not be resolved.");
-                return 1;
-            }
-
-            var (restartHealthUri, _) = GetLauncherUris(builder.Configuration);
-            if (restartHealthUri is null)
-            {
-                WriteNativeRestartDiagnostic(
-                    "Restore requested a native Web restart, but the configured listeners have no loopback HTTP health endpoint to verify the replacement.");
+                WriteNativeRestartDiagnostic("Restore requested a native Web restart without a validated replacement plan.");
                 return 1;
             }
 
             var coordinator = new NativeWebRestartCoordinator(
                 new HttpWebHealthProbe(),
-                new LinuxReplacementProcessStarter(),
+                new NativeReplacementProcessStarter(),
                 new FileWebInstanceOwnershipProbe());
             var handoff = await coordinator.StartReplacementAfterOwnerReleaseAsync(
                 GetInstanceLockPath(),
-                restartHealthUri,
-                command);
+                replacement.HealthUri,
+                replacement.Command,
+                expectedCoreRunning: replacement.CoreWasRunning);
             WriteNativeRestartDiagnostic(handoff.Message, handoff.Success, handoff.ReplacementProcessId);
             return handoff.Success ? hostResult.ExitCode : 1;
         }
@@ -353,7 +340,7 @@ internal static class Program
         }
 
         await app.RunAsync();
-        return new WebHostRunResult(0, runtime.RestoreAndRestartRequested);
+        return new WebHostRunResult(0, runtime.RestoreAndRestartRequested, runtime.NativeRestoreReplacement);
     }
 
     private static void WriteNativeRestartDiagnostic(string message, bool success = false, int? processId = null)
@@ -374,7 +361,10 @@ internal static class Program
         }
     }
 
-    private sealed record WebHostRunResult(int ExitCode, bool RestoreAndRestartRequested);
+    private sealed record WebHostRunResult(
+        int ExitCode,
+        bool RestoreAndRestartRequested,
+        NativeWebRestoreReplacement? NativeRestoreReplacement);
 
     private static void PrepareDataScope()
     {
@@ -407,14 +397,6 @@ internal static class Program
         // Never guess a loopback address or port: a probe that does not match the
         // configured listeners would verify (or stop) the wrong process.
         return (null, null);
-    }
-
-    private static bool IsContainerEnvironment()
-    {
-        var environment = ReadEnvironment();
-        return LauncherEnvironment.IsContainerEnvironment(environment)
-            || File.Exists("/.dockerenv")
-            || File.Exists("/run/.containerenv");
     }
 
     private static Dictionary<string, string?> ReadEnvironment() =>

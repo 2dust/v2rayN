@@ -1,6 +1,6 @@
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet('startup', 'update')]
+    [ValidateSet('startup', 'update', 'restore')]
     [string]$Mode,
     [ValidateNotNullOrEmpty()]
     [string]$PublishDirectory,
@@ -12,10 +12,18 @@ param(
 
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Net.Http
+Add-Type -AssemblyName System.IO.Compression
+Add-Type -AssemblyName System.IO.Compression.FileSystem
 
-if ($Mode -eq 'startup') {
-    if (-not $PublishDirectory) { throw 'startup mode requires -PublishDirectory.' }
-} else {
+if ($Mode -in @('startup', 'restore')) {
+    if (-not $PublishDirectory) { throw "$Mode mode requires -PublishDirectory." }
+    if ($Mode -eq 'restore') {
+        $xray = Join-Path $PublishDirectory 'bin\xray\xray.exe'
+        if (-not (Test-Path -LiteralPath $xray -PathType Leaf)) {
+            throw "restore mode requires the bundled Xray executable: $xray"
+        }
+    }
+} elseif ($Mode -eq 'update') {
     if (-not $PreviousPublishDirectory -or -not $CandidatePublishDirectory) {
         throw 'update mode requires -PreviousPublishDirectory and -CandidatePublishDirectory.'
     }
@@ -145,12 +153,26 @@ function Stop-NativeTestProcess([Diagnostics.Process]$Process, [int]$TimeoutMill
     }
 }
 
+function Stop-TestProcessAndWait([int]$ProcessId, [int]$TimeoutMilliseconds = 15000) {
+    if (-not $ProcessId -or -not (Get-Process -Id $ProcessId -ErrorAction SilentlyContinue)) { return }
+    Stop-Process -Id $ProcessId -Force -ErrorAction SilentlyContinue
+    $deadline = [DateTime]::UtcNow.AddMilliseconds($TimeoutMilliseconds)
+    while ([DateTime]::UtcNow -lt $deadline) {
+        if (-not (Get-Process -Id $ProcessId -ErrorAction SilentlyContinue)) { return }
+        Start-Sleep -Milliseconds 100
+    }
+    if (Get-Process -Id $ProcessId -ErrorAction SilentlyContinue) {
+        throw "Windows process $ProcessId did not exit during smoke cleanup."
+    }
+}
+
 function Wait-TestHealth {
     param(
         [string]$Url,
         [string]$ExpectedVersion = '',
         [Diagnostics.Process]$Process,
-        [int]$TimeoutSeconds = 35
+        [int]$TimeoutSeconds = 35,
+        [int]$PreviousProcessId = 0
     )
     $client = New-NoProxyHttpClient
     try {
@@ -173,10 +195,15 @@ function Wait-TestHealth {
                     }
                     $version = $response.Headers.GetValues('X-v2rayn-WebAPI-version') | Select-Object -First 1
                     $ownerId = $response.Headers.GetValues('X-v2rayn-WebAPI-instance-pid') | Select-Object -First 1
-                    if ($version -eq $ExpectedVersion -and $ownerId) {
+                    $isPreviousProcess = $PreviousProcessId -gt 0 -and $ownerId -and [int]$ownerId -eq $PreviousProcessId
+                    if ($version -eq $ExpectedVersion -and $ownerId -and -not $isPreviousProcess) {
                         return [pscustomobject]@{ Version = $version; ProcessId = [int]$ownerId; Body = $body }
                     }
-                    $lastError = "unexpected version ${version}: $body"
+                    if ($isPreviousProcess) {
+                        $lastError = "the previous process $PreviousProcessId is still serving health"
+                    } else {
+                        $lastError = "unexpected version ${version}: $body"
+                    }
                 } else {
                     $lastError = "HTTP $([int]$response.StatusCode): $body"
                 }
@@ -200,6 +227,231 @@ function Write-TestJson([string]$Path, $Value) {
     [IO.File]::WriteAllText($Path, $json, [Text.UTF8Encoding]::new($false))
 }
 
+function Invoke-WebApiJson {
+    param(
+        [System.Net.Http.HttpClient]$Client,
+        [string]$Url,
+        [string]$Path,
+        [string]$Method = 'GET',
+        [string]$Token,
+        [object]$Body,
+        [string]$UploadPath
+    )
+
+    $request = [System.Net.Http.HttpRequestMessage]::new([System.Net.Http.HttpMethod]::new($Method), "$Url$Path")
+    if ($Token) {
+        $request.Headers.Authorization = [System.Net.Http.Headers.AuthenticationHeaderValue]::new('Bearer', $Token)
+    }
+    if ($UploadPath) {
+        $multipart = [System.Net.Http.MultipartFormDataContent]::new()
+        $fileContent = [System.Net.Http.ByteArrayContent]::new([IO.File]::ReadAllBytes($UploadPath))
+        $fileContent.Headers.ContentType = [System.Net.Http.Headers.MediaTypeHeaderValue]::new('application/zip')
+        $multipart.Add($fileContent, 'file', [IO.Path]::GetFileName($UploadPath))
+        $request.Content = $multipart
+    } elseif ($null -ne $Body) {
+        $json = $Body | ConvertTo-Json -Depth 16 -Compress
+        $request.Content = [System.Net.Http.StringContent]::new($json, [Text.Encoding]::UTF8, 'application/json')
+    }
+
+    try {
+        $response = $Client.SendAsync($request).GetAwaiter().GetResult()
+        try {
+            $text = $response.Content.ReadAsStringAsync().GetAwaiter().GetResult()
+            $parsed = if ($text) { $text | ConvertFrom-Json } else { $null }
+            return [pscustomobject]@{ StatusCode = [int]$response.StatusCode; Json = $parsed; Raw = $text }
+        } finally {
+            $response.Dispose()
+        }
+    } finally {
+        $request.Dispose()
+    }
+}
+
+function Get-WebApiSessionToken {
+    param([System.Net.Http.HttpClient]$Client, [string]$Url, [string]$Key)
+    $login = Invoke-WebApiJson -Client $Client -Url $Url -Path '/api/auth/login' -Method 'POST' -Body @{ key = $Key }
+    if (-not $login.Json.success -or -not $login.Json.data.token) {
+        throw "Windows restore smoke login failed: $($login.Raw)"
+    }
+    return [string]$login.Json.data.token
+}
+
+function Download-TestBackup {
+    param([System.Net.Http.HttpClient]$Client, [string]$Url, [string]$Token, [string]$Path)
+    $request = [System.Net.Http.HttpRequestMessage]::new([System.Net.Http.HttpMethod]::Get, "$Url/api/backup/download")
+    $request.Headers.Authorization = [System.Net.Http.Headers.AuthenticationHeaderValue]::new('Bearer', $Token)
+    try {
+        $response = $Client.SendAsync($request).GetAwaiter().GetResult()
+        try {
+            if (-not $response.IsSuccessStatusCode) {
+                throw "Backup download failed with HTTP $([int]$response.StatusCode)."
+            }
+            [IO.File]::WriteAllBytes($Path, $response.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult())
+        } finally {
+            $response.Dispose()
+        }
+    } finally {
+        $request.Dispose()
+    }
+}
+
+function Add-RestoreMarkerToBackup([string]$ArchivePath) {
+    $archive = [System.IO.Compression.ZipFile]::Open($ArchivePath, [System.IO.Compression.ZipArchiveMode]::Update)
+    try {
+        if ($null -ne $archive.GetEntry('guiConfigs/restore-smoke-marker.txt')) {
+            throw 'The generated backup unexpectedly contains the restore smoke marker already.'
+        }
+        $entry = $archive.CreateEntry('guiConfigs/restore-smoke-marker.txt')
+        $stream = $entry.Open()
+        try {
+            $writer = [IO.StreamWriter]::new($stream, [Text.UTF8Encoding]::new($false))
+            try { $writer.Write('RESTORE_CONFIG_APPLIED') } finally { $writer.Dispose() }
+        } finally {
+            $stream.Dispose()
+        }
+    } finally {
+        $archive.Dispose()
+    }
+}
+
+function Invoke-RestoreScenario([bool]$CoreWasRunning) {
+    $packageRoot = (Resolve-Path -LiteralPath $PublishDirectory).Path
+    $scenario = if ($CoreWasRunning) { 'running-core' } else { 'stopped-core' }
+    $caseRoot = Join-Path $testRoot $scenario
+    $install = Join-Path $caseRoot 'install'
+    New-Item -ItemType Directory -Path $install -Force | Out-Null
+    Get-ChildItem -LiteralPath $packageRoot -Force | Where-Object { $_.Name -ne '.env' } | ForEach-Object {
+        Copy-Item -LiteralPath $_.FullName -Destination $install -Recurse -Force
+    }
+
+    $identity = Get-Content -LiteralPath (Join-Path $install 'v2rayN.WebAPI.build.json') -Raw | ConvertFrom-Json
+    if ($identity.rid -ne 'win-x64') { throw 'Windows restore smoke must run against the win-x64 package.' }
+    $guiDirectory = Join-Path $install 'guiConfigs'
+    $markerPath = Join-Path $guiDirectory 'restore-smoke-marker.txt'
+    $key = 'Windows-restore-' + [Guid]::NewGuid().ToString('N')
+    $url = "http://127.0.0.1:$(Get-FreeLoopbackPort)"
+    $bundleRoot = Join-Path $caseRoot 'bundle'
+    New-Item -ItemType Directory -Path $bundleRoot -Force | Out-Null
+    $archivePath = Join-Path $caseRoot 'restore.zip'
+    $owner = $null
+    $replacementProcessId = $null
+    $client = New-NoProxyHttpClient
+    $token = $null
+    $success = $false
+    try {
+        Set-UpdateEnvironment $url $key $bundleRoot
+        try {
+            $executable = Join-Path $install $executableName
+            $owner = Start-NativeTestProcess $executable ('--foreground --no-open --urls "{0}"' -f $url) $install
+        } finally {
+            Restore-TestEnvironment
+        }
+
+        $started = Wait-TestHealth -Url $url -ExpectedVersion $identity.version -Process $owner
+        if ($started.ProcessId -ne $owner.Id) { throw 'Initial Windows restore smoke lock/health PID mismatch.' }
+        $token = Get-WebApiSessionToken -Client $client -Url $url -Key $key
+
+        if ($CoreWasRunning) {
+            $profile = @{
+                configType = 'vless'
+                remarks = 'Windows backup restore smoke'
+                address = '127.0.0.1'
+                port = 65535
+                password = [Guid]::NewGuid().ToString()
+                network = 'tcp'
+                streamSecurity = ''
+            }
+            $saved = Invoke-WebApiJson -Client $client -Url $url -Path '/api/profiles' -Method 'POST' -Token $token -Body $profile
+            if (-not $saved.Json.success -or -not $saved.Json.data.profileId) {
+                throw "Could not create the Windows Core restore smoke profile: $($saved.Raw)"
+            }
+            $profileId = [string]$saved.Json.data.profileId
+            $selected = Invoke-WebApiJson -Client $client -Url $url -Path "/api/profiles/$profileId/select" -Method 'POST' -Token $token
+            if (-not $selected.Json.success) { throw "Could not start the Windows restore smoke Core: $($selected.Raw)" }
+        }
+
+        $beforeStatus = Invoke-WebApiJson -Client $client -Url $url -Path '/api/status' -Token $token
+        if ($CoreWasRunning) {
+            if (-not $beforeStatus.Json.data.coreRunning -or $beforeStatus.Json.data.runtimeState -ne 'running') {
+                throw "Windows restore smoke did not start Core before backup: $($beforeStatus.Raw)"
+            }
+        } elseif ($beforeStatus.Json.data.coreRunning -or $beforeStatus.Json.data.runtimeState -ne 'stopped') {
+            throw "Windows restore smoke expected Core to remain stopped before backup: $($beforeStatus.Raw)"
+        }
+
+        Download-TestBackup -Client $client -Url $url -Token $token -Path $archivePath
+        Add-RestoreMarkerToBackup $archivePath
+        if (Test-Path -LiteralPath $markerPath) { throw 'Restore marker exists before the Windows backup restore.' }
+
+        $restore = Invoke-WebApiJson -Client $client -Url $url -Path '/api/backup/restore' -Method 'POST' -Token $token -UploadPath $archivePath
+        if ($restore.StatusCode -ne 202 -or -not $restore.Json.success) {
+            throw "Windows backup restore was not accepted (HTTP $($restore.StatusCode)): $($restore.Raw)"
+        }
+
+        $health = Wait-TestHealth -Url $url -ExpectedVersion $identity.version -TimeoutSeconds 90 -PreviousProcessId $owner.Id
+        $replacementProcessId = $health.ProcessId
+        if ($replacementProcessId -eq $owner.Id) { throw 'Windows backup restore reconnected to the old WebAPI process.' }
+        if (-not (Get-Process -Id $replacementProcessId -ErrorAction SilentlyContinue)) {
+            throw "Windows restored WebAPI process $replacementProcessId is not running."
+        }
+        if (-not $owner.WaitForExit(20000)) { throw 'The old Windows WebAPI process did not exit after verified restore handoff.' }
+        if (-not (Test-Path -LiteralPath $markerPath -PathType Leaf)) { throw 'The restored Windows config marker was not installed.' }
+        if ((Get-Content -LiteralPath $markerPath -Raw) -ne 'RESTORE_CONFIG_APPLIED') { throw 'The restored Windows config marker content is incorrect.' }
+
+        # Backend restart invalidates in-memory sessions; reconnect with the retained local key.
+        $token = Get-WebApiSessionToken -Client $client -Url $url -Key $key
+        $afterStatus = Invoke-WebApiJson -Client $client -Url $url -Path '/api/status' -Token $token
+        $coreIds = @($afterStatus.Json.data.coreProcessIds | Where-Object { $_ })
+        if ($CoreWasRunning) {
+            if (-not $afterStatus.Json.data.coreRunning -or $afterStatus.Json.data.runtimeState -ne 'running' -or $coreIds.Count -eq 0) {
+                throw "Windows restore did not recover the previously running Core: $($afterStatus.Raw)"
+            }
+            Write-Output 'Windows backup restore passed (new healthy Web PID, restored config, previously running Core restarted).'
+        } else {
+            if ($afterStatus.Json.data.coreRunning -or $afterStatus.Json.data.runtimeState -ne 'stopped' -or $coreIds.Count -ne 0) {
+                throw "Windows restore changed the previously stopped Core intent: $($afterStatus.Raw)"
+            }
+            Write-Output 'Windows backup restore passed (new healthy Web PID, restored config, previously stopped Core remains stopped).'
+        }
+        $success = $true
+    } finally {
+        $cleanupError = $null
+        if ($null -ne $client -and $replacementProcessId -and (Get-Process -Id $replacementProcessId -ErrorAction SilentlyContinue)) {
+            try {
+                if ($token) { [void](Invoke-WebApiJson -Client $client -Url $url -Path '/api/core/stop' -Method 'POST' -Token $token) }
+            } catch { }
+            try { Stop-Process -Id $replacementProcessId -Force -ErrorAction SilentlyContinue } catch { }
+            for ($attempt = 0; $attempt -lt 100; $attempt++) {
+                if (-not (Get-Process -Id $replacementProcessId -ErrorAction SilentlyContinue)) { break }
+                Start-Sleep -Milliseconds 100
+            }
+            if (Get-Process -Id $replacementProcessId -ErrorAction SilentlyContinue) {
+                $cleanupError = "Restored Windows WebAPI process $replacementProcessId did not exit during cleanup."
+            }
+        }
+        if ($null -ne $owner) {
+            try {
+                if (-not $owner.HasExited) {
+                    try { [void][WebApiWindowsSmokeNative]::GenerateConsoleCtrlEvent(1, [uint32]$owner.Id) } catch { }
+                    if (-not $owner.WaitForExit(5000)) { Stop-Process -Id $owner.Id -Force -ErrorAction SilentlyContinue }
+                    if (-not $owner.WaitForExit(10000)) {
+                        if ($null -eq $cleanupError) { $cleanupError = "Old Windows WebAPI process $($owner.Id) did not exit during cleanup." }
+                    }
+                }
+            } catch { try { Stop-Process -Id $owner.Id -Force -ErrorAction SilentlyContinue } catch { } }
+            $owner.Dispose()
+        }
+        if ($null -ne $client) { $client.Dispose() }
+        if ($cleanupError) { throw $cleanupError }
+    }
+}
+
+function Invoke-RestoreSmoke {
+    Invoke-RestoreScenario $false
+    Invoke-RestoreScenario $true
+    Write-Output 'Windows native backup restore replacement and Core-intent smoke passed.'
+}
+
 # First startup, health endpoint, first-run data paths and graceful shutdown.
 function Invoke-StartupSmoke {
     $packageRoot = (Resolve-Path -LiteralPath $PublishDirectory).Path
@@ -215,6 +467,9 @@ function Invoke-StartupSmoke {
     }
 
     Clear-TestEnvironment
+    # Hosted Windows runners may export the variable with an empty value; the
+    # backend binds it as a Boolean, so make the first-startup smoke deterministic.
+    [Environment]::SetEnvironmentVariable('V2RAYN_WEB_AUTOSTART', 'false', 'Process')
     $url = "http://127.0.0.1:$(Get-FreeLoopbackPort)"
     $webProcess = $null
     $client = $null
@@ -429,7 +684,7 @@ function Invoke-UpdateScenario([bool]$ExpectRollback) {
         else { Write-Output 'Windows native update replacement passed.' }
     } finally {
         foreach ($processId in @($updatedProcessId, $(if ($owner) { $owner.Id } else { $null }))) {
-            if ($processId) { Stop-Process -Id $processId -Force -ErrorAction SilentlyContinue }
+            if ($processId) { Stop-TestProcessAndWait -ProcessId $processId }
         }
         if ($helper) { $helper.Dispose() }
         if ($owner) { $owner.Dispose() }
@@ -439,6 +694,8 @@ function Invoke-UpdateScenario([bool]$ExpectRollback) {
 try {
     if ($Mode -eq 'startup') {
         Invoke-StartupSmoke
+    } elseif ($Mode -eq 'restore') {
+        Invoke-RestoreSmoke
     } else {
         Invoke-UpdateScenario $false | Out-Null
         Invoke-UpdateScenario $true | Out-Null
@@ -448,7 +705,26 @@ try {
 } finally {
     Restore-TestEnvironment
     if ($success) {
-        Remove-Item -LiteralPath $testRoot -Recurse -Force
+        $removed = $false
+        $cleanupError = $null
+        for ($attempt = 0; $attempt -lt 20; $attempt++) {
+            try {
+                if (Test-Path -LiteralPath $testRoot) {
+                    Remove-Item -LiteralPath $testRoot -Recurse -Force -ErrorAction Stop
+                }
+                if (-not (Test-Path -LiteralPath $testRoot)) {
+                    $removed = $true
+                    break
+                }
+                throw 'The isolated Windows smoke directory still exists.'
+            } catch {
+                $cleanupError = $_.Exception.Message
+                if ($attempt -lt 19) { Start-Sleep -Milliseconds 500 }
+            }
+        }
+        if (-not $removed) {
+            Write-Warning "Windows $Mode smoke passed, but isolated temp cleanup was deferred at $testRoot : $cleanupError"
+        }
     } else {
         Write-Warning "Windows $Mode test failed; isolated files were retained at $testRoot"
     }

@@ -516,6 +516,9 @@ public static class ApiMessageKeys
     public const string BackupCreated = "backup.created";
     public const string BackupRestoreStarted = "backup.restoreStarted";
     public const string BackupRestoreFailed = "backup.restoreFailed";
+    public const string BackupRestoreProbeUnavailable = "backup.restoreProbeUnavailable";
+    public const string BackupRestoreSetSidUnavailable = "backup.restoreSetSidUnavailable";
+    public const string BackupRestoreExecutableUnavailable = "backup.restoreExecutableUnavailable";
     public const string BackupArchiveInvalid = "backup.archiveInvalid";
     public const string BackupDatabaseIncompatible = "backup.databaseIncompatible";
     public const string WebDavSettingsSaved = "backup.webdavSettingsSaved";
