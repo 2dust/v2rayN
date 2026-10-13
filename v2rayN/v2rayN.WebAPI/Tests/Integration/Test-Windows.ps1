@@ -467,6 +467,9 @@ function Invoke-StartupSmoke {
     }
 
     Clear-TestEnvironment
+    # Hosted Windows runners may export the variable with an empty value; the
+    # backend binds it as a Boolean, so make the first-startup smoke deterministic.
+    [Environment]::SetEnvironmentVariable('V2RAYN_WEB_AUTOSTART', 'false', 'Process')
     $url = "http://127.0.0.1:$(Get-FreeLoopbackPort)"
     $webProcess = $null
     $client = $null
