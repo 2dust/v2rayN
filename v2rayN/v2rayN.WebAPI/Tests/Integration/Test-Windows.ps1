@@ -707,7 +707,7 @@ try {
     if ($success) {
         $removed = $false
         $cleanupError = $null
-        for ($attempt = 0; $attempt -lt 10; $attempt++) {
+        for ($attempt = 0; $attempt -lt 20; $attempt++) {
             try {
                 if (Test-Path -LiteralPath $testRoot) {
                     Remove-Item -LiteralPath $testRoot -Recurse -Force -ErrorAction Stop
@@ -719,7 +719,7 @@ try {
                 throw 'The isolated Windows smoke directory still exists.'
             } catch {
                 $cleanupError = $_.Exception.Message
-                if ($attempt -lt 9) { Start-Sleep -Milliseconds 500 }
+                if ($attempt -lt 19) { Start-Sleep -Milliseconds 500 }
             }
         }
         if (-not $removed) {
