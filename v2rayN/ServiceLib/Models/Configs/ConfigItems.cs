@@ -99,7 +99,14 @@ public class UIItem
     public bool EnableDragDropSort { get; set; }
     public bool DoubleClick2Activate { get; set; }
     public bool AutoHideStartup { get; set; }
-    public bool Hide2TrayWhenClose { get; set; }
+
+    /// <summary>
+    /// 关闭窗口时是否隐藏到托盘（仅 Linux/macOS 生效）。
+    /// null 表示用户从未选择过：此时按启动时检测到的托盘可用性决定（见 AppManager.IsTrayAvailable），
+    /// 这样每个桌面都能得到合适的默认值，也不会把窗口藏到不存在的托盘里。
+    /// </summary>
+    public bool? Hide2TrayWhenClose { get; set; }
+
     public bool MacOSShowInDock { get; set; }
     public List<ColumnItem> MainColumnItem { get; set; }
     public List<WindowSizeItem> WindowSizeItem { get; set; }

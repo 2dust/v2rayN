@@ -180,7 +180,7 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         KeepOlderDedupl = _config.GuiItem.KeepOlderDedupl;
         EnableAutoAdjustMainLvColWidth = _config.UiItem.EnableAutoAdjustMainLvColWidth;
         AutoHideStartup = _config.UiItem.AutoHideStartup;
-        Hide2TrayWhenClose = _config.UiItem.Hide2TrayWhenClose;
+        Hide2TrayWhenClose = _config.UiItem.Hide2TrayWhenClose ?? AppManager.Instance.IsTrayAvailable;
         MacOSShowInDock = _config.UiItem.MacOSShowInDock;
         EnableDragDropSort = _config.UiItem.EnableDragDropSort;
         DoubleClick2Activate = _config.UiItem.DoubleClick2Activate;
@@ -359,7 +359,11 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         _config.GuiItem.KeepOlderDedupl = KeepOlderDedupl;
         _config.UiItem.EnableAutoAdjustMainLvColWidth = EnableAutoAdjustMainLvColWidth;
         _config.UiItem.AutoHideStartup = AutoHideStartup;
-        _config.UiItem.Hide2TrayWhenClose = Hide2TrayWhenClose;
+        // 只在用户的选择与“托盘检测得到的默认值”不同时才写进配置，
+        // 这样没有明确选择过的用户，每次启动都能按当前桌面到底有没有托盘重新决定
+        _config.UiItem.Hide2TrayWhenClose = Hide2TrayWhenClose == AppManager.Instance.IsTrayAvailable
+            ? null
+            : Hide2TrayWhenClose;
         _config.UiItem.MacOSShowInDock = MacOSShowInDock;
         _config.GuiItem.AutoUpdateInterval = AutoUpdateInterval;
         _config.UiItem.EnableDragDropSort = EnableDragDropSort;

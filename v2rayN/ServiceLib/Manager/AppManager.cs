@@ -34,6 +34,11 @@ public sealed class AppManager
 
     public bool ShowInTaskbar { get; set; }
 
+    /// <summary>
+    /// 启动时检测到的托盘可用性（仅 Linux 有意义）。是 UiItem.Hide2TrayWhenClose 为 null 时的取值依据。
+    /// </summary>
+    public bool IsTrayAvailable { get; set; }
+
     public ECoreType RunningCoreType { get; set; }
 
     public bool IsRunningCore(ECoreType type)

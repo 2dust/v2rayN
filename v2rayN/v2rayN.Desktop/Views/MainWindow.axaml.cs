@@ -344,7 +344,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         }
         else
         {
-            if (Utils.IsLinux() && _config.UiItem.Hide2TrayWhenClose == false)
+            if (Utils.IsLinux() && !Hide2TrayWhenClose())
             {
                 WindowState = WindowState.Minimized;
                 return;
@@ -358,6 +358,15 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         }
 
         AppManager.Instance.ShowInTaskbar = bl;
+    }
+
+    /// <summary>
+    /// 关闭窗口时是否隐藏到托盘：用户显式设置优先；未设置（null）时跟启动时检测到的托盘可用性，
+    /// 有托盘就隐藏到托盘，没有托盘就退回最小化到任务栏。
+    /// </summary>
+    private static bool Hide2TrayWhenClose()
+    {
+        return _config.UiItem.Hide2TrayWhenClose ?? AppManager.Instance.IsTrayAvailable;
     }
 
     protected override void OnLoaded(object? sender, RoutedEventArgs e)

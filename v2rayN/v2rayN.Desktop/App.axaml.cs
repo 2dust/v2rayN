@@ -23,6 +23,10 @@ public partial class App : Application
             if (!Design.IsDesignMode)
             {
                 AppManager.Instance.InitComponents();
+
+                // 启动时检测本次会话有没有托盘，用来决定「关闭窗口时隐藏至托盘」的默认值
+                AppManager.Instance.IsTrayAvailable = TrayAvailability.IsAvailable();
+
                 DataContext = StatusBarViewModel.Instance;
             }
 
