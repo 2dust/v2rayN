@@ -2,10 +2,30 @@
 set -euo pipefail
 
 executable="$(realpath "${1:?Usage: test-backup-restore-preflight.sh <native-v2rayN.WebAPI-executable>}")"
+script_path="$(realpath "${BASH_SOURCE[0]}")"
 test -x "$executable"
 command -v curl >/dev/null
 command -v python3 >/dev/null
 command -v openssl >/dev/null
+
+# A service-based Linux runner may keep this test in system.slice even after its
+# environment markers are cleared. Move the entire test (and the WebAPI children
+# it starts) into a transient scope so production supervisor detection stays intact.
+if [[ "${V2RAYN_RESTORE_PREFLIGHT_TEST_SCOPE:-}" != "1" ]]; then
+  scope_environment=(V2RAYN_RESTORE_PREFLIGHT_TEST_SCOPE=1)
+  if [[ -n "${TMPDIR:-}" ]]; then scope_environment+=("TMPDIR=$TMPDIR"); fi
+  if command -v systemd-run >/dev/null && systemd-run --user --scope --quiet /usr/bin/true >/dev/null 2>&1; then
+    exec systemd-run --user --scope --quiet /usr/bin/env \
+      "${scope_environment[@]}" /usr/bin/bash "$script_path" "$executable"
+  elif command -v sudo >/dev/null && sudo -n systemd-run --scope --quiet /usr/bin/true >/dev/null 2>&1; then
+    runuser_bin="$(command -v runuser)"
+    exec sudo -n systemd-run --scope --quiet "$runuser_bin" --preserve-environment -u "$(id -un)" -- \
+      /usr/bin/env "${scope_environment[@]}" /usr/bin/bash "$script_path" "$executable"
+  elif grep -Eq 'system\.slice/.*\.service' /proc/self/cgroup; then
+    echo 'Backup restore preflight test is in a systemd service cgroup, but no transient scope is available.' >&2
+    exit 1
+  fi
+fi
 
 temporary="$(mktemp -d "${TMPDIR:-/tmp}/v2rayn-backup-restore-preflight.XXXXXX")"
 app_pid=""
