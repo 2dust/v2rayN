@@ -78,7 +78,16 @@ public class CoreConfigClashService(Config config, bool isTunEnabled)
 
             //external-controller
             fileContent["external-controller"] = $"{Global.Loopback}:{AppManager.Instance.StatePort2}";
-            fileContent.Remove("secret");
+            if (config.GuiItem.ClashApiSecret.IsNotEmpty())
+            {
+                // Any local process can reach the loopback API; a web page can reach the GET
+                // endpoints through DNS rebinding. Keep a secret whenever one is configured.
+                fileContent["secret"] = config.GuiItem.ClashApiSecret;
+            }
+            else
+            {
+                fileContent.Remove("secret");
+            }
             //allow-lan
             if (config.Inbound.First().AllowLANConn)
             {
