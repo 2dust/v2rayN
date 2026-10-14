@@ -43,9 +43,15 @@ public static class EmbedUtils
     {
         try
         {
-            if (File.Exists(res))
+            // Only read files inside the configuration directory. This method is reachable from
+            // user-supplied routing items (RoutingItem.CustomRulesetPath4Singbox), so without this
+            // confinement it doubles as an arbitrary-file-read primitive for anything the process
+            // can access (private keys, browser profiles, ...).
+            var fullRes = Path.GetFullPath(res);
+            var configDir = Path.GetFullPath(Utils.GetConfigPath());
+            if (fullRes.StartsWith(configDir, StringComparison.OrdinalIgnoreCase) && File.Exists(fullRes))
             {
-                return File.ReadAllText(res);
+                return File.ReadAllText(fullRes);
             }
         }
         catch (Exception ex)
