@@ -39,6 +39,15 @@ public partial class UpdateService(Config config, Func<bool, string, Task> updat
             url = result.Url!;
             fileName = Utils.GetTempPath(Utils.GetGuid());
             await downloadHandle.DownloadFileAsync(new() { FileUrl = url, FilePath = fileName }, blProxy, cancellationToken);
+            // Refuse absurdly large payloads before they are handed to the extractor: the download
+            // path has no size limit today, so a hostile/misbehaving source can fill the system disk
+            // or hand a multi-gigabyte file to the parser.
+            var downloadedLength = new FileInfo(fileName).Length;
+            if (downloadedLength > MaxDownloadBytes)
+            {
+                File.Delete(fileName);
+                throw new InvalidOperationException($"download too large: {downloadedLength} bytes (limit {MaxDownloadBytes})");
+            }
         }
         else
         {
@@ -89,6 +98,15 @@ public partial class UpdateService(Config config, Func<bool, string, Task> updat
             var ext = url.Contains(".tar.gz") ? ".tar.gz" : Path.GetExtension(url);
             fileName = Utils.GetTempPath(Utils.GetGuid() + ext);
             await downloadHandle.DownloadFileAsync(new() { FileUrl = url, FilePath = fileName }, blProxy, cancellationToken);
+            // Refuse absurdly large payloads before they are handed to the extractor: the download
+            // path has no size limit today, so a hostile/misbehaving source can fill the system disk
+            // or hand a multi-gigabyte file to the parser.
+            var downloadedLength = new FileInfo(fileName).Length;
+            if (downloadedLength > MaxDownloadBytes)
+            {
+                File.Delete(fileName);
+                throw new InvalidOperationException($"download too large: {downloadedLength} bytes (limit {MaxDownloadBytes})");
+            }
         }
         else
         {
