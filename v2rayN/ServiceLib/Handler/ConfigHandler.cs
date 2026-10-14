@@ -97,7 +97,11 @@ public static class ConfigHandler
         config.GuiItem ??= new();
         if (!Global.RootCertProviders.Contains(config.GuiItem.RootCertProvider))
         {
-            config.GuiItem.RootCertProvider = Global.RootCertProviders.First();
+            // Default to a pinned root store (chrome) instead of the OS store: the OS store
+            // trusts every locally installed root, which makes the download/subscription
+            // path transparent to any TLS-intercepting root present on the machine
+            // (e.g. an ad-blocking MITM CA). Users can still select the OS store.
+            config.GuiItem.RootCertProvider = Global.ChromeRootProvider;
         }
         config.MsgUIItem ??= new();
 
