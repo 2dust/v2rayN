@@ -4528,6 +4528,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Remember password 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsLinuxSudoPasswordRemember {
+            get {
+                return ResourceManager.GetString("TbSettingsLinuxSudoPasswordRemember", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 The password will be validated via the command line. If a validation error causes the application to malfunction, please restart the application. The password will not be stored and must be entered again after each restart. 的本地化字符串。
         /// </summary>
         public static string TbSettingsLinuxSudoPasswordTip {

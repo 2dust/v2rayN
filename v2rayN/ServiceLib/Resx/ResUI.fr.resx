@@ -1343,7 +1343,10 @@
   </data>
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
     <value>Le mot de passe sera vérifié en ligne de commande. En cas d’échec ou de dysfonctionnement, redémarrez l’application. Il n’est pas stocké et doit être saisi à chaque redémarrage.</value>
-    </data>
+  </data>
+  <data name="TbSettingsLinuxSudoPasswordRemember" xml:space="preserve">
+    <value>Se souvenir du mot de passe</value>
+  </data>
   <data name="TransportHeaderType5" xml:space="preserve">
     <value>Mode XHTTP</value>
   </data>

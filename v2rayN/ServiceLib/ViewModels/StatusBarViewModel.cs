@@ -437,22 +437,38 @@ public partial class StatusBarViewModel : MyReactiveObject
 
         _config.TunModeItem.EnableTun = EnableTun;
 
-        if (EnableTun && AllowEnableTun() == false)
+        if (EnableTun)
         {
-            // When running as a non-administrator, reboot to administrator mode
             if (Utils.IsWindows())
             {
-                _config.TunModeItem.EnableTun = false;
-                await AppManager.Instance.RebootAsAdmin();
-                return;
+                if (AllowEnableTun() == false)
+                {
+                    _config.TunModeItem.EnableTun = false;
+                    await AppManager.Instance.RebootAsAdmin();
+                    return;
+                }
             }
             else
             {
-                var password = await PasswordInputInteraction.HandleSafe(RxVoid.Default);
-                if (password.IsNullOrEmpty())
+                var isValid = AppManager.Instance.LinuxSudoPwd.IsNotEmpty()
+                    && await CoreAdminManager.CheckLinuxSudoPassword(AppManager.Instance.LinuxSudoPwd);
+
+                if (!isValid)
                 {
-                    _config.TunModeItem.EnableTun = false;
-                    return;
+                    if (AppManager.Instance.LinuxSudoPwd.IsNotEmpty())
+                    {
+                        NoticeManager.Instance.Enqueue(ResUI.SudoIncorrectPasswordTip);
+                    }
+                    AppManager.Instance.LinuxSudoPwd = string.Empty;
+
+                    var password = await PasswordInputInteraction.HandleSafe(RxVoid.Default);
+                    if (password.IsNullOrEmpty())
+                    {
+                        _config.TunModeItem.LinuxSudoPwd = null;
+                        _config.TunModeItem.EnableTun = EnableTun = false;
+                        await ConfigHandler.SaveConfig(_config);
+                        return;
+                    }
                 }
             }
         }
@@ -467,15 +483,10 @@ public partial class StatusBarViewModel : MyReactiveObject
         {
             return Utils.IsAdministrator();
         }
-        else if (Utils.IsLinux())
+        else
         {
             return AppManager.Instance.LinuxSudoPwd.IsNotEmpty();
         }
-        else if (Utils.IsMacOS())
-        {
-            return AppManager.Instance.LinuxSudoPwd.IsNotEmpty();
-        }
-        return false;
     }
 
     #endregion System proxy and Routings

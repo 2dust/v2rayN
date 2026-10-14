@@ -1030,7 +1030,7 @@
                         Margin="{StaticResource Margin4}"
                         ColumnDefinitions="Auto,Auto,Auto"
                         DockPanel.Dock="Top"
-                        RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                        RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
 
                         <TextBlock
                             Grid.Row="2"
@@ -1184,6 +1184,31 @@
                             Width="200"
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Left" />
+
+                        <TextBlock
+                            x:Name="labLinuxSudoPassword"
+                            Grid.Row="12"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbSettingsLinuxSudoPassword}" />
+                        <TextBox
+                            x:Name="txtLinuxSudoPassword"
+                            Grid.Row="12"
+                            Grid.Column="1"
+                            Width="200"
+                            Margin="{StaticResource Margin4}"
+                            HorizontalAlignment="Left"
+                            Classes="revealPasswordButton"
+                            PasswordChar="*" />
+                        <TextBlock
+                            x:Name="labLinuxSudoPasswordTip"
+                            Grid.Row="12"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbSettingsLinuxSudoPasswordTip}"
+                            TextWrapping="Wrap" />
                     </Grid>
                 </ScrollViewer>
             </TabItem>

@@ -1365,6 +1365,9 @@
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
     <value>Şifrə əmr sətri vasitəsilə yoxlanılacaq. Doğrulama xətası tətbiqin işini pozarsa, tətbiqi yenidən başladın. Şifrə saxlanılmayacaq və hər yenidən başlatmadan sonra təkrar daxil edilməlidir.</value>
   </data>
+  <data name="TbSettingsLinuxSudoPasswordRemember" xml:space="preserve">
+    <value>Şifrəni yadda saxla</value>
+  </data>
   <data name="TransportHeaderType5" xml:space="preserve">
     <value>xhttp rejimi</value>
   </data>

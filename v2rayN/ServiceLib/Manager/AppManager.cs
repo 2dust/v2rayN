@@ -74,6 +74,10 @@ public sealed class AppManager
             return false;
         }
         _config = config;
+        if (_config.TunModeItem?.LinuxSudoPwd.IsNotEmpty() == true)
+        {
+            LinuxSudoPwd = AesUtils.Decrypt(_config.TunModeItem.LinuxSudoPwd);
+        }
         Thread.CurrentThread.CurrentUICulture = new(_config.UiItem.CurrentLanguage);
 
         //Under Win10

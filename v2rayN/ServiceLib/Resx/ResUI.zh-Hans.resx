@@ -1356,6 +1356,9 @@
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
     <value>密码将调用命令行校验，如果因为校验错误导致无法正常运行时，请重启本应用。 密码不会存储，每次重启后都需要再次输入。</value>
   </data>
+  <data name="TbSettingsLinuxSudoPasswordRemember" xml:space="preserve">
+    <value>记住密码</value>
+  </data>
   <data name="TransportHeaderType5" xml:space="preserve">
     <value>XHTTP 模式</value>
   </data>

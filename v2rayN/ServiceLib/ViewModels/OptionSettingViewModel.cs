@@ -100,6 +100,7 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
     [Reactive] public partial string TunRouteExcludeAddress { get; set; }
     [Reactive] public partial string TunIPv4Address { get; set; }
     [Reactive] public partial string TunIPv6Address { get; set; }
+    [Reactive] public partial string? TunLinuxSudoPassword { get; set; }
 
     #endregion Tun mode
 
@@ -225,6 +226,7 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         TunRouteExcludeAddress = Utils.List2String(_config.TunModeItem.RouteExcludeAddress, true);
         TunIPv4Address = _config.TunModeItem.IPv4Address;
         TunIPv6Address = _config.TunModeItem.IPv6Address;
+        TunLinuxSudoPassword = AesUtils.Decrypt(_config.TunModeItem.LinuxSudoPwd);
 
         #endregion Tun mode
 
@@ -310,6 +312,17 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
             NoticeManager.Instance.Enqueue(ResUI.FillFragmentParameterError);
             return;
         }
+
+        var currentDecrypted = AesUtils.Decrypt(_config.TunModeItem.LinuxSudoPwd);
+        if (TunLinuxSudoPassword != currentDecrypted && TunLinuxSudoPassword.IsNotEmpty())
+        {
+            if (Utils.IsNonWindows() && !await CoreAdminManager.CheckLinuxSudoPassword(TunLinuxSudoPassword))
+            {
+                NoticeManager.Instance.Enqueue(ResUI.SudoIncorrectPasswordTip);
+                return;
+            }
+        }
+
         var needReboot = EnableStatistics != _config.GuiItem.EnableStatistics
                           || DisplayRealTimeSpeed != _config.GuiItem.DisplayRealTimeSpeed
                         || EnableDragDropSort != _config.UiItem.EnableDragDropSort
@@ -398,6 +411,20 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         _config.TunModeItem.RouteExcludeAddress = Utils.String2List(TunRouteExcludeAddress);
         _config.TunModeItem.IPv4Address = TunIPv4Address;
         _config.TunModeItem.IPv6Address = TunIPv6Address;
+
+        if (TunLinuxSudoPassword != currentDecrypted)
+        {
+            if (TunLinuxSudoPassword.IsNullOrEmpty())
+            {
+                _config.TunModeItem.LinuxSudoPwd = null;
+                AppManager.Instance.LinuxSudoPwd = string.Empty;
+            }
+            else
+            {
+                _config.TunModeItem.LinuxSudoPwd = AesUtils.Encrypt(TunLinuxSudoPassword);
+                AppManager.Instance.LinuxSudoPwd = TunLinuxSudoPassword;
+            }
+        }
 
         //coreType
         await SaveCoreType();

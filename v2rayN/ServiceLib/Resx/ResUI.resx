@@ -1368,6 +1368,9 @@
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
     <value>The password will be validated via the command line. If a validation error causes the application to malfunction, please restart the application. The password will not be stored and must be entered again after each restart.</value>
   </data>
+  <data name="TbSettingsLinuxSudoPasswordRemember" xml:space="preserve">
+    <value>Remember password</value>
+  </data>
   <data name="TransportHeaderType5" xml:space="preserve">
     <value>xhttp mode</value>
   </data>

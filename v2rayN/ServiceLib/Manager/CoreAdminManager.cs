@@ -1,5 +1,6 @@
 using CliWrap;
 using CliWrap.Buffered;
+using ServiceLib.ViewModels;
 
 namespace ServiceLib.Manager;
 
@@ -11,6 +12,32 @@ public class CoreAdminManager
     private Func<bool, string, Task>? _updateFunc;
     private int _linuxSudoPid = -1;
     private const string _tag = "CoreAdminHandler";
+
+    public static async Task<bool> CheckLinuxSudoPassword(string? password)
+    {
+        if (password.IsNullOrEmpty() || Utils.IsWindows())
+        {
+            return false;
+        }
+
+        try
+        {
+            var inputPwd = password.EndsWith('\n') ? password : password + "\n";
+            var arg = new List<string>() { "-c", "sudo -S echo SUDO_CHECK" };
+            var result = await Cli.Wrap(Global.LinuxBash)
+                .WithArguments(arg)
+                .WithStandardInputPipe(PipeSource.FromString(inputPwd))
+                .WithValidation(CommandResultValidation.None)
+                .ExecuteBufferedAsync();
+
+            return result.ExitCode == 0;
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog("CheckSudoPassword", ex);
+            return false;
+        }
+    }
 
     public async Task Init(Config config, Func<bool, string, Task> updateFunc)
     {
@@ -31,6 +58,33 @@ public class CoreAdminManager
 
     public async Task<ProcessService?> RunProcessAsLinuxSudo(string fileName, CoreInfo coreInfo, string configPath)
     {
+        _config = AppManager.Instance.Config;
+
+        var isPassValid = AppManager.Instance.LinuxSudoPwd.IsNotEmpty()
+            && await CheckLinuxSudoPassword(AppManager.Instance.LinuxSudoPwd);
+
+        if (!isPassValid)
+        {
+            if (AppManager.Instance.LinuxSudoPwd.IsNotEmpty())
+            {
+                await UpdateFunc(true, ResUI.SudoIncorrectPasswordTip);
+            }
+            AppManager.Instance.LinuxSudoPwd = string.Empty;
+
+            var newPwd = await StatusBarViewModel.Instance.PasswordInputInteraction.HandleSafe(RxVoid.Default);
+            if (newPwd.IsNullOrEmpty())
+            {
+                if (_config?.TunModeItem != null)
+                {
+                    _config.TunModeItem.LinuxSudoPwd = null;
+                    _config.TunModeItem.EnableTun = false;
+                    await ConfigHandler.SaveConfig(_config);
+                }
+                StatusBarViewModel.Instance.EnableTun = false;
+                throw new Exception(ResUI.SudoIncorrectPasswordTip);
+            }
+        }
+
         StringBuilder sb = new();
         sb.AppendLine("#!/bin/bash");
         var cmdLine = $"{fileName.AppendQuotes()} {string.Format(coreInfo.Arguments, Utils.GetBinConfigPath(configPath).AppendQuotes())}";
@@ -62,6 +116,16 @@ public class CoreAdminManager
 
         if (procService is null or { HasExited: true })
         {
+            if (!await CheckLinuxSudoPassword(AppManager.Instance.LinuxSudoPwd))
+            {
+                AppManager.Instance.LinuxSudoPwd = string.Empty;
+                if (_config?.TunModeItem != null)
+                {
+                    _config.TunModeItem.LinuxSudoPwd = null;
+                    await ConfigHandler.SaveConfig(_config);
+                }
+                await UpdateFunc(true, ResUI.SudoIncorrectPasswordTip);
+            }
             throw new Exception(ResUI.FailedToRunCore);
         }
         _linuxSudoPid = procService.Id;

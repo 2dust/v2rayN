@@ -1347,6 +1347,9 @@
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
     <value>Kata sandi akan divalidasi melalui baris perintah. Jika kesalahan validasi menyebabkan aplikasi bermasalah, mulai ulang aplikasi. Kata sandi tidak disimpan dan harus dimasukkan lagi setelah setiap mulai ulang.</value>
   </data>
+  <data name="TbSettingsLinuxSudoPasswordRemember" xml:space="preserve">
+    <value>Ingat kata sandi</value>
+  </data>
   <data name="TransportHeaderType5" xml:space="preserve">
     <value>Mode xhttp</value>
   </data>
