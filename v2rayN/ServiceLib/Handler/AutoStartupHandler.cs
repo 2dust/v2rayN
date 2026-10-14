@@ -85,7 +85,7 @@ public static class AutoStartupHandler
     /// <param name="description"></param>
     /// <exception cref="ArgumentNullException"></exception>
     [SupportedOSPlatform("windows")]
-    public static void AutoStartTaskService(string taskName, string fileName, string description)
+    public static void AutoStartTaskService(string taskName, string fileName, string description, bool blHighest = false)
     {
         if (taskName.IsNullOrEmpty())
         {
