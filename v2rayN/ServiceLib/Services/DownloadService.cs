@@ -356,7 +356,10 @@ public class DownloadService
         var port = AppManager.Instance.GetLocalPort(EInboundProtocol.socks);
         if (await SocksPortCheck(Global.Loopback, port, cancellationToken) == false)
         {
-            return null;
+            // A proxied download was requested but the local inbound is unreachable.
+                // Returning null makes the request go out directly (real IP, outside the
+                // tunnel) with no signal to the user. Fail closed instead.
+                throw new InvalidOperationException($"Proxy was requested but the local SOCKS inbound 127.0.0.1:{port} is not reachable.");
         }
 
         return new WebProxy($"socks5://{Global.Loopback}:{port}");
