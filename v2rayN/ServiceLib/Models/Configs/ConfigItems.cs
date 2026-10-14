@@ -75,6 +75,11 @@ public class GUIItem
     public bool EnableHWA { get; set; } = false;
     public bool EnableLog { get; set; } = true;
     public string? RootCertProvider { get; set; }
+
+    /// <summary>
+    /// Secret for the local Clash API (external-controller). Empty = no secret (current behaviour).
+    /// </summary>
+    public string? ClashApiSecret { get; set; }
 }
 
 [Serializable]
