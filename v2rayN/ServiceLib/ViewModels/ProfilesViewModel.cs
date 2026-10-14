@@ -51,6 +51,7 @@ public partial class ProfilesViewModel : MyReactiveObject
 
     public ReactiveCommand<RxVoid, RxVoid> RemoveServerCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> RemoveDuplicateServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> CleanUnusedProfilesCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> CopyServerCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> SetDefaultServerCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> ShareServerCmd { get; }
@@ -125,6 +126,10 @@ public partial class ProfilesViewModel : MyReactiveObject
         RemoveDuplicateServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await RemoveDuplicateServer();
+        });
+        CleanUnusedProfilesCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await CleanUnusedProfilesAsync();
         });
         CopyServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -427,6 +432,8 @@ public partial class ProfilesViewModel : MyReactiveObject
                         DelayVal = t33?.Delay != 0 ? $"{t33?.Delay}" : string.Empty,
                         SpeedVal = t33?.Speed > 0 ? $"{t33?.Speed}" : t33?.Message ?? string.Empty,
                         IpInfo = t33?.IpInfo ?? string.Empty,
+                        LastUsedVal = FormatLastUsed(t33?.LastUsed ?? 0, t33?.UseCount ?? 0),
+                        LastUsed = t33?.LastUsed ?? 0,
                         TodayDown = t22 == null ? "" : Utils.HumanFy(t22.TodayDown),
                         TodayUp = t22 == null ? "" : Utils.HumanFy(t22.TodayUp),
                         TotalDown = t22 == null ? "" : Utils.HumanFy(t22.TotalDown),
@@ -541,6 +548,33 @@ public partial class ProfilesViewModel : MyReactiveObject
             Reload();
         }
         NoticeManager.Instance.Enqueue(string.Format(ResUI.RemoveDuplicateServerResult, tuple.Item1, tuple.Item2));
+    }
+
+    private async Task CleanUnusedProfilesAsync()
+    {
+        var neverUsed = ProfileItems
+            .Where(p => p.IsNeverUsed)
+            .ToList();
+
+        if (neverUsed.Count == 0)
+        {
+            NoticeManager.Instance.Enqueue(ResUI.MsgNoUnusedProfiles);
+            return;
+        }
+
+        var msg = string.Format(ResUI.MsgCleanUnusedProfilesConfirm, neverUsed.Count);
+        if (await ShowYesNoInteraction.HandleSafe(msg) == false)
+            return;
+
+        var ids = neverUsed.Select(p => p.IndexId).ToList();
+        var profiles = await AppManager.Instance.GetProfileItemsOrderedByIndexIds(ids);
+
+        if (profiles == null || profiles.Count == 0)
+            return;
+
+        await ConfigHandler.RemoveServers(_config, profiles);
+        NoticeManager.Instance.Enqueue(string.Format(ResUI.MsgCleanUnusedProfilesResult, profiles.Count));
+        await RefreshServers();
     }
 
     private async Task CopyServer()
@@ -901,4 +935,24 @@ public partial class ProfilesViewModel : MyReactiveObject
     }
 
     #endregion Subscription
+
+    // ---------- helper for Last Used column ----------
+    private static string FormatLastUsed(long unixSeconds, int useCount)
+    {
+        if (unixSeconds <= 0)
+            return $"NA ({useCount})";
+
+        var dt = DateTimeOffset.FromUnixTimeSeconds(unixSeconds).LocalDateTime;
+        var today = DateTime.Today;
+
+        string datePart;
+        if (dt.Date == today)
+            datePart = $"Today {dt:HH:mm}";
+        else if (dt.Date == today.AddDays(-1))
+            datePart = $"Yesterday {dt:HH:mm}";
+        else
+            datePart = dt.ToString("yyyy-MM-dd");
+
+        return $"{datePart} ({useCount})";
+    }
 }

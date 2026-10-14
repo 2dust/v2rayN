@@ -412,6 +412,9 @@ public static class ConfigHandler
         }
 
         config.IndexId = indexId;
+        
+        // New session starts – allow the next real traffic to count once
+        ProfileExManager.Instance.ResetSessionCounter();
 
         await SaveConfig(config);
 

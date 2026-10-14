@@ -7,6 +7,7 @@ public class ProfileExManager
     private readonly Queue<string> _queIndexIds = new();
     public static ProfileExManager Instance => _instance.Value;
     private static readonly string _tag = "ProfileExHandler";
+    private readonly HashSet<string> _countedThisSession = new();
 
     public ProfileExManager()
     {
@@ -162,6 +163,37 @@ public class ProfileExManager
 
         profileEx.Sort = sort;
         IndexIdEnqueue(indexId);
+    }
+    
+    public void SetLastUsed(string indexId, long timestamp)
+    {
+        var profileEx = GetProfileExItem(indexId);
+        profileEx.LastUsed = timestamp;
+        IndexIdEnqueue(indexId);
+    }
+
+    public void IncreaseUseCount(string indexId)
+    {
+        var profileEx = GetProfileExItem(indexId);
+        profileEx.UseCount++;
+        IndexIdEnqueue(indexId);
+    }
+
+    public void IncreaseUseCountOnce(string indexId)
+    {
+        if (_countedThisSession.Contains(indexId))
+            return;
+
+        var profileEx = GetProfileExItem(indexId);
+        profileEx.UseCount++;
+        IndexIdEnqueue(indexId);
+
+        _countedThisSession.Add(indexId);
+    }
+
+    public void ResetSessionCounter()
+    {
+        _countedThisSession.Clear();
     }
 
     public int GetSort(string indexId)

@@ -41,6 +41,14 @@ public partial class ProfileItemModel : ReactiveObject
     [Reactive]
     public partial string TotalDown { get; set; }
 
+    [Reactive]
+    public partial string LastUsedVal { get; set; }
+
+    [Reactive]
+    public partial long LastUsed { get; set; }
+
+    public bool IsNeverUsed => LastUsed <= 0;
+
     public string GetSummary()
     {
         var summary = $"[{ConfigType}] {Remarks}";

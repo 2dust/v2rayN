@@ -1571,6 +1571,50 @@ namespace ServiceLib.Resx {
                 return ResourceManager.GetString("menuRemoveDuplicateServer", resourceCulture);
             }
         }
+                /// <summary>
+        ///   查找类似 Clean unused profiles… 的本地化字符串。
+        /// </summary>
+        public static string menuCleanUnusedProfiles {
+            get {
+                return ResourceManager.GetString("menuCleanUnusedProfiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Last Used (Total) 的本地化字符串。
+        /// </summary>
+        public static string LvLastUsed {
+            get {
+                return ResourceManager.GetString("LvLastUsed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 No unused profiles found. 的本地化字符串。
+        /// </summary>
+        public static string MsgNoUnusedProfiles {
+            get {
+                return ResourceManager.GetString("MsgNoUnusedProfiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Delete {0} never-used profile(s)? This cannot be undone. 的本地化字符串。
+        /// </summary>
+        public static string MsgCleanUnusedProfilesConfirm {
+            get {
+                return ResourceManager.GetString("MsgCleanUnusedProfilesConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Deleted {0} unused profiles. 的本地化字符串。
+        /// </summary>
+        public static string MsgCleanUnusedProfilesResult {
+            get {
+                return ResourceManager.GetString("MsgCleanUnusedProfilesResult", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   查找类似 Remove invalid by test results 的本地化字符串。

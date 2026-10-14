@@ -132,6 +132,7 @@
                             InputGesture="Back" />
                         <MenuItem x:Name="menuRemoveDuplicateServer" Header="{x:Static resx:ResUI.menuRemoveDuplicateServer}" />
                         <MenuItem x:Name="menuRemoveInvalidServerResult" Header="{x:Static resx:ResUI.menuRemoveInvalidServerResult}" />
+                        <MenuItem Header="{x:Static resx:ResUI.menuCleanUnusedProfiles}" Command="{Binding CleanUnusedProfilesCmd}" />
                         <Separator />
                         <MenuItem
                             x:Name="menuTcpingServer"
@@ -281,6 +282,21 @@
                         Binding="{Binding SpeedVal}"
                         Header="{x:Static resx:ResUI.LvTestSpeed}"
                         Tag="SpeedVal" />
+                    <DataGridTemplateColumn
+                        Width="140"
+                        Header="Last Used (Total)"
+                        Tag="LastUsedVal"
+                        SortMemberPath="LastUsed">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    Margin="8,0"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding LastUsedVal}"
+                                    Opacity="{Binding IsNeverUsed, Converter={x:Static BoolConverters.Not}}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
                     <DataGridTemplateColumn SortMemberPath="IpInfo" Tag="IpInfo">
                         <DataGridTemplateColumn.Header>

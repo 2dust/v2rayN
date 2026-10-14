@@ -116,6 +116,12 @@ public class StatisticsManager
             _serverStatItem.TodayDown += server.ProxyDown;
             _serverStatItem.TotalUp += server.ProxyUp;
             _serverStatItem.TotalDown += server.ProxyDown;
+
+            // Update last used time
+            ProfileExManager.Instance.SetLastUsed(_config.IndexId, DateTimeOffset.UtcNow.ToUnixTimeSeconds());
+
+            // Count this session only once (first real traffic)
+            ProfileExManager.Instance.IncreaseUseCountOnce(_config.IndexId);
         }
 
         server.IndexId = _config.IndexId;

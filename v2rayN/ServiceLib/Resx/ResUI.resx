@@ -486,6 +486,22 @@
   <data name="menuRemoveDuplicateServer" xml:space="preserve">
     <value>Remove duplicate</value>
   </data>
+  <data name="LvLastUsed" xml:space="preserve">
+  <value>Last Used (Total)</value>
+  </data>
+  <data name="menuCleanUnusedProfiles" xml:space="preserve">
+    <value>Clean unused profiles…</value>
+  </data>
+  <data name="MsgNoUnusedProfiles" xml:space="preserve">
+  <value>No unused profiles found.</value>
+  </data>
+  <data name="MsgCleanUnusedProfilesConfirm" xml:space="preserve">
+    <value>Delete {0} never-used profile(s)?
+  This cannot be undone.</value>
+  </data>
+  <data name="MsgCleanUnusedProfilesResult" xml:space="preserve">
+    <value>Deleted {0} unused profiles.</value>
+  </data>
   <data name="menuRemoveServer" xml:space="preserve">
     <value>Remove selected</value>
   </data>
