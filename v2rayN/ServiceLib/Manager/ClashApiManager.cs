@@ -13,10 +13,11 @@ public sealed class ClashApiManager
         for (var i = 0; i < 3; i++)
         {
             var url = $"{ApiUrl}/proxies";
-            var resultTask = HttpClientHelper.Instance.TryGetAsync(url);
+            var authHeaders = AuthHeaders();
+                var resultTask = HttpClientHelper.Instance.TryGetAsync(url, authHeaders);
 
             var url2 = $"{ApiUrl}/providers/proxies";
-            var result2Task = HttpClientHelper.Instance.TryGetAsync(url2);
+            var result2Task = HttpClientHelper.Instance.TryGetAsync(url2, authHeaders);
 
             await Task.WhenAll(resultTask, result2Task);
 
