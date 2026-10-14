@@ -6,6 +6,7 @@ public class UpdateResult
     public string? Msg { get; set; }
     public SemanticVersion? Version { get; set; }
     public string? Url { get; set; }
+    public string? Sha256 { get; set; }
 
     public UpdateResult(bool success, string? msg)
     {
