@@ -1344,6 +1344,15 @@
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
     <value>Le mot de passe sera vérifié en ligne de commande. En cas d’échec ou de dysfonctionnement, redémarrez l’application. Il n’est pas stocké et doit être saisi à chaque redémarrage.</value>
     </data>
+  <data name="TbSettingsLinuxSudoPasswordRemember" xml:space="preserve">
+    <value>Conserver les privilèges du noyau</value>
+  </data>
+  <data name="TbSettingsPreserveCorePrivilegesTip" xml:space="preserve">
+    <value>Accorder les privilèges root aux fichiers binaires du noyau</value>
+  </data>
+  <data name="SudoPromptReasonCoreUpdate" xml:space="preserve">
+    <value>Les privilèges root du noyau doivent être désactivés avant la mise à jour</value>
+  </data>
   <data name="TransportHeaderType5" xml:space="preserve">
     <value>Mode XHTTP</value>
   </data>

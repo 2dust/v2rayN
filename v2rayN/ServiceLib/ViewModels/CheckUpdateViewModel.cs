@@ -353,6 +353,17 @@ public partial class CheckUpdateViewModel : MyReactiveObject
 
     private async Task UpgradeCore()
     {
+        var hasCoresToUpgrade = _lstUpdated.Any(item => item.FileName.IsNotEmpty() && !item.IsGeoFile && item.CoreType != _v2rayN && File.Exists(item.FileName));
+        if (hasCoresToUpgrade && Utils.IsLinux() && await CoreAdminManager.IsAnyCorePrivilegedAsync())
+        {
+            var success = await CoreAdminManager.RevokeAllCoresPrivilege(reason: ResUI.SudoPromptReasonCoreUpdate);
+            if (!success)
+            {
+                NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
+                return;
+            }
+        }
+
         foreach (var item in _lstUpdated)
         {
             if (item.FileName.IsNullOrEmpty() || item.IsGeoFile)

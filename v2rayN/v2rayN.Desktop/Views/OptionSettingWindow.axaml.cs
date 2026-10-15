@@ -1,3 +1,4 @@
+using DialogHostAvalonia;
 using v2rayN.Desktop.Base;
 using v2rayN.Desktop.Common;
 
@@ -137,6 +138,7 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
             this.Bind(ViewModel, vm => vm.TunRouteExcludeAddress, v => v.txtRouteExcludeAddress.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.TunIPv4Address, v => v.cmbIpv4Address.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.TunIPv6Address, v => v.cmbIpv6Address.SelectedValue).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.TunPreserveCorePrivileges, v => v.togPreserveCorePrivileges.IsChecked).DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.CoreType1, v => v.cmbCoreType1.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.CoreType2, v => v.cmbCoreType2.SelectedValue).DisposeWith(disposables);
@@ -149,7 +151,23 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
             this.Bind(ViewModel, vm => vm.CoreType14, v => v.cmbCoreType14.SelectedValue).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
+
+            ViewModel.PasswordInputInteraction.RegisterHandler(async interaction =>
+            {
+                var reason = interaction.Input;
+                var result = Dispatcher.UIThread.CheckAccess()
+                    ? await PasswordInputAsync(reason)
+                    : await Dispatcher.UIThread.InvokeAsync(() => PasswordInputAsync(reason));
+                interaction.SetOutput(result);
+            }).DisposeWith(disposables);
         });
+
+        if (!Utils.IsLinux())
+        {
+            labPreserveCorePrivileges.IsVisible = false;
+            togPreserveCorePrivileges.IsVisible = false;
+            labPreserveCorePrivilegesTip.IsVisible = false;
+        }
     }
 
     private async Task InitSettingFont()
@@ -230,5 +248,12 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
     private void Window_Loaded(object? sender, RoutedEventArgs e)
     {
         btnCancel.Focus();
+    }
+
+    private async Task<string?> PasswordInputAsync(string? reason = null)
+    {
+        var dialog = new SudoPasswordInputView(false, showPreserveOption: false, dialogIdentifier: "dialogHostOption", reason: reason);
+        var obj = await DialogHost.Show(dialog, "dialogHostOption");
+        return obj?.ToString();
     }
 }

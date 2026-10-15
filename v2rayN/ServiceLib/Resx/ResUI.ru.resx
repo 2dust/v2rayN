@@ -1368,6 +1368,15 @@
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
     <value>Пароль sudo будет проверен в терминале. Если из-за ошибки проверки приложение начнёт работать некорректно, перезапустите его. Пароль не сохраняется — его нужно вводить после каждого перезапуска</value>
   </data>
+  <data name="TbSettingsLinuxSudoPasswordRemember" xml:space="preserve">
+    <value>Сохранять привилегии ядра</value>
+  </data>
+  <data name="TbSettingsPreserveCorePrivilegesTip" xml:space="preserve">
+    <value>Предоставить исполняемым файлам ядра права root</value>
+  </data>
+  <data name="SudoPromptReasonCoreUpdate" xml:space="preserve">
+    <value>Перед обновлением ядра необходимо отключить привилегии root</value>
+  </data>
   <data name="TransportHeaderType5" xml:space="preserve">
     <value>XHTTP-режим</value>
   </data>

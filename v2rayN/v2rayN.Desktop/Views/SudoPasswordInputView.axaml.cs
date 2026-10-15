@@ -1,13 +1,35 @@
-using CliWrap.Buffered;
 using DialogHostAvalonia;
 
 namespace v2rayN.Desktop.Views;
 
 public partial class SudoPasswordInputView : UserControl
 {
-    public SudoPasswordInputView()
+    private readonly string? _dialogIdentifier;
+
+    public bool IsPreserveCorePrivileges => chkPreserveCorePrivileges.IsChecked ?? false;
+
+    public SudoPasswordInputView() : this(false)
+    {
+    }
+
+    public SudoPasswordInputView(bool preserveCorePrivileges, bool showPreserveOption = true, string? dialogIdentifier = null, string? reason = null)
     {
         InitializeComponent();
+        _dialogIdentifier = dialogIdentifier;
+
+        if (reason.IsNotEmpty())
+        {
+            txtReason.Text = reason;
+            txtReason.IsVisible = true;
+        }
+        else
+        {
+            txtReason.IsVisible = false;
+        }
+
+        chkPreserveCorePrivileges.IsChecked = preserveCorePrivileges;
+        chkPreserveCorePrivileges.IsVisible = showPreserveOption;
+        txtPreserveTip.IsVisible = showPreserveOption;
 
         Loaded += (s, e) => txtPassword.Focus();
 
@@ -15,7 +37,7 @@ public partial class SudoPasswordInputView : UserControl
 
         btnCancel.Click += (_, _) =>
         {
-            DialogHost.Close(null);
+            DialogHost.Close(_dialogIdentifier);
         };
     }
 
@@ -33,12 +55,12 @@ public partial class SudoPasswordInputView : UserControl
         try
         {
             // Verify if the password is correct
-            if (await CheckSudoPasswordAsync(password))
+            if (await CoreAdminManager.CheckLinuxSudoPassword(password))
             {
                 // Password verification successful, return password and close dialog
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
-                    DialogHost.Close(null, password);
+                    DialogHost.Close(_dialogIdentifier, password);
                 });
             }
             else
@@ -55,26 +77,6 @@ public partial class SudoPasswordInputView : UserControl
         finally
         {
             btnSave.IsEnabled = true;
-        }
-    }
-
-    private async Task<bool> CheckSudoPasswordAsync(string password)
-    {
-        try
-        {
-            // Use sudo echo command to verify password
-            var arg = new List<string>() { "-c", "sudo -S echo SUDO_CHECK" };
-            var result = await CliWrap.Cli.Wrap(Global.LinuxBash)
-                .WithArguments(arg)
-                .WithStandardInputPipe(CliWrap.PipeSource.FromString(password))
-                .ExecuteBufferedAsync();
-
-            return result.ExitCode == 0;
-        }
-        catch (Exception ex)
-        {
-            Logging.SaveLog("CheckSudoPassword", ex);
-            return false;
         }
     }
 }
