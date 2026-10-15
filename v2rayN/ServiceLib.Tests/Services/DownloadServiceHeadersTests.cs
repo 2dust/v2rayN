@@ -89,6 +89,22 @@ public class DownloadServiceHeadersTests
         await requests[1].ContainsKey("Accept").Should().BeFalse();
     }
 
+    [Test]
+    public async Task TryDownloadString_WhenEveryDownloaderFails_ShouldReportRootCause()
+    {
+        await CertPemManager.Instance.Init(new Config { GuiItem = new GUIItem() });
+        await using var server = new SubscriptionHttpServer(alwaysFail: true);
+        var service = new DownloadService { AcceptHeader = "*/*" };
+        var errors = new List<string>();
+        service.Error += (_, args) => errors.Add(args.GetException().Message);
+
+        var content = await service.TryDownloadString(server.Url, (IWebProxy?)null, "TestClient/1.0").WaitAsync(TimeSpan.FromSeconds(30));
+
+        await content.Should().BeNull();
+        await errors.Should().NotBeEmpty();
+        await errors[0].Should().Contain("503");
+    }
+
     private sealed class SubscriptionHttpServer : IAsyncDisposable
     {
         public const string Body = "subscription-test-content";
@@ -96,13 +112,15 @@ public class DownloadServiceHeadersTests
         private readonly CancellationTokenSource _cancellation = new();
         private readonly Task _serverTask;
         private readonly bool _failFirstRequest;
+        private readonly bool _alwaysFail;
 
         public string Url { get; }
         public ConcurrentQueue<Dictionary<string, string>> Requests { get; } = new();
 
-        public SubscriptionHttpServer(bool failFirstRequest = false)
+        public SubscriptionHttpServer(bool failFirstRequest = false, bool alwaysFail = false)
         {
             _failFirstRequest = failFirstRequest;
+            _alwaysFail = alwaysFail;
             _listener.Start();
             Url = $"http://127.0.0.1:{((IPEndPoint)_listener.LocalEndpoint).Port}/subscription";
             _serverTask = ServeAsync();
@@ -132,7 +150,8 @@ public class DownloadServiceHeadersTests
                 }
                 Requests.Enqueue(headers);
 
-                var status = _failFirstRequest && Requests.Count == 1 ? "503 Service Unavailable" : "200 OK";
+                var failed = _alwaysFail || (_failFirstRequest && Requests.Count == 1);
+                var status = failed ? "503 Service Unavailable" : "200 OK";
                 var body = requestLine.StartsWith("HEAD ") ? "" : Body;
                 var response = $"HTTP/1.1 {status}\r\nContent-Length: {Body.Length}\r\nConnection: close\r\n\r\n{body}";
                 await stream.WriteAsync(Encoding.ASCII.GetBytes(response), cancellationToken);

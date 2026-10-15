@@ -225,12 +225,20 @@ public class DownloadService
             }
         }
 
+        //Some CDNs (e.g. Cloudflare) reject the default .NET TCP+TLS client fingerprint (403),
+        //so retry with curl, whose TLS fingerprint is accepted.
+        var result2 = await DownloadStringViaCurl(url, webProxy, userAgent, cancellationToken);
+        if (result2.IsNotEmpty())
+        {
+            return result2;
+        }
+
         try
         {
-            var result2 = await DownloadStringViaDownloader(url, webProxy, userAgent, cancellationToken);
-            if (result2.IsNotEmpty())
+            var result3 = await DownloadStringViaDownloader(url, webProxy, userAgent, cancellationToken);
+            if (result3.IsNotEmpty())
             {
-                return result2;
+                return result3;
             }
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
@@ -312,6 +320,115 @@ public class DownloadService
         }
 
         return null;
+    }
+
+    /// <summary>
+    /// Downloads string content via curl, whose TLS fingerprint differs from the built-in
+    /// HttpClient and can pass CDN bot checks that reject the default .NET fingerprint.
+    /// </summary>
+    private async Task<string?> DownloadStringViaCurl(string url, IWebProxy? webProxy, string userAgent, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var curl = GetCurlPath();
+            if (curl.IsNullOrEmpty())
+            {
+                return null;
+            }
+
+            var headers = RequestHeaders ?? new Dictionary<string, string>();
+            bool HasHeader(string name) => headers.Keys.Any(key => string.Equals(key, name, StringComparison.OrdinalIgnoreCase));
+
+            if (userAgent.IsNullOrEmpty())
+            {
+                userAgent = Utils.GetVersion(false);
+            }
+
+            var timeout = webProxy is null ? Global.DirectFetch : Global.ProxyFetch;
+            var connectTimeout = webProxy is null ? Global.DirectDownloadConnect : Global.ProxyDownloadConnect;
+            var args = new List<string>
+            {
+                "--silent",
+                "--show-error",
+                "--fail",
+                "--compressed",
+                "--location",
+                "--globoff",
+                "--connect-timeout",
+                ((int)connectTimeout.TotalSeconds).ToString(),
+                "--max-time",
+                ((int)timeout.TotalSeconds).ToString(),
+            };
+
+            //Custom request headers replace the defaults, matching the HttpClient behavior
+            if (!HasHeader("User-Agent"))
+            {
+                args.Add("--user-agent");
+                args.Add(userAgent);
+            }
+            if (AcceptHeader.IsNotEmpty() && !HasHeader("Accept"))
+            {
+                args.Add("--header");
+                args.Add($"Accept: {AcceptHeader}");
+            }
+            foreach (var header in headers)
+            {
+                args.Add("--header");
+                args.Add($"{header.Key}: {header.Value}");
+            }
+
+            Uri uri = new(url);
+            //Authorization Header
+            if (uri.UserInfo.IsNotEmpty() && !HasHeader("Authorization"))
+            {
+                args.Add("--user");
+                args.Add(uri.UserInfo);
+            }
+
+            var proxy = webProxy?.GetProxy(uri)?.ToString();
+            if (proxy.IsNotEmpty())
+            {
+                //Resolve the host name on the proxy side when using a SOCKS proxy
+                if (proxy.StartsWith("socks5://", StringComparison.OrdinalIgnoreCase))
+                {
+                    proxy = $"socks5h://{proxy["socks5://".Length..]}";
+                }
+                else if (proxy.StartsWith("socks4://", StringComparison.OrdinalIgnoreCase))
+                {
+                    proxy = $"socks4a://{proxy["socks4://".Length..]}";
+                }
+                args.Add("--proxy");
+                args.Add(proxy);
+            }
+            else
+            {
+                //Ignore the proxy environment variables inherited from the host process
+                args.Add("--noproxy");
+                args.Add("*");
+            }
+
+            args.Add(url);
+            return await Utils.GetCliWrapOutput(curl, args, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+
+        return null;
+    }
+
+    private static string? GetCurlPath()
+    {
+        if (Utils.IsWindows())
+        {
+            var curl = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "curl.exe");
+            if (File.Exists(curl))
+            {
+                return curl;
+            }
+        }
+        return "curl";
     }
 
     /// <summary>
