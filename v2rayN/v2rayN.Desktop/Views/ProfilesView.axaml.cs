@@ -8,6 +8,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
 {
     private static Config _config;
     private static readonly string _tag = "ProfilesView";
+    private bool _initialServersFocusDone;
 
     public ProfilesView()
     {
@@ -16,6 +17,12 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         _config = AppManager.Instance.Config;
 
         menuSelectAll.Click += menuSelectAll_Click;
+
+        //Focus the grid as soon as the view is ready, so Ctrl+A and friends work right
+        //away instead of landing in the filter box. The logical focus sticks and becomes
+        //the keyboard focus when the window is shown; RefreshServersBiz below reaffirms
+        //it once the rows are actually displayed.
+        Loaded += (_, _) => FocusServersGridOnce();
         btnAutofitColumnWidth.Click += BtnAutofitColumnWidth_Click;
         txtServerFilter.KeyDown += TxtServerFilter_KeyDown;
         lstProfiles.KeyDown += LstProfiles_KeyDown;
@@ -137,7 +144,15 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
 
             ViewModel.DispatcherRefreshServersBizInteraction.RegisterHandler(interaction =>
             {
-                Dispatcher.UIThread.Post(RefreshServersBiz, DispatcherPriority.Default);
+                Dispatcher.UIThread.Post(() =>
+                {
+                    RefreshServersBiz();
+
+                    //Focus the grid when the list is shown for the first time, so Ctrl+A
+                    //and friends work right away instead of landing in the filter box.
+                    //Only once: later refreshes must not steal the focus back.
+                    FocusServersGridOnce();
+                }, DispatcherPriority.Default);
                 interaction.SetOutput(RxVoid.Default);
             }).DisposeWith(disposables);
 
@@ -170,6 +185,16 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
     }
 
     #region Event
+
+    private void FocusServersGridOnce()
+    {
+        if (_initialServersFocusDone)
+        {
+            return;
+        }
+        _initialServersFocusDone = true;
+        lstProfiles.Focus();
+    }
 
     public async Task ShareServer(string url)
     {

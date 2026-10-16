@@ -306,8 +306,9 @@ public partial class MainWindow
             {
                 WindowState = WindowState.Normal;
             }
+            //Activate alone is enough: it restores the keyboard focus to the last focused
+            //child, while an explicit Focus on the window itself would reset it to nowhere
             this?.Activate();
-            this?.Focus();
         }
         else
         {

@@ -11,6 +11,7 @@ public partial class ProfilesView
 {
     private static Config _config;
     private static readonly string _tag = "ProfilesView";
+    private bool _initialServersFocusDone;
 
     public ProfilesView()
     {
@@ -25,6 +26,12 @@ public partial class ProfilesView
         lstProfiles.SelectionChanged += LstProfiles_SelectionChanged;
         lstProfiles.LoadingRow += LstProfiles_LoadingRow;
         menuSelectAll.Click += menuSelectAll_Click;
+
+        //Focus the grid as soon as the view is ready, so Ctrl+A and friends work right
+        //away instead of landing in the filter box. The logical focus sticks and becomes
+        //the keyboard focus when the window is shown; RefreshServersBiz below reaffirms
+        //it once the rows are actually displayed.
+        Loaded += (_, _) => FocusServersGridOnce();
 
         if (_config.UiItem.EnableDragDropSort)
         {
@@ -134,7 +141,15 @@ public partial class ProfilesView
 
             ViewModel.DispatcherRefreshServersBizInteraction.RegisterHandler(interaction =>
             {
-                Application.Current?.Dispatcher.Invoke(RefreshServersBiz, DispatcherPriority.Normal);
+                Application.Current?.Dispatcher.Invoke(() =>
+                {
+                    RefreshServersBiz();
+
+                    //Focus the grid when the list is shown for the first time, so Ctrl+A
+                    //and friends work right away instead of landing in the filter box.
+                    //Only once: later refreshes must not steal the focus back.
+                    FocusServersGridOnce();
+                }, DispatcherPriority.Normal);
                 interaction.SetOutput(RxVoid.Default);
             }).DisposeWith(disposables);
 
@@ -155,6 +170,16 @@ public partial class ProfilesView
     }
 
     #region Event
+
+    private void FocusServersGridOnce()
+    {
+        if (_initialServersFocusDone)
+        {
+            return;
+        }
+        _initialServersFocusDone = true;
+        lstProfiles.Focus();
+    }
 
     public async Task ShareServer(string url)
     {
