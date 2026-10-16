@@ -42,6 +42,15 @@ public partial class ProfilesViewModel : MyReactiveObject
     [Reactive]
     public partial string ServerFilter { get; set; }
 
+    [Reactive]
+    public partial bool IsSpeedtestRunning { get; set; }
+
+    [Reactive]
+    public partial double SpeedtestProgressValue { get; set; }
+
+    [Reactive]
+    public partial string SpeedtestProgressText { get; set; }
+
     #endregion ObservableCollection
 
     #region Menu
@@ -731,8 +740,22 @@ public partial class ProfilesViewModel : MyReactiveObject
                 _ = SetSpeedTestResult(result);
             });
             await Task.CompletedTask;
+        }, async (SpeedTestProgress progress) =>
+        {
+            RxSchedulers.MainThreadScheduler.Schedule(() =>
+            {
+                SetSpeedTestProgress(progress);
+            });
+            await Task.CompletedTask;
         });
         _speedtestService?.RunLoop(actionType, lstSelected);
+    }
+
+    private void SetSpeedTestProgress(SpeedTestProgress progress)
+    {
+        IsSpeedtestRunning = progress.IsRunning && progress.Total > 0;
+        SpeedtestProgressValue = progress.Percent;
+        SpeedtestProgressText = $"{progress.Completed}/{progress.Total}";
     }
 
     public void ServerSpeedtestStop()
