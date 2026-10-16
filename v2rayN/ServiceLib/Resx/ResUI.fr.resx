@@ -495,6 +495,9 @@
   <data name="menuRealPingServer" xml:space="preserve">
     <value>Tester la latence de connexion réelle (multi-sélect)</value>
   </data>
+  <data name="menuGoogleRegionServer" xml:space="preserve">
+    <value>Tester la région Google</value>
+  </data>
   <data name="menuSortServerResult" xml:space="preserve">
     <value>Trier selon les résultats de test</value>
   </data>
@@ -1763,6 +1766,9 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   </data>
   <data name="LvTestIpInfo" xml:space="preserve">
     <value>Détails IP</value>
+  </data>
+  <data name="LvTestGoogleRegion" xml:space="preserve">
+    <value>Région Google</value>
   </data>
   <data name="menuNewUpdate" xml:space="preserve">
     <value>Nouvelle MAJ</value>

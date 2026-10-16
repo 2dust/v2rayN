@@ -160,6 +160,10 @@
                             Header="{x:Static resx:ResUI.menuRealPingServer}"
                             InputGestureText="Ctrl+R" />
                         <MenuItem
+                            x:Name="menuGoogleRegionServer"
+                            Height="{StaticResource MenuItemHeight}"
+                            Header="{x:Static resx:ResUI.menuGoogleRegionServer}" />
+                        <MenuItem
                             x:Name="menuUdpTestServer"
                             Height="{StaticResource MenuItemHeight}"
                             Header="{x:Static resx:ResUI.menuUdpTestServer}" />
@@ -353,6 +357,13 @@
                         Binding="{Binding IpInfo}"
                         ExName="IpInfo"
                         Header="{x:Static resx:ResUI.LvTestIpInfo}" />
+
+                    <base:MyDGTextColumn
+                        x:Name="colGoogleRegion"
+                        Width="100"
+                        Binding="{Binding GoogleRegion}"
+                        ExName="GoogleRegion"
+                        Header="{x:Static resx:ResUI.LvTestGoogleRegion}" />
 
                     <base:MyDGTextColumn
                         x:Name="colTodayDown"

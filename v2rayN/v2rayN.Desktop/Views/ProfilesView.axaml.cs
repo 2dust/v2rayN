@@ -71,6 +71,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
             this.BindCommand(ViewModel, vm => vm.MixedTestServerCmd, v => v.menuMixedTestServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.TcpingServerCmd, v => v.menuTcpingServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.RealPingServerCmd, v => v.menuRealPingServer).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.GoogleRegionServerCmd, v => v.menuGoogleRegionServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.UdpTestServerCmd, v => v.menuUdpTestServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SpeedServerCmd, v => v.menuSpeedServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SortServerResultCmd, v => v.menuSortServerResult).DisposeWith(disposables);
@@ -370,6 +371,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         {
             var lvColumnItem = _config.UiItem.MainColumnItem.OrderBy(t => t.Index).ToList();
             var displayIndex = 0;
+            var restored = new HashSet<string>();
             foreach (var item in lvColumnItem)
             {
                 foreach (var item2 in lstProfiles.Columns)
@@ -380,6 +382,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
                     }
                     if (item2.Tag.Equals(item.Name))
                     {
+                        restored.Add(item2.Tag.ToString()!);
                         if (item.Width < 0)
                         {
                             item2.IsVisible = false;
@@ -398,6 +401,15 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
                             item2.IsVisible = _config.SpeedTestItem.IPAPIUrl.IsNotEmpty() && !_config.UiItem.HideColumnIpInfo;
                         }
                     }
+                }
+            }
+
+            //Columns added by a newer version are not in the saved layout yet
+            foreach (var item2 in lstProfiles.Columns)
+            {
+                if (item2.Tag != null && restored.Add(item2.Tag.ToString()!))
+                {
+                    item2.DisplayIndex = displayIndex++;
                 }
             }
         }

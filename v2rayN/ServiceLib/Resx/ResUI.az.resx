@@ -495,6 +495,9 @@
   <data name="menuRealPingServer" xml:space="preserve">
     <value>Real gecikməni yoxla</value>
   </data>
+  <data name="menuGoogleRegionServer" xml:space="preserve">
+    <value>Google regionunu yoxla</value>
+  </data>
   <data name="menuSortServerResult" xml:space="preserve">
     <value>Yoxlama nəticəsinə görə sırala</value>
   </data>
@@ -1787,6 +1790,9 @@ Təyin edildikdə sertifikat sabitlənəcək və "Təhlükəsiz olmayan əlaqəy
   </data>
   <data name="LvTestIpInfo" xml:space="preserve">
     <value>IP məlumatı</value>
+  </data>
+  <data name="LvTestGoogleRegion" xml:space="preserve">
+    <value>Google regionu</value>
   </data>
   <data name="menuNewUpdate" xml:space="preserve">
     <value>Yeni yeniləmə</value>

@@ -495,6 +495,9 @@
   <data name="menuRealPingServer" xml:space="preserve">
     <value>آزمایش سرورها با تاخیر واقعی</value>
   </data>
+  <data name="menuGoogleRegionServer" xml:space="preserve">
+    <value>آزمایش منطقه گوگل</value>
+  </data>
   <data name="menuSortServerResult" xml:space="preserve">
     <value>مرتب سازی بر اساس نتیجه تست</value>
   </data>
@@ -1769,6 +1772,9 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   </data>
   <data name="LvTestIpInfo" xml:space="preserve">
     <value>IP Info</value>
+  </data>
+  <data name="LvTestGoogleRegion" xml:space="preserve">
+    <value>منطقه گوگل</value>
   </data>
   <data name="menuNewUpdate" xml:space="preserve">
     <value>New Update</value>

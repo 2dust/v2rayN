@@ -3,6 +3,7 @@ namespace ServiceLib.Handler;
 public static class ConnectionHandler
 {
     private static readonly string _tag = "ConnectionHandler";
+    private const string _googleRegionPattern = "\"GL\"\\s*:\\s*\"(?<region>[A-Za-z]{2})\"";
 
     /// <summary>
     /// Runs ping and IP checks.
@@ -103,6 +104,73 @@ public static class ConnectionHandler
             // Ignore
         }
         return responseTime;
+    }
+
+    /// <summary>
+    /// Asks Google (YouTube) which country the request comes from and returns it together
+    /// with the time to the first response byte.
+    /// </summary>
+    public static async Task<GoogleRegionResult> GetGoogleRegion(IWebProxy? webProxy, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            using var timeoutCts = new CancellationTokenSource();
+            timeoutCts.CancelAfter(Global.ProxyFetch);
+            using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, timeoutCts.Token);
+            var linkedToken = linkedCts.Token;
+            using var client = new HttpClient(new SocketsHttpHandler()
+            {
+                Proxy = webProxy,
+                UseProxy = webProxy != null,
+                ConnectTimeout = Global.LocalFetch,
+            });
+            client.DefaultRequestHeaders.UserAgent.ParseAdd(Global.MobileUserAgent);
+            client.DefaultRequestHeaders.AcceptLanguage.ParseAdd("en-US,en;q=0.9");
+
+            using var request = new HttpRequestMessage(HttpMethod.Get, Global.GoogleRegionTestUrl);
+            var timer = Stopwatch.StartNew();
+            using var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, linkedToken).ConfigureAwait(false);
+            timer.Stop();
+
+            await using var stream = await response.Content.ReadAsStreamAsync(linkedToken).ConfigureAwait(false);
+            var content = new StringBuilder();
+            var buffer = new byte[8192];
+            string? region = null;
+            while (region == null && content.Length < Global.GoogleRegionReadLimit)
+            {
+                var read = await stream.ReadAsync(buffer, linkedToken).ConfigureAwait(false);
+                if (read <= 0)
+                {
+                    break;
+                }
+                content.Append(Encoding.UTF8.GetString(buffer, 0, read));
+                region = ParseGoogleRegion(content.ToString());
+            }
+
+            return new GoogleRegionResult((int)timer.Elapsed.TotalMilliseconds, region);
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+            return new GoogleRegionResult();
+        }
+    }
+
+    /// <summary>
+    /// Reads the country code Google reports in the ytcfg block of the page.
+    /// </summary>
+    private static string? ParseGoogleRegion(string? html)
+    {
+        if (html.IsNullOrEmpty())
+        {
+            return null;
+        }
+        var match = Regex.Match(html, _googleRegionPattern, RegexOptions.None, TimeSpan.FromSeconds(2));
+        return match.Success ? match.Groups["region"].Value.ToUpperInvariant() : null;
     }
 
     /// <summary>

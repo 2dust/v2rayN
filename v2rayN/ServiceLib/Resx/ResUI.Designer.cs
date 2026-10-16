@@ -608,6 +608,15 @@ namespace ServiceLib.Resx {
                 return ResourceManager.GetString("LvTestIpInfo", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   查找类似 Google Region 的本地化字符串。
+        /// </summary>
+        public static string LvTestGoogleRegion {
+            get {
+                return ResourceManager.GetString("LvTestGoogleRegion", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   查找类似 Speed (MB/s) 的本地化字符串。
@@ -1470,6 +1479,15 @@ namespace ServiceLib.Resx {
         public static string menuRealPingServer {
             get {
                 return ResourceManager.GetString("menuRealPingServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Test Google region 的本地化字符串。
+        /// </summary>
+        public static string menuGoogleRegionServer {
+            get {
+                return ResourceManager.GetString("menuGoogleRegionServer", resourceCulture);
             }
         }
         

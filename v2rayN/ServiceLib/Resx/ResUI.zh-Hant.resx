@@ -498,6 +498,9 @@
   <data name="menuRealPingServer" xml:space="preserve">
     <value>測試真連線延遲 (多選)</value>
   </data>
+  <data name="menuGoogleRegionServer" xml:space="preserve">
+    <value>測試 Google 地區</value>
+  </data>
   <data name="menuSortServerResult" xml:space="preserve">
     <value>按測試結果排序</value>
   </data>
@@ -1784,6 +1787,9 @@
   </data>
   <data name="LvTestIpInfo" xml:space="preserve">
     <value>IP 資訊</value>
+  </data>
+  <data name="LvTestGoogleRegion" xml:space="preserve">
+    <value>Google 地區</value>
   </data>
   <data name="menuNewUpdate" xml:space="preserve">
     <value>有更新</value>

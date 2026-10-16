@@ -141,6 +141,7 @@
                             x:Name="menuRealPingServer"
                             Header="{x:Static resx:ResUI.menuRealPingServer}"
                             InputGesture="Ctrl+R" />
+                        <MenuItem x:Name="menuGoogleRegionServer" Header="{x:Static resx:ResUI.menuGoogleRegionServer}" />
                         <MenuItem
                             x:Name="menuSpeedServer"
                             Header="{x:Static resx:ResUI.menuSpeedServer}"
@@ -295,6 +296,12 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
+
+                    <DataGridTextColumn
+                        Width="100"
+                        Binding="{Binding GoogleRegion}"
+                        Header="{x:Static resx:ResUI.LvTestGoogleRegion}"
+                        Tag="GoogleRegion" />
 
                     <DataGridTextColumn
                         Width="100"

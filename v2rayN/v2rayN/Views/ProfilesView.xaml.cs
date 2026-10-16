@@ -69,6 +69,7 @@ public partial class ProfilesView
             this.BindCommand(ViewModel, vm => vm.MixedTestServerCmd, v => v.menuMixedTestServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.TcpingServerCmd, v => v.menuTcpingServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.RealPingServerCmd, v => v.menuRealPingServer).DisposeWith(disposables);
+            this.BindCommand(ViewModel, vm => vm.GoogleRegionServerCmd, v => v.menuGoogleRegionServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.UdpTestServerCmd, v => v.menuUdpTestServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SpeedServerCmd, v => v.menuSpeedServer).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SortServerResultCmd, v => v.menuSortServerResult).DisposeWith(disposables);
@@ -331,12 +332,14 @@ public partial class ProfilesView
         {
             var lvColumnItem = _config.UiItem.MainColumnItem.OrderBy(t => t.Index).ToList();
             var displayIndex = 0;
+            var restored = new HashSet<string>();
             foreach (var item in lvColumnItem)
             {
                 foreach (var item2 in lstProfiles.Columns.Cast<MyDGTextColumn>())
                 {
                     if (item2.ExName == item.Name)
                     {
+                        restored.Add(item2.ExName);
                         if (item.Width < 0)
                         {
                             item2.Visibility = Visibility.Hidden;
@@ -355,6 +358,15 @@ public partial class ProfilesView
                             item2.Visibility = _config.SpeedTestItem.IPAPIUrl.IsNotEmpty() && !_config.UiItem.HideColumnIpInfo ? Visibility.Visible : Visibility.Hidden;
                         }
                     }
+                }
+            }
+
+            //Columns added by a newer version are not in the saved layout yet
+            foreach (var item2 in lstProfiles.Columns.Cast<MyDGTextColumn>())
+            {
+                if (restored.Add(item2.ExName))
+                {
+                    item2.DisplayIndex = displayIndex++;
                 }
             }
         }

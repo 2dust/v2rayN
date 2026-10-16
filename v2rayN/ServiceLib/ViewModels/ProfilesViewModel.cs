@@ -17,6 +17,16 @@ public partial class ProfilesViewModel : MyReactiveObject
 
     private string _serverFilter = string.Empty;
     private readonly Dictionary<string, bool> _dicHeaderSort = new();
+
+    /// <summary>
+    /// Google runs its own geo database and updates the country it reports for an address
+    /// quite often, so there is no point in storing the region in the database: a saved value
+    /// would be outdated long before it is looked at. The mapping is also heuristic: it depends
+    /// on which accounts are seen from which addresses and is revised as that picture changes.
+    /// The result is therefore kept in memory only and is reapplied whenever the server list is
+    /// rebuilt (refresh, sorting, switching sub).
+    /// </summary>
+    private readonly Dictionary<string, string> _googleRegionCache = new();
     private SpeedtestService? _speedtestService;
     private string? _pendingSelectIndexId;
 
@@ -70,6 +80,7 @@ public partial class ProfilesViewModel : MyReactiveObject
 
     public ReactiveCommand<RxVoid, RxVoid> TcpingServerCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> RealPingServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> GoogleRegionServerCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> UdpTestServerCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> SpeedServerCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> SortServerResultCmd { get; }
@@ -186,6 +197,10 @@ public partial class ProfilesViewModel : MyReactiveObject
         {
             await ServerSpeedtest(ESpeedActionType.Realping);
         }, canEditRemove);
+        GoogleRegionServerCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await ServerSpeedtest(ESpeedActionType.GoogleRegion);
+        }, canEditRemove);
         UdpTestServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await ServerSpeedtest(ESpeedActionType.UdpTest);
@@ -297,6 +312,11 @@ public partial class ProfilesViewModel : MyReactiveObject
         if (result.IpInfo.IsNotEmpty())
         {
             item.IpInfo = result.IpInfo ?? string.Empty;
+        }
+        if (result.GoogleRegion.IsNotEmpty())
+        {
+            _googleRegionCache[item.IndexId] = result.GoogleRegion;
+            item.GoogleRegion = result.GoogleRegion;
         }
         await Task.CompletedTask;
     }
@@ -427,6 +447,7 @@ public partial class ProfilesViewModel : MyReactiveObject
                         DelayVal = t33?.Delay != 0 ? $"{t33?.Delay}" : string.Empty,
                         SpeedVal = t33?.Speed > 0 ? $"{t33?.Speed}" : t33?.Message ?? string.Empty,
                         IpInfo = t33?.IpInfo ?? string.Empty,
+                        GoogleRegion = _googleRegionCache.GetValueOrDefault(t.IndexId, string.Empty),
                         TodayDown = t22 == null ? "" : Utils.HumanFy(t22.TodayDown),
                         TodayUp = t22 == null ? "" : Utils.HumanFy(t22.TodayUp),
                         TotalDown = t22 == null ? "" : Utils.HumanFy(t22.TotalDown),
@@ -641,7 +662,7 @@ public partial class ProfilesViewModel : MyReactiveObject
 
         _dicHeaderSort.TryAdd(colName, true);
         _dicHeaderSort.TryGetValue(colName, out var asc);
-        if (await ConfigHandler.SortServers(_config, _config.SubIndexId, colName, asc) != 0)
+        if (await ConfigHandler.SortServers(_config, _config.SubIndexId, colName, asc, _googleRegionCache) != 0)
         {
             return;
         }

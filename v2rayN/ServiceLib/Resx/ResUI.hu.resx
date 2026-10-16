@@ -495,6 +495,9 @@
   <data name="menuRealPingServer" xml:space="preserve">
     <value>Konfigurációk valós késleltetésének tesztelése</value>
   </data>
+  <data name="menuGoogleRegionServer" xml:space="preserve">
+    <value>Konfigurációk Google-régiójának tesztelése</value>
+  </data>
   <data name="menuSortServerResult" xml:space="preserve">
     <value>Rendezés teszteredmény szerint</value>
   </data>
@@ -1766,6 +1769,9 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   </data>
   <data name="LvTestIpInfo" xml:space="preserve">
     <value>IP Info</value>
+  </data>
+  <data name="LvTestGoogleRegion" xml:space="preserve">
+    <value>Google-régió</value>
   </data>
   <data name="menuNewUpdate" xml:space="preserve">
     <value>New Update</value>
