@@ -68,8 +68,22 @@ public static class ConnectionHandler
     /// </summary>
     public static async Task<int> GetRealPingTime(IWebProxy? webProxy, CancellationToken cancellationToken = default)
     {
-        var url = AppManager.Instance.Config.SpeedTestItem.SpeedPingTestUrl;
-        var responseTime = -1;
+        var result = await GetRealPingResult(webProxy, null, cancellationToken);
+        return result.Delay;
+    }
+
+    /// <summary>
+    /// Measures response time by sending HTTP requests through proxy. When the test url
+    /// is a Cloudflare trace endpoint, the exit ip and country are read from that same
+    /// response, so no additional request is needed.
+    /// </summary>
+    public static async Task<RealPingResult> GetRealPingResult(IWebProxy? webProxy, string? url = null, CancellationToken cancellationToken = default)
+    {
+        url = url.IsNotEmpty() ? url : AppManager.Instance.Config.SpeedTestItem.SpeedPingTestUrl;
+        var isTrace = IsCloudflareTraceUrl(url);
+        var delay = 0;
+        var completed = false;
+        string? traceContent = null;
         try
         {
             using var timeoutCts = new CancellationTokenSource();
@@ -83,16 +97,21 @@ public static class ConnectionHandler
                 ConnectTimeout = Global.LocalFetch,
             });
 
-            List<int> oneTime = [];
             for (var i = 0; i < 2; i++)
             {
                 var timer = Stopwatch.StartNew();
-                await client.GetAsync(url, linkedToken).ConfigureAwait(false);
+                var response = await client.GetAsync(url, linkedToken).ConfigureAwait(false);
+                var content = isTrace ? await response.Content.ReadAsStringAsync(linkedToken).ConfigureAwait(false) : null;
                 timer.Stop();
-                oneTime.Add((int)timer.Elapsed.TotalMilliseconds);
+                completed = true;
+                var elapsed = (int)timer.Elapsed.TotalMilliseconds;
+                if (elapsed > 0 && (delay <= 0 || elapsed < delay))
+                {
+                    delay = elapsed;
+                    traceContent = content;
+                }
                 await Task.Delay(100, linkedToken);
             }
-            responseTime = oneTime.Where(x => x > 0).OrderBy(x => x).FirstOrDefault();
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
@@ -102,7 +121,58 @@ public static class ConnectionHandler
         {
             // Ignore
         }
-        return responseTime;
+        return new RealPingResult(completed ? delay : -1, ParseCloudflareTrace(traceContent));
+    }
+
+    /// <summary>
+    /// Checks whether the url points to the Cloudflare trace endpoint.
+    /// </summary>
+    private static bool IsCloudflareTraceUrl(string? url)
+    {
+        if (url.IsNullOrEmpty() || Uri.TryCreate(url, UriKind.Absolute, out var uri) == false)
+        {
+            return false;
+        }
+        return uri.Host is "1.1.1.1" or "1.0.0.1"
+            && uri.AbsolutePath.TrimEnd('/').Equals("/cdn-cgi/trace", StringComparison.OrdinalIgnoreCase);
+    }
+
+    /// <summary>
+    /// Parses the key=value lines of a Cloudflare trace response.
+    /// </summary>
+    private static IpInfoResult? ParseCloudflareTrace(string? content)
+    {
+        if (content.IsNullOrEmpty())
+        {
+            return null;
+        }
+
+        string? ip = null;
+        string? country = null;
+        foreach (var line in content.Split('\n'))
+        {
+            var keyValue = line.Split('=', 2);
+            if (keyValue.Length != 2)
+            {
+                continue;
+            }
+            switch (keyValue[0].Trim())
+            {
+                case "ip":
+                    ip = keyValue[1].Trim();
+                    break;
+
+                case "loc":
+                    country = keyValue[1].Trim();
+                    break;
+            }
+        }
+
+        if (ip.IsNullOrEmpty())
+        {
+            return null;
+        }
+        return new IpInfoResult(country.IsNullOrEmpty() ? Global.None : country, ip);
     }
 
     /// <summary>

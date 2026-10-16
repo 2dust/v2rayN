@@ -498,6 +498,9 @@
   <data name="menuRealPingServer" xml:space="preserve">
     <value>Test real delay</value>
   </data>
+  <data name="menuCloudflareTraceServer" xml:space="preserve">
+    <value>Test real delay (Cloudflare)</value>
+  </data>
   <data name="menuSortServerResult" xml:space="preserve">
     <value>Sort by test result</value>
   </data>

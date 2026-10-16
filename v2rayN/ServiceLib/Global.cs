@@ -172,6 +172,8 @@ public class Global
         @"https://speed.cloudflare.com/__down?bytes=99999999",
     ];
 
+    public const string CloudflareTraceUrl = @"https://1.1.1.1/cdn-cgi/trace";
+
     public static readonly List<string> SpeedPingTestUrls =
     [
         @"https://www.google.com/generate_204",
@@ -179,7 +181,8 @@ public class Global
         @"https://www.googlevideo.com/generate_204",
         @"https://www.gstatic.com/generate_204",
         @"https://www.apple.com/library/test/success.html",
-        @"http://www.msftconnecttest.com/connecttest.txt"
+        @"http://www.msftconnecttest.com/connecttest.txt",
+        CloudflareTraceUrl
     ];
 
     public static readonly List<string> GeoFilesSources =

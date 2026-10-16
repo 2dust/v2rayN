@@ -498,6 +498,9 @@
   <data name="menuRealPingServer" xml:space="preserve">
     <value>測試真連線延遲 (多選)</value>
   </data>
+  <data name="menuCloudflareTraceServer" xml:space="preserve">
+    <value>測試真連線延遲 (Cloudflare)</value>
+  </data>
   <data name="menuSortServerResult" xml:space="preserve">
     <value>按測試結果排序</value>
   </data>

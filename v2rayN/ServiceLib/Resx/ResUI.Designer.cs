@@ -1474,6 +1474,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Test real delay (Cloudflare) 的本地化字符串。
+        /// </summary>
+        public static string menuCloudflareTraceServer {
+            get {
+                return ResourceManager.GetString("menuCloudflareTraceServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Restart as Administrator 的本地化字符串。
         /// </summary>
         public static string menuRebootAsAdmin {

@@ -141,6 +141,7 @@
                             x:Name="menuRealPingServer"
                             Header="{x:Static resx:ResUI.menuRealPingServer}"
                             InputGesture="Ctrl+R" />
+                        <MenuItem x:Name="menuCloudflareTraceServer" Header="{x:Static resx:ResUI.menuCloudflareTraceServer}" />
                         <MenuItem
                             x:Name="menuSpeedServer"
                             Header="{x:Static resx:ResUI.menuSpeedServer}"

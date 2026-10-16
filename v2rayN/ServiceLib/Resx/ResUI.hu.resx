@@ -495,6 +495,9 @@
   <data name="menuRealPingServer" xml:space="preserve">
     <value>Konfigurációk valós késleltetésének tesztelése</value>
   </data>
+  <data name="menuCloudflareTraceServer" xml:space="preserve">
+    <value>Konfigurációk valós késleltetésének tesztelése (Cloudflare)</value>
+  </data>
   <data name="menuSortServerResult" xml:space="preserve">
     <value>Rendezés teszteredmény szerint</value>
   </data>

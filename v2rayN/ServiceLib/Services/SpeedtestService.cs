@@ -99,7 +99,11 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                     break;
 
                 case ESpeedActionType.Realping:
-                    await RunRealPingBatchAsync(lstSelected, completedIds, 0, ct);
+                    await RunRealPingBatchAsync(lstSelected, completedIds, 0, null, ct);
+                    break;
+
+                case ESpeedActionType.CloudflareTrace:
+                    await RunRealPingBatchAsync(lstSelected, completedIds, 0, Global.CloudflareTraceUrl, ct);
                     break;
 
                 case ESpeedActionType.UdpTest:
@@ -107,12 +111,12 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                     break;
 
                 case ESpeedActionType.Speedtest:
-                    await RunMixedTestAsync(lstSelected, completedIds, 1, true, ct);
+                    await RunMixedTestAsync(lstSelected, completedIds, 1, true, null, ct);
                     break;
 
                 case ESpeedActionType.Mixedtest:
                     await RunMixedTestAsync(lstSelected, completedIds, _config.SpeedTestItem.MixedConcurrencyCount, true,
-                        ct);
+                        null, ct);
                     break;
             }
         }
@@ -183,6 +187,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             {
                 case ESpeedActionType.Tcping:
                 case ESpeedActionType.Realping:
+                case ESpeedActionType.CloudflareTrace:
                 case ESpeedActionType.UdpTest:
                     await UpdateFunc(it.IndexId, message, "");
                     break;
@@ -239,7 +244,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     }
 
     private async Task RunRealPingBatchAsync(List<ServerTestItem> lstSelected,
-        ConcurrentDictionary<string, byte> completedIds, int pageSize = 0, CancellationToken ct = default)
+        ConcurrentDictionary<string, byte> completedIds, int pageSize = 0, string? pingUrl = null, CancellationToken ct = default)
     {
         if (pageSize <= 0)
         {
@@ -250,7 +255,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         List<ServerTestItem> lstFailed = [];
         foreach (var lst in lstTest)
         {
-            var ret = await RunRealPingAsync(lst, completedIds, ct);
+            var ret = await RunRealPingAsync(lst, completedIds, pingUrl, ct);
             if (ret == false)
             {
                 lstFailed.AddRange(lst);
@@ -268,17 +273,17 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
             if (pageSizeNext > _config.SpeedTestItem.MixedConcurrencyCount)
             {
-                await RunRealPingBatchAsync(lstFailed, completedIds, pageSizeNext, ct);
+                await RunRealPingBatchAsync(lstFailed, completedIds, pageSizeNext, pingUrl, ct);
             }
             else
             {
-                await RunMixedTestAsync(lstSelected, completedIds, _config.SpeedTestItem.MixedConcurrencyCount, false, ct);
+                await RunMixedTestAsync(lstSelected, completedIds, _config.SpeedTestItem.MixedConcurrencyCount, false, pingUrl, ct);
             }
         }
     }
 
     private async Task<bool> RunRealPingAsync(List<ServerTestItem> selecteds,
-        ConcurrentDictionary<string, byte> completedIds, CancellationToken ct = default)
+        ConcurrentDictionary<string, byte> completedIds, string? pingUrl = null, CancellationToken ct = default)
     {
         ProcessService processService = null;
         try
@@ -307,7 +312,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
                 try
                 {
-                    await DoRealPing(it, completedIds, innerCt);
+await DoRealPing(it, completedIds, pingUrl, innerCt);
                 }
                 catch (OperationCanceledException) when (ct.IsCancellationRequested)
                 {
@@ -430,7 +435,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
     private async Task RunMixedTestAsync(List<ServerTestItem> selecteds,
         ConcurrentDictionary<string, byte> completedIds, int concurrencyCount, bool blSpeedTest,
-        CancellationToken ct = default)
+        string? pingUrl = null, CancellationToken ct = default)
     {
         var downloadHandle = new DownloadService();
 
@@ -456,7 +461,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
                 await Task.Delay(1000, innerCt);
 
-                var delay = await DoRealPing(it, completedIds, innerCt);
+                var delay = await DoRealPing(it, completedIds, pingUrl, innerCt);
                 if (blSpeedTest)
                 {
                     if (delay > 0)
@@ -488,17 +493,18 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     }
 
     private async Task<int> DoRealPing(ServerTestItem it,
-        ConcurrentDictionary<string, byte> completedIds, CancellationToken ct = default)
+        ConcurrentDictionary<string, byte> completedIds, string? pingUrl = null, CancellationToken ct = default)
     {
         var webProxy = new WebProxy($"socks5://{Global.Loopback}:{it.Port}");
-        var responseTime = await ConnectionHandler.GetRealPingTime(webProxy, ct);
+        var pingResult = await ConnectionHandler.GetRealPingResult(webProxy, pingUrl, ct);
+        var responseTime = pingResult.Delay;
 
         ProfileExManager.Instance.SetTestDelay(it.IndexId, responseTime);
         await UpdateFunc(it.IndexId, responseTime.ToString());
 
         if (!_config.UiItem.HideColumnIpInfo && responseTime > 0)
         {
-            var ipInfo = await ConnectionHandler.GetIPInfo(webProxy, ct);
+            var ipInfo = pingResult.IpInfo ?? await ConnectionHandler.GetIPInfo(webProxy, ct);
             var ipStr = ipInfo?.ToString() ?? Global.None;
             ProfileExManager.Instance.SetTestIpInfo(it.IndexId, ipStr);
             await UpdateIpInfoFunc(it.IndexId, ipStr);
