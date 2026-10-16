@@ -25,6 +25,8 @@ public class GitHubReleaseAsset
     [JsonPropertyName("updated_at")] public DateTime UpdatedAt { get; set; }
 
     [JsonPropertyName("browser_download_url")] public string? BrowserDownloadUrl { get; set; }
+
+    [JsonPropertyName("digest")] public string? Digest { get; set; }
 }
 
 public class GitHubRelease
