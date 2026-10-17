@@ -1293,6 +1293,30 @@
   <data name="LvWebDavCheck" xml:space="preserve">
     <value>WebDav 可用检查</value>
   </data>
+  <data name="LvWebDavReadWrite" xml:space="preserve">
+    <value>可恢复备份，也可上传</value>
+  </data>
+  <data name="LvWebDavReadOnly" xml:space="preserve">
+    <value>可恢复备份，上传检查失败</value>
+  </data>
+  <data name="LvWebDavBackupMissingWritable" xml:space="preserve">
+    <value>可上传，当前路径没有可读取的备份</value>
+  </data>
+  <data name="LvWebDavBackupMissingNoWrite" xml:space="preserve">
+    <value>当前路径没有可读取的备份，上传检查失败</value>
+  </data>
+  <data name="LvWebDavWriteOnly" xml:space="preserve">
+    <value>可上传，但无法读取备份</value>
+  </data>
+  <data name="LvWebDavReadForbidden" xml:space="preserve">
+    <value>没有读取备份的权限</value>
+  </data>
+  <data name="LvWebDavUnauthorized" xml:space="preserve">
+    <value>WebDAV 身份验证失败</value>
+  </data>
+  <data name="LvWebDavCleanupFailed" xml:space="preserve">
+    <value>上传成功，但无法删除测试文件</value>
+  </data>
   <data name="LvWebDavDirName" xml:space="preserve">
     <value>远程文件夹名称 (可选)</value>
   </data>

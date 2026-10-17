@@ -1305,6 +1305,30 @@
   <data name="LvWebDavCheck" xml:space="preserve">
     <value>WebDAV Check</value>
   </data>
+  <data name="LvWebDavReadWrite" xml:space="preserve">
+    <value>Backup can be restored; upload is available</value>
+  </data>
+  <data name="LvWebDavReadOnly" xml:space="preserve">
+    <value>Backup can be restored; upload check failed</value>
+  </data>
+  <data name="LvWebDavBackupMissingWritable" xml:space="preserve">
+    <value>Upload is available; no readable backup at this path</value>
+  </data>
+  <data name="LvWebDavBackupMissingNoWrite" xml:space="preserve">
+    <value>No readable backup at this path; upload check failed</value>
+  </data>
+  <data name="LvWebDavWriteOnly" xml:space="preserve">
+    <value>Upload is available; backup cannot be read</value>
+  </data>
+  <data name="LvWebDavReadForbidden" xml:space="preserve">
+    <value>No permission to read the backup</value>
+  </data>
+  <data name="LvWebDavUnauthorized" xml:space="preserve">
+    <value>WebDAV authentication failed</value>
+  </data>
+  <data name="LvWebDavCleanupFailed" xml:space="preserve">
+    <value>Upload succeeded, but the test file could not be deleted</value>
+  </data>
   <data name="LvWebDavDirName" xml:space="preserve">
     <value>Remote folder name (optional)</value>
   </data>
