@@ -16,6 +16,7 @@ public partial class BackupAndRestoreView
             this.Bind(ViewModel, vm => vm.SelectedSource.UserName, v => v.txtWebDavUserName.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtWebDavPassword.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.DirName, v => v.txtWebDavDirName.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SelectedSource.ExcludeFromRemoteBackup, v => v.chkExcludeWebDavSettings.IsChecked).DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.WebDavCheckCmd, v => v.menuWebDavCheck).DisposeWith(disposables);
 

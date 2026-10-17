@@ -114,7 +114,7 @@
                             <Button.Flyout>
                                 <Flyout>
                                     <StackPanel>
-                                        <Grid ColumnDefinitions="Auto,300" RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+                                        <Grid ColumnDefinitions="Auto,300" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
                                             <TextBlock
                                                 Grid.Row="0"
                                                 Grid.Column="0"
@@ -172,9 +172,18 @@
                                                 Margin="{StaticResource Margin4}"
                                                 VerticalAlignment="Center" />
 
+                                            <CheckBox
+                                                x:Name="chkExcludeWebDavSettings"
+                                                Grid.Row="4"
+                                                Grid.ColumnSpan="2"
+                                                Margin="{StaticResource Margin4}"
+                                                VerticalAlignment="Center">
+                                                <TextBlock MaxWidth="450" Text="{x:Static resx:ResUI.LvWebDavExcludeSettings}" TextWrapping="Wrap" />
+                                            </CheckBox>
+
                                             <Button
                                                 x:Name="menuWebDavCheck"
-                                                Grid.Row="4"
+                                                Grid.Row="5"
                                                 Grid.Column="1"
                                                 Margin="{StaticResource Margin4}"
                                                 HorizontalAlignment="Right"

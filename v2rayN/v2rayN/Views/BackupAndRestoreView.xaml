@@ -133,6 +133,7 @@
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
@@ -203,9 +204,18 @@
                                         VerticalAlignment="Center"
                                         Style="{StaticResource DefTextBox}" />
 
+                                    <CheckBox
+                                        x:Name="chkExcludeWebDavSettings"
+                                        Grid.Row="4"
+                                        Grid.ColumnSpan="2"
+                                        Margin="{StaticResource Margin8}"
+                                        VerticalAlignment="Center">
+                                        <TextBlock MaxWidth="450" Text="{x:Static resx:ResUI.LvWebDavExcludeSettings}" TextWrapping="Wrap" />
+                                    </CheckBox>
+
                                     <Button
                                         x:Name="menuWebDavCheck"
-                                        Grid.Row="4"
+                                        Grid.Row="5"
                                         Grid.Column="1"
                                         Margin="{StaticResource Margin8}"
                                         VerticalAlignment="Center"

@@ -1293,6 +1293,9 @@
   <data name="LvWebDavCheck" xml:space="preserve">
     <value>WebDav 可用检查</value>
   </data>
+  <data name="LvWebDavExcludeSettings" xml:space="preserve">
+    <value>远程备份时排除 WebDAV 设置</value>
+  </data>
   <data name="LvWebDavDirName" xml:space="preserve">
     <value>远程文件夹名称 (可选)</value>
   </data>
