@@ -1365,6 +1365,15 @@
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
     <value>密碼將調用命令行校驗，如果因為校驗錯誤導致無法正常運行時，請重啟本應用。密碼不會存儲，每次重啟後都需要再次輸入。</value>
   </data>
+  <data name="TbSettingsLinuxSudoPasswordRemember" xml:space="preserve">
+    <value>保留核心權限</value>
+  </data>
+  <data name="TbSettingsPreserveCorePrivilegesTip" xml:space="preserve">
+    <value>賦予核心 root 權限</value>
+  </data>
+  <data name="SudoPromptReasonCoreUpdate" xml:space="preserve">
+    <value>更新核心前需要先取消核心 root 權限</value>
+  </data>
   <data name="TransportHeaderType5" xml:space="preserve">
     <value>xhttp 模式</value>
   </data>

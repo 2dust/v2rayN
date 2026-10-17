@@ -100,6 +100,7 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
     [Reactive] public partial string TunRouteExcludeAddress { get; set; }
     [Reactive] public partial string TunIPv4Address { get; set; }
     [Reactive] public partial string TunIPv6Address { get; set; }
+    [Reactive] public partial bool TunPreserveCorePrivileges { get; set; }
 
     #endregion Tun mode
 
@@ -117,6 +118,7 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
 
     #endregion CoreType
 
+    public Interaction<string?, string?> PasswordInputInteraction { get; } = new();
     public ReactiveCommand<RxVoid, RxVoid> SaveCmd { get; }
 
     public OptionSettingViewModel()
@@ -225,6 +227,7 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         TunRouteExcludeAddress = Utils.List2String(_config.TunModeItem.RouteExcludeAddress, true);
         TunIPv4Address = _config.TunModeItem.IPv4Address;
         TunIPv6Address = _config.TunModeItem.IPv6Address;
+        TunPreserveCorePrivileges = _config.TunModeItem.PreserveCorePrivileges;
 
         #endregion Tun mode
 
@@ -310,6 +313,7 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
             NoticeManager.Instance.Enqueue(ResUI.FillFragmentParameterError);
             return;
         }
+
         var needReboot = EnableStatistics != _config.GuiItem.EnableStatistics
                           || DisplayRealTimeSpeed != _config.GuiItem.DisplayRealTimeSpeed
                         || EnableDragDropSort != _config.UiItem.EnableDragDropSort
@@ -399,6 +403,52 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         _config.TunModeItem.IPv4Address = TunIPv4Address;
         _config.TunModeItem.IPv6Address = TunIPv6Address;
 
+        if (Utils.IsLinux())
+        {
+            if (TunPreserveCorePrivileges && (!_config.TunModeItem.PreserveCorePrivileges || !await CoreAdminManager.AreAllTunCoresPrivilegedAsync()))
+            {
+                var areAllPrivileged = await CoreAdminManager.AreAllTunCoresPrivilegedAsync();
+                if (!areAllPrivileged)
+                {
+                    var password = await PasswordInputInteraction.HandleSafe(null);
+                    if (password.IsNullOrEmpty())
+                    {
+                        NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
+                        TunPreserveCorePrivileges = _config.TunModeItem.PreserveCorePrivileges;
+                        return;
+                    }
+
+                    var success = await CoreAdminManager.GrantAllCoresPrivilege(password);
+                    if (!success)
+                    {
+                        NoticeManager.Instance.Enqueue(ResUI.SudoIncorrectPasswordTip);
+                        TunPreserveCorePrivileges = _config.TunModeItem.PreserveCorePrivileges;
+                        return;
+                    }
+
+                    AppManager.Instance.LinuxSudoPwd = null;
+                }
+            }
+            else if (!TunPreserveCorePrivileges && (_config.TunModeItem.PreserveCorePrivileges || await CoreAdminManager.IsAnyCorePrivilegedAsync()))
+            {
+                var success = await CoreAdminManager.RevokeAllCoresPrivilege(passwordPrompt: async () =>
+                {
+                    return await PasswordInputInteraction.HandleSafe(null);
+                });
+
+                if (!success)
+                {
+                    NoticeManager.Instance.Enqueue(ResUI.OperationFailed);
+                    TunPreserveCorePrivileges = _config.TunModeItem.PreserveCorePrivileges;
+                    return;
+                }
+            }
+        }
+
+        var shouldReloadTunCore = Utils.IsLinux() && _config.TunModeItem.EnableTun && (_config.TunModeItem.PreserveCorePrivileges != TunPreserveCorePrivileges);
+
+        _config.TunModeItem.PreserveCorePrivileges = TunPreserveCorePrivileges;
+
         //coreType
         await SaveCoreType();
 
@@ -406,6 +456,11 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         {
             await AutoStartupHandler.UpdateTask(_config);
             AppManager.Instance.Reset();
+
+            if (shouldReloadTunCore)
+            {
+                StatusBarViewModel.Instance?.ReloadRequested.Publish();
+            }
 
             NoticeManager.Instance.Enqueue(needReboot ? ResUI.NeedRebootTips : ResUI.OperationSuccess);
             RequestClose?.Invoke(this, EventArgs.Empty);
