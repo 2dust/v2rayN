@@ -68,6 +68,9 @@ public partial class CoreConfigSingboxService
                 tunInbound.auto_route = _config.TunModeItem.AutoRoute;
                 tunInbound.strict_route = _config.TunModeItem.StrictRoute;
                 tunInbound.stack = _config.TunModeItem.Stack;
+                tunInbound.dns_mode = _config.TunModeItem.DnsMode == Global.TunDnsModeDefault
+                    ? null
+                    : _config.TunModeItem.DnsMode.NullIfEmpty();
 
                 var address = _config.TunModeItem.IPv4Address.NullIfEmpty() ?? Global.TunIPv4Address.First();
                 tunInbound.address = [address];

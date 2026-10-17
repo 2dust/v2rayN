@@ -116,6 +116,7 @@ public class Inbound4Sbox
     public bool? auto_route { get; set; }
     public bool? strict_route { get; set; }
     public string? stack { get; set; }
+    public string? dns_mode { get; set; }
     public List<User4Sbox> users { get; set; }
     public List<string>? route_exclude_address { get; set; }
 }
