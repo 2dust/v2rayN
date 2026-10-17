@@ -4,7 +4,7 @@ public class ProfileExManager
 {
     private static readonly Lazy<ProfileExManager> _instance = new(() => new());
     private ConcurrentBag<ProfileExItem> _lstProfileEx = [];
-    private readonly Queue<string> _queIndexIds = new();
+    private readonly ConcurrentQueue<string> _queIndexIds = new();
     public static ProfileExManager Instance => _instance.Value;
     private static readonly string _tag = "ProfileExHandler";
 
@@ -32,24 +32,30 @@ public class ProfileExManager
 
     private void IndexIdEnqueue(string indexId)
     {
-        if (indexId.IsNotEmpty() && !_queIndexIds.Contains(indexId))
+        if (indexId.IsNotEmpty())
         {
+            //Speed tests touch this from many threads; duplicates are harmless here since
+            //the save loop just writes the same row more than once
             _queIndexIds.Enqueue(indexId);
         }
     }
 
     private async Task SaveQueueIndexIds()
     {
-        var cnt = _queIndexIds.Count;
-        if (cnt > 0)
+        var lstIds = new List<string>();
+        while (_queIndexIds.TryDequeue(out var id))
+        {
+            lstIds.Add(id);
+        }
+
+        if (lstIds.Count > 0)
         {
             var lstExists = await SQLiteHelper.Instance.TableAsync<ProfileExItem>().ToListAsync();
             List<ProfileExItem> lstInserts = [];
             List<ProfileExItem> lstUpdates = [];
 
-            for (var i = 0; i < cnt; i++)
+            foreach (var id in lstIds)
             {
-                var id = _queIndexIds.Dequeue();
                 var item = lstExists.FirstOrDefault(t => t.IndexId == id);
                 var itemNew = _lstProfileEx?.FirstOrDefault(t => t.IndexId == id);
                 if (itemNew is null)
