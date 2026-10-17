@@ -39,6 +39,15 @@ public partial class UpdateService(Config config, Func<bool, string, Task> updat
             url = result.Url!;
             fileName = Utils.GetTempPath(Utils.GetGuid());
             await downloadHandle.DownloadFileAsync(new() { FileUrl = url, FilePath = fileName }, blProxy, cancellationToken);
+            if (!result.Sha256.IsNullOrEmpty())
+            {
+                var actual = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(await File.ReadAllBytesAsync(fileName, cancellationToken)));
+                if (!actual.Equals(result.Sha256, StringComparison.OrdinalIgnoreCase))
+                {
+                    File.Delete(fileName);
+                    throw new InvalidOperationException($"sha256 mismatch: expected {result.Sha256}, got {actual}");
+                }
+            }
         }
         else
         {
@@ -89,6 +98,15 @@ public partial class UpdateService(Config config, Func<bool, string, Task> updat
             var ext = url.Contains(".tar.gz") ? ".tar.gz" : Path.GetExtension(url);
             fileName = Utils.GetTempPath(Utils.GetGuid() + ext);
             await downloadHandle.DownloadFileAsync(new() { FileUrl = url, FilePath = fileName }, blProxy, cancellationToken);
+            if (!result.Sha256.IsNullOrEmpty())
+            {
+                var actual = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(await File.ReadAllBytesAsync(fileName, cancellationToken)));
+                if (!actual.Equals(result.Sha256, StringComparison.OrdinalIgnoreCase))
+                {
+                    File.Delete(fileName);
+                    throw new InvalidOperationException($"sha256 mismatch: expected {result.Sha256}, got {actual}");
+                }
+            }
         }
         else
         {
