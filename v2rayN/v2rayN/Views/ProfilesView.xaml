@@ -21,7 +21,27 @@
     </UserControl.Resources>
     <Grid>
         <DockPanel>
-            <WrapPanel Margin="{StaticResource Margin4}" DockPanel.Dock="Top">
+            <DockPanel Margin="{StaticResource Margin4}" DockPanel.Dock="Top">
+            <StackPanel
+                x:Name="stkSpeedtestProgress"
+                Margin="{StaticResource MarginLeftRight4}"
+                VerticalAlignment="Center"
+                AutomationProperties.Name="SpeedtestProgressPanel"
+                DockPanel.Dock="Right"
+                Visibility="Hidden">
+                <ProgressBar
+                    x:Name="pbSpeedtestProgress"
+                    Width="150"
+                    Height="4"
+                    Maximum="100"
+                    AutomationProperties.Name="SpeedtestProgressBar" />
+                <TextBlock
+                    x:Name="txtSpeedtestProgress"
+                    Margin="0,2,0,0"
+                    HorizontalAlignment="Center"
+                    FontSize="{DynamicResource StdFontSize}" />
+            </StackPanel>
+            <WrapPanel>
                 <ListBox
                     x:Name="lstGroup"
                     MaxHeight="200"
@@ -84,6 +104,7 @@
                     Width="30"
                     Height="30"
                     Margin="{StaticResource MarginLeftRight4}"
+                    AutomationProperties.Name="{x:Static resx:ResUI.menuFastRealPing}"
                     Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
                     ToolTip="{x:Static resx:ResUI.menuFastRealPing}">
                     <materialDesign:PackIcon VerticalAlignment="Center" Kind="LightningBolt" />
@@ -93,11 +114,13 @@
                     Width="30"
                     Height="30"
                     Margin="{StaticResource MarginLeftRight4}"
+                    AutomationProperties.Name="{x:Static resx:ResUI.menuMixedTestServer}"
                     Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
                     ToolTip="{x:Static resx:ResUI.menuMixedTestServer}">
                     <materialDesign:PackIcon VerticalAlignment="Center" Kind="Speedometer" />
                 </Button>
             </WrapPanel>
+        </DockPanel>
             <DataGrid
                 x:Name="lstProfiles"
                 materialDesign:DataGridAssist.CellPadding="2,2"
