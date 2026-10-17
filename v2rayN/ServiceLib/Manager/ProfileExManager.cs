@@ -4,8 +4,7 @@ public class ProfileExManager
 {
     private static readonly Lazy<ProfileExManager> _instance = new(() => new());
     private ConcurrentBag<ProfileExItem> _lstProfileEx = [];
-    private readonly Queue<string> _queIndexIds = new();
-    private readonly Lock _lock = new();
+    private readonly ConcurrentQueue<string> _queIndexIds = new();
     public static ProfileExManager Instance => _instance.Value;
     private static readonly string _tag = "ProfileExHandler";
 
@@ -33,31 +32,20 @@ public class ProfileExManager
 
     private void IndexIdEnqueue(string indexId)
     {
-        if (indexId.IsNullOrEmpty())
+        if (indexId.IsNotEmpty())
         {
-            return;
-        }
-
-        //Speed tests run many profiles in parallel, so the queue is touched concurrently
-        lock (_lock)
-        {
-            if (!_queIndexIds.Contains(indexId))
-            {
-                _queIndexIds.Enqueue(indexId);
-            }
+            //Speed tests touch this from many threads; duplicates are harmless here since
+            //the save loop just writes the same row more than once
+            _queIndexIds.Enqueue(indexId);
         }
     }
 
     private async Task SaveQueueIndexIds()
     {
-        List<string> lstIds;
-        lock (_lock)
+        var lstIds = new List<string>();
+        while (_queIndexIds.TryDequeue(out var id))
         {
-            lstIds = new List<string>(_queIndexIds.Count);
-            while (_queIndexIds.Count > 0)
-            {
-                lstIds.Add(_queIndexIds.Dequeue());
-            }
+            lstIds.Add(id);
         }
 
         if (lstIds.Count > 0)
@@ -121,12 +109,7 @@ public class ProfileExManager
 
     private ProfileExItem GetProfileExItem(string? indexId)
     {
-        //Two threads may ask for the same profile at the same time, without the lock both
-        //would create a duplicate row for the same index
-        lock (_lock)
-        {
-            return _lstProfileEx.FirstOrDefault(t => t.IndexId == indexId) ?? AddProfileEx(indexId);
-        }
+        return _lstProfileEx.FirstOrDefault(t => t.IndexId == indexId) ?? AddProfileEx(indexId);
     }
 
     public async Task ClearAll()
