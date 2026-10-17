@@ -130,6 +130,13 @@ public class EndpointResolveManager
             ReadOnlySpan<byte> message,
             ushort expectedType)
         {
+            return ParseResponse(message, expectedType).Addresses;
+        }
+
+        public static DnsResponse ParseResponse(
+            ReadOnlySpan<byte> message,
+            ushort expectedType)
+        {
             if (expectedType is not (1 or 28))
             {
                 throw new ArgumentOutOfRangeException(nameof(expectedType));
@@ -154,15 +161,17 @@ public class EndpointResolveManager
             var rcode = flags & 0x000F;
             if (rcode != 0)
             {
-                return [];
+                return new DnsResponse([], null);
             }
 
             var offset = 12;
 
-            // Skip Question section.
+            // Parse the Question section to obtain the query name.
+            string? queryName = null;
             for (var i = 0; i < questionCount; i++)
             {
-                offset = SkipName(message, offset);
+                var name = ReadName(message, offset, out offset);
+                queryName ??= NormalizeName(name);
 
                 if (offset + 4 > message.Length)
                 {
@@ -173,11 +182,12 @@ public class EndpointResolveManager
             }
 
             var addresses = new List<IPAddress>();
+            string? cname = null;
 
             for (var i = 0; i < answerCount; i++)
             {
                 // NAME
-                offset = SkipName(message, offset);
+                var ownerName = ReadName(message, offset, out offset);
 
                 if (offset + 10 > message.Length)
                 {
@@ -196,52 +206,136 @@ public class EndpointResolveManager
                     throw new InvalidDataException("Invalid DNS RDATA.");
                 }
 
-                if (@class == 1 && type == expectedType)
+                if (@class != 1)
                 {
-                    if (expectedType == 1 && rdLength == 4)
+                    offset += rdLength;
+                    continue;
+                }
+
+                var ownerMatchesQuery = NamesEqual(ownerName, queryName);
+                var ownerMatchesCname = NamesEqual(ownerName, cname);
+
+                if (type == expectedType)
+                {
+                    if (ownerMatchesQuery || ownerMatchesCname)
                     {
-                        addresses.Add(new IPAddress(
-                            message.Slice(offset, 4)));
+                        if (expectedType == 1 && rdLength == 4)
+                        {
+                            addresses.Add(new IPAddress(
+                                message.Slice(offset, 4)));
+                        }
+                        else if (expectedType == 28 && rdLength == 16)
+                        {
+                            addresses.Add(new IPAddress(
+                                message.Slice(offset, 16)));
+                        }
                     }
-                    else if (expectedType == 28 && rdLength == 16)
-                    {
-                        addresses.Add(new IPAddress(
-                            message.Slice(offset, 16)));
-                    }
+                }
+                else if (type == 5 && ownerMatchesQuery && cname is null)
+                {
+                    cname = ReadName(message, offset, out _);
                 }
 
                 offset += rdLength;
             }
 
-            return addresses;
+            return new DnsResponse(addresses, cname);
         }
 
-        private static int SkipName(ReadOnlySpan<byte> message, int offset)
+        public static async Task<List<IPAddress>> ResolveWithCnameAsync(
+            string host,
+            bool ipv6,
+            Func<string, ushort, CancellationToken, Task<byte[]>> queryAsync,
+            CancellationToken cancellationToken = default)
         {
+            if (string.IsNullOrWhiteSpace(host))
+            {
+                throw new ArgumentException("Host is empty.", nameof(host));
+            }
+
+            var queryType = ipv6 ? (ushort)28 : (ushort)1;
+            var currentName = host.TrimEnd('.');
+            var visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            const int maxHops = 8;
+
+            for (var hop = 0; hop < maxHops; hop++)
+            {
+                if (!visited.Add(currentName))
+                {
+                    // CNAME loop detected.
+                    return [];
+                }
+
+                var response = await queryAsync(currentName, queryType, cancellationToken);
+                var result = ParseResponse(response, queryType);
+
+                if (result.Addresses.Count > 0)
+                {
+                    return result.Addresses;
+                }
+
+                if (string.IsNullOrWhiteSpace(result.Cname))
+                {
+                    return [];
+                }
+
+                currentName = result.Cname.TrimEnd('.');
+            }
+
+            return [];
+        }
+
+        public static string ReadName(
+            ReadOnlySpan<byte> message,
+            int offset,
+            out int nextOffset)
+        {
+            var name = new StringBuilder();
+            var position = offset;
+            var endOffset = -1;
+            var pointerCount = 0;
+
             while (true)
             {
-                if ((uint)offset >= (uint)message.Length)
+                if ((uint)position >= (uint)message.Length)
                 {
                     throw new InvalidDataException("Invalid DNS name.");
                 }
 
-                var length = message[offset++];
+                var length = message[position];
 
                 // End of name.
                 if (length == 0)
                 {
-                    return offset;
+                    position++;
+                    if (endOffset < 0)
+                    {
+                        endOffset = position;
+                    }
+                    break;
                 }
 
                 // Compression pointer.
                 if ((length & 0xC0) == 0xC0)
                 {
-                    if (offset >= message.Length)
+                    if (position + 1 >= message.Length)
                     {
                         throw new InvalidDataException("Invalid DNS pointer.");
                     }
 
-                    return offset + 1;
+                    if (++pointerCount > 64)
+                    {
+                        throw new InvalidDataException("Too many DNS compression pointers.");
+                    }
+
+                    if (endOffset < 0)
+                    {
+                        endOffset = position + 2;
+                    }
+
+                    var pointer = ((length & 0x3F) << 8) | message[position + 1];
+                    position = pointer;
+                    continue;
                 }
 
                 // Reserved label types.
@@ -250,13 +344,41 @@ public class EndpointResolveManager
                     throw new InvalidDataException("Invalid DNS label.");
                 }
 
-                if (offset + length > message.Length)
+                position++;
+                if (position + length > message.Length)
                 {
                     throw new InvalidDataException("Invalid DNS label length.");
                 }
 
-                offset += length;
+                if (name.Length > 0)
+                {
+                    name.Append('.');
+                }
+
+                name.Append(Encoding.ASCII.GetString(message.Slice(position, length)));
+                position += length;
             }
+
+            nextOffset = endOffset;
+            return name.ToString();
+        }
+
+        public sealed record DnsResponse(List<IPAddress> Addresses, string? Cname);
+
+        private static string? NormalizeName(string name)
+        {
+            name = name.TrimEnd('.');
+            return name.Length == 0 ? null : name;
+        }
+
+        private static bool NamesEqual(string? left, string? right)
+        {
+            return left is not null &&
+                   right is not null &&
+                   string.Equals(
+                       left.TrimEnd('.'),
+                       right.TrimEnd('.'),
+                       StringComparison.OrdinalIgnoreCase);
         }
 
         private static ushort ReadUInt16(
@@ -296,13 +418,19 @@ public class EndpointResolveManager
             bool ipv6,
             CancellationToken cancellationToken = default)
         {
-            var queryType = ipv6 ? (ushort)28 : (ushort)1;
-            var query = DnsWire.BuildQuery(host, queryType);
-            using var udpClient = new UdpClient();
-            udpClient.Connect(dnsServer);
-            await udpClient.SendAsync(query, query.Length);
-            var result = await udpClient.ReceiveAsync(cancellationToken);
-            return DnsWire.ParseAddresses(result.Buffer, queryType);
+            return await DnsWire.ResolveWithCnameAsync(
+                host,
+                ipv6,
+                async (name, queryType, ct) =>
+                {
+                    var query = DnsWire.BuildQuery(name, queryType);
+                    using var udpClient = new UdpClient();
+                    udpClient.Connect(dnsServer);
+                    await udpClient.SendAsync(query, query.Length);
+                    var result = await udpClient.ReceiveAsync(ct);
+                    return result.Buffer;
+                },
+                cancellationToken);
         }
     }
 
@@ -313,20 +441,26 @@ public class EndpointResolveManager
             bool ipv6,
             CancellationToken cancellationToken = default)
         {
-            var queryType = ipv6 ? (ushort)28 : (ushort)1;
-            var query = DnsWire.BuildQuery(host, queryType);
-            using var tcpClient = new TcpClient();
-            await tcpClient.ConnectAsync(dnsServer.Address, dnsServer.Port, cancellationToken);
-            await using var networkStream = tcpClient.GetStream();
-            await networkStream.WriteAsync(query, 0, query.Length, cancellationToken);
-            // Read the length of the response (2 bytes)
-            var lengthBuffer = new byte[2];
-            await networkStream.ReadExactlyAsync(lengthBuffer, 0, 2, cancellationToken);
-            var responseLength = (lengthBuffer[0] << 8) | lengthBuffer[1];
-            // Read the actual response
-            var responseBuffer = new byte[responseLength];
-            await networkStream.ReadExactlyAsync(responseBuffer, 0, responseLength, cancellationToken);
-            return DnsWire.ParseAddresses(responseBuffer, queryType);
+            return await DnsWire.ResolveWithCnameAsync(
+                host,
+                ipv6,
+                async (name, queryType, ct) =>
+                {
+                    var query = DnsWire.BuildQuery(name, queryType);
+                    using var tcpClient = new TcpClient();
+                    await tcpClient.ConnectAsync(dnsServer.Address, dnsServer.Port, ct);
+                    await using var networkStream = tcpClient.GetStream();
+                    await networkStream.WriteAsync(query, 0, query.Length, ct);
+                    // Read the length of the response (2 bytes)
+                    var lengthBuffer = new byte[2];
+                    await networkStream.ReadExactlyAsync(lengthBuffer, 0, 2, ct);
+                    var responseLength = (lengthBuffer[0] << 8) | lengthBuffer[1];
+                    // Read the actual response
+                    var responseBuffer = new byte[responseLength];
+                    await networkStream.ReadExactlyAsync(responseBuffer, 0, responseLength, ct);
+                    return responseBuffer;
+                },
+                cancellationToken);
         }
     }
 
@@ -337,26 +471,31 @@ public class EndpointResolveManager
             bool ipv6,
             CancellationToken cancellationToken = default)
         {
-            var queryType = ipv6 ? (ushort)28 : (ushort)1;
-            var query = DnsWire.BuildQuery(host, queryType);
-
-            using var request = new HttpRequestMessage(HttpMethod.Post, dohServer);
-            request.Content = new ByteArrayContent(query)
-            {
-                Headers =
+            return await DnsWire.ResolveWithCnameAsync(
+                host,
+                ipv6,
+                async (name, queryType, ct) =>
                 {
-                    ContentType = new MediaTypeHeaderValue("application/dns-message"),
+                    var query = DnsWire.BuildQuery(name, queryType);
+
+                    using var request = new HttpRequestMessage(HttpMethod.Post, dohServer);
+                    request.Content = new ByteArrayContent(query)
+                    {
+                        Headers =
+                        {
+                            ContentType = new MediaTypeHeaderValue("application/dns-message"),
+                        },
+                    };
+
+                    request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/dns-message"));
+
+                    using var response =
+                        await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct);
+                    response.EnsureSuccessStatusCode();
+
+                    return await response.Content.ReadAsByteArrayAsync(ct);
                 },
-            };
-
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/dns-message"));
-
-            using var response =
-                await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
-            response.EnsureSuccessStatusCode();
-
-            var responseData = await response.Content.ReadAsByteArrayAsync(cancellationToken);
-            return DnsWire.ParseAddresses(responseData, queryType);
+                cancellationToken);
         }
     }
 
