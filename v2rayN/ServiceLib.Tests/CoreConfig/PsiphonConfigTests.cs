@@ -189,4 +189,53 @@ public class PsiphonConfigTests
         await string.IsNullOrWhiteSpace(config["RemoteServerListSignaturePublicKey"]?.GetValue<string>()).Should().BeFalse();
         await new Uri(config["RemoteServerListUrl"]!.GetValue<string>()).Scheme.Should().BeEqualTo("https");
     }
+
+    [Test]
+    public async Task TunFrontend_PinsUpstreamHostsSoReconnectDoesNotNeedTheTunnel()
+    {
+        const string source = """
+            {"inbounds":[{"type":"tun"}],
+            "dns":{"servers":[{"type":"https","tag":"remote","server":"cloudflare-dns.com","detour":"proxy"}],
+            "rules":[{"server":"remote"}],"final":"remote"},"route":{"rules":[]}}
+            """;
+        var address = System.Net.IPAddress.Parse("192.0.2.20");
+        var result = JsonNode.Parse(PsiphonConfigService.SimplifyTunFrontend(source, [address],
+            pinnedHosts: new Dictionary<string, System.Net.IPAddress[]> { ["edge.example.workers.dev"] = [address], ["192.0.2.30"] = [address] }))!;
+        var rule = result["dns"]!["rules"]![0]!;
+        await rule["server"]!.GetValue<string>().Should().BeEqualTo(PsiphonConfigService.PinnedHostsTag);
+        await rule["domain"]!.AsArray().Count.Should().BeEqualTo(1);
+        var hosts = result["dns"]!["servers"]!.AsArray().Last()!;
+        await hosts["type"]!.GetValue<string>().Should().BeEqualTo("hosts");
+        await hosts["predefined"]!["edge.example.workers.dev"]![0]!.GetValue<string>().Should().BeEqualTo("192.0.2.20");
+    }
+
+    [Test]
+    public async Task TunFrontend_WithoutPinnedHostsLeavesDnsUnchanged()
+    {
+        const string source = """{"inbounds":[{"type":"tun"}],"dns":{"servers":[],"rules":[]},"route":{"rules":[]}}""";
+        var result = JsonNode.Parse(PsiphonConfigService.SimplifyTunFrontend(source))!;
+        await result["dns"]!["rules"]!.AsArray().Count.Should().BeEqualTo(0);
+    }
+
+    [Test]
+    public async Task Config_AddsMobileFallbackResolvers()
+    {
+        var config = PsiphonConfigService.CreateConfig(Source, "", 21088, "data", 21089);
+        await config["DNSResolverAlternateServers"]!.AsArray().Count.Should().BeEqualTo(4);
+    }
+
+    [Test]
+    public async Task Watchdog_LetsPsiphonReconnectByItself()
+    {
+        var now = DateTime.UtcNow;
+        // Tunnel just dropped but the engine is alive and its proxy answers: wait.
+        await ServiceLib.Manager.CoreManager.PsiphonNeedsRestart(true, true, 0, now.AddSeconds(-30), now).Should().BeFalse();
+        // Stalled beyond the grace period: restart.
+        await ServiceLib.Manager.CoreManager.PsiphonNeedsRestart(true, true, 0, now.AddSeconds(-120), now).Should().BeTrue();
+        // A crashed engine, upstream or TUN frontend: restart at once.
+        await ServiceLib.Manager.CoreManager.PsiphonNeedsRestart(false, false, 1, null, now).Should().BeTrue();
+        // Local proxy stopped answering twice: restart.
+        await ServiceLib.Manager.CoreManager.PsiphonNeedsRestart(true, false, 2, null, now).Should().BeTrue();
+        await ServiceLib.Manager.CoreManager.PsiphonNeedsRestart(true, false, 1, null, now).Should().BeFalse();
+    }
 }

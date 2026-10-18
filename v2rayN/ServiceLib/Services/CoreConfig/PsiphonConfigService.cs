@@ -77,7 +77,10 @@ public static class PsiphonConfigService
         catch { }
     }
 
-    public static string SimplifyTunFrontend(string source, IEnumerable<IPAddress>? upstreamAddresses = null, bool preserveRuleSets = false)
+    public const string PinnedHostsTag = "upstream-hosts";
+
+    public static string SimplifyTunFrontend(string source, IEnumerable<IPAddress>? upstreamAddresses = null, bool preserveRuleSets = false,
+        IReadOnlyDictionary<string, IPAddress[]>? pinnedHosts = null)
     {
         var config = JsonNode.Parse(source)?.AsObject()
             ?? throw new ArgumentException("The TUN frontend configuration is invalid.");
@@ -137,8 +140,32 @@ public static class PsiphonConfigService
                 }
             }
         }
+        PinUpstreamHosts(config, pinnedHosts);
         if (!preserveRuleSets) config.Remove("http_clients");
         return config.ToJsonString(new() { WriteIndented = true });
+    }
+
+    // Windows resolves names for xray.exe through its DNS client service, so those queries enter
+    // the TUN and would otherwise be sent to remote DNS through the proxy chain itself. When the
+    // tunnel drops and the cached record expires, the upstream can no longer find its own server
+    // and the chain cannot recover. Answer the upstream's names locally with the addresses that
+    // were resolved before TUN started (the same addresses excluded from the TUN route).
+    private static void PinUpstreamHosts(JsonObject config, IReadOnlyDictionary<string, IPAddress[]>? pinnedHosts)
+    {
+        if (pinnedHosts is not { Count: > 0 } || config["dns"] is not JsonObject dns) return;
+        var predefined = new JsonObject();
+        foreach (var (host, addresses) in pinnedHosts)
+        {
+            var name = host?.Trim().TrimEnd('.');
+            if (string.IsNullOrEmpty(name) || IPAddress.TryParse(name, out _) || addresses is not { Length: > 0 }) continue;
+            predefined[name] = new JsonArray(addresses.Distinct().Select(address => (JsonNode?)JsonValue.Create(address.ToString())).ToArray());
+        }
+        if (predefined.Count == 0) return;
+        var names = new JsonArray(predefined.Select(item => (JsonNode?)JsonValue.Create(item.Key)).ToArray());
+        if (dns["servers"] is not JsonArray servers) dns["servers"] = servers = new JsonArray();
+        servers.Add(new JsonObject { ["type"] = "hosts", ["tag"] = PinnedHostsTag, ["predefined"] = predefined });
+        if (dns["rules"] is not JsonArray rules) dns["rules"] = rules = new JsonArray();
+        rules.Insert(0, new JsonObject { ["domain"] = names, ["server"] = PinnedHostsTag });
     }
 
     public static JsonObject CreateConfig(string source, string? region, int port, string dataDirectory, int? upstreamPort = null)
@@ -183,6 +210,12 @@ public static class PsiphonConfigService
         config["EnableLightProxyFallback"] = false;
         config["SplitTunnelOwnRegion"] = false;
         config["SplitTunnelRegions"] = new JsonArray();
+        // Same fallback resolvers the MahsaNG/psiphon-android clients configure, used by Psiphon
+        // when the system resolver is poisoned or unreachable.
+        if (config["DNSResolverAlternateServers"] is not JsonArray { Count: > 0 })
+        {
+            config["DNSResolverAlternateServers"] = new JsonArray("1.1.1.1", "1.0.0.1", "8.8.8.8", "8.8.4.4");
+        }
         config["EmitDiagnosticNotices"] = false;
         config["EmitDiagnosticNetworkParameters"] = false;
         return config;

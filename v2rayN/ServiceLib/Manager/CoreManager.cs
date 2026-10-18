@@ -462,21 +462,48 @@ public class CoreManager
         catch (ObjectDisposedException) { }
     }
 
+    // Psiphon reports zero tunnels while it re-establishes on its own, keeping its local SOCKS
+    // proxy open. The Android client simply lets the engine do that. Restarting the whole stack
+    // here discards Psiphon's progress and tears down TUN, which turns a short upstream hiccup
+    // into a long outage and a reconnect loop. Only intervene for real failures.
+    public static readonly TimeSpan PsiphonReconnectGrace = TimeSpan.FromSeconds(90);
+
+    public static bool PsiphonNeedsRestart(bool processesAlive, bool socksAnswering, int failedChecks,
+        DateTime? tunnelLostAt, DateTime now) =>
+        !processesAlive
+        || (!socksAnswering && failedChecks >= 2)
+        || (tunnelLostAt != null && now - tunnelLostAt.Value > PsiphonReconnectGrace);
+
     private async Task MonitorPsiphon(ProcessService process, int socksPort, CancellationToken token)
     {
         try
         {
             var failedChecks = 0;
+            DateTime? tunnelLostAt = null;
             while (!token.IsCancellationRequested)
             {
                 await Task.Delay(TimeSpan.FromSeconds(5), token);
                 if (!ReferenceEquals(process, _processService)) return;
 
-                var healthy = !process.HasExited
-                    && Volatile.Read(ref _psiphonTunnelCount) > 0
-                    && await ProbeSocks(socksPort, token);
-                failedChecks = healthy ? 0 : failedChecks + 1;
-                if (failedChecks < 2) continue;
+                // The engine, the TUN frontend and (in chained mode) the Xray upstream must all run.
+                var processesAlive = !process.HasExited
+                    && _processPreService is not { HasExited: true }
+                    && _psiphonUpstreamService is not { HasExited: true };
+                var socksAnswering = processesAlive && await ProbeSocks(socksPort, token);
+                failedChecks = socksAnswering ? 0 : failedChecks + 1;
+
+                if (Volatile.Read(ref _psiphonTunnelCount) > 0)
+                {
+                    if (tunnelLostAt != null) await UpdateFunc(true, "Psiphon reconnected.");
+                    tunnelLostAt = null;
+                }
+                else if (tunnelLostAt == null)
+                {
+                    tunnelLostAt = DateTime.UtcNow;
+                    await UpdateFunc(true, "Psiphon tunnel lost. Psiphon is reconnecting...");
+                }
+
+                if (!PsiphonNeedsRestart(processesAlive, socksAnswering, failedChecks, tunnelLostAt, DateTime.UtcNow)) continue;
 
                 if (!ShouldRecoverPsiphon(_config.TunModeItem.EnableTun, _config.PsiphonMode)) return;
                 await RecoverPsiphon();
@@ -625,6 +652,7 @@ public class CoreManager
                 if (preCoreType == ECoreType.sing_box && preContext.IsTunEnabled)
                 {
                     IPAddress[] upstreamAddresses = [];
+                    var pinnedHosts = new Dictionary<string, IPAddress[]>(StringComparer.OrdinalIgnoreCase);
                     var isPsiphon = mainNode.CoreType == ECoreType.Psiphon;
                     var upstream = mainNode.IndexId == ServerlessConfigService.NodeId ? null : !isPsiphon ? mainNode
                         : mainNode.GetProtocolExtra().PsiphonUseUpstream == true
@@ -636,7 +664,11 @@ public class CoreManager
                     if (!string.IsNullOrWhiteSpace(addressToExclude))
                     {
                         if (IPAddress.TryParse(addressToExclude, out var address)) upstreamAddresses = [address];
-                        else upstreamAddresses = await Dns.GetHostAddressesAsync(addressToExclude);
+                        else
+                        {
+                            upstreamAddresses = await Dns.GetHostAddressesAsync(addressToExclude);
+                            pinnedHosts[addressToExclude] = upstreamAddresses;
+                        }
                     }
                     // ECH must be fetched before the proxy TLS connection can start.
                     // Exclude its resolver from TUN even if process lookup is unavailable.
@@ -644,11 +676,12 @@ public class CoreManager
                     {
                         var echAddresses = IPAddress.TryParse(echHost, out var echAddress)
                             ? new[] { echAddress } : await Dns.GetHostAddressesAsync(echHost);
+                        if (echAddress == null) pinnedHosts[echHost] = echAddresses;
                         upstreamAddresses = [.. upstreamAddresses, .. echAddresses];
                     }
                     await File.WriteAllTextAsync(fileName,
                         PsiphonConfigService.SimplifyTunFrontend(await File.ReadAllTextAsync(fileName), upstreamAddresses,
-                            preserveRuleSets: !isPsiphon && mainNode.IndexId != ServerlessConfigService.NodeId));
+                            preserveRuleSets: !isPsiphon && mainNode.IndexId != ServerlessConfigService.NodeId, pinnedHosts));
                 }
                 if (_sniPlan != null && preCoreType == ECoreType.sing_box)
                     await File.WriteAllTextAsync(fileName, SniSpoofingService.ProtectTun(await File.ReadAllTextAsync(fileName)));
