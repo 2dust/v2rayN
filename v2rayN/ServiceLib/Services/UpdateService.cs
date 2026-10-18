@@ -5,6 +5,7 @@ public partial class UpdateService(Config config, Func<bool, string, Task> updat
     private readonly Config? _config = config;
     private readonly Func<bool, string, Task>? _updateFunc = updateFunc;
     private static readonly string _tag = "UpdateService";
+    private List<GitHubReleaseAsset>? _currentReleaseAssets;
 
     public async Task CheckUpdateGuiN(bool preRelease, bool blProxy = true, CancellationToken cancellationToken = default)
     {
@@ -190,6 +191,7 @@ public partial class UpdateService(Config config, Func<bool, string, Task> updat
 
     private async Task<UpdateResult> GetRemoteVersion(DownloadService downloadHandle, ECoreType type, bool preRelease, bool blProxy, CancellationToken cancellationToken = default)
     {
+        _currentReleaseAssets = null;
         var coreInfo = CoreInfoManager.Instance.GetCoreInfo(type);
         var tagName = string.Empty;
         if (preRelease || coreInfo?.LockedMaxVersion != null)
@@ -203,6 +205,7 @@ public partial class UpdateService(Config config, Func<bool, string, Task> updat
 
             var gitHubReleases = JsonUtils.Deserialize<List<GitHubRelease>>(result);
             var gitHubRelease = preRelease ? gitHubReleases?.First() : gitHubReleases?.First(r => r.Prerelease == false);
+            _currentReleaseAssets = gitHubRelease?.Assets;
             tagName = gitHubRelease?.TagName;
             //var body = gitHubRelease?.Body;
 
@@ -220,6 +223,7 @@ public partial class UpdateService(Config config, Func<bool, string, Task> updat
                         .Release;
 
                     gitHubRelease = fallbackRelease;
+                    _currentReleaseAssets = gitHubRelease?.Assets;
                     tagName = gitHubRelease?.TagName;
                 }
             }
@@ -323,6 +327,11 @@ public partial class UpdateService(Config config, Func<bool, string, Task> updat
                 return new UpdateResult(false, message);
             }
 
+            var asset = _currentReleaseAssets?.FirstOrDefault(a => string.Equals(a.BrowserDownloadUrl, url, StringComparison.OrdinalIgnoreCase));
+            if (asset?.Digest is { } digest && digest.StartsWith("sha256:", StringComparison.OrdinalIgnoreCase))
+            {
+                result.Sha256 = digest["sha256:".Length..];
+            }
             result.Url = url;
             return result;
         }
