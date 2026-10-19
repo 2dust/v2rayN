@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dd="clr-namespace:v2rayN.Desktop.DesignData"
+    xmlns:dialogHost="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
@@ -15,7 +16,11 @@
     ShowInTaskbar="False"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-    <DockPanel Margin="{StaticResource Margin8}">
+    <dialogHost:DialogHost
+        CloseOnClickAway="True"
+        DisableOpeningAnimation="True"
+        Identifier="dialogHostOption">
+        <DockPanel Margin="{StaticResource Margin8}">
         <StackPanel
             Margin="{StaticResource Margin4}"
             HorizontalAlignment="Center"
@@ -1030,7 +1035,7 @@
                         Margin="{StaticResource Margin4}"
                         ColumnDefinitions="Auto,Auto,Auto"
                         DockPanel.Dock="Top"
-                        RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                        RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
 
                         <TextBlock
                             Grid.Row="2"
@@ -1184,6 +1189,28 @@
                             Width="200"
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Left" />
+
+                        <TextBlock
+                            x:Name="labPreserveCorePrivileges"
+                            Grid.Row="12"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbSettingsLinuxSudoPasswordRemember}" />
+                        <ToggleSwitch
+                            x:Name="togPreserveCorePrivileges"
+                            Grid.Row="12"
+                            Grid.Column="1"
+                            Margin="{StaticResource Margin4}"
+                            HorizontalAlignment="Left" />
+                        <TextBlock
+                            x:Name="labPreserveCorePrivilegesTip"
+                            Grid.Row="12"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbSettingsPreserveCorePrivilegesTip}"
+                            TextWrapping="Wrap" />
                     </Grid>
                 </ScrollViewer>
             </TabItem>
@@ -1313,4 +1340,5 @@
             </TabItem>
         </TabControl>
     </DockPanel>
+    </dialogHost:DialogHost>
 </Window>

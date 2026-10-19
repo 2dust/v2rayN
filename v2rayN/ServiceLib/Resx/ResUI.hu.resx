@@ -1347,6 +1347,12 @@
   <data name="TbSettingsLinuxSudoPasswordTip" xml:space="preserve">
     <value>A jelszót a parancssoron keresztül ellenőrizzük. Ha egy érvényesítési hiba miatt az alkalmazás hibásan működik, indítsa újra az alkalmazást. A jelszó nem kerül tárolásra, és minden újraindítás után újra meg kell adni.</value>
   </data>
+  <data name="TbSettingsLinuxSudoPasswordRemember" xml:space="preserve">
+    <value>Mag jogosultságok megőrzése</value>
+  </data>
+  <data name="TbSettingsPreserveCorePrivilegesTip" xml:space="preserve">
+    <value>Root jogosultságok megadása a mag binárisoknak</value>
+  </data>
   <data name="TransportHeaderType5" xml:space="preserve">
     <value>xhttp mód</value>
   </data>

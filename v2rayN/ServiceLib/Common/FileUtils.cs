@@ -238,6 +238,9 @@ public static class FileUtils
     {
         var shFilePath = Utils.GetBinConfigPath(fileName);
 
+        // Normalize to Unix LF line endings
+        contents = contents.Replace("\r\n", "\n").Replace("\r", "\n");
+
         // Check if the file already exists and if we should overwrite it
         if (!overwrite && File.Exists(shFilePath))
         {
@@ -245,7 +248,7 @@ public static class FileUtils
         }
 
         File.Delete(shFilePath);
-        await File.WriteAllTextAsync(shFilePath, contents);
+        await File.WriteAllTextAsync(shFilePath, contents, new UTF8Encoding(false));
         await Utils.SetLinuxChmod(shFilePath);
 
         return shFilePath;
