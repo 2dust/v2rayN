@@ -87,6 +87,7 @@ public partial class ProfilesViewModel : MyReactiveObject
     public ReactiveCommand<RxVoid, RxVoid> AddSubCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> EditSubCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> DeleteSubCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> WorkflowCmd { get; }
 
     #endregion Menu
 
@@ -237,6 +238,7 @@ public partial class ProfilesViewModel : MyReactiveObject
         {
             await DeleteSubAsync();
         });
+        WorkflowCmd = ReactiveCommand.Create(() => AppEvents.WorkflowRequested.Publish());
 
         #endregion WhenAnyValue && ReactiveCommand
 
@@ -655,6 +657,92 @@ public partial class ProfilesViewModel : MyReactiveObject
         await RefreshServers();
         NoticeManager.Instance.Enqueue(string.Format(ResUI.RemoveInvalidServerResultTip, count));
     }
+
+    #region Workflow helpers
+
+    /// <summary>Run a test over a whole group. Completes once the test run finished.</summary>
+    public async Task TestServersAsync(string? subId, ESpeedActionType actionType)
+    {
+        var lstSelected = await GetProfilesForGroup(subId);
+        if (lstSelected.Count == 0)
+        {
+            return;
+        }
+        _speedtestService ??= new SpeedtestService(_config, async result =>
+        {
+            RxSchedulers.MainThreadScheduler.Schedule(() => _ = SetSpeedTestResult(result));
+            await Task.CompletedTask;
+        });
+        await _speedtestService.RunLoop(actionType, lstSelected);
+        await RefreshServers();
+    }
+
+    /// <summary>Sort a whole group by a column and persist the new order.</summary>
+    public async Task SortServersAsync(string? subId, string colName, bool asc)
+    {
+        if (await ConfigHandler.SortServers(_config, subId, colName, asc) == 0)
+        {
+            await RefreshServers();
+        }
+    }
+
+    /// <summary>Remove duplicates inside a group and return how many were removed.</summary>
+    public async Task<int> DedupServersAsync(string? subId)
+    {
+        var tuple = await ConfigHandler.DedupServerList(_config, subId);
+        if (tuple.Item1 > 0)
+        {
+            await RefreshServers();
+        }
+        return tuple.Item1;
+    }
+
+    /// <summary>Remove servers with an invalid test result and return how many were removed.</summary>
+    public async Task<int> RemoveInvalidServersAsync(string? subId)
+    {
+        var count = await ConfigHandler.RemoveInvalidServerResult(_config, subId);
+        await RefreshServers();
+        return count;
+    }
+
+    /// <summary>
+    /// Activate the first or last server of a group, using the persisted sort order (the
+    /// order the server list displays). <see cref="EServerSelectType.First"/> therefore
+    /// picks the topmost row, so a sort step run beforehand decides which server wins.
+    /// </summary>
+    public async Task SetDefaultServerForGroupAsync(string? subId, EServerSelectType selectType)
+    {
+        var lstModel = await AppManager.Instance.ProfileModels(subId ?? _config.SubIndexId, string.Empty);
+        if (lstModel is not { Count: > 0 })
+        {
+            return;
+        }
+
+        // Sort is persisted on ProfileExItem, not on ProfileItem, so it is not part of
+        // ProfileModels. Look it up per row instead of ordering by the always-zero default.
+        var ordered = selectType == EServerSelectType.Last
+            ? lstModel.OrderByDescending(t => ProfileExManager.Instance.GetSort(t.IndexId))
+            : lstModel.OrderBy(t => ProfileExManager.Instance.GetSort(t.IndexId));
+        var target = ordered.FirstOrDefault();
+        if (target is null)
+        {
+            return;
+        }
+        await SetDefaultServer(target.IndexId);
+    }
+
+    private async Task<List<ProfileItem>> GetProfilesForGroup(string? subId)
+    {
+        var lstModel = await AppManager.Instance.ProfileModels(subId ?? _config.SubIndexId, string.Empty);
+        if (lstModel is not { Count: > 0 })
+        {
+            return [];
+        }
+        var ids = lstModel.Select(t => t.IndexId).ToList();
+        return await AppManager.Instance.GetProfileItemsByIndexIds(ids) ?? [];
+    }
+
+    #endregion Workflow helpers
 
     //move server
     private async Task MoveToGroup()
