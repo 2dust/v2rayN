@@ -5,6 +5,7 @@ public class ProfileExManager
     private static readonly Lazy<ProfileExManager> _instance = new(() => new());
     private ConcurrentBag<ProfileExItem> _lstProfileEx = [];
     private readonly ConcurrentQueue<string> _queIndexIds = new();
+    private readonly Lock _profileExLock = new();
     public static ProfileExManager Instance => _instance.Value;
     private static readonly string _tag = "ProfileExHandler";
 
@@ -27,7 +28,11 @@ public class ProfileExManager
     {
         await SQLiteHelper.Instance.ExecuteAsync($"delete from ProfileExItem where indexId not in ( select indexId from ProfileItem )");
 
-        _lstProfileEx = new(await SQLiteHelper.Instance.TableAsync<ProfileExItem>().ToListAsync());
+        var lstProfileEx = new ConcurrentBag<ProfileExItem>(await SQLiteHelper.Instance.TableAsync<ProfileExItem>().ToListAsync());
+        lock (_profileExLock)
+        {
+            _lstProfileEx = lstProfileEx;
+        }
     }
 
     private void IndexIdEnqueue(string indexId)
@@ -109,13 +114,26 @@ public class ProfileExManager
 
     private ProfileExItem GetProfileExItem(string? indexId)
     {
-        return _lstProfileEx.FirstOrDefault(t => t.IndexId == indexId) ?? AddProfileEx(indexId);
+        var profileEx = _lstProfileEx.FirstOrDefault(t => t.IndexId == indexId);
+        if (profileEx is not null)
+        {
+            return profileEx;
+        }
+
+        lock (_profileExLock)
+        {
+            profileEx = _lstProfileEx.FirstOrDefault(t => t.IndexId == indexId);
+            return profileEx ?? AddProfileEx(indexId);
+        }
     }
 
     public async Task ClearAll()
     {
         await SQLiteHelper.Instance.ExecuteAsync($"delete from ProfileExItem ");
-        _lstProfileEx = [];
+        lock (_profileExLock)
+        {
+            _lstProfileEx = [];
+        }
     }
 
     public async Task SaveTo()
