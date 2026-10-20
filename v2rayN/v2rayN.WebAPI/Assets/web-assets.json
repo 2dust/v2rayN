@@ -1,0 +1,40 @@
+{
+  "assets": [
+    {
+      "rid": "linux-x64",
+      "arch": "64",
+      "full": "v2rayN-linux-64-WebAPI.zip",
+      "update": "v2rayN-linux-64-WebAPI-update.zip"
+    },
+    {
+      "rid": "linux-arm64",
+      "arch": "arm64",
+      "full": "v2rayN-linux-arm64-WebAPI.zip",
+      "update": "v2rayN-linux-arm64-WebAPI-update.zip"
+    },
+    {
+      "rid": "win-x64",
+      "arch": "64",
+      "full": "v2rayN-windows-64-WebAPI.zip",
+      "update": "v2rayN-windows-64-WebAPI-update.zip"
+    },
+    {
+      "rid": "win-arm64",
+      "arch": "arm64",
+      "full": "v2rayN-windows-arm64-WebAPI.zip",
+      "update": "v2rayN-windows-arm64-WebAPI-update.zip"
+    },
+    {
+      "rid": "linux-riscv64",
+      "arch": "riscv64",
+      "full": "v2rayN-linux-riscv64-WebAPI.zip",
+      "update": "v2rayN-linux-riscv64-WebAPI-update.zip"
+    },
+    {
+      "rid": "linux-loongarch64",
+      "arch": "loong64",
+      "full": "v2rayN-linux-loong64-WebAPI.zip",
+      "update": "v2rayN-linux-loong64-WebAPI-update.zip"
+    }
+  ]
+}

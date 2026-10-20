@@ -20,6 +20,13 @@ jobs:
     secrets:
       GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
 
+  release-WebAPI:
+    if: inputs.release_tag != ''
+    uses: ./.github/workflows/release-WebAPI.yml
+    with:
+      release_tag: ${{ inputs.release_tag }}
+    secrets: inherit
+
   update:
     runs-on: ubuntu-latest
     steps:
