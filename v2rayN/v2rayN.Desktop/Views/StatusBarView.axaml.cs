@@ -39,7 +39,9 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
 
             ViewModel.PasswordInputInteraction.RegisterHandler(async interaction =>
             {
-                var result = await PasswordInputAsync();
+                var result = Dispatcher.UIThread.CheckAccess()
+                    ? await PasswordInputAsync()
+                    : await Dispatcher.UIThread.InvokeAsync(() => PasswordInputAsync());
                 interaction.SetOutput(result);
             }).DisposeWith(disposables);
 
@@ -74,17 +76,22 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
 
     private async Task<string?> PasswordInputAsync()
     {
-        var dialog = new SudoPasswordInputView();
+        var showPreserveOption = Utils.IsLinux();
+        var preserveCorePrivileges = _config.TunModeItem.PreserveCorePrivileges;
+        var dialog = new SudoPasswordInputView(preserveCorePrivileges, showPreserveOption: showPreserveOption);
         var obj = await DialogHost.Show(dialog);
 
         var password = obj?.ToString();
         if (password.IsNullOrEmpty())
         {
-            togEnableTun.IsChecked = false;
             return password;
         }
 
-        AppManager.Instance.LinuxSudoPwd = password;
+        if (showPreserveOption)
+        {
+            _config.TunModeItem.PreserveCorePrivileges = dialog.IsPreserveCorePrivileges;
+            await ConfigHandler.SaveConfig(_config);
+        }
         return password;
     }
 

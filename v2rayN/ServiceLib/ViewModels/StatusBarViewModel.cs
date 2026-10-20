@@ -430,35 +430,94 @@ public partial class StatusBarViewModel : MyReactiveObject
 
     private async Task DoEnableTun()
     {
-        if (_config.TunModeItem.EnableTun == EnableTun)
+        try
         {
-            return;
-        }
-
-        _config.TunModeItem.EnableTun = EnableTun;
-
-        if (EnableTun && AllowEnableTun() == false)
-        {
-            // When running as a non-administrator, reboot to administrator mode
-            if (Utils.IsWindows())
+            if (_config.TunModeItem.EnableTun == EnableTun)
             {
-                _config.TunModeItem.EnableTun = false;
-                await AppManager.Instance.RebootAsAdmin();
                 return;
+            }
+
+            _config.TunModeItem.EnableTun = EnableTun;
+
+            if (EnableTun)
+            {
+                if (Utils.IsWindows())
+                {
+                    if (AllowEnableTun() == false)
+                    {
+                        _config.TunModeItem.EnableTun = EnableTun = false;
+                        await AppManager.Instance.RebootAsAdmin();
+                        return;
+                    }
+                }
+                else if (Utils.IsLinux())
+                {
+                    var areCoresPrivileged = await CoreAdminManager.AreAllTunCoresPrivilegedAsync();
+
+                    if (!areCoresPrivileged && AppManager.Instance.LinuxSudoPwd.IsNullOrEmpty())
+                    {
+                        var password = await PasswordInputInteraction.HandleSafe(RxVoid.Default);
+                        if (password.IsNullOrEmpty())
+                        {
+                            _config.TunModeItem.EnableTun = EnableTun = false;
+                            await ConfigHandler.SaveConfig(_config);
+                            return;
+                        }
+
+                        if (_config.TunModeItem.PreserveCorePrivileges)
+                        {
+                            var grantSuccess = await CoreAdminManager.GrantAllCoresPrivilege(password);
+                            if (!grantSuccess)
+                            {
+                                NoticeManager.Instance.Enqueue(ResUI.SudoIncorrectPasswordTip);
+                                _config.TunModeItem.EnableTun = EnableTun = false;
+                                await ConfigHandler.SaveConfig(_config);
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            if (await CoreAdminManager.IsAnyCorePrivilegedAsync())
+                            {
+                                await CoreAdminManager.RevokeAllCoresPrivilege(password);
+                            }
+                            AppManager.Instance.LinuxSudoPwd = password;
+                        }
+                    }
+                }
+                else if (Utils.IsMacOS())
+                {
+                    if (AppManager.Instance.LinuxSudoPwd.IsNullOrEmpty())
+                    {
+                        var password = await PasswordInputInteraction.HandleSafe(RxVoid.Default);
+                        if (password.IsNullOrEmpty())
+                        {
+                            _config.TunModeItem.EnableTun = EnableTun = false;
+                            await ConfigHandler.SaveConfig(_config);
+                            return;
+                        }
+                        AppManager.Instance.LinuxSudoPwd = password;
+                    }
+                }
             }
             else
             {
-                var password = await PasswordInputInteraction.HandleSafe(RxVoid.Default);
-                if (password.IsNullOrEmpty())
+                if (Utils.IsNonWindows())
                 {
-                    _config.TunModeItem.EnableTun = false;
-                    return;
+                    AppManager.Instance.LinuxSudoPwd = null;
                 }
             }
-        }
 
-        await ConfigHandler.SaveConfig(_config);
-        ReloadRequested.Publish();
+            await ConfigHandler.SaveConfig(_config);
+            ReloadRequested.Publish();
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog("StatusBarViewModel", ex);
+            NoticeManager.Instance.Enqueue(ex.Message);
+            _config.TunModeItem.EnableTun = EnableTun = false;
+            await ConfigHandler.SaveConfig(_config);
+        }
     }
 
     private bool AllowEnableTun()
@@ -469,7 +528,8 @@ public partial class StatusBarViewModel : MyReactiveObject
         }
         else if (Utils.IsLinux())
         {
-            return AppManager.Instance.LinuxSudoPwd.IsNotEmpty();
+            return CoreAdminManager.AreAllTunCoresPrivileged()
+                || AppManager.Instance.LinuxSudoPwd.IsNotEmpty();
         }
         else if (Utils.IsMacOS())
         {

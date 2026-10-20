@@ -5417,5 +5417,23 @@ namespace ServiceLib.Resx {
                 return ResourceManager.GetString("UpgradeAppNotExistTip", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   查找类似 Preserve core privileges 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsLinuxSudoPasswordRemember {
+            get {
+                return ResourceManager.GetString("TbSettingsLinuxSudoPasswordRemember", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Grant the core binaries root privileges 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsPreserveCorePrivilegesTip {
+            get {
+                return ResourceManager.GetString("TbSettingsPreserveCorePrivilegesTip", resourceCulture);
+            }
+        }
     }
 }
