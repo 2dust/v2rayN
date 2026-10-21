@@ -1071,6 +1071,9 @@
   <data name="TbSettingsTunStack" xml:space="preserve">
     <value>协议栈</value>
   </data>
+  <data name="TbSettingsTunDnsMode" xml:space="preserve">
+    <value>DNS 模式</value>
+  </data>
   <data name="TbMtu" xml:space="preserve">
     <value>MTU</value>
   </data>
