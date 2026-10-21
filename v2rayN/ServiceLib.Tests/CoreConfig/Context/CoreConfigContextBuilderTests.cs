@@ -3,6 +3,66 @@ namespace ServiceLib.Tests.CoreConfig.Context;
 public class CoreConfigContextBuilderTests
 {
     [Test]
+    [Arguments(EMultipleLoad.LeastPing, "leastPing")]
+    [Arguments(EMultipleLoad.Fallback, "leastLoad")]
+    [Arguments(EMultipleLoad.Random, "random")]
+    [Arguments(EMultipleLoad.RoundRobin, "roundRobin")]
+    [Arguments(EMultipleLoad.LeastLoad, "leastLoad")]
+    public async Task ResolveNodeAsync_SubscriptionChain_ShouldPreservePolicyGroupStrategy(
+        EMultipleLoad multipleLoad, string strategyType)
+    {
+        var config = CoreConfigTestFactory.CreateConfig();
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+        SQLiteHelper.Instance.CreateTable<SubItem>();
+
+        var subId = NewId("sub");
+        var n1 = CoreConfigTestFactory.CreateSocksNode(ECoreType.Xray, NewId("node"), "node-1");
+        var n2 = CoreConfigTestFactory.CreateSocksNode(ECoreType.Xray, NewId("node"), "node-2");
+        n1.Subid = subId;
+        n2.Subid = subId;
+        var prev = CoreConfigTestFactory.CreateSocksNode(ECoreType.Xray, NewId("prev"), NewId("prev"));
+        var next = CoreConfigTestFactory.CreateSocksNode(ECoreType.Xray, NewId("next"), NewId("next"));
+        var group = CoreConfigTestFactory.CreatePolicyGroupNode(ECoreType.Xray, NewId("group"), "group", []);
+        group.Subid = subId;
+        group.SetProtocolExtra(group.GetProtocolExtra() with
+        {
+            MultipleLoad = multipleLoad,
+            SubChildItems = subId,
+            Filter = "^node-",
+        });
+        await UpsertProfilesAsync(n1, n2, prev, next, group);
+
+        foreach (var (hasPrev, hasNext) in new[] { (true, false), (false, true), (true, true) })
+        {
+            await SQLiteHelper.Instance.ReplaceAsync(new SubItem
+            {
+                Id = subId,
+                Remarks = "sub",
+                PrevProfile = hasPrev ? prev.Remarks : null,
+                NextProfile = hasNext ? next.Remarks : null,
+            });
+            var context = CoreConfigTestFactory.CreateContext(config, group, ECoreType.Xray);
+            context.AllProxiesMap.Clear();
+            var (resolvedNode, validatorResult) = await CoreConfigContextBuilder.ResolveNodeAsync(context,
+                JsonUtils.DeepCopy(group));
+
+            await validatorResult.Success.Should().BeTrue();
+            await resolvedNode.ConfigType.Should().BeEqualTo(EConfigType.ProxyChain);
+
+            var result = new CoreConfigV2rayService(context with { Node = resolvedNode }).GenerateClientConfigContent();
+            await result.Success.Should().BeTrue();
+            var cfg = JsonUtils.Deserialize<V2rayConfig>(result.Data!.ToString())!;
+            var balancer = cfg.routing.balancers!.Single(b => b.tag == Global.ProxyTag + Global.BalancerTagSuffix);
+            await balancer.strategy.type.Should().BeEqualTo(strategyType);
+            if (multipleLoad == EMultipleLoad.Fallback)
+            {
+                await balancer.strategy.settings!.tolerance.Should().BeEqualTo(0.2);
+                await balancer.strategy.settings.maxRTT.Should().BeEqualTo("5000ms");
+            }
+        }
+    }
+
+    [Test]
     public async Task ResolveNodeAsync_DirectCycleDependency_ShouldFailWithCycleError()
     {
         var config = CoreConfigTestFactory.CreateConfig();

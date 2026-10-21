@@ -3,6 +3,52 @@ namespace ServiceLib.Tests.CoreConfig.V2ray;
 public class CoreConfigV2rayServiceTests
 {
     [Test]
+    public async Task GenerateClientSpeedtestConfig_ShouldUseEachPolicyGroupsStrategy()
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+        var n1 = CoreConfigTestFactory.CreateSocksNode(ECoreType.Xray, "n1", "node-1");
+        var n2 = CoreConfigTestFactory.CreateSocksNode(ECoreType.Xray, "n2", "node-2");
+        // Batch speed tests use a dummy node, which has no policy group strategy.
+        var context = CoreConfigTestFactory.CreateContext(config, new ProfileItem { CoreType = ECoreType.Xray }, ECoreType.Xray);
+        context.AllProxiesMap[n1.IndexId] = n1;
+        context.AllProxiesMap[n2.IndexId] = n2;
+
+        var groups = new[]
+        {
+            (EMultipleLoad.RoundRobin, "roundRobin"),
+            (EMultipleLoad.Random, "random"),
+            (EMultipleLoad.Fallback, "leastLoad"),
+            (EMultipleLoad.LeastLoad, "leastLoad"),
+            (EMultipleLoad.LeastPing, "leastPing"),
+        }.Select((strategy, index) =>
+        {
+            var group = CoreConfigTestFactory.CreatePolicyGroupNode(ECoreType.Xray, $"g{index}", $"group-{index}",
+                [n1.IndexId, n2.IndexId]);
+            group.SetProtocolExtra(group.GetProtocolExtra() with { MultipleLoad = strategy.Item1 });
+            context.AllProxiesMap[group.IndexId] = group;
+            return (Group: group, Strategy: strategy.Item2);
+        }).ToList();
+        var selecteds = groups.Select(g => new ServerTestItem
+        {
+            IndexId = g.Group.IndexId,
+            ConfigType = g.Group.ConfigType,
+            Profile = g.Group,
+        }).ToList();
+
+        var result = new CoreConfigV2rayService(context).GenerateClientSpeedtestConfig(selecteds);
+        await result.Success.Should().BeTrue();
+        var cfg = JsonUtils.Deserialize<V2rayConfig>(result.Data!.ToString())!;
+        await cfg.routing.balancers.Should().HaveCount(groups.Count);
+        for (var i = 0; i < selecteds.Count; i++)
+        {
+            var tag = Global.ProxyTag + selecteds[i].Port + Global.BalancerTagSuffix;
+            var balancer = cfg.routing.balancers!.Single(b => b.tag == tag);
+            await balancer.strategy.type.Should().BeEqualTo(groups[i].Strategy);
+        }
+    }
+
+    [Test]
     public async Task GenerateClientConfigContent_ShouldGenerateBasicProxyConfig()
     {
         var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
