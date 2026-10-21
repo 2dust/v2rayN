@@ -310,6 +310,8 @@ public class CoreConfigContextBuilder
         {
             GroupType = chainNode.ConfigType.ToString(),
             ChildItems = string.Join(",", childItems.Where(x => !x.IsNullOrEmpty())),
+            // The virtual chain's balancer must use the wrapped node's selected strategy.
+            MultipleLoad = node.GetProtocolExtra().MultipleLoad,
         };
         chainNode.SetProtocolExtra(chainExtraItem);
         return (chainNode, result);
