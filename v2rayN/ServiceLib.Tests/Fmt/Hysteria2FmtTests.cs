@@ -51,4 +51,24 @@ public class Hysteria2FmtTests
         await resolved!.Port.Should().BeEqualTo(0);
         await resolved.IsValid().Should().BeFalse();
     }
+
+    [Test]
+    public async Task ResolveConfig_WithPinSHA256_ShouldNotForceAllowInsecure()
+    {
+        var resolved = FmtHandler.ResolveConfig("hysteria2://password@hy2.example:443/?pinSHA256=CF:8B:B5:E7:7F:BC:C9", out _);
+
+        await resolved.Should().NotBeNull();
+        await resolved!.CertSha.Should().BeEqualTo("CF:8B:B5:E7:7F:BC:C9");
+        await resolved.GetAllowInsecure().Should().BeFalse();
+    }
+
+    [Test]
+    public async Task ResolveConfig_WithExplicitInsecure_ShouldEnableAllowInsecure()
+    {
+        var resolved = FmtHandler.ResolveConfig("hysteria2://password@hy2.example:443/?insecure=1&pinSHA256=CF:8B:B5:E7:7F:BC:C9", out _);
+
+        await resolved.Should().NotBeNull();
+        await resolved!.CertSha.Should().BeEqualTo("CF:8B:B5:E7:7F:BC:C9");
+        await resolved.GetAllowInsecure().Should().BeTrue();
+    }
 }
