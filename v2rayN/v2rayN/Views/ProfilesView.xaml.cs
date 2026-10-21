@@ -43,6 +43,14 @@ public partial class ProfilesView
             this.OneWayBind(ViewModel, vm => vm.SubItems, v => v.lstGroup.ItemsSource).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSub, v => v.lstGroup.SelectedItem).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.ServerFilter, v => v.txtServerFilter.Text).DisposeWith(disposables);
+
+            //The view has no DataContext, so everything view level is bound through ReactiveUI
+            this.OneWayBind(ViewModel, vm => vm.IsSpeedtestRunning, v => v.stkSpeedtestProgress.Visibility, conversionHint: BooleanToVisibilityHint.UseHidden, viewModelToViewConverterOverride: new BooleanToVisibilityTypeConverter()).DisposeWith(disposables);
+            this.OneWayBind(ViewModel, vm => vm.SpeedtestProgressText, v => v.txtSpeedtestProgress.Text).DisposeWith(disposables);
+            //ProgressBar.Value ignores the expression binding, so it is pushed by hand
+            ViewModel.WhenAnyValue(vm => vm.SpeedtestProgressValue)
+                .Subscribe(value => pbSpeedtestProgress.Value = value)
+                .DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.AddSubCmd, v => v.btnAddSub).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.EditSubCmd, v => v.btnEditSub).DisposeWith(disposables);
 

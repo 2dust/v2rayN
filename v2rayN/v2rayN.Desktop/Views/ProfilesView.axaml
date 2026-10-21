@@ -19,7 +19,24 @@
     </UserControl.Resources>
     <Grid>
         <DockPanel>
-            <WrapPanel Margin="2" DockPanel.Dock="Top">
+            <DockPanel Margin="2" DockPanel.Dock="Top">
+                <StackPanel
+                    x:Name="stkSpeedtestProgress"
+                    Margin="{StaticResource MarginLr4}"
+                    VerticalAlignment="Center"
+                    DockPanel.Dock="Right"
+                    IsVisible="False">
+                    <ProgressBar
+                        x:Name="pbSpeedtestProgress"
+                        Width="150"
+                        Height="4"
+                        Maximum="100" />
+                    <TextBlock
+                        x:Name="txtSpeedtestProgress"
+                        Margin="0,2,0,0"
+                        HorizontalAlignment="Center" />
+                </StackPanel>
+                <WrapPanel>
                 <ListBox
                     x:Name="lstGroup"
                     Margin="{StaticResource MarginLr4}"
@@ -98,8 +115,8 @@
                         </Button.Content>
                     </Button>
                 </StackPanel>
-
             </WrapPanel>
+        </DockPanel>
             <DataGrid
                 x:Name="lstProfiles"
                 AutoGenerateColumns="False"
