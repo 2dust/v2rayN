@@ -37,4 +37,6 @@ public class SubItem
     public string? Memo { get; set; }
 
     public ECoreType? CustomCoreType { get; set; }
+
+    public string? PreResolver { get; set; }
 }
