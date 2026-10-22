@@ -108,7 +108,7 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
 
             var (lstIpEndPoints, lstTcpConns) = Utils.GetActiveNetworkInfo();
 
-            GenLog();
+            GenLog(isSpeedtest: true);
             _coreConfig.inbounds.Clear();
             _coreConfig.outbounds.Clear();
             _coreConfig.routing.rules.Clear();
@@ -257,7 +257,7 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
                 return ret;
             }
 
-            GenLog();
+            GenLog(isSpeedtest: true);
             GenOutbounds();
 
             _coreConfig.routing.domainStrategy = Global.AsIs;

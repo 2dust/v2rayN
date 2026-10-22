@@ -2,11 +2,12 @@ namespace ServiceLib.Services.CoreConfig;
 
 public partial class CoreConfigV2rayService
 {
-    private void GenLog()
+    private void GenLog(bool isSpeedtest = false)
     {
         try
         {
-            if (_config.CoreBasicItem.LogEnabled)
+            // Speedtest cores run without elevation and cannot share log files created by a root TUN core.
+            if (_config.CoreBasicItem.LogEnabled && !isSpeedtest)
             {
                 var dtNow = DateTime.Now;
                 _coreConfig.log.loglevel = _config.CoreBasicItem.Loglevel;
