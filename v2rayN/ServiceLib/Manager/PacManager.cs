@@ -66,10 +66,17 @@ public class PacManager
             while (!token.IsCancellationRequested)
             {
                 using var client = await listener.AcceptTcpClientAsync(token).ConfigureAwait(false);
-                await using var stream = client.GetStream();
-                _ = await stream.ReadAsync(buffer, token).ConfigureAwait(false);
-                await stream.WriteAsync(_writeContent, token).ConfigureAwait(false);
-                await stream.FlushAsync(token).ConfigureAwait(false);
+                try
+                {
+                    await using var stream = client.GetStream();
+                    _ = await stream.ReadAsync(buffer, token).ConfigureAwait(false);
+                    await stream.WriteAsync(_writeContent, token).ConfigureAwait(false);
+                    await stream.FlushAsync(token).ConfigureAwait(false);
+                }
+                catch (IOException ex)
+                {
+                    Logging.SaveLog(Tag, ex);
+                }
             }
         }
         catch (OperationCanceledException) when (token.IsCancellationRequested)
