@@ -1897,4 +1897,13 @@
   <data name="menuAddMasqueServer" xml:space="preserve">
     <value>添加 [MASQUE]</value>
   </data>
+  <data name="TbFakeIPv6" xml:space="preserve">
+    <value>IPv6 FakeIP</value>
+  </data>
+  <data name="TbFakeIPv6Tips" xml:space="preserve">
+    <value>同时返回 IPv6 假地址，需启用 FakeIP 且未屏蔽 AAAA 查询。</value>
+  </data>
+  <data name="FillCorrectFakeIPv6Range" xml:space="preserve">
+    <value>请输入至少包含两个地址的有效 IPv6 网段，例如 fc00::/18。</value>
+  </data>
 </root>

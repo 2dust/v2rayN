@@ -145,11 +145,24 @@ public partial class CoreConfigV2rayService
         {
             // Ignore
         }
-        _coreConfig.fakedns = new()
+        var fakeDns = new FakeDns4Ray
         {
             ipPool = fakeipRange,
             poolSize = poolSize,
         };
+        _coreConfig.fakedns = fakeDns;
+        if (_config.SimpleDNSItem.FakeIPv6 == true && _config.SimpleDNSItem.BlockAAAAQuery != true)
+        {
+            if (!FakeIPUtils.TryParseIPv6Range(_config.SimpleDNSItem.FakeIPv6Range, out var range6, out var poolSize6))
+            {
+                throw new ArgumentException("Invalid IPv6 FakeIP range.");
+            }
+            _coreConfig.fakedns = new List<FakeDns4Ray>
+            {
+                fakeDns,
+                new() { ipPool = range6, poolSize = poolSize6 },
+            };
+        }
     }
 
     private void FillDnsServers(Dns4Ray dnsItem)

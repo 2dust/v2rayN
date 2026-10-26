@@ -1905,4 +1905,13 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="menuAddMasqueServer" xml:space="preserve">
     <value>Add [MASQUE]</value>
   </data>
+  <data name="TbFakeIPv6" xml:space="preserve">
+    <value>IPv6 FakeIP</value>
+  </data>
+  <data name="TbFakeIPv6Tips" xml:space="preserve">
+    <value>Return fake IPv6 addresses as well. Requires FakeIP to be enabled and AAAA queries to be allowed.</value>
+  </data>
+  <data name="FillCorrectFakeIPv6Range" xml:space="preserve">
+    <value>Enter a valid IPv6 CIDR range with at least two addresses, for example fc00::/18.</value>
+  </data>
 </root>
