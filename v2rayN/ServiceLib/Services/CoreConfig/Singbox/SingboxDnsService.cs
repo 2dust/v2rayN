@@ -131,6 +131,14 @@ public partial class CoreConfigSingboxService
                 type = "fakeip",
                 inet4_range = fakeipRange,
             };
+            if (simpleDnsItem.FakeIPv6 == true && simpleDnsItem.BlockAAAAQuery != true)
+            {
+                if (!FakeIPUtils.TryParseIPv6Range(simpleDnsItem.FakeIPv6Range, out var range6, out _))
+                {
+                    throw new ArgumentException("Invalid IPv6 FakeIP range.");
+                }
+                fakeip.inet6_range = range6;
+            }
             _coreConfig.dns.servers.Add(fakeip);
         }
     }

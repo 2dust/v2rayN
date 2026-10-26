@@ -4,7 +4,7 @@ public class V2rayConfig
 {
     public Log4Ray log { get; set; }
     public object dns { get; set; }
-    public FakeDns4Ray? fakedns { get; set; }
+    public object? fakedns { get; set; }
     public List<Inbounds4Ray> inbounds { get; set; }
     public List<Outbounds4Ray> outbounds { get; set; }
     public Routing4Ray routing { get; set; }

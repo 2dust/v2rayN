@@ -758,6 +758,12 @@ public class Global
         "11.0.0.0/8",
     ];
 
+    public static readonly List<string> FakeIPv6Ranges =
+    [
+        "fc00::/18",
+        "2001:2::/48",
+    ];
+
     public static readonly List<string> RootCertProviders =
     [
         "system",
