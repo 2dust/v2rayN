@@ -33,13 +33,13 @@
             Orientation="Horizontal">
             <Button
                 x:Name="btnSave"
-                Width="100"
+                MinWidth="100"
                 Content="{x:Static resx:ResUI.TbConfirm}"
                 IsDefault="True"
                 Style="{StaticResource DefButton}" />
             <Button
                 x:Name="btnCancel"
-                Width="100"
+                MinWidth="100"
                 Margin="{StaticResource MarginLeftRight8}"
                 Content="{x:Static resx:ResUI.TbCancel}"
                 IsCancel="true"
@@ -998,6 +998,89 @@
                         Grid.Column="1"
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left" />
+                </Grid>
+
+                <Grid
+                    x:Name="gridMasque"
+                    Grid.Row="2"
+                    Visibility="Collapsed">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolbarTextBlock}"
+                        Text="{x:Static resx:ResUI.TbUsername}" />
+                    <TextBox
+                        x:Name="txtId14"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Width="400"
+                        Margin="{StaticResource Margin4}"
+                        Style="{StaticResource DefTextBox}" />
+
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolbarTextBlock}"
+                        Text="{x:Static resx:ResUI.TbId3}" />
+                    <TextBox
+                        x:Name="txtSecurity14"
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Width="400"
+                        Margin="{StaticResource Margin4}"
+                        Style="{StaticResource DefTextBox}" />
+
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolbarTextBlock}"
+                        Text="{x:Static resx:ResUI.TbPath}" />
+                    <TextBox
+                        x:Name="txtPath14"
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Width="400"
+                        Margin="{StaticResource Margin4}"
+                        Style="{StaticResource DefTextBox}" />
+
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolbarTextBlock}"
+                        Text="{x:Static resx:ResUI.TbHttpOutboundHeaders}" />
+                    <TextBox
+                        x:Name="txtHeaders14"
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        Width="400"
+                        Margin="{StaticResource Margin4}"
+                        HorizontalAlignment="Left"
+                        materialDesign:HintAssist.Hint="Header: Value"
+                        AcceptsReturn="True"
+                        MaxLines="12"
+                        MinLines="3"
+                        Style="{StaticResource MyOutlinedTextBox}"
+                        TextWrapping="Wrap" />
                 </Grid>
 
                 <Separator

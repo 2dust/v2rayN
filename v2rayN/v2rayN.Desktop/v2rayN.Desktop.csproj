@@ -10,6 +10,10 @@
 		<CETCompat>false</CETCompat>
 	</PropertyGroup>
 
+    <ItemGroup Condition="'$(RuntimeIdentifier)' == 'osx-x64' Or '$(RuntimeIdentifier)' == 'osx-arm64'">
+        <RuntimeHostConfigurationOption Include="System.Net.Security.UseNetworkFramework" Value="true" />
+    </ItemGroup>
+    
 	<ItemGroup>
 		<PackageReference Include="Avalonia.AvaloniaEdit" />
 		<PackageReference Include="Avalonia.Controls.DataGrid">

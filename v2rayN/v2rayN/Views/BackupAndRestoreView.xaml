@@ -30,7 +30,7 @@
                 Style="{StaticResource ToolbarTextBlock}" />
         </DockPanel>
 
-        <StackPanel>
+        <StackPanel Grid.IsSharedSizeScope="True">
             <materialDesign:Card Width="Auto" Margin="{StaticResource Margin8}">
                 <Grid Margin="{StaticResource Margin8}">
                     <Grid.RowDefinitions>
@@ -40,8 +40,14 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="300" />
-                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition
+                            Width="Auto"
+                            MinWidth="300"
+                            SharedSizeGroup="BackupLabel" />
+                        <ColumnDefinition
+                            Width="Auto"
+                            MinWidth="200"
+                            SharedSizeGroup="BackupButton" />
                     </Grid.ColumnDefinitions>
                     <TextBlock
                         Grid.Row="0"
@@ -98,8 +104,14 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="300" />
-                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition
+                            Width="Auto"
+                            MinWidth="300"
+                            SharedSizeGroup="BackupLabel" />
+                        <ColumnDefinition
+                            Width="Auto"
+                            MinWidth="200"
+                            SharedSizeGroup="BackupButton" />
                     </Grid.ColumnDefinitions>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock

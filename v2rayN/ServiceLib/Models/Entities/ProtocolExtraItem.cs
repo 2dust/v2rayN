@@ -46,6 +46,10 @@ public record ProtocolExtraItem
     public int? InsecureConcurrency { get; init; }
     public bool? NaiveQuic { get; init; }
 
+    // MASQUE
+    public string? MasquePath { get; init; }
+    public string? MasqueHeaders { get; init; }
+
     // group profile
     public string? GroupType { get; init; }
     public string? ChildItems { get; init; }
