@@ -344,7 +344,6 @@ public class TlsSettings4Ray
     public string? pinnedPeerCertSha256 { get; set; }
     public bool? disableSystemRoot { get; set; }
     public string? echConfigList { get; set; }
-    public string? echForceQuery { get; set; }
     public Sockopt4Ray? echSockopt { get; set; }
 }
 

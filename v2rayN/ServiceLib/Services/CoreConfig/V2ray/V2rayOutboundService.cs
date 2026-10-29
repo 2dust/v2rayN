@@ -337,11 +337,6 @@ public partial class CoreConfigV2rayService
                 {
                     tlsSettings.serverName = Utils.String2List(host)?.First();
                 }
-                if (!tlsSettings.echConfigList.IsNullOrEmpty())
-                {
-                    // For legacy xray compatibility, remove this in the future
-                    tlsSettings.echForceQuery = "full";
-                }
                 var certs = CertPemManager.ParsePemChain(_node.Cert);
                 if (certs.Count > 0)
                 {
