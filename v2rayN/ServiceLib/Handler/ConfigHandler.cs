@@ -2317,6 +2317,7 @@ public static class ConfigHandler
             item.PreSocksPort = subItem.PreSocksPort;
             item.Memo = subItem.Memo;
             item.CustomCoreType = subItem.CustomCoreType;
+            item.PreResolver = subItem.PreResolver;
         }
 
         if (item.Id.IsNullOrEmpty())
