@@ -1908,4 +1908,7 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="menuColumns" xml:space="preserve">
     <value>Columns</value>
   </data>
+  <data name="LvPreResolve" xml:space="preserve">
+    <value>Pre-resolve server domains</value>
+  </data>
 </root>

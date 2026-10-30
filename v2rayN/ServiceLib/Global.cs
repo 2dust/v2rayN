@@ -499,6 +499,20 @@ public class Global
         "localhost"
     ];
 
+    public static readonly List<string> DomainDNS4PreResolveAddress =
+    [
+        "",
+        "https://doh.pub/dns-query",
+        "https://dns.alidns.com/dns-query",
+        "119.29.29.29",
+        "223.5.5.5",
+        "localhost",
+        "https://cloudflare-dns.com/dns-query",
+        "https://dns.google/dns-query",
+        "8.8.8.8",
+        "1.1.1.1",
+    ];
+
     public static readonly List<LanguageOption> LanguageOptions =
     [
         new("zh-Hans", "简体中文"),
