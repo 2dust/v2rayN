@@ -214,6 +214,7 @@ public class DnsServer4Ray
     public List<string>? domains { get; set; }
     public bool? skipFallback { get; set; }
     public List<string>? expectedIPs { get; set; }
+    public bool? finalQuery { get; set; }
     public string? tag { get; set; }
 }
 
