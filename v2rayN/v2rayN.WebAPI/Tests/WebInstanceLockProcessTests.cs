@@ -51,6 +51,13 @@ public class WebInstanceLockProcessTests
             await (await owner.WaitForExitAsync()).Should().BeEqualTo(0);
         }
 
+        // Windows can report process exit before releasing the owner's byte-range lock.
+        var releaseWait = Stopwatch.StartNew();
+        while (WebInstanceLock.IsHeld(path) && releaseWait.Elapsed < TimeSpan.FromSeconds(20))
+        {
+            await Task.Delay(10);
+        }
+
         await WebInstanceLock.IsHeld(path).Should().BeFalse();
         await AssertAcquisition(path, acquired: true);
         await using var replacement = LockProcess.Start("hold", path);
