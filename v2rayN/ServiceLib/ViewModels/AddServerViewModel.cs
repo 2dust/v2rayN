@@ -104,6 +104,9 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
     public partial string MasqueHeaders { get; set; }
 
     [Reactive]
+    public partial string Network { get; set; }
+
+    [Reactive]
     public partial string RawHeaderType { get; set; }
 
     [Reactive]
@@ -274,7 +277,7 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
         this.WhenAnyValue(x => x.CertSha)
             .Subscribe(_ => UpdateCertTip());
 
-        this.WhenAnyValue(x => x.SelectedSource.Network)
+        this.WhenAnyValue(x => x.Network)
             .Subscribe(_ =>
             {
                 this.RaisePropertyChanged(nameof(TransportHeaderType));
@@ -299,6 +302,7 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
         CoreType = SelectedSource?.CoreType?.ToString();
         AllowInsecure = SelectedSource?.GetAllowInsecure() == true;
         MuxEnabled = SelectedSource?.MuxEnabled == true;
+        Network = SelectedSource?.Network ?? Global.DefaultNetwork;
         Cert = SelectedSource?.Cert ?? string.Empty;
         CertSha = SelectedSource?.CertSha ?? string.Empty;
 
@@ -405,10 +409,11 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
         SelectedSource.MuxEnabled = MuxEnabled;
         SelectedSource.Cert = Cert.IsNullOrEmpty() ? string.Empty : Cert;
         SelectedSource.CertSha = CertSha.IsNullOrEmpty() ? string.Empty : CertSha;
-        if (!Global.Networks.Contains(SelectedSource.Network))
+        if (!Global.Networks.Contains(Network))
         {
-            SelectedSource.Network = Global.DefaultNetwork;
+            Network = Global.DefaultNetwork;
         }
+        SelectedSource.Network = Network;
 
         var transport = new TransportExtraItem
         {

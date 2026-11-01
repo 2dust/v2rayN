@@ -348,10 +348,9 @@ public class Utils
             .ToList());
     }
 
-    public static List<string> GetEnumNames<TEnum>() where TEnum : Enum
+    public static List<string> GetEnumNames<TEnum>() where TEnum : struct, Enum
     {
-        return Enum.GetValues(typeof(TEnum))
-            .Cast<TEnum>()
+        return Enum.GetValues<TEnum>()
             .Select(e => e.ToString())
             .ToList();
     }
@@ -1131,7 +1130,7 @@ public class Utils
             }
 
             //Check if it is installed by Windows WinGet
-            if (IsWindows() && basePath.Contains("Users") && basePath.Contains("WinGet"))
+            if (IsWindows() && basePath.Contains("WinGet"))
             {
                 return false;
             }

@@ -3,6 +3,43 @@ namespace ServiceLib.Tests.CoreConfig.V2ray;
 public class CoreConfigV2rayServiceTests
 {
     [Test]
+    [Arguments(null)]
+    [Arguments("")]
+    [Arguments("AGH+DQBdAAAgACBAi73MnT3WWXWj4M9MUiTygpjSPUfM/Rj3Iasve4uFQAAkAAEAAQABAAIAAQADAAIAAQACAAIAAgADAAMAAQADAAIAAwADAA5vdXRlci5lY2gudGVzdAAA")]
+    [Arguments("https://dns.example.com/dns-query")]
+    [Arguments("udp://127.0.0.1:5353")]
+    [Arguments("ech.example.com+https://dns.example.com/dns-query")]
+    public async Task GenerateClientConfigContent_Tls_ShouldPreserveEchConfigWithoutLegacyQueryOption(string? echConfigList)
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+        var node = CoreConfigTestFactory.CreateVmessNode(ECoreType.Xray);
+        node.StreamSecurity = Global.StreamSecurity;
+        node.Sni = "ech.example.com";
+        node.EchConfigList = echConfigList;
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray);
+
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue();
+        var generatedConfig = JsonNode.Parse(result.Data!.ToString()!)!;
+        var proxy = generatedConfig["outbounds"]!.AsArray()
+            .First(outbound => outbound!["tag"]!.GetValue<string>() == Global.ProxyTag)!;
+        var tls = proxy["streamSettings"]!["tlsSettings"]!.AsObject();
+
+        await tls["serverName"]!.GetValue<string>().Should().BeEqualTo("ech.example.com");
+        if (string.IsNullOrEmpty(echConfigList))
+        {
+            await tls.ContainsKey("echConfigList").Should().BeFalse();
+        }
+        else
+        {
+            await tls["echConfigList"]!.GetValue<string>().Should().BeEqualTo(echConfigList);
+        }
+        await tls.ContainsKey("echForceQuery").Should().BeFalse();
+    }
+
+    [Test]
     public async Task GenerateClientConfigContent_ShouldGenerateBasicProxyConfig()
     {
         var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
@@ -19,6 +56,61 @@ public class CoreConfigV2rayServiceTests
         await v2rayConfig.Should().NotBeNull();
         await v2rayConfig!.outbounds.Should().Contain(o => o.tag == Global.ProxyTag && o.protocol == "vmess");
         await v2rayConfig.inbounds.Should().Contain(i => i.protocol == nameof(EInboundProtocol.mixed));
+    }
+
+    [Test]
+    public async Task GenerateClientConfigContent_RealityFragment_ShouldUsePacketRangeOnlyForReality()
+    {
+        static ProfileItem CreateVlessNode(string indexId, string streamSecurity)
+        {
+            var node = new ProfileItem
+            {
+                IndexId = indexId,
+                ConfigType = EConfigType.VLESS,
+                CoreType = ECoreType.Xray,
+                Remarks = indexId,
+                Address = "example.com",
+                Port = 443,
+                Password = "01234567-89ab-cdef-0123-456789abcdef",
+                Network = nameof(ETransport.raw),
+                StreamSecurity = streamSecurity,
+                PublicKey = "test-public-key",
+                Sni = "example.com",
+                Fingerprint = "chrome",
+            };
+            node.SetProtocolExtra(new ProtocolExtraItem { VlessEncryption = Global.None });
+            node.SetTransportExtra(new TransportExtraItem { RawHeaderType = Global.None });
+            return node;
+        }
+
+        static string GetFragmentPackets(Outbounds4Ray outbound)
+        {
+            var finalmask = JsonUtils.ParseJson(JsonUtils.Serialize(outbound.streamSettings!.finalmask));
+            return finalmask!["tcp"]![0]!["settings"]!["packets"]!.GetValue<string>();
+        }
+
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
+        config.CoreBasicItem.EnableFragment = true;
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var tlsNode = CreateVlessNode("tls-node", Global.StreamSecurity);
+        var realityNode = CreateVlessNode("reality-node", Global.StreamSecurityReality);
+        var group = CoreConfigTestFactory.CreatePolicyGroupNode(ECoreType.Xray, "group", "group",
+            [tlsNode.IndexId, realityNode.IndexId]);
+        var context = CoreConfigTestFactory.CreateContext(config, group, ECoreType.Xray);
+        context.AllProxiesMap[tlsNode.IndexId] = tlsNode;
+        context.AllProxiesMap[realityNode.IndexId] = realityNode;
+        context.AllProxiesMap[group.IndexId] = group;
+
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue();
+        var cfg = JsonUtils.Deserialize<V2rayConfig>(result.Data!.ToString())!;
+        var tlsOutbound = cfg.outbounds.Single(o => o.streamSettings?.security == Global.StreamSecurity);
+        var realityOutbound = cfg.outbounds.Single(o => o.streamSettings?.security == Global.StreamSecurityReality);
+
+        await GetFragmentPackets(tlsOutbound).Should().BeEqualTo("tlshello");
+        await GetFragmentPackets(realityOutbound).Should().BeEqualTo("1-3");
     }
 
     [Test]
