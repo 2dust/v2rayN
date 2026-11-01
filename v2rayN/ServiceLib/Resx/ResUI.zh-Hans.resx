@@ -1900,4 +1900,7 @@
   <data name="menuColumns" xml:space="preserve">
     <value>列</value>
   </data>
+  <data name="LvPreResolve" xml:space="preserve">
+    <value>预解析节点域名</value>
+  </data>
 </root>

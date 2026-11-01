@@ -1717,10 +1717,15 @@ public static class ConfigHandler
         }
 
         var subFilter = string.Empty;
+        var preResolver = string.Empty;
         if (isSub && subid.IsNotEmpty())
         {
             subFilter = (await AppManager.Instance.GetSubItem(subid))?.Filter ?? "";
+            preResolver = (await AppManager.Instance.GetSubItem(subid))?.PreResolver ?? "";
         }
+
+        var dnsClient = preResolver.IsNullOrEmpty() ? null : EndpointResolveManager.BuildDnsClient(preResolver);
+        var dnsCache = new Dictionary<string, string>();
 
         var countServers = 0;
         List<ProfileItem> lstAdd = [];
@@ -1756,6 +1761,21 @@ public static class ConfigHandler
             }
             profileItem.Subid = subid;
             profileItem.IsSub = isSub;
+
+            if (dnsClient is not null && profileItem.Address.IsNotEmpty())
+            {
+                if (!dnsCache.TryGetValue(profileItem.Address, out var resolvedAddress))
+                {
+                    var ipList = await dnsClient.ResolveIpv46Async(profileItem.Address);
+                    resolvedAddress = ipList.FirstOrDefault()?.ToString() ?? profileItem.Address;
+                    dnsCache[profileItem.Address] = resolvedAddress;
+                }
+                if (!resolvedAddress.IsNullOrEmpty())
+                {
+                    profileItem.Address = resolvedAddress;
+                }
+                // TODO: Override the host and sni if empty
+            }
 
             var addStatus = profileItem.ConfigType switch
             {
@@ -2301,6 +2321,7 @@ public static class ConfigHandler
             item.PreSocksPort = subItem.PreSocksPort;
             item.Memo = subItem.Memo;
             item.CustomCoreType = subItem.CustomCoreType;
+            item.PreResolver = subItem.PreResolver;
         }
 
         if (item.Id.IsNullOrEmpty())
