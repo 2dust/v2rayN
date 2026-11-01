@@ -2134,7 +2134,6 @@ public static class ConfigHandler
         {
             lstOriSub = await AppManager.Instance.ProfileItems(subid);
             activeProfile = lstOriSub?.FirstOrDefault(t => t.IndexId == config.IndexId);
-            await RemoveServersViaSubid(config, subid, true);
         }
 
         var counter = 0;
@@ -2192,6 +2191,11 @@ public static class ConfigHandler
         if (counter < 1)
         {
             counter = await AddBatchServers4Custom(config, strData, subid, isSub);
+        }
+
+        if (counter > 0 && lstOriSub is { Count: > 0 })
+        {
+            await RemoveServers(config, lstOriSub.Where(item => item.IsSub).ToList());
         }
 
         //Select active node
