@@ -15,7 +15,7 @@ public class CoreConfigV2rayIPNetworkTests
         var generated = await GenerateConfig(config);
 
         var routes = generated.inbounds.Single(i => i.protocol == "tun").settings.autoSystemRoutingTable;
-        await routes.Should().BeEquivalentTo(expectedRoutes.Split(','));
+        await routes.Should().BeEquivalentTo(expectedRoutes.Split(','), StringComparer.Ordinal);
     }
 
     [Test]
@@ -30,7 +30,7 @@ public class CoreConfigV2rayIPNetworkTests
         var generated = await GenerateConfig(config);
 
         var routes = generated.inbounds.Single(i => i.protocol == "tun").settings.autoSystemRoutingTable;
-        await routes.Should().BeEquivalentTo(new[] { "192.0.0.0/2", "c000::/2" });
+        await routes.Should().BeEquivalentTo(new[] { "192.0.0.0/2", "c000::/2" }, StringComparer.Ordinal);
     }
 
     [Test]
