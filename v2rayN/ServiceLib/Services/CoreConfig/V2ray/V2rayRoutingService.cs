@@ -200,11 +200,12 @@ public partial class CoreConfigV2rayService
             return tag;
         }
 
-        var proxyOutbounds = new CoreConfigV2rayService(context with { Node = node, }).BuildAllProxyOutbounds(tag);
+        var service = new CoreConfigV2rayService(context with { Node = node, });
+        var proxyOutbounds = service.BuildAllProxyOutbounds(tag);
         _coreConfig.outbounds.AddRange(proxyOutbounds);
         if (proxyOutbounds.Count(n => n.tag.StartsWith(tag)) > 1)
         {
-            var multipleLoad = node.GetProtocolExtra().MultipleLoad ?? EMultipleLoad.LeastPing;
+            var multipleLoad = service.FindFirstPolicyGroupMultipleLoad() ?? EMultipleLoad.LeastPing;
             GenObservatory(multipleLoad, tag);
             GenBalancer(multipleLoad, tag);
         }

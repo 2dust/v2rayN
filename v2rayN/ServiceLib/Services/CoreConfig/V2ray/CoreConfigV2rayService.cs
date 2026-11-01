@@ -176,13 +176,13 @@ public partial class CoreConfigV2rayService(CoreConfigContext context)
                 var tag = Global.ProxyTag + inbound.port.ToString();
                 var isBalancer = false;
                 //outbound
-                var proxyOutbounds =
-                    new CoreConfigV2rayService(context with { Node = item }).BuildAllProxyOutbounds(tag);
+                var service = new CoreConfigV2rayService(context with { Node = item });
+                var proxyOutbounds = service.BuildAllProxyOutbounds(tag);
                 _coreConfig.outbounds.AddRange(proxyOutbounds);
                 if (proxyOutbounds.Count(n => n.tag.StartsWith(tag)) > 1)
                 {
                     isBalancer = true;
-                    var multipleLoad = _node.GetProtocolExtra().MultipleLoad ?? EMultipleLoad.LeastPing;
+                    var multipleLoad = service.FindFirstPolicyGroupMultipleLoad() ?? EMultipleLoad.LeastPing;
                     GenObservatory(multipleLoad, tag);
                     GenBalancer(multipleLoad, tag);
                 }
