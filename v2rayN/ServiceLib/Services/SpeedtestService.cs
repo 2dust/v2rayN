@@ -188,10 +188,13 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                     break;
 
                 case ESpeedActionType.Speedtest:
+                    // A skipped or failed test must not leave the last speed behind for sorting.
+                    ProfileExManager.Instance.SetTestSpeed(it.IndexId, 0);
                     await UpdateFunc(it.IndexId, "", message);
                     break;
 
                 case ESpeedActionType.Mixedtest:
+                    ProfileExManager.Instance.SetTestSpeed(it.IndexId, 0);
                     await UpdateFunc(it.IndexId, message, message);
                     break;
             }
