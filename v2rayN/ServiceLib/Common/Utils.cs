@@ -1130,7 +1130,7 @@ public class Utils
             }
 
             //Check if it is installed by Windows WinGet
-            if (IsWindows() && basePath.Contains("Users") && basePath.Contains("WinGet"))
+            if (IsWindows() && basePath.Contains("WinGet"))
             {
                 return false;
             }
