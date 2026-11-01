@@ -24,6 +24,7 @@ public partial class MainWindowViewModel : MyReactiveObject
 
     public ReactiveCommand<RxVoid, RxVoid> AddVlessServerCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> AddShadowsocksServerCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> AddShadowsocksRServerCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> AddSocksServerCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> AddHttpServerCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> AddTrojanServerCmd { get; }
@@ -108,6 +109,10 @@ public partial class MainWindowViewModel : MyReactiveObject
         AddShadowsocksServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await AddServerAsync(EConfigType.Shadowsocks);
+        });
+        AddShadowsocksRServerCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await AddServerAsync(EConfigType.ShadowsocksR);
         });
         AddSocksServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {

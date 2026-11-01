@@ -105,7 +105,13 @@ public class CoreManager
 
     public async Task<ProcessService?> LoadCoreConfigSpeedtest(List<ServerTestItem> selecteds)
     {
-        var coreType = selecteds.FirstOrDefault()?.CoreType == ECoreType.sing_box ? ECoreType.sing_box : ECoreType.Xray;
+        var firstCore = selecteds.FirstOrDefault()?.CoreType ?? ECoreType.Xray;
+        var coreType = firstCore switch
+        {
+            ECoreType.sing_box => ECoreType.sing_box,
+            ECoreType.mihomo => ECoreType.mihomo,
+            _ => ECoreType.Xray,
+        };
         var fileName = string.Format(Global.CoreSpeedtestConfigFileName, Utils.GetGuid(false));
         var configPath = Utils.GetBinConfigPath(fileName);
         var result = await CoreConfigHandler.GenerateClientSpeedtestConfig(_config, configPath, selecteds, coreType);

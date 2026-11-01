@@ -246,7 +246,8 @@ public class Global
         { EConfigType.TUIC, "tuic://" },
         { EConfigType.WireGuard, "wireguard://" },
         { EConfigType.Anytls, "anytls://" },
-        { EConfigType.Naive, "naive://" }
+        { EConfigType.Naive, "naive://" },
+        { EConfigType.ShadowsocksR, "ssr://" }
     };
 
     public static readonly Dictionary<EConfigType, string> ProtocolTypes = new()
@@ -263,6 +264,7 @@ public class Global
         { EConfigType.Anytls, "anytls" },
         { EConfigType.Naive, "naive" },
         { EConfigType.MASQUE, "masque" },
+        { EConfigType.ShadowsocksR, "shadowsocksr" },
     };
 
     public static readonly List<string> VmessSecurities =
@@ -321,6 +323,38 @@ public class Global
         "xchacha20"
     ];
 
+    public static readonly List<string> SsrProtocols =
+    [
+        "origin",
+        "auth_sha1_v4",
+        "auth_aes128_md5",
+        "auth_aes128_sha1",
+        "auth_chain_a",
+        "auth_chain_b"
+    ];
+
+    public static readonly List<string> SsrObfs =
+    [
+        "plain",
+        "http_simple",
+        "http_post",
+        "tls1.2_ticket_auth",
+        "tls1.2_ticket_fastauth"
+    ];
+
+    public static readonly List<string> SsrSecurities =
+    [
+        "aes-128-cfb",
+        "aes-192-cfb",
+        "aes-256-cfb",
+        "aes-128-ctr",
+        "aes-192-ctr",
+        "aes-256-ctr",
+        "rc4-md5",
+        "chacha20-ietf",
+        "xchacha20"
+    ];
+
     public static readonly List<string> Flows =
     [
         "",
@@ -361,7 +395,8 @@ public class Global
     public static readonly List<string> CoreTypes =
     [
         "Xray",
-        "sing_box"
+        "sing_box",
+        "mihomo"
     ];
 
     public static readonly HashSet<EConfigType> XraySupportConfigType =
@@ -394,6 +429,17 @@ public class Global
     ];
 
     public static readonly HashSet<EConfigType> SingboxOnlyConfigType = SingboxSupportConfigType.Except(XraySupportConfigType).ToHashSet();
+
+    public static readonly HashSet<EConfigType> MihomoSupportConfigType =
+    [
+        EConfigType.VMess,
+        EConfigType.VLESS,
+        EConfigType.Shadowsocks,
+        EConfigType.ShadowsocksR,
+        EConfigType.Trojan,
+        EConfigType.SOCKS,
+        EConfigType.HTTP,
+    ];
 
     public static readonly List<string> DomainStrategies =
     [

@@ -77,6 +77,13 @@ public class NodeValidator
                 v.Error(string.Format(ResUI.MsgCoreNotSupportProtocol, nameof(ECoreType.Xray), item.ConfigType));
             }
         }
+        else if (coreType is ECoreType.mihomo)
+        {
+            if (!Global.MihomoSupportConfigType.Contains(item.ConfigType))
+            {
+                v.Error(string.Format(ResUI.MsgCoreNotSupportProtocol, nameof(ECoreType.mihomo), item.ConfigType));
+            }
+        }
 
         // Protocol Specifics
         var protocolExtra = item.GetProtocolExtra();
@@ -103,6 +110,22 @@ public class NodeValidator
                     !string.IsNullOrEmpty(protocolExtra.SsMethod) &&
                     Global.SsSecuritiesInSingbox.Contains(protocolExtra.SsMethod),
                     string.Format(ResUI.MsgInvalidProperty, ResUI.TbSecurity3));
+                break;
+
+            case EConfigType.ShadowsocksR:
+                v.Assert(!item.Password.IsNullOrEmpty(), string.Format(ResUI.MsgInvalidProperty, ResUI.TbId3));
+                v.Assert(
+                    !string.IsNullOrEmpty(protocolExtra.SsMethod)
+                    && Global.SsrSecurities.Contains(protocolExtra.SsMethod),
+                    string.Format(ResUI.MsgInvalidProperty, ResUI.TbSecurity3));
+                v.Assert(
+                    !string.IsNullOrEmpty(protocolExtra.SsrProtocol)
+                    && Global.SsrProtocols.Contains(protocolExtra.SsrProtocol),
+                    string.Format(ResUI.MsgInvalidProperty, "SSR protocol"));
+                v.Assert(
+                    !string.IsNullOrEmpty(protocolExtra.SsrObfs)
+                    && Global.SsrObfs.Contains(protocolExtra.SsrObfs),
+                    string.Format(ResUI.MsgInvalidProperty, "SSR obfs"));
                 break;
         }
 

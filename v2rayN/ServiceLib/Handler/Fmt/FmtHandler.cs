@@ -20,6 +20,7 @@ public class FmtHandler
                 EConfigType.WireGuard => WireguardFmt.ToUri(item),
                 EConfigType.Anytls => AnytlsFmt.ToUri(item),
                 EConfigType.Naive => NaiveFmt.ToUri(item),
+                EConfigType.ShadowsocksR => SsrFmt.ToUri(item),
                 _ => null,
             };
 
@@ -52,6 +53,10 @@ public class FmtHandler
             else if (str.StartsWith(Global.ProtocolShares[EConfigType.Shadowsocks]))
             {
                 return ShadowsocksFmt.Resolve(str, out msg);
+            }
+            else if (str.StartsWith(Global.ProtocolShares[EConfigType.ShadowsocksR]))
+            {
+                return SsrFmt.Resolve(str, out msg);
             }
             else if (str.StartsWith(Global.ProtocolShares[EConfigType.SOCKS])
                     || str.StartsWith(Global.SOCKS5Protocol)

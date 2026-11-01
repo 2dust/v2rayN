@@ -42,7 +42,9 @@ public partial class OptionSettingWindow
         cmbCoreType6.ItemsSource = Global.CoreTypes;
         cmbCoreType7.ItemsSource = Global.CoreTypes;
         cmbCoreType9.ItemsSource = Global.CoreTypes;
+        cmbCoreType11.ItemsSource = Global.CoreTypes;
         cmbCoreType14.ItemsSource = Global.CoreTypes;
+        cmbCoreType15.ItemsSource = Global.CoreTypes;
 
         cmbMixedConcurrencyCount.ItemsSource = Enumerable.Range(Global.SpeedTestConcurrencyCountMin, 20).ToList();
         cmbSpeedTestTimeout.ItemsSource = Enumerable.Range(2, 5).Select(i => i * 5).ToList();

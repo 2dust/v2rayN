@@ -21,6 +21,12 @@ public record ProtocolExtraItem
     //public string? PluginArgs { get; init; }
     public string? SsMethod { get; init; }
 
+    // shadowsocksr
+    public string? SsrProtocol { get; init; }
+    public string? SsrObfs { get; init; }
+    public string? SsrProtocolParam { get; init; }
+    public string? SsrObfsParam { get; init; }
+
     // wireguard
     public string? WgPublicKey { get; init; }
     public string? WgPresharedKey { get; init; }

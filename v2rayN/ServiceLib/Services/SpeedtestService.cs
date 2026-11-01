@@ -127,6 +127,15 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             Logging.SaveLog(_tag, ex);
             _ = UpdateFunc("", ex.Message);
         }
+        finally
+        {
+            // 兜底：无论什么原因没测到的节点，都不要一直停在"测试中"
+            var notTested = lstSelected.Where(it => !completedIds.ContainsKey(it.IndexId ?? string.Empty)).ToList();
+            if (notTested.Count > 0)
+            {
+                await SetTestResultAsync(notTested, actionType, ResUI.SpeedtestingSkip).ConfigureAwait(false);
+            }
+        }
     }
 
     private async Task<List<ServerTestItem>> GetClearItem(ESpeedActionType actionType, List<ProfileItem> selecteds)
@@ -250,10 +259,15 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         List<ServerTestItem> lstFailed = [];
         foreach (var lst in lstTest)
         {
-            var ret = await RunRealPingAsync(lst, completedIds, ct);
-            if (ret == false)
+            //每个批次内按核心类型再拆分，避免 mihomo / Xray / sing-box 节点混在同一个配置里
+            foreach (var coreGroup in lst.GroupBy(t => t.CoreType))
             {
-                lstFailed.AddRange(lst);
+                var sub = coreGroup.ToList();
+                var ret = await RunRealPingAsync(sub, completedIds, ct);
+                if (ret == false)
+                {
+                    lstFailed.AddRange(sub);
+                }
             }
             await Task.Delay(_delayInterval, ct);
         }
@@ -286,9 +300,11 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             processService = await CoreManager.Instance.LoadCoreConfigSpeedtest(selecteds);
             if (processService is null)
             {
+                Logging.SaveLog($"{_tag} ping-batch core-is-null count={selecteds.Count}");
                 return false;
             }
-            await Task.Delay(1000, ct);
+            Logging.SaveLog($"{_tag} ping-batch core={selecteds.FirstOrDefault()?.CoreType} count={selecteds.Count} ports={string.Join(",", selecteds.Select(t => t.Port))}");
+            await WaitForLocalPort(selecteds.FirstOrDefault(t => t.Port > 0)?.Port ?? 0, ct, 8000);
 
             var parallelOptions = new ParallelOptions
             {
@@ -349,10 +365,15 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         List<ServerTestItem> lstFailed = [];
         foreach (var lst in lstTest)
         {
-            var ret = await RunUdpTestAsync(lst, completedIds, ct);
-            if (ret == false)
+            //每个批次内按核心类型再拆分
+            foreach (var coreGroup in lst.GroupBy(t => t.CoreType))
             {
-                lstFailed.AddRange(lst);
+                var sub = coreGroup.ToList();
+                var ret = await RunUdpTestAsync(sub, completedIds, ct);
+                if (ret == false)
+                {
+                    lstFailed.AddRange(sub);
+                }
             }
             await Task.Delay(_delayInterval, ct);
         }
@@ -379,7 +400,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             {
                 return false;
             }
-            await Task.Delay(1000, ct);
+            await WaitForLocalPort(selecteds.FirstOrDefault(t => t.Port > 0)?.Port ?? 0, ct, 8000);
 
             var parallelOptions = new ParallelOptions
             {
@@ -454,7 +475,8 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                     return;
                 }
 
-                await Task.Delay(1000, innerCt);
+                await WaitForLocalPort(it.Port, innerCt);
+                Logging.SaveLog($"{_tag} mixed index={it.IndexId} port={it.Port} remarks={it.Profile?.Remarks}");
 
                 var delay = await DoRealPing(it, completedIds, innerCt);
                 if (blSpeedTest)
@@ -492,6 +514,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     {
         var webProxy = new WebProxy($"socks5://{Global.Loopback}:{it.Port}");
         var responseTime = await ConnectionHandler.GetRealPingTime(webProxy, ct);
+        Logging.SaveLog($"{_tag} ping port={it.Port} index={it.IndexId} result={responseTime}");
 
         ProfileExManager.Instance.SetTestDelay(it.IndexId, responseTime);
         await UpdateFunc(it.IndexId, responseTime.ToString());
@@ -593,19 +616,80 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         }
 
         pageSize = Math.Max(pageSize, 1);
-        var lst1 = lstSelected.Where(t => t.CoreType == ECoreType.Xray).ToList();
-        var lst2 = lstSelected.Where(t => t.CoreType == ECoreType.sing_box).ToList();
 
-        for (var num = 0; num < (int)Math.Ceiling(lst1.Count * 1.0 / pageSize); num++)
+        // 按核心类型分批：同一批次只能用同一个核心生成配置。
+        // 这里不能只挑 Xray/sing_box，否则 mihomo 节点会被丢掉、一直停在"测试中"。
+        foreach (var group in lstSelected.GroupBy(t => t.CoreType))
         {
-            lstTest.Add(lst1.Skip(num * pageSize).Take(pageSize).ToList());
-        }
-        for (var num = 0; num < (int)Math.Ceiling(lst2.Count * 1.0 / pageSize); num++)
-        {
-            lstTest.Add(lst2.Skip(num * pageSize).Take(pageSize).ToList());
+            var list = group.ToList();
+            for (var num = 0; num < (int)Math.Ceiling(list.Count * 1.0 / pageSize); num++)
+            {
+                lstTest.Add(list.Skip(num * pageSize).Take(pageSize).ToList());
+            }
         }
 
         return lstTest;
+    }
+
+    /// <summary>
+    /// 等待本地代理端口就绪。mihomo 是单文件压缩启动，固定等 1 秒经常还没监听。
+    /// </summary>
+    /// <summary>
+    /// 等待本地代理端口就绪。mihomo 是单文件压缩启动，固定等 1 秒经常还没监听。
+    /// 注意：端口监听 != 能转发。mihomo 实测在绑定端口后还有约 1 秒的预热期，
+    /// 这段窗口内发请求会直接 SSL 握手失败（表现就是测速秒回 -1），所以这里要额外等一段时间。
+    /// </summary>
+    private static async Task<bool> WaitForLocalPort(int port, CancellationToken ct, int timeoutMs = 5000, int warmupMs = 1500)
+    {
+        if (port <= 0)
+        {
+            return false;
+        }
+
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
+        cts.CancelAfter(timeoutMs);
+
+        while (!cts.IsCancellationRequested)
+        {
+            try
+            {
+                using var tcp = new System.Net.Sockets.TcpClient();
+                await tcp.ConnectAsync(Global.Loopback, port, cts.Token);
+
+                // 已能建立 TCP 连接，等核心完成预热再交给测速
+                if (warmupMs > 0)
+                {
+                    try
+                    {
+                        await Task.Delay(warmupMs, ct);
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        // ignore
+                    }
+                }
+                return true;
+            }
+            catch (OperationCanceledException)
+            {
+                break;
+            }
+            catch
+            {
+                // 端口还没起来，继续等
+            }
+
+            try
+            {
+                await Task.Delay(100, cts.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                break;
+            }
+        }
+
+        return false;
     }
 
     private async Task UpdateFunc(string indexId, string delay, string speed = "")

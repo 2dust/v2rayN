@@ -283,6 +283,7 @@ public static class ConfigHandler
         {
             EConfigType.VMess => await AddVMessServer(config, item),
             EConfigType.Shadowsocks => await AddShadowsocksServer(config, item),
+            EConfigType.ShadowsocksR => await AddShadowsocksRServer(config, item),
             EConfigType.SOCKS => await AddSocksServer(config, item),
             EConfigType.HTTP => await AddHttpServer(config, item),
             EConfigType.Trojan => await AddTrojanServer(config, item),
@@ -679,6 +680,48 @@ public static class ConfigHandler
         });
 
         if (!AppManager.Instance.GetShadowsocksSecurities(profileItem).Contains(profileItem.GetProtocolExtra().SsMethod))
+        {
+            return -1;
+        }
+        if (profileItem.Password.IsNullOrEmpty())
+        {
+            return -1;
+        }
+
+        await AddServerCommon(config, profileItem, toFile);
+
+        return 0;
+    }
+
+    /// <summary>
+    /// Add or edit a ShadowsocksR server
+    /// Validates and processes ShadowsocksR-specific settings
+    /// </summary>
+    /// <param name="config">Current configuration</param>
+    /// <param name="profileItem">ShadowsocksR profile to add</param>
+    /// <param name="toFile">Whether to save to file</param>
+    /// <returns>0 if successful, -1 if failed</returns>
+    public static async Task<int> AddShadowsocksRServer(Config config, ProfileItem profileItem, bool toFile = true)
+    {
+        profileItem.ConfigType = EConfigType.ShadowsocksR;
+
+        // Xray/sing-box no longer support SSR; make mihomo the default core unless the user picked one explicitly.
+        profileItem.CoreType ??= ECoreType.mihomo;
+
+        profileItem.Address = profileItem.Address.TrimEx();
+        profileItem.Password = profileItem.Password.TrimEx();
+        var ssrExtra = profileItem.GetProtocolExtra();
+        profileItem.SetProtocolExtra(ssrExtra with
+        {
+            SsMethod = ssrExtra.SsMethod?.TrimEx(),
+            SsrProtocol = ssrExtra.SsrProtocol?.TrimEx(),
+            SsrObfs = ssrExtra.SsrObfs?.TrimEx(),
+        });
+
+        ssrExtra = profileItem.GetProtocolExtra();
+        if (!Global.SsrSecurities.Contains(ssrExtra.SsMethod ?? string.Empty)
+            || !Global.SsrProtocols.Contains(ssrExtra.SsrProtocol ?? string.Empty)
+            || !Global.SsrObfs.Contains(ssrExtra.SsrObfs ?? string.Empty))
         {
             return -1;
         }
@@ -1700,6 +1743,7 @@ public static class ConfigHandler
             {
                 EConfigType.VMess => await AddVMessServer(config, profileItem, false),
                 EConfigType.Shadowsocks => await AddShadowsocksServer(config, profileItem, false),
+                EConfigType.ShadowsocksR => await AddShadowsocksRServer(config, profileItem, false),
                 EConfigType.SOCKS => await AddSocksServer(config, profileItem, false),
                 EConfigType.Trojan => await AddTrojanServer(config, profileItem, false),
                 EConfigType.VLESS => await AddVlessServer(config, profileItem, false),
@@ -2022,6 +2066,7 @@ public static class ConfigHandler
                 {
                     EConfigType.VMess => await AddVMessServer(config, profileItem, false),
                     EConfigType.Shadowsocks => await AddShadowsocksServer(config, profileItem, false),
+                    EConfigType.ShadowsocksR => await AddShadowsocksRServer(config, profileItem, false),
                     EConfigType.HTTP => await AddHttpServer(config, profileItem, false),
                     EConfigType.SOCKS => await AddSocksServer(config, profileItem, false),
                     EConfigType.Trojan => await AddTrojanServer(config, profileItem, false),

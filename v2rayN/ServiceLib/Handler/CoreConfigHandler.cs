@@ -21,6 +21,10 @@ public static class CoreConfigHandler
                 _ => await GenerateClientCustomConfig(node, fileName)
             };
         }
+        else if (context.RunCoreType == ECoreType.mihomo)
+        {
+            result = new CoreConfigClashProfileService(context).GenerateClientConfigContent();
+        }
         else if (context.RunCoreType == ECoreType.sing_box)
         {
             result = new CoreConfigSingboxService(context).GenerateClientConfigContent();
@@ -113,6 +117,10 @@ public static class CoreConfigHandler
         {
             result = new CoreConfigSingboxService(context).GenerateClientSpeedtestConfig(selecteds);
         }
+        else if (coreType == ECoreType.mihomo)
+        {
+            result = new CoreConfigClashProfileService(context).GenerateClientSpeedtestConfig(selecteds);
+        }
         else if (coreType == ECoreType.Xray)
         {
             result = new CoreConfigV2rayService(context).GenerateClientSpeedtestConfig(selecteds);
@@ -135,6 +143,10 @@ public static class CoreConfigHandler
         if (context.RunCoreType == ECoreType.sing_box)
         {
             result = new CoreConfigSingboxService(context).GenerateClientSpeedtestConfig(port);
+        }
+        else if (context.RunCoreType == ECoreType.mihomo)
+        {
+            result = new CoreConfigClashProfileService(context).GenerateClientSpeedtestConfig(port);
         }
         else
         {

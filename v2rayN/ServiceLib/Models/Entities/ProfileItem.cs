@@ -112,6 +112,23 @@ public class ProfileItem
                 }
 
                 break;
+
+            case EConfigType.ShadowsocksR:
+                if (Password.IsNullOrEmpty())
+                {
+                    return false;
+                }
+
+                var ssrExtra = GetProtocolExtra();
+                if (ssrExtra.SsMethod.IsNullOrEmpty()
+                    || !Global.SsrSecurities.Contains(ssrExtra.SsMethod)
+                    || ssrExtra.SsrProtocol.IsNullOrEmpty()
+                    || ssrExtra.SsrObfs.IsNullOrEmpty())
+                {
+                    return false;
+                }
+
+                break;
         }
 
         if ((ConfigType is EConfigType.VLESS or EConfigType.Trojan)

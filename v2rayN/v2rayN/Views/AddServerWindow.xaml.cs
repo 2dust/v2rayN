@@ -70,6 +70,15 @@ public partial class AddServerWindow
                             this.Bind(ViewModel, vm => vm.MuxEnabled, v => v.togmuxEnabled3.IsChecked).DisposeWith(currentTypeDisposables);
                             break;
 
+                        case EConfigType.ShadowsocksR:
+                            this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtId15.Text).DisposeWith(currentTypeDisposables);
+                            this.Bind(ViewModel, vm => vm.SsMethod, v => v.cmbSecurity15.Text).DisposeWith(currentTypeDisposables);
+                            this.Bind(ViewModel, vm => vm.SsrProtocol, v => v.cmbSsrProtocol15.Text).DisposeWith(currentTypeDisposables);
+                            this.Bind(ViewModel, vm => vm.SsrObfs, v => v.cmbSsrObfs15.Text).DisposeWith(currentTypeDisposables);
+                            this.Bind(ViewModel, vm => vm.SsrProtocolParam, v => v.txtSsrProtocolParam15.Text).DisposeWith(currentTypeDisposables);
+                            this.Bind(ViewModel, vm => vm.SsrObfsParam, v => v.txtSsrObfsParam15.Text).DisposeWith(currentTypeDisposables);
+                            break;
+
                         case EConfigType.SOCKS:
                             this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtId4.Text)
                                 .DisposeWith(disposables);
@@ -218,6 +227,17 @@ public partial class AddServerWindow
             case EConfigType.Shadowsocks:
                 gridSs.Visibility = Visibility.Visible;
                 cmbSecurity3.ItemsSource = AppManager.Instance.GetShadowsocksSecurities(profileItem);
+                break;
+
+            case EConfigType.ShadowsocksR:
+                gridSsR.Visibility = Visibility.Visible;
+                cmbSecurity15.ItemsSource = Global.SsrSecurities;
+                cmbSsrProtocol15.ItemsSource = Global.SsrProtocols;
+                cmbSsrObfs15.ItemsSource = Global.SsrObfs;
+                sepa2.Visibility = Visibility.Collapsed;
+                gridTransport.Visibility = Visibility.Collapsed;
+                gridTls.Visibility = Visibility.Collapsed;
+                gridFinalmask.Visibility = Visibility.Collapsed;
                 break;
 
             case EConfigType.SOCKS:

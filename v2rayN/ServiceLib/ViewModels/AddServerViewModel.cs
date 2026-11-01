@@ -56,6 +56,18 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
     public partial string SsMethod { get; set; }
 
     [Reactive]
+    public partial string SsrProtocol { get; set; }
+
+    [Reactive]
+    public partial string SsrObfs { get; set; }
+
+    [Reactive]
+    public partial string SsrProtocolParam { get; set; }
+
+    [Reactive]
+    public partial string SsrObfsParam { get; set; }
+
+    [Reactive]
     public partial string WgPublicKey { get; set; }
 
     [Reactive]
@@ -314,6 +326,10 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
         VmessSecurity = protocolExtra.VmessSecurity?.IsNullOrEmpty() == false ? protocolExtra.VmessSecurity : Global.DefaultSecurity;
         VlessEncryption = protocolExtra.VlessEncryption?.IsNullOrEmpty() == false ? protocolExtra.VlessEncryption : Global.None;
         SsMethod = protocolExtra.SsMethod ?? string.Empty;
+        SsrProtocol = protocolExtra.SsrProtocol?.IsNullOrEmpty() == false ? protocolExtra.SsrProtocol : Global.SsrProtocols.First();
+        SsrObfs = protocolExtra.SsrObfs?.IsNullOrEmpty() == false ? protocolExtra.SsrObfs : Global.SsrObfs.First();
+        SsrProtocolParam = protocolExtra.SsrProtocolParam ?? string.Empty;
+        SsrObfsParam = protocolExtra.SsrObfsParam ?? string.Empty;
         WgPublicKey = protocolExtra.WgPublicKey ?? string.Empty;
         WgPresharedKey = protocolExtra.WgPresharedKey ?? string.Empty;
         WgInterfaceAddress = protocolExtra.WgInterfaceAddress ?? string.Empty;
@@ -372,6 +388,19 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
                 return;
             }
             if (SsMethod.IsNullOrEmpty())
+            {
+                NoticeManager.Instance.Enqueue(ResUI.PleaseSelectEncryption);
+                return;
+            }
+        }
+        if (SelectedSource.ConfigType == EConfigType.ShadowsocksR)
+        {
+            if (SelectedSource.Password.IsNullOrEmpty())
+            {
+                NoticeManager.Instance.Enqueue(ResUI.FillPassword);
+                return;
+            }
+            if (SsMethod.IsNullOrEmpty() || SsrProtocol.IsNullOrEmpty() || SsrObfs.IsNullOrEmpty())
             {
                 NoticeManager.Instance.Enqueue(ResUI.PleaseSelectEncryption);
                 return;
@@ -437,6 +466,10 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
             VmessSecurity = VmessSecurity.NullIfEmpty(),
             VlessEncryption = VlessEncryption.NullIfEmpty(),
             SsMethod = SsMethod.NullIfEmpty(),
+            SsrProtocol = SsrProtocol.NullIfEmpty(),
+            SsrObfs = SsrObfs.NullIfEmpty(),
+            SsrProtocolParam = SsrProtocolParam.NullIfEmpty(),
+            SsrObfsParam = SsrObfsParam.NullIfEmpty(),
             HttpHeaders = SelectedSource.ConfigType == EConfigType.HTTP ? HttpHeadersJson.NullIfEmpty() : null,
             WgPublicKey = WgPublicKey.NullIfEmpty(),
             WgPresharedKey = WgPresharedKey.NullIfEmpty(),
