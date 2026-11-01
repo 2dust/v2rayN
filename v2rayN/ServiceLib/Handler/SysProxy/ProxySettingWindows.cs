@@ -133,7 +133,7 @@ public static class ProxySettingWindows
         list.dwOptionCount = options.Length;
         list.dwOptionError = 0;
 
-        var optSize = Marshal.SizeOf(typeof(InternetConnectionOption));
+        var optSize = Marshal.SizeOf<InternetConnectionOption>();
         // make a pointer out of all that ...
         var optionsPtr = Marshal.AllocCoTaskMem(optSize * options.Length); // !! remember to deallocate memory 4
                                                                            // copy the array over into that spot in memory ...
@@ -207,17 +207,17 @@ public static class ProxySettingWindows
         var entries = 0;
         // attempt to query with 1 entry buffer
         var rasEntryNames = new RASENTRYNAME[1];
-        var bufferSize = Marshal.SizeOf(typeof(RASENTRYNAME));
-        rasEntryNames[0].dwSize = Marshal.SizeOf(typeof(RASENTRYNAME));
+        var bufferSize = Marshal.SizeOf<RASENTRYNAME>();
+        rasEntryNames[0].dwSize = Marshal.SizeOf<RASENTRYNAME>();
 
         var result = NativeMethods.RasEnumEntries(null, null, rasEntryNames, ref bufferSize, ref entries);
         // increase buffer if the buffer is not large enough
         if (result == (uint)ErrorCode.ERROR_BUFFER_TOO_SMALL)
         {
-            rasEntryNames = new RASENTRYNAME[bufferSize / Marshal.SizeOf(typeof(RASENTRYNAME))];
+            rasEntryNames = new RASENTRYNAME[bufferSize / Marshal.SizeOf<RASENTRYNAME>()];
             for (var i = 0; i < rasEntryNames.Length; i++)
             {
-                rasEntryNames[i].dwSize = Marshal.SizeOf(typeof(RASENTRYNAME));
+                rasEntryNames[i].dwSize = Marshal.SizeOf<RASENTRYNAME>();
             }
 
             result = NativeMethods.RasEnumEntries(null, null, rasEntryNames, ref bufferSize, ref entries);
@@ -258,7 +258,7 @@ public static class ProxySettingWindows
 
         static InternetConnectionOption()
         {
-            Size = Marshal.SizeOf(typeof(InternetConnectionOption));
+            Size = Marshal.SizeOf<InternetConnectionOption>();
         }
 
         // Nested Types

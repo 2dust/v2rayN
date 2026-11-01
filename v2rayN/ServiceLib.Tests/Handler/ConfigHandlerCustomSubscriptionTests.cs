@@ -27,16 +27,51 @@ public class ConfigHandlerCustomSubscriptionTests
             Url = "http://127.0.0.1/sub",
             PreSocksPort = 10808,
         });
+        var oldProfile = CoreConfigTestFactory.CreateVmessNode(ECoreType.Xray, $"profile-{Guid.NewGuid():N}", "old");
+        oldProfile.Subid = subId;
+        oldProfile.IsSub = true;
+        await SQLiteHelper.Instance.InsertAsync(oldProfile);
 
         var count = await ConfigHandler.AddBatchServers(config, FullXrayConfigs, subId, true);
         var profiles = await AppManager.Instance.ProfileItems(subId) ?? [];
 
         await count.Should().BeEqualTo(2);
         await profiles.Should().HaveCount(2);
+        await profiles.Any(profile => profile.IndexId == oldProfile.IndexId).Should().BeFalse();
         foreach (var profile in profiles)
         {
             await profile.ConfigType.Should().BeEqualTo(EConfigType.Custom);
             await profile.PreSocksPort.Should().BeEqualTo(10808);
         }
+    }
+
+    [Test]
+    public async Task AddBatchServers_UnsuccessfulSubscriptionUpdate_PreservesExistingProfiles()
+    {
+        var config = CoreConfigTestFactory.CreateConfig();
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+        SQLiteHelper.Instance.CreateTable<SubItem>();
+        SQLiteHelper.Instance.CreateTable<ProfileItem>();
+
+        var subId = $"sub-failed-{Guid.NewGuid():N}";
+        await SQLiteHelper.Instance.ReplaceAsync(new SubItem
+        {
+            Id = subId,
+            Remarks = "sub",
+            Url = "http://127.0.0.1/sub",
+        });
+
+        var existing = CoreConfigTestFactory.CreateVmessNode(ECoreType.Xray, $"profile-{Guid.NewGuid():N}", "existing");
+        existing.Subid = subId;
+        existing.IsSub = true;
+        await SQLiteHelper.Instance.InsertAsync(existing);
+
+        var invalidSubscription = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes("not a valid profile"));
+        var count = await ConfigHandler.AddBatchServers(config, invalidSubscription, subId, true);
+        var profiles = await AppManager.Instance.ProfileItems(subId) ?? [];
+
+        await (count < 1).Should().BeTrue();
+        await profiles.Should().HaveCount(1);
+        await profiles[0].IndexId.Should().BeEqualTo(existing.IndexId);
     }
 }

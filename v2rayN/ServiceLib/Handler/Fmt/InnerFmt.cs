@@ -179,12 +179,7 @@ public class InnerFmt : BaseFmt
         if (jsonObj.TryGetPropertyValue("CustomOutboundObj", out var customOutboundNode)
             && customOutboundNode is JsonObject customOutboundObj)
         {
-            var customOutboundContent = JsonUtils.Serialize(customOutboundObj, new JsonSerializerOptions
-            {
-                WriteIndented = true,
-                DefaultIgnoreCondition = JsonIgnoreCondition.Never,
-                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-            });
+            var customOutboundContent = JsonUtils.Serialize(customOutboundObj, indented: true, nullValue: true);
             customOutboundFilePath = WriteAllText(customOutboundContent);
             jsonObj.Remove("CustomOutboundObj");
         }

@@ -4,9 +4,10 @@ namespace v2rayN.Base;
 
 public static class ViewHost
 {
-    public static void Show(
+    public static void Show<TViewModel>(
         ContentControl host,
-        object? viewModel)
+        TViewModel? viewModel)
+        where TViewModel : class
     {
         if (viewModel == null)
         {
