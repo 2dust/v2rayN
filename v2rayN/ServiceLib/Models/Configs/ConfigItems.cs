@@ -148,6 +148,7 @@ public class TunModeItem
     public bool EnableIPv6Address { get; set; }
     public string IcmpRouting { get; set; }
     public bool EnableLegacyProtect { get; set; } = true;
+    public string? DnsMode { get; set; }
     public List<string>? RouteExcludeAddress { get; set; }
     public string IPv4Address { get; set; }
     public string IPv6Address { get; set; }
