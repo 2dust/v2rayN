@@ -863,7 +863,7 @@ jobs:
           persist-credentials: false
       - uses: docker/setup-buildx-action@v4
       - name: Build API container (no push)
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         env:
           DOCKER_BUILD_RECORD_UPLOAD: false
         with:
