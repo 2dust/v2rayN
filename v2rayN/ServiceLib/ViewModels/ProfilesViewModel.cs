@@ -448,7 +448,7 @@ public partial class ProfilesViewModel : MyReactiveObject
             return null;
         }
 
-        var orderProfiles = SelectedProfiles?.OrderBy(t => t.Sort);
+        var orderProfiles = SelectedProfiles?.OrderBy(t => t.Sort).ToList();
         if (latest)
         {
             lstSelected.AddRange(await AppManager.Instance.GetProfileItemsOrderedByIndexIds(orderProfiles.Select(sp => sp?.IndexId)));
@@ -712,7 +712,7 @@ public partial class ProfilesViewModel : MyReactiveObject
                 actionType = ESpeedActionType.Realping;
             }
 
-            lstSelected = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(ProfileItems?.OrderBy(t => t.Sort)));
+            lstSelected = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(ProfileItems?.OrderBy(t => t.Sort).ToList()));
         }
         else
         {

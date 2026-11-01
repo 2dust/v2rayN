@@ -29,6 +29,22 @@ jobs:
       release_tag: ${{ inputs.release_tag }}
     secrets: inherit
 
+  build-aot:
+    uses: ./.github/workflows/build.yml
+    with:
+      target: linux
+      isAot: true
+
+  release-aot-zip:
+    if: inputs.release_tag != ''
+    needs: build-aot
+    uses: ./.github/workflows/package-zip.yml
+    with:
+      target: linux
+      release_tag: ${{ inputs.release_tag }}
+      isAot: true
+    secrets: inherit
+
   deb:
     name: build and release deb x64 & arm64
     if: (github.event_name == 'workflow_dispatch' && inputs.release_tag != '') || (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))

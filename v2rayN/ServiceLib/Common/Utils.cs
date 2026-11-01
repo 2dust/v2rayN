@@ -348,10 +348,9 @@ public class Utils
             .ToList());
     }
 
-    public static List<string> GetEnumNames<TEnum>() where TEnum : Enum
+    public static List<string> GetEnumNames<TEnum>() where TEnum : struct, Enum
     {
-        return Enum.GetValues(typeof(TEnum))
-            .Cast<TEnum>()
+        return Enum.GetValues<TEnum>()
             .Select(e => e.ToString())
             .ToList();
     }
