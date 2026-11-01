@@ -3,6 +3,43 @@ namespace ServiceLib.Tests.CoreConfig.V2ray;
 public class CoreConfigV2rayServiceTests
 {
     [Test]
+    [Arguments(null)]
+    [Arguments("")]
+    [Arguments("AGH+DQBdAAAgACBAi73MnT3WWXWj4M9MUiTygpjSPUfM/Rj3Iasve4uFQAAkAAEAAQABAAIAAQADAAIAAQACAAIAAgADAAMAAQADAAIAAwADAA5vdXRlci5lY2gudGVzdAAA")]
+    [Arguments("https://dns.example.com/dns-query")]
+    [Arguments("udp://127.0.0.1:5353")]
+    [Arguments("ech.example.com+https://dns.example.com/dns-query")]
+    public async Task GenerateClientConfigContent_Tls_ShouldPreserveEchConfigWithoutLegacyQueryOption(string? echConfigList)
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+        var node = CoreConfigTestFactory.CreateVmessNode(ECoreType.Xray);
+        node.StreamSecurity = Global.StreamSecurity;
+        node.Sni = "ech.example.com";
+        node.EchConfigList = echConfigList;
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray);
+
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue();
+        var generatedConfig = JsonNode.Parse(result.Data!.ToString()!)!;
+        var proxy = generatedConfig["outbounds"]!.AsArray()
+            .First(outbound => outbound!["tag"]!.GetValue<string>() == Global.ProxyTag)!;
+        var tls = proxy["streamSettings"]!["tlsSettings"]!.AsObject();
+
+        await tls["serverName"]!.GetValue<string>().Should().BeEqualTo("ech.example.com");
+        if (string.IsNullOrEmpty(echConfigList))
+        {
+            await tls.ContainsKey("echConfigList").Should().BeFalse();
+        }
+        else
+        {
+            await tls["echConfigList"]!.GetValue<string>().Should().BeEqualTo(echConfigList);
+        }
+        await tls.ContainsKey("echForceQuery").Should().BeFalse();
+    }
+
+    [Test]
     public async Task GenerateClientConfigContent_ShouldGenerateBasicProxyConfig()
     {
         var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
