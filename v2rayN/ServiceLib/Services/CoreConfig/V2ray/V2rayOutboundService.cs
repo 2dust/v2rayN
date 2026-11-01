@@ -598,11 +598,21 @@ public partial class CoreConfigV2rayService
                         }
                         headers = userHeaders;
                     }
-                    streamSettings.masqueSettings = new()
+                    var masqueSettings = new MasqueSettings4Ray
                     {
                         path = protocolExtra?.MasquePath.NullIfEmpty(),
                         headers = headers.Count > 0 ? headers : null,
                     };
+                    if (!protocolExtra.WarpPrivateKey.IsNullOrEmpty())
+                    {
+                        masqueSettings.warp = new MasqueWarpSettings4Ray
+                        {
+                            publicKey = protocolExtra.WarpPublicKey,
+                            privateKey = protocolExtra.WarpPrivateKey,
+                            address = Utils.String2List(protocolExtra.WarpAddress)?.Select(s => s.Trim()).ToList(),
+                        };
+                    }
+                    streamSettings.masqueSettings = masqueSettings;
                     break;
 
                 default:

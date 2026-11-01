@@ -147,6 +147,9 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                             this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtSecurity14.Text).DisposeWith(currentTypeDisposables);
                             this.Bind(ViewModel, vm => vm.MasquePath, v => v.txtPath14.Text).DisposeWith(currentTypeDisposables);
                             this.Bind(ViewModel, vm => vm.MasqueHeaders, v => v.txtHttpHeaders14.Text).DisposeWith(currentTypeDisposables);
+                            this.Bind(ViewModel, vm => vm.WarpPublicKey, v => v.txtWarpPublicKey.Text).DisposeWith(currentTypeDisposables);
+                            this.Bind(ViewModel, vm => vm.WarpPrivateKey, v => v.txtWarpPrivateKey.Text).DisposeWith(currentTypeDisposables);
+                            this.Bind(ViewModel, vm => vm.WarpAddress, v => v.txtWarpAddress.Text).DisposeWith(currentTypeDisposables);
                             break;
                     }
                 })
@@ -295,8 +298,6 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                 gridMasque.IsVisible = true;
                 sepa2.IsVisible = false;
                 gridTransport.IsVisible = false;
-                cmbFingerprint.IsEnabled = false;
-                cmbAlpn.IsEnabled = false;
                 break;
         }
         cmbStreamSecurity.ItemsSource = lstStreamSecurity;
