@@ -358,9 +358,9 @@ public partial class ProfilesViewModel : MyReactiveObject
         await Task.CompletedTask;
     }
 
-    public async Task RefreshServersBiz()
+    public async Task RefreshServersBiz(bool preserveDefaultServer = false)
     {
-        var lstModel = await GetProfileItemsEx(_config.SubIndexId, _serverFilter);
+        var lstModel = await GetProfileItemsEx(_config.SubIndexId, _serverFilter, preserveDefaultServer);
 
         ProfileItems.ReplaceRange(lstModel ?? []);
         if (lstModel?.Count > 0)
@@ -395,11 +395,12 @@ public partial class ProfilesViewModel : MyReactiveObject
         await AdjustMainLvColWidthInteraction.HandleSafe(RxVoid.Default);
     }
 
-    private async Task<List<ProfileItemModel>?> GetProfileItemsEx(string subid, string filter)
+    private async Task<List<ProfileItemModel>?> GetProfileItemsEx(string subid, string filter, bool preserveDefaultServer)
     {
         var lstModel = await AppManager.Instance.ProfileModels(_config.SubIndexId, filter);
 
-        await ConfigHandler.SetDefaultServer(_config, lstModel);
+        if (!preserveDefaultServer && !CoreManager.Instance.HasRunningConfiguration)
+            await ConfigHandler.SetDefaultServer(_config, lstModel);
 
         var lstServerStat = (_config.GuiItem.EnableStatistics ? StatisticsManager.Instance.ServerStat : null) ?? [];
         var lstProfileExs = await ProfileExManager.Instance.GetProfileExs();

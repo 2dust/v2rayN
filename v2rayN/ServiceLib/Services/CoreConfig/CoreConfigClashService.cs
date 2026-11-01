@@ -15,7 +15,7 @@ public class CoreConfigClashService(Config config, bool isTunEnabled)
     public async Task<RetResult> GenerateClientCustomConfig(ProfileItem node, string? fileName)
     {
         var ret = new RetResult();
-        if (node == null || fileName is null)
+        if (node == null)
         {
             ret.Msg = ResUI.CheckServerSettings;
             return ret;
@@ -29,11 +29,6 @@ public class CoreConfigClashService(Config config, bool isTunEnabled)
             {
                 ret.Msg = ResUI.CheckServerSettings;
                 return ret;
-            }
-
-            if (File.Exists(fileName))
-            {
-                File.Delete(fileName);
             }
 
             var addressFileName = node.Address;
@@ -141,14 +136,11 @@ public class CoreConfigClashService(Config config, bool isTunEnabled)
             {
                 realityOptions["short-id"] = shortId;
             }
-            await File.WriteAllTextAsync(fileName, txtFileNew);
-            //check again
-            if (!File.Exists(fileName))
+            if (fileName.IsNotEmpty())
             {
-                ret.Msg = ResUI.FailedReadConfiguration + "2";
-                return ret;
+                await File.WriteAllTextAsync(fileName, txtFileNew);
             }
-
+            ret.Data = txtFileNew;
             ret.Msg = string.Format(ResUI.SuccessfulConfiguration, $"{node.GetSummary()}");
             ret.Success = true;
             return ret;

@@ -6,11 +6,14 @@ public class TaskManager
     public static TaskManager Instance => _instance.Value;
     private Config _config;
     private Func<bool, string, Task>? _updateFunc;
+    private Func<SubscriptionRefreshResult, Task>? _subscriptionUpdated;
 
-    public void RegUpdateTask(Config config, Func<bool, string, Task> updateFunc)
+    public void RegUpdateTask(Config config, Func<bool, string, Task> updateFunc,
+        Func<SubscriptionRefreshResult, Task>? subscriptionUpdated = null)
     {
         _config = config;
         _updateFunc = updateFunc;
+        _subscriptionUpdated = subscriptionUpdated;
 
         Task.Run(ScheduledTasks);
     }
@@ -99,20 +102,30 @@ public class TaskManager
 
         Logging.SaveLog("Execute update subscription");
 
+        var updated = new List<string>();
+        var unavailable = new List<string>();
         foreach (var item in lstSubs)
         {
-            await SubscriptionHandler.UpdateProcess(_config, item.Id, true, async (success, msg) =>
+            var result = await SubscriptionHandler.UpdateProcess(_config, item.Id, true, async (success, msg) =>
             {
-                await _updateFunc?.Invoke(success, msg);
+                await _updateFunc?.Invoke(_subscriptionUpdated == null && success, msg);
                 if (success)
                 {
                     Logging.SaveLog($"Update subscription end. {msg}");
                 }
             });
+            updated.AddRange(result.UpdatedSubscriptionIds);
+            unavailable.AddRange(result.UnavailableActiveProfileIds);
             item.UpdateTime = updateTime;
             await ConfigHandler.AddSubItem(_config, item);
             await Task.Delay(1000);
         }
+        if (_subscriptionUpdated != null)
+            await _subscriptionUpdated(new SubscriptionRefreshResult
+            {
+                UpdatedSubscriptionIds = updated.Distinct().ToArray(),
+                UnavailableActiveProfileIds = unavailable.Distinct().ToArray()
+            });
     }
 
     private async Task UpdateTaskRunGeo(int hours)

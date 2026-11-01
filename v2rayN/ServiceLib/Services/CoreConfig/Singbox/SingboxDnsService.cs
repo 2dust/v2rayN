@@ -446,7 +446,7 @@ public partial class CoreConfigSingboxService
         }
         var tempRuleItem = new RulesItem
         {
-            Id = $"final-{Utils.GetGuid(false)}",
+            Id = "final-dns",
             Enabled = true,
         };
         AddRules(new(), tempRuleItem, useDirectDns ? directDnsList : remoteDnsList);
