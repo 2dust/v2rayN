@@ -60,17 +60,52 @@ public class PacManager
 
     private async Task ListenLoopAsync(TcpListener listener, CancellationToken token)
     {
-        var buffer = new byte[1024];
         try
         {
             while (!token.IsCancellationRequested)
             {
-                using var client = await listener.AcceptTcpClientAsync(token).ConfigureAwait(false);
-                await using var stream = client.GetStream();
-                _ = await stream.ReadAsync(buffer, token).ConfigureAwait(false);
-                await stream.WriteAsync(_writeContent, token).ConfigureAwait(false);
-                await stream.FlushAsync(token).ConfigureAwait(false);
+                TcpClient client;
+                try
+                {
+                    client = await listener.AcceptTcpClientAsync(token).ConfigureAwait(false);
+                }
+                catch (OperationCanceledException) when (token.IsCancellationRequested)
+                {
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    Logging.SaveLog(Tag, ex);
+                    await Task.Delay(100, CancellationToken.None).ConfigureAwait(false);
+                    continue;
+                }
+
+                _ = ServeClientAsync(client, token);
             }
+        }
+        finally
+        {
+            listener.Stop();
+            if (ReferenceEquals(_tcpListener, listener))
+            {
+                _pacPort = 0;
+                _tcpListener = null;
+            }
+        }
+    }
+
+    private async Task ServeClientAsync(TcpClient client, CancellationToken token)
+    {
+        try
+        {
+            await using var stream = client.GetStream();
+            var buffer = new byte[1024];
+            using var readTimeoutCts = CancellationTokenSource.CreateLinkedTokenSource(token);
+            readTimeoutCts.CancelAfter(TimeSpan.FromSeconds(2));
+
+            _ = await stream.ReadAsync(buffer, readTimeoutCts.Token).ConfigureAwait(false);
+            await stream.WriteAsync(_writeContent, token).ConfigureAwait(false);
+            await stream.FlushAsync(token).ConfigureAwait(false);
         }
         catch (OperationCanceledException) when (token.IsCancellationRequested)
         {
@@ -81,7 +116,7 @@ public class PacManager
         }
         finally
         {
-            listener.Stop();
+            client.Dispose();
         }
     }
 
