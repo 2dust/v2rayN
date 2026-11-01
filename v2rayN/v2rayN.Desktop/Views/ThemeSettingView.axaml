@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dd="clr-namespace:v2rayN.Desktop.DesignData"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:ServiceLib.Models.Dto;assembly=ServiceLib"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:vms="clr-namespace:v2rayN.Desktop.ViewModels"
     x:DataType="vms:ThemeSettingViewModel"
@@ -57,6 +58,8 @@
                             Text="{x:Static resx:ResUI.TbSettingsLanguage}" />
                         <ComboBox
                             x:Name="cmbCurrentLanguage"
+                            DisplayMemberBinding="{CompiledBinding Display, DataType={x:Type models:LanguageOption}}"
+                            SelectedValueBinding="{CompiledBinding Value, DataType={x:Type models:LanguageOption}}"
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Center" />
                     </StackPanel>

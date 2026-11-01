@@ -67,11 +67,11 @@ public class HttpRequestHeadersHelperTests
         await oldHeaders.Count.Should().BeEqualTo(0);
 
         item.RequestHeaders = "{\"X-hwid\":\"my_device\"}";
-        database.Update(item);
+        database.Update(item, typeof(SubItem));
         await database.Find<SubItem>(item.Id).RequestHeaders.Should().BeEqualTo(item.RequestHeaders);
 
         item.RequestHeaders = "";
-        database.Update(item);
+        database.Update(item, typeof(SubItem));
         await database.Find<SubItem>(item.Id).RequestHeaders.Should().BeEqualTo("");
     }
 }
