@@ -220,6 +220,8 @@ apply_channel_or_keep() {
     VERSION="${VERSION#v}"
     return 0
   fi
+  git remote add upstream https://github.com/2dust/v2rayN
+  git fetch upstream
 
   echo "[*] Resolving ${ch} tag from GitHub releases..."
 
