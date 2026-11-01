@@ -44,7 +44,6 @@ public class Route4Sbox
     public string? final { get; set; }
 }
 
-[Serializable]
 public class Rule4Sbox
 {
     public string? outbound { get; set; }
@@ -103,7 +102,6 @@ public class Rule4Sbox
     public bool? speculative { get; set; }
 }
 
-[Serializable]
 public class Inbound4Sbox
 {
     public string type { get; set; }
@@ -232,7 +230,7 @@ public class Reality4Sbox
 public class Transport4Sbox
 {
     public string? type { get; set; }
-    public object? host { get; set; }
+    public JsonNode? host { get; set; }
     public string? path { get; set; }
     public Headers4Sbox? headers { get; set; }
 
