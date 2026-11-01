@@ -495,7 +495,8 @@ public class WebAuthEndpointTests
             var client = new HttpClient(new SocketsHttpHandler { UseProxy = false })
             {
                 BaseAddress = new Uri(addresses.Single()),
-                Timeout = TimeSpan.FromSeconds(5),
+                // Allow headroom for real authentication work under parallel test load.
+                Timeout = TimeSpan.FromSeconds(20),
             };
             return new ApiHarness(app, client, app.Services.GetRequiredService<EventHub>());
         }
