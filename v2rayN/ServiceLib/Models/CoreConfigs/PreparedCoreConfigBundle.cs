@@ -95,8 +95,35 @@ public sealed class PreparedCoreConfigBundle
     }
 
     private static CoreConfigContext Snapshot(CoreConfigContext context) =>
-        JsonUtils.DeepCopy(context with { CustomOutboundMap = [] })
-        ?? throw new InvalidOperationException(ResUI.FailedGenDefaultConfiguration);
+        context with
+        {
+            // Only registered model types go through the source-generated serializer.
+            Node = Clone(context.Node),
+            AppConfig = Clone(context.AppConfig),
+            RoutingItem = context.RoutingItem == null ? null : Clone(context.RoutingItem),
+            RawDnsItem = context.RawDnsItem == null ? null : Clone(context.RawDnsItem),
+            SimpleDnsItem = Clone(context.SimpleDnsItem),
+            FullConfigTemplate = context.FullConfigTemplate is not { } template ? null : new()
+            {
+                Id = template.Id,
+                Remarks = template.Remarks,
+                Enabled = template.Enabled,
+                CoreType = template.CoreType,
+                Config = template.Config,
+                TunConfig = template.TunConfig,
+                AddProxyOnly = template.AddProxyOnly,
+                ProxyDetour = template.ProxyDetour
+            },
+            AllProxiesMap = context.AllProxiesMap.ToDictionary(item => item.Key, item => Clone(item.Value), context.AllProxiesMap.Comparer),
+            CustomOutboundContent = new(context.CustomOutboundContent, context.CustomOutboundContent.Comparer),
+            ServerTestItemMap = new(context.ServerTestItemMap, context.ServerTestItemMap.Comparer),
+            ProtectDomainList = new(context.ProtectDomainList, context.ProtectDomainList.Comparer),
+            ProtectCoreTypeList = new(context.ProtectCoreTypeList, context.ProtectCoreTypeList.Comparer),
+            CustomOutboundMap = []
+        };
+
+    private static T Clone<T>(T value) where T : class =>
+        JsonUtils.DeepCopy(value) ?? throw new InvalidOperationException(ResUI.FailedGenDefaultConfiguration);
 
     private static async Task<string> Generate(CoreConfigContext context)
     {
@@ -114,17 +141,21 @@ public sealed class PreparedCoreConfigBundle
         var executable = info?.CoreExes.Select(name => Utils.GetBinPath(Utils.GetExeName(name), context.RunCoreType.ToString()))
             .FirstOrDefault(File.Exists);
         var file = executable == null ? null : new FileInfo(executable);
-        return JsonUtils.Serialize(new
+        var environment = new JsonObject();
+        if (info?.Environment is { } variables)
+            foreach (var variable in variables.OrderBy(item => item.Key, StringComparer.Ordinal))
+                environment[variable.Key] = variable.Value;
+        return new JsonObject
         {
-            context.RunCoreType,
-            context.IsTunEnabled,
-            info?.Arguments,
-            info?.AbsolutePath,
-            info?.Environment,
-            Executable = executable,
-            Length = file?.Length,
-            LastWrite = file?.LastWriteTimeUtc.Ticks
-        }, false);
+            ["RunCoreType"] = (int)context.RunCoreType,
+            ["IsTunEnabled"] = context.IsTunEnabled,
+            ["Arguments"] = info?.Arguments,
+            ["AbsolutePath"] = info?.AbsolutePath,
+            ["Environment"] = environment,
+            ["Executable"] = executable,
+            ["Length"] = file?.Length,
+            ["LastWrite"] = file?.LastWriteTimeUtc.Ticks
+        }.ToJsonString();
     }
 
     private static ECoreConfigChange CompareContent(string? left, string? right, bool generated, ECoreType? coreType)

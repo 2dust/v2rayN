@@ -541,6 +541,67 @@ public static class ConfigHandler
         return await Task.FromResult(0);
     }
 
+    public static Task<int> MoveServersTo(
+        Config config,
+        IReadOnlyList<string> orderedProfileIds,
+        IReadOnlyList<int> sourceIndices,
+        int insertIndex)
+    {
+        ArgumentNullException.ThrowIfNull(orderedProfileIds);
+        ArgumentNullException.ThrowIfNull(sourceIndices);
+
+        if (orderedProfileIds.Count == 0 ||
+            sourceIndices.Count == 0 ||
+            insertIndex < 0 ||
+            insertIndex > orderedProfileIds.Count)
+        {
+            return Task.FromResult(-1);
+        }
+
+        int[] movingIndices = sourceIndices
+            .Distinct()
+            .OrderBy(index => index)
+            .ToArray();
+
+        if (movingIndices.Length != sourceIndices.Count ||
+            movingIndices.Any(index =>
+                index < 0 || index >= orderedProfileIds.Count))
+        {
+            return Task.FromResult(-1);
+        }
+
+        var movingIndexSet = movingIndices.ToHashSet();
+
+        var movingIds = movingIndices
+            .Select(index => orderedProfileIds[index])
+            .ToList();
+
+        var remainingIds = orderedProfileIds
+            .Where((_, index) => !movingIndexSet.Contains(index))
+            .ToList();
+
+        if (insertIndex > remainingIds.Count)
+        {
+            return Task.FromResult(-1);
+        }
+
+        remainingIds.InsertRange(insertIndex, movingIds);
+
+        if (remainingIds.Count != orderedProfileIds.Count)
+        {
+            return Task.FromResult(-1);
+        }
+
+        for (var index = 0; index < remainingIds.Count; index++)
+        {
+            ProfileExManager.Instance.SetSort(
+                remainingIds[index],
+                (index + 1) * 10);
+        }
+
+        return Task.FromResult(0);
+    }
+
     /// <summary>
     /// Add a custom server configuration from a file
     /// Copies the configuration file to the app's config directory

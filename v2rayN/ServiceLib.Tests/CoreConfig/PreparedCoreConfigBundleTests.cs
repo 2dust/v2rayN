@@ -145,4 +145,144 @@ public class PreparedCoreConfigBundleTests
         }
         finally { File.Delete(path); }
     }
+
+    [Test]
+    public async Task Preparation_DetachesMainAndPreContextsAndResetsPerGenerationState()
+    {
+        var config = CoreConfigTestFactory.CreateConfig();
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+        var node = CoreConfigTestFactory.CreateSocksNode(ECoreType.Xray);
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray) with
+        {
+            RawDnsItem = new DNSItem { NormalDNS = "source-dns" },
+            FullConfigTemplate = new FullConfigTemplateItem
+            {
+                Id = "template",
+                Remarks = "source-template",
+                CoreType = ECoreType.Xray,
+                Config = "source-config",
+                TunConfig = "source-tun",
+                AddProxyOnly = true,
+                ProxyDetour = "source-detour"
+            },
+            CustomOutboundContent = new() { ["unused"] = "{}" },
+            ServerTestItemMap = new() { ["test"] = "source" },
+            ProtectDomainList = ["source.example"],
+            ProtectCoreTypeList = [ECoreType.Xray],
+            CustomOutboundMap = new() { [new object()] = "previous-generation" }
+        };
+        var preNode = CoreConfigTestFactory.CreateSocksNode(ECoreType.sing_box, "pre");
+        var preContext = context with
+        {
+            Node = preNode,
+            RunCoreType = ECoreType.sing_box,
+            AllProxiesMap = new() { [preNode.IndexId] = preNode }
+        };
+
+        var bundle = await PreparedCoreConfigBundle.CreateAsync(context, preContext);
+        var main = GetPreparedContext(bundle, "MainContext");
+        var pre = GetPreparedContext(bundle, "PreContext");
+        foreach (var snapshot in new[] { main, pre })
+        {
+            await snapshot.CustomOutboundMap.Count.Should().BeEqualTo(0);
+            await snapshot.FullConfigTemplate!.Id.Should().BeEqualTo("template");
+            await snapshot.FullConfigTemplate.AddProxyOnly.Should().BeEqualTo(true);
+            await snapshot.FullConfigTemplate.ProxyDetour.Should().BeEqualTo("source-detour");
+            snapshot.Node.Password = "snapshot-password";
+            snapshot.AppConfig.Inbound[0].DestOverride.Add("quic");
+            snapshot.SimpleDnsItem.Hosts = "snapshot-host";
+            snapshot.RoutingItem!.RuleSet = "[{}]";
+            snapshot.RawDnsItem!.NormalDNS = "snapshot-dns";
+            snapshot.FullConfigTemplate.Config = "snapshot-template";
+            snapshot.AllProxiesMap.Values.First().Port = 9999;
+            snapshot.CustomOutboundContent["unused"] = "changed";
+            snapshot.ServerTestItemMap["test"] = "changed";
+            snapshot.ProtectDomainList.Add("snapshot.example");
+            snapshot.ProtectCoreTypeList.Add(ECoreType.mihomo);
+            snapshot.CustomOutboundMap[new object()] = "snapshot-generation";
+        }
+
+        await node.Password.Should().BeEqualTo("pass");
+        await preNode.Password.Should().BeEqualTo("pass");
+        await node.Port.Should().BeEqualTo(1080);
+        await preNode.Port.Should().BeEqualTo(1080);
+        await config.Inbound[0].DestOverride.SequenceEqual(["http", "tls"]).Should().BeTrue();
+        await config.SimpleDNSItem.Hosts.Should().BeNull();
+        await context.RoutingItem!.RuleSet.Should().BeEqualTo("[]");
+        await context.RawDnsItem.NormalDNS.Should().BeEqualTo("source-dns");
+        await context.FullConfigTemplate.Config.Should().BeEqualTo("source-config");
+        await context.CustomOutboundContent["unused"].Should().BeEqualTo("{}");
+        await context.ServerTestItemMap["test"].Should().BeEqualTo("source");
+        await context.ProtectDomainList.SetEquals(["source.example"]).Should().BeTrue();
+        await context.ProtectCoreTypeList.SetEquals([ECoreType.Xray]).Should().BeTrue();
+        await context.CustomOutboundMap.Values.Single().Should().BeEqualTo("previous-generation");
+    }
+
+    [Test]
+    [Arguments("tun", ECoreConfigChange.Changed)]
+    [Arguments("core", ECoreConfigChange.Changed)]
+    [Arguments("arguments", ECoreConfigChange.Changed)]
+    [Arguments("absolute-path", ECoreConfigChange.Changed)]
+    [Arguments("environment-value", ECoreConfigChange.Changed)]
+    [Arguments("environment-order", ECoreConfigChange.Unchanged)]
+    [Arguments("executable-path", ECoreConfigChange.Changed)]
+    [Arguments("executable-length", ECoreConfigChange.Changed)]
+    [Arguments("executable-time", ECoreConfigChange.Changed)]
+    public async Task IdenticalCustomContent_StillComparesCompleteLaunchIdentity(string change, ECoreConfigChange expected)
+    {
+        var directory = Path.Combine(Path.GetTempPath(), $"v2rayn-launch-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(directory);
+        var source = Path.Combine(directory, "custom.json");
+        var executable = Utils.GetExeName(Path.Combine(directory, "fixture-core"));
+        var otherExecutable = Utils.GetExeName(Path.Combine(directory, "other-core"));
+        var info = CoreInfoManager.Instance.GetCoreInfo(ECoreType.Xray)!;
+        var originalExes = info.CoreExes;
+        var originalArguments = info.Arguments;
+        var originalAbsolutePath = info.AbsolutePath;
+        var originalEnvironment = info.Environment;
+        try
+        {
+            await File.WriteAllTextAsync(source, "{\"rules\":[\"first\",\"second\"]}");
+            await File.WriteAllTextAsync(executable, "fixture");
+            await File.WriteAllTextAsync(otherExecutable, "fixture");
+            File.SetLastWriteTimeUtc(executable, new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc));
+            info.CoreExes = [executable];
+            info.Arguments = "run -c {0}";
+            info.AbsolutePath = false;
+            info.Environment = new Dictionary<string, string?> { ["FIRST"] = "one", ["SECOND"] = "two" };
+            var config = CoreConfigTestFactory.CreateConfig();
+            var node = new ProfileItem { IndexId = "custom", ConfigType = EConfigType.Custom, CoreType = ECoreType.Xray, Address = source };
+            var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray);
+            var running = await PreparedCoreConfigBundle.CreateAsync(context, null);
+
+            switch (change)
+            {
+                case "tun": context = context with { IsTunEnabled = true }; break;
+                case "core": context = context with { RunCoreType = ECoreType.v2fly }; break;
+                case "arguments": info.Arguments = "run -c {0} --changed"; break;
+                case "absolute-path": info.AbsolutePath = true; break;
+                case "environment-value": info.Environment["FIRST"] = "changed"; break;
+                case "environment-order": info.Environment = new Dictionary<string, string?> { ["SECOND"] = "two", ["FIRST"] = "one" }; break;
+                case "executable-path": info.CoreExes = [otherExecutable]; break;
+                case "executable-length": await File.AppendAllTextAsync(executable, "-changed"); break;
+                case "executable-time": File.SetLastWriteTimeUtc(executable, new DateTime(2026, 1, 2, 0, 0, 0, DateTimeKind.Utc)); break;
+            }
+
+            var candidate = await PreparedCoreConfigBundle.CreateAsync(context, null);
+            await candidate.MainContent.Should().BeEqualTo(running.MainContent);
+            await candidate.CompareTo(running).Should().BeEqualTo(expected);
+        }
+        finally
+        {
+            info.CoreExes = originalExes;
+            info.Arguments = originalArguments;
+            info.AbsolutePath = originalAbsolutePath;
+            info.Environment = originalEnvironment;
+            Directory.Delete(directory, true);
+        }
+    }
+
+    private static CoreConfigContext GetPreparedContext(PreparedCoreConfigBundle bundle, string property) =>
+        (CoreConfigContext)typeof(PreparedCoreConfigBundle)
+            .GetProperty(property, BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(bundle)!;
 }

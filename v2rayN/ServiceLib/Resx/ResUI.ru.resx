@@ -1905,6 +1905,9 @@
   <data name="menuAddMasqueServer" xml:space="preserve">
     <value>Добавить сервер [MASQUE]</value>
   </data>
+  <data name="menuColumns" xml:space="preserve">
+    <value>Столбцы</value>
+  </data>
   <data name="MsgSubscriptionChangesPending" xml:space="preserve">
     <value>Подписка обновлена. Изменения подключения ожидают применения; перезапустите ядро вручную, чтобы применить их</value>
   </data>

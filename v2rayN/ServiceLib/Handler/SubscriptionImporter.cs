@@ -534,22 +534,23 @@ internal static class SubscriptionImporter
 
     private static JsonNode EffectiveFields(ProfileItem profile)
     {
-        var fields = JsonSerializer.SerializeToNode(profile)!.AsObject();
+        var fields = JsonUtils.SerializeToNode(profile)!.AsObject();
         foreach (var name in new[] { nameof(ProfileItem.IndexId), nameof(ProfileItem.Subid), nameof(ProfileItem.IsSub), nameof(ProfileItem.Remarks), nameof(ProfileItem.ConfigVersion) })
         {
             fields.Remove(name);
         }
-        foreach (var property in typeof(ProfileItem).GetProperties().Where(property => property.GetCustomAttribute<ObsoleteAttribute>() != null))
+        // Ignore legacy fields without requiring reflection metadata in NativeAOT builds.
+        foreach (var name in new[] { "HeaderType", "RequestHost", "Path", "Extra", "Ports", "AlterId", "Flow", "Id", "Security" })
         {
-            fields.Remove(property.Name);
+            fields.Remove(name);
         }
         if (profile.ConfigType is EConfigType.Custom or EConfigType.Outbound)
         {
             fields.Remove(nameof(ProfileItem.Address));
         }
         fields[nameof(ProfileItem.Network)] = profile.GetNetwork();
-        fields[nameof(ProfileItem.ProtoExtra)] = JsonSerializer.SerializeToNode(profile.GetProtocolExtra());
-        fields[nameof(ProfileItem.TransportExtra)] = JsonSerializer.SerializeToNode(profile.GetTransportExtra());
+        fields[nameof(ProfileItem.ProtoExtra)] = JsonUtils.SerializeToNode(profile.GetProtocolExtra());
+        fields[nameof(ProfileItem.TransportExtra)] = JsonUtils.SerializeToNode(profile.GetTransportExtra());
         NormalizeEmpty(fields);
         return fields;
     }
