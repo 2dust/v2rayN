@@ -73,9 +73,8 @@ public class PacManager
                     await stream.WriteAsync(_writeContent, token).ConfigureAwait(false);
                     await stream.FlushAsync(token).ConfigureAwait(false);
                 }
-                catch (IOException ex)
-                {
-                    Logging.SaveLog(Tag, ex);
+                catch
+                {                   
                 }
             }
         }
