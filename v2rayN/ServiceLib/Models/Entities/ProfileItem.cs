@@ -1,6 +1,6 @@
 namespace ServiceLib.Models.Entities;
 
-public class ProfileItem
+public class ProfileItem : NotifyPropertyChangedBase
 {
     private ProtocolExtraItem? _protocolExtraCache;
     private TransportExtraItem? _transportExtraCache;
@@ -153,66 +153,66 @@ public class ProfileItem
     #endregion function
 
     [PrimaryKey]
-    public string IndexId { get; set; }
+    public string IndexId { get; set => SetField(ref field, value); }
 
-    public EConfigType ConfigType { get; set; }
-    public ECoreType? CoreType { get; set; }
-    public int ConfigVersion { get; set; }
-    public string Subid { get; set; }
-    public bool IsSub { get; set; } = true;
-    public int? PreSocksPort { get; set; }
-    public bool DisplayLog { get; set; } = true;
-    public string Remarks { get; set; }
-    public string Address { get; set; }
-    public int Port { get; set; }
-    public string Password { get; set; }
-    public string Username { get; set; }
-    public string Network { get; set; }
+    public EConfigType ConfigType { get; set => SetField(ref field, value); }
+    public ECoreType? CoreType { get; set => SetField(ref field, value); }
+    public int ConfigVersion { get; set => SetField(ref field, value); }
+    public string Subid { get; set => SetField(ref field, value); }
+    public bool IsSub { get; set => SetField(ref field, value); } = true;
+    public int? PreSocksPort { get; set => SetField(ref field, value); }
+    public bool DisplayLog { get; set => SetField(ref field, value); } = true;
+    public string Remarks { get; set => SetField(ref field, value); }
+    public string Address { get; set => SetField(ref field, value); }
+    public int Port { get; set => SetField(ref field, value); }
+    public string Password { get; set => SetField(ref field, value); }
+    public string Username { get; set => SetField(ref field, value); }
+    public string Network { get; set => SetField(ref field, value); }
 
     [Obsolete("Use TransportExtra.RawHeaderType/XhttpMode/GrpcMode/KcpHeaderType instead.")]
-    public string HeaderType { get; set; }
+    public string HeaderType { get; set => SetField(ref field, value); }
 
     [Obsolete("Use TransportExtra.Host/GrpcAuthority instead.")]
-    public string RequestHost { get; set; }
+    public string RequestHost { get; set => SetField(ref field, value); }
 
     [Obsolete("Use TransportExtra.Path/GrpcServiceName/KcpSeed instead.")]
-    public string Path { get; set; }
+    public string Path { get; set => SetField(ref field, value); }
 
-    public string StreamSecurity { get; set; }
-    public string AllowInsecure { get; set; }
-    public string Sni { get; set; }
-    public string Alpn { get; set; } = string.Empty;
-    public string Fingerprint { get; set; }
-    public string PublicKey { get; set; }
-    public string ShortId { get; set; }
-    public string SpiderX { get; set; }
-    public string Mldsa65Verify { get; set; }
+    public string StreamSecurity { get; set => SetField(ref field, value); }
+    public string AllowInsecure { get; set => SetField(ref field, value); }
+    public string Sni { get; set => SetField(ref field, value); }
+    public string Alpn { get; set => SetField(ref field, value); } = string.Empty;
+    public string Fingerprint { get; set => SetField(ref field, value); }
+    public string PublicKey { get; set => SetField(ref field, value); }
+    public string ShortId { get; set => SetField(ref field, value); }
+    public string SpiderX { get; set => SetField(ref field, value); }
+    public string Mldsa65Verify { get; set => SetField(ref field, value); }
 
     [Obsolete("Use TransportExtra.XhttpExtra instead.")]
-    public string Extra { get; set; }
+    public string Extra { get; set => SetField(ref field, value); }
 
-    public bool? MuxEnabled { get; set; }
-    public string Cert { get; set; }
-    public string CertSha { get; set; }
-    public string EchConfigList { get; set; }
-    public string VerifyPeerCertByName { get; set; }
-    public string Finalmask { get; set; }
+    public bool? MuxEnabled { get; set => SetField(ref field, value); }
+    public string Cert { get; set => SetField(ref field, value); }
+    public string CertSha { get; set => SetField(ref field, value); }
+    public string EchConfigList { get; set => SetField(ref field, value); }
+    public string VerifyPeerCertByName { get; set => SetField(ref field, value); }
+    public string Finalmask { get; set => SetField(ref field, value); }
 
-    public string ProtoExtra { get; set; }
-    public string TransportExtra { get; set; }
+    public string ProtoExtra { get; set => SetField(ref field, value); }
+    public string TransportExtra { get; set => SetField(ref field, value); }
 
     [Obsolete("Use ProtocolExtraItem.Ports instead.")]
-    public string Ports { get; set; }
+    public string Ports { get; set => SetField(ref field, value); }
 
     [Obsolete("Use ProtocolExtraItem.AlterId instead.")]
-    public int AlterId { get; set; }
+    public int AlterId { get; set => SetField(ref field, value); }
 
     [Obsolete("Use ProtocolExtraItem.Flow instead.")]
-    public string Flow { get; set; }
+    public string Flow { get; set => SetField(ref field, value); }
 
     [Obsolete("Use ProfileItem.Password instead.")]
-    public string Id { get; set; }
+    public string Id { get; set => SetField(ref field, value); }
 
     [Obsolete("Use ProtocolExtraItem.xxx instead.")]
-    public string Security { get; set; }
+    public string Security { get; set => SetField(ref field, value); }
 }

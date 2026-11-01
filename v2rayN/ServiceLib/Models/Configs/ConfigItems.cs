@@ -211,12 +211,12 @@ public class SystemProxyItem
     public string? CustomSystemProxyScriptPath { get; set; }
 }
 
-public class WebDavItem
+public class WebDavItem : NotifyPropertyChangedBase
 {
-    public string? Url { get; set; }
-    public string? UserName { get; set; }
-    public string? Password { get; set; }
-    public string? DirName { get; set; }
+    public string? Url { get; set => SetField(ref field, value); }
+    public string? UserName { get; set => SetField(ref field, value); }
+    public string? Password { get; set => SetField(ref field, value); }
+    public string? DirName { get; set => SetField(ref field, value); }
 }
 
 public class CheckUpdateItem

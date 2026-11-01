@@ -878,6 +878,7 @@ jobs:
             WEB_COMMIT=${{ github.sha }}
             WEB_BUILD_DATE=${{ needs.identity.outputs.build_date }}
           push: false
+          outputs: type=cacheonly
 
   release-assets:
     name: Assemble API release assets
