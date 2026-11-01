@@ -16,12 +16,10 @@
     
 	<ItemGroup>
 		<PackageReference Include="Avalonia.AvaloniaEdit" />
-		<PackageReference Include="Avalonia.Controls.DataGrid">
-			<TreatAsUsed>true</TreatAsUsed>
-		</PackageReference>
 		<PackageReference Include="Avalonia.Desktop" />
 		<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="AvaloniaUI.DiagnosticsSupport" />
 		<PackageReference Include="DialogHost.Avalonia" />
+		<PackageReference Include="ProDataGrid" />
 		<PackageReference Include="ReactiveUI.Avalonia" />
 		<PackageReference Include="Semi.Avalonia" />
 		<PackageReference Include="Semi.Avalonia.AvaloniaEdit" />
