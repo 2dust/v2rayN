@@ -7,6 +7,7 @@ public class SQLiteHelperTests
     {
         var database = SQLiteHelper.Instance;
         database.CreateTable<HelperRow>();
+        database.CreateTable<ReplacementRow>();
         database.CreateTable<DeleteAllRow>();
         database.CreateTable<NoPrimaryKeyRow>();
         return database;
@@ -180,6 +181,72 @@ public class SQLiteHelperTests
         await (await database.TableAsync<DeleteAllRow>().CountAsync()).Should().BeEqualTo(0);
     }
 
+    [Test]
+    public async Task ReplaceAllAsync_ShouldInsertAndReplaceRowsAndReturnAffectedCounts()
+    {
+        var database = Database.Value;
+        var prefix = Guid.NewGuid().ToString("N");
+        var existing = new HelperRow { Id = $"{prefix}-existing", Value = $"{prefix}-original" };
+        try
+        {
+            await database.InsertAsync(existing);
+            var replacements = new[]
+            {
+                new HelperRow { Id = existing.Id, Value = $"{prefix}-updated" },
+                new HelperRow { Id = $"{prefix}-new", Value = $"{prefix}-new-value" },
+            };
+
+            await (await database.ReplaceAllAsync(replacements)).Should().BeEqualTo(2);
+            await (await database.ReplaceAllAsync(replacements)).Should().BeEqualTo(2);
+            var saved = await database.QueryAsync<HelperRow>($"SELECT * FROM SQLiteHelperTestRows WHERE Id LIKE '{prefix}%' ORDER BY Id");
+
+            await saved.Count.Should().BeEqualTo(2);
+            await saved[0].Value.Should().BeEqualTo($"{prefix}-updated");
+            await saved[1].Value.Should().BeEqualTo($"{prefix}-new-value");
+            await (await database.ReplaceAllAsync(Array.Empty<HelperRow>())).Should().BeEqualTo(0);
+        }
+        finally
+        {
+            await database.ExecuteAsync($"DELETE FROM SQLiteHelperTestRows WHERE Id LIKE '{prefix}%'");
+        }
+    }
+
+    [Test]
+    public async Task ReplaceAllAsync_ShouldRollBackReplacementsAndInsertsWhenALaterRowFails()
+    {
+        var database = Database.Value;
+        var prefix = Guid.NewGuid().ToString("N");
+        var existing = new ReplacementRow { Id = $"{prefix}-existing", Value = "original" };
+        try
+        {
+            await database.InsertAsync(existing);
+            SQLiteException? error = null;
+            try
+            {
+                await database.ReplaceAllAsync(new[]
+                {
+                    new ReplacementRow { Id = existing.Id, Value = "replacement" },
+                    new ReplacementRow { Id = $"{prefix}-new", Value = "inserted" },
+                    new ReplacementRow { Id = $"{prefix}-invalid", Value = null! },
+                });
+            }
+            catch (SQLiteException exception)
+            {
+                error = exception;
+            }
+
+            await error.Should().NotBeNull();
+            var saved = await database.QueryAsync<ReplacementRow>($"SELECT * FROM SQLiteHelperReplaceAllTestRows WHERE Id LIKE '{prefix}%'");
+            await saved.Count.Should().BeEqualTo(1);
+            await saved[0].Id.Should().BeEqualTo(existing.Id);
+            await saved[0].Value.Should().BeEqualTo("original");
+        }
+        finally
+        {
+            await database.ExecuteAsync($"DELETE FROM SQLiteHelperReplaceAllTestRows WHERE Id LIKE '{prefix}%'");
+        }
+    }
+
     [Table("SQLiteHelperTestRows")]
     public class HelperRow
     {
@@ -195,6 +262,16 @@ public class SQLiteHelperTests
     {
         [PrimaryKey]
         public string Id { get; set; } = string.Empty;
+    }
+
+    [Table("SQLiteHelperReplaceAllTestRows")]
+    public class ReplacementRow
+    {
+        [PrimaryKey]
+        public string Id { get; set; } = string.Empty;
+
+        [NotNull]
+        public string Value { get; set; } = string.Empty;
     }
 
     [Table("SQLiteHelperNoPrimaryKeyTestRows")]

@@ -36,6 +36,19 @@ public sealed class SQLiteHelper
         return count;
     }
 
+    public async Task<int> ReplaceAllAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(IEnumerable<T> models)
+    {
+        var count = 0;
+        await _dbAsync.RunInTransactionAsync(connection =>
+        {
+            foreach (var model in models)
+            {
+                count += connection.InsertOrReplace(model, typeof(T));
+            }
+        }).ConfigureAwait(false);
+        return count;
+    }
+
     public async Task<int> InsertAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(T model)
     {
         return await _dbAsync.InsertAsync(model, typeof(T));

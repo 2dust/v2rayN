@@ -109,7 +109,8 @@ public static class LauncherEnvironment
     public static Dictionary<string, string?> ReadCurrentEnvironment() =>
         Environment.GetEnvironmentVariables()
             .Cast<System.Collections.DictionaryEntry>()
-            .ToDictionary(entry => (string)entry.Key, entry => entry.Value?.ToString(), StringComparer.OrdinalIgnoreCase);
+            .ToDictionary(entry => (string)entry.Key, entry => entry.Value?.ToString(),
+                OperatingSystem.IsWindows() ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal);
 
     private static bool HasValue(IReadOnlyDictionary<string, string?> environment, string key) =>
         environment.TryGetValue(key, out var value) && !string.IsNullOrWhiteSpace(value);

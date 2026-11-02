@@ -46,6 +46,24 @@ permissions:
   contents: read
 
 jobs:
+  macos:
+    name: macOS WebAPI and ServiceLib tests
+    runs-on: macos-latest
+    timeout-minutes: 15
+    env:
+      TUNIT_MAX_PARALLEL_TESTS: 1
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.x'
+      - name: Run ServiceLib.Tests
+        run: dotnet test --project v2rayN/ServiceLib.Tests/ServiceLib.Tests.csproj -c Release
+      - name: Run WebAPI.Tests
+        run: dotnet test --project v2rayN/v2rayN.WebAPI/Tests/v2rayN.WebAPI.Tests.csproj -c Release
+
   identity:
     name: Resolve API build identity
     runs-on: ubuntu-24.04

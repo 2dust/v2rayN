@@ -5167,6 +5167,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Warp 的本地化字符串。
+        /// </summary>
+        public static string TbWarp {
+            get {
+                return ResourceManager.GetString("TbWarp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Xray Only 的本地化字符串。
         /// </summary>
         public static string TbXrayOnly {

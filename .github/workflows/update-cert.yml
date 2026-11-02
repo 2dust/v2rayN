@@ -1,0 +1,36 @@
+name: Update Certificate
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-cert:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Update Certificate
+        run: |
+          dotnet run .github/scripts/UpdateCert.cs
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Update certificate"
+          title: "Update certificate"
+          body: "This pull request updates the certificate."
+          branch: github-actions/update-certificate
+          delete-branch: true

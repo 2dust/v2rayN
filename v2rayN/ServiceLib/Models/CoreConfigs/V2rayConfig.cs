@@ -214,6 +214,7 @@ public class DnsServer4Ray
     public List<string>? domains { get; set; }
     public bool? skipFallback { get; set; }
     public List<string>? expectedIPs { get; set; }
+    public bool? finalQuery { get; set; }
     public string? tag { get; set; }
 }
 
@@ -450,6 +451,14 @@ public class MasqueSettings4Ray
 {
     public string? path { get; set; }
     public Dictionary<string, string>? headers { get; set; }
+    public MasqueWarpSettings4Ray? warp { get; set; }
+}
+
+public class MasqueWarpSettings4Ray
+{
+    public string? privateKey { get; set; }
+    public string? publicKey { get; set; }
+    public List<string>? address { get; set; }
 }
 
 public class UdpHop4Ray
