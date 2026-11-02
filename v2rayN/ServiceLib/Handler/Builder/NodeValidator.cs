@@ -3,6 +3,7 @@ namespace ServiceLib.Handler.Builder;
 public record NodeValidatorResult(List<string> Errors, List<string> Warnings)
 {
     public bool Success => Errors.Count == 0;
+    public bool HasUnresolvedDependencies { get; set; }
 
     public static NodeValidatorResult Empty()
     {

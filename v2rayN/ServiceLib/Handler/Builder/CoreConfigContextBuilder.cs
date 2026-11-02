@@ -15,6 +15,8 @@ public record CoreConfigContextBuilderAllResult(
 {
     /// <summary>True only when both the main result and (if present) the pre-socks result succeeded.</summary>
     public bool Success => MainResult.Success && (PreSocksResult?.Success ?? true);
+    public bool CanApplySubscriptionUpdate => Success && !MainResult.ValidatorResult.HasUnresolvedDependencies
+        && PreSocksResult?.ValidatorResult.HasUnresolvedDependencies != true;
 
     /// <summary>
     ///     Merges all errors and warnings from the main result and the optional pre-socks result
@@ -22,7 +24,11 @@ public record CoreConfigContextBuilderAllResult(
     /// </summary>
     public NodeValidatorResult CombinedValidatorResult => new(
         [.. MainResult.ValidatorResult.Errors, .. PreSocksResult?.ValidatorResult.Errors ?? []],
-        [.. MainResult.ValidatorResult.Warnings, .. PreSocksResult?.ValidatorResult.Warnings ?? []]);
+        [.. MainResult.ValidatorResult.Warnings, .. PreSocksResult?.ValidatorResult.Warnings ?? []])
+    {
+        HasUnresolvedDependencies = MainResult.ValidatorResult.HasUnresolvedDependencies
+            || PreSocksResult?.ValidatorResult.HasUnresolvedDependencies == true
+    };
 }
 
 public class CoreConfigContextBuilder
@@ -61,6 +67,7 @@ public class CoreConfigContextBuilder
         }
         context = context with { Node = actNode };
         validatorResult.Warnings.AddRange(nodeValidatorResult.Warnings);
+        validatorResult.HasUnresolvedDependencies = nodeValidatorResult.HasUnresolvedDependencies;
         if (!(context.RoutingItem?.RuleSet.IsNullOrEmpty() ?? true))
         {
             var rules = JsonUtils.Deserialize<List<RulesItem>>(context.RoutingItem?.RuleSet) ?? [];
@@ -70,6 +77,7 @@ public class CoreConfigContextBuilder
                 if (ruleItem.OutboundTag.IsNullOrEmpty())
                 {
                     validatorResult.Warnings.Add(string.Format(ResUI.MsgRoutingRuleEmptyOutboundTag, ruleItem.Remarks));
+                    validatorResult.HasUnresolvedDependencies = true;
                     ruleItem.OutboundTag = Global.ProxyTag;
                     continue;
                 }
@@ -78,15 +86,18 @@ public class CoreConfigContextBuilder
                 {
                     validatorResult.Warnings.Add(string.Format(ResUI.MsgRoutingRuleOutboundNodeNotFound,
                         ruleItem.Remarks, ruleItem.OutboundTag));
+                    validatorResult.HasUnresolvedDependencies = true;
                     ruleItem.OutboundTag = Global.ProxyTag;
                     continue;
                 }
 
                 var (actRuleNode, ruleNodeValidatorResult) = await ResolveNodeAsync(context, ruleOutboundNode, false);
+                validatorResult.HasUnresolvedDependencies |= ruleNodeValidatorResult.HasUnresolvedDependencies;
                 validatorResult.Warnings.AddRange(ruleNodeValidatorResult.Warnings.Select(w =>
                     string.Format(ResUI.MsgRoutingRuleOutboundNodeWarning, ruleItem.Remarks, ruleItem.OutboundTag, w)));
                 if (!ruleNodeValidatorResult.Success)
                 {
+                    validatorResult.HasUnresolvedDependencies = true;
                     validatorResult.Warnings.AddRange(ruleNodeValidatorResult.Errors.Select(e =>
                         string.Format(ResUI.MsgRoutingRuleOutboundNodeError, ruleItem.Remarks, ruleItem.OutboundTag,
                             e)));
@@ -235,6 +246,7 @@ public class CoreConfigContextBuilder
                 context.AllProxiesMap[virtualChainNode.IndexId] = virtualChainNode;
                 var (resolvedNode, resolvedResult) = await ResolveNodeAsync(context, virtualChainNode, false);
                 resolvedResult.Warnings.InsertRange(0, chainValidatorResult.Warnings);
+                resolvedResult.HasUnresolvedDependencies |= chainValidatorResult.HasUnresolvedDependencies;
                 return (resolvedNode, resolvedResult);
             }
             // Chain not built but warnings may still exist (e.g. missing profiles)
@@ -242,6 +254,7 @@ public class CoreConfigContextBuilder
             {
                 var fillResult = await RegisterNodeAsync(context, node);
                 fillResult.Warnings.InsertRange(0, chainValidatorResult.Warnings);
+                fillResult.HasUnresolvedDependencies |= chainValidatorResult.HasUnresolvedDependencies;
                 return (node, fillResult);
             }
         }
@@ -281,6 +294,7 @@ public class CoreConfigContextBuilder
             if (prevNode == null)
             {
                 result.Warnings.Add(string.Format(ResUI.MsgSubscriptionPrevProfileNotFound, subItem.PrevProfile));
+                result.HasUnresolvedDependencies = true;
             }
         }
         if (!subItem.NextProfile.IsNullOrEmpty())
@@ -289,6 +303,7 @@ public class CoreConfigContextBuilder
             if (nextNode == null)
             {
                 result.Warnings.Add(string.Format(ResUI.MsgSubscriptionNextProfileNotFound, subItem.NextProfile));
+                result.HasUnresolvedDependencies = true;
             }
         }
 
@@ -447,6 +462,9 @@ public class CoreConfigContextBuilder
         var (groupChildList, _) = await GroupProfileManager.GetChildProfileItems(node);
         List<string> childIndexIdList = [];
         var childNodeValidatorResult = NodeValidatorResult.Empty();
+        var resolvedIds = groupChildList.Select(child => child.IndexId).ToHashSet();
+        childNodeValidatorResult.HasUnresolvedDependencies = (Utils.String2List(node.GetProtocolExtra().ChildItems) ?? [])
+            .Any(id => !resolvedIds.Contains(id));
         foreach (var childNode in groupChildList)
         {
             if (ancestorsGroup.Contains(childNode.IndexId))
@@ -465,6 +483,7 @@ public class CoreConfigContextBuilder
             if (!childNode.ConfigType.IsGroupType())
             {
                 var childNodeResult = await RegisterSingleNodeAsync(context, childNode);
+                childNodeValidatorResult.HasUnresolvedDependencies |= childNodeResult.HasUnresolvedDependencies;
                 childNodeValidatorResult.Warnings.AddRange(childNodeResult.Warnings.Select(w =>
                     string.Format(ResUI.MsgGroupChildNodeWarning, node.Remarks, childNode.Remarks, w)));
                 childNodeValidatorResult.Errors.AddRange(childNodeResult.Errors.Select(e =>
@@ -482,6 +501,7 @@ public class CoreConfigContextBuilder
             var newAncestorsGroup = new HashSet<string>(ancestorsGroup) { childNode.IndexId };
             var childGroupResult =
                 await TraverseGroupNodeAsync(context, childNode, globalVisitedGroup, newAncestorsGroup);
+            childNodeValidatorResult.HasUnresolvedDependencies |= childGroupResult.HasUnresolvedDependencies;
             childNodeValidatorResult.Warnings.AddRange(childGroupResult.Warnings.Select(w =>
                 string.Format(ResUI.MsgGroupChildGroupNodeWarning, node.Remarks, childNode.Remarks, w)));
             childNodeValidatorResult.Errors.AddRange(childGroupResult.Errors.Select(e =>
@@ -500,6 +520,7 @@ public class CoreConfigContextBuilder
             childNodeValidatorResult.Errors.Add(string.Format(ResUI.MsgGroupNoValidChildNode, node.Remarks));
             return childNodeValidatorResult;
         }
+        childNodeValidatorResult.HasUnresolvedDependencies |= childNodeValidatorResult.Errors.Count > 0;
         childNodeValidatorResult.Warnings.AddRange(childNodeValidatorResult.Errors);
         childNodeValidatorResult.Errors.Clear();
 

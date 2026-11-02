@@ -2347,6 +2347,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   Subscription changes that require a manual core reload.
+        /// </summary>
+        public static string MsgSubscriptionChangesPending {
+            get {
+                return ResourceManager.GetString("MsgSubscriptionChangesPending", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   查找类似 Subscription update ended 的本地化字符串。
         /// </summary>
         public static string MsgUpdateSubscriptionEnd {

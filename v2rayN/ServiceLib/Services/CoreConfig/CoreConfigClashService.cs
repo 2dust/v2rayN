@@ -15,7 +15,7 @@ public class CoreConfigClashService(Config config, bool isTunEnabled)
     public async Task<RetResult> GenerateClientCustomConfig(ProfileItem node, string? fileName)
     {
         var ret = new RetResult();
-        if (node == null || fileName is null)
+        if (node == null)
         {
             ret.Msg = ResUI.CheckServerSettings;
             return ret;
@@ -29,11 +29,6 @@ public class CoreConfigClashService(Config config, bool isTunEnabled)
             {
                 ret.Msg = ResUI.CheckServerSettings;
                 return ret;
-            }
-
-            if (File.Exists(fileName))
-            {
-                File.Delete(fileName);
             }
 
             var addressFileName = node.Address;
@@ -146,19 +141,29 @@ public class CoreConfigClashService(Config config, bool isTunEnabled)
             //    }
             //}
 
-            var txtFileNew = YamlUtils.ToYaml(fileContent).Replace(tagYamlStr2, tagYamlStr3);
-            //foreach (var (realityOptions, shortId) in originalRealityShortIds)
-            //{
-            //    realityOptions["short-id"] = shortId;
-            //}
-            await File.WriteAllTextAsync(fileName, txtFileNew);
-            //check again
-            if (!File.Exists(fileName))
+            // Preserve REALITY short IDs as strings when emitting the representation model.
+            if (fileContent.Children.TryGetValue(new YamlScalarNode("proxies"), out var proxiesNode)
+                && proxiesNode is YamlSequenceNode proxies)
             {
-                ret.Msg = ResUI.FailedReadConfiguration + "2";
-                return ret;
+                foreach (var proxy in proxies.Children.OfType<YamlMappingNode>())
+                {
+                    if (proxy.Children.TryGetValue(new YamlScalarNode("reality-opts"), out var realityNode)
+                        && realityNode is YamlMappingNode reality
+                        && reality.Children.TryGetValue(new YamlScalarNode("short-id"), out var shortIdNode)
+                        && shortIdNode is YamlScalarNode shortId
+                        && shortId.Value?.StartsWith(tagYamlStr2, StringComparison.Ordinal) != true)
+                    {
+                        shortId.Style = ScalarStyle.DoubleQuoted;
+                    }
+                }
             }
 
+            var txtFileNew = YamlUtils.ToYaml(fileContent).Replace(tagYamlStr2, tagYamlStr3);
+            if (fileName.IsNotEmpty())
+            {
+                await File.WriteAllTextAsync(fileName, txtFileNew);
+            }
+            ret.Data = txtFileNew;
             ret.Msg = string.Format(ResUI.SuccessfulConfiguration, $"{node.GetSummary()}");
             ret.Success = true;
             return ret;

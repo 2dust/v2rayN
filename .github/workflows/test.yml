@@ -1,6 +1,7 @@
 name: Code Test
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
@@ -25,28 +26,55 @@ on:
       - '.github/workflows/test.yml'
 
 permissions:
+  contents: read
   checks: write
   pull-requests: write
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    env:
+      V2RAYN_LOCAL_APPLICATION_DATA_V2: '0'
+      TUNIT_MAX_PARALLEL_TESTS: '1'
     steps:
     - name: Checkout
       uses: actions/checkout@v7
+      with:
+        submodules: recursive
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v6
       with:
-        dotnet-version: '10.x'
-        dotnet-quality: 'ga'
+        dotnet-version: '10.0.403'
 
     - name: Test Code
       run: dotnet test --project ./v2rayN/ServiceLib.Tests -c Release --results-directory ./TestResults -- --report-trx
 
+    - name: Test WebAPI consumers
+      run: dotnet test --project ./v2rayN/v2rayN.WebAPI/Tests/v2rayN.WebAPI.Tests.csproj -c Release --results-directory ./TestResults --minimum-expected-tests 4 -- --report-trx --treenode-filter "/*/*/SubscriptionParityTests/*"
+
+    - name: Build desktop UI
+      run: dotnet build ./v2rayN/v2rayN.Desktop/v2rayN.Desktop.csproj -c Release
+
+    - name: Build WPF UI
+      if: runner.os == 'Windows'
+      run: dotnet build ./v2rayN/v2rayN/v2rayN.csproj -c Release
+
     - name: Comment PR with results
-      if: always()
+      if: always() && runner.os == 'Linux' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
       uses: EnricoMi/publish-unit-test-result-action@v2
       with:
         files: ./TestResults/*.trx
         comment_mode: failures
+
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v7
+      with:
+        name: test-results-${{ matrix.os }}
+        path: ./TestResults/*.trx

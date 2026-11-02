@@ -6,6 +6,7 @@ public static class ConfigHandler
 {
     private static readonly string _configRes = Global.ConfigFileName;
     private static readonly string _tag = "ConfigHandler";
+    private static readonly AsyncLocal<bool> _validatingSubscription = new();
 
     #region ConfigHandler
 
@@ -1308,6 +1309,13 @@ public static class ConfigHandler
             profileItem.Network = Global.DefaultNetwork;
         }
 
+        if (!toFile && _validatingSubscription.Value)
+        {
+            profileItem.SetProtocolExtra(profileItem.GetProtocolExtra());
+            profileItem.SetTransportExtra(profileItem.GetTransportExtra());
+            return 0;
+        }
+
         var maxSort = -1;
         if (profileItem.IndexId.IsNullOrEmpty())
         {
@@ -1385,84 +1393,6 @@ public static class ConfigHandler
         static bool AreEqual(string? a, string? b)
         {
             return string.Equals(a, b) || (string.IsNullOrEmpty(a) && string.IsNullOrEmpty(b));
-        }
-    }
-
-    /// <summary>
-    /// Searches the specified collection for a profile item that matches the target profile item based on a series of
-    /// criteria.
-    /// </summary>
-    /// <remarks>The method attempts to find a match by comparing the target's remarks, address, port, and
-    /// password in various combinations. The search is performed in order of specificity, starting with the most
-    /// detailed comparison. If no match is found at any stage, the method returns null.</remarks>
-    /// <param name="source">An enumerable collection of profile items to search. This parameter can be null.</param>
-    /// <param name="target">The profile item to match against items in the source collection. This parameter can be null.</param>
-    /// <returns>A profile item from the source collection that matches the target item according to defined criteria; otherwise,
-    /// null if no match is found or if either parameter is null.</returns>
-    private static ProfileItem? FindMatchedProfileItem(IEnumerable<ProfileItem>? source, ProfileItem? target)
-    {
-        if (source == null || target == null)
-        {
-            return null;
-        }
-
-        var matchedItem = source.FirstOrDefault(t => CompareProfileItem(t, target, true));
-        if (matchedItem != null)
-        {
-            return matchedItem;
-        }
-
-        if (target.Remarks.IsNotEmpty())
-        {
-            matchedItem = source.FirstOrDefault(t => t.Remarks == target.Remarks);
-            if (matchedItem != null)
-            {
-                return matchedItem;
-            }
-        }
-
-        if (target.Address.IsNotEmpty() && target.Port > 0 && target.Password.IsNotEmpty())
-        {
-            matchedItem = source.FirstOrDefault(t =>
-                IsSameText(t.Address, target.Address) &&
-                t.Port == target.Port &&
-                IsSameText(t.Password, target.Password));
-            if (matchedItem != null)
-            {
-                return matchedItem;
-            }
-        }
-
-        if (target.Address.IsNotEmpty() && target.Port > 0)
-        {
-            matchedItem = source.FirstOrDefault(t =>
-                IsSameText(t.Address, target.Address) &&
-                t.Port == target.Port);
-            if (matchedItem != null)
-            {
-                return matchedItem;
-            }
-        }
-
-        if (target.Address.IsNotEmpty())
-        {
-            matchedItem = source.FirstOrDefault(t => IsSameText(t.Address, target.Address));
-            if (matchedItem != null)
-            {
-                return matchedItem;
-            }
-        }
-
-        return null;
-
-        static bool IsSameText(string? left, string? right)
-        {
-            if (left.IsNullOrEmpty() || right.IsNullOrEmpty())
-            {
-                return false;
-            }
-
-            return string.Equals(left.TrimEx(), right.TrimEx(), StringComparison.OrdinalIgnoreCase);
         }
     }
 
@@ -1699,6 +1629,38 @@ public static class ConfigHandler
     #endregion Server
 
     #region Batch add servers
+
+    internal static async Task<bool> ValidateSubscriptionProfile(Config config, ProfileItem profile)
+    {
+        var previous = _validatingSubscription.Value;
+        _validatingSubscription.Value = true;
+        try
+        {
+            var status = profile.ConfigType switch
+            {
+                EConfigType.VMess => await AddVMessServer(config, profile, false),
+                EConfigType.Shadowsocks => await AddShadowsocksServer(config, profile, false),
+                EConfigType.HTTP => await AddHttpServer(config, profile, false),
+                EConfigType.SOCKS => await AddSocksServer(config, profile, false),
+                EConfigType.Trojan => await AddTrojanServer(config, profile, false),
+                EConfigType.VLESS => await AddVlessServer(config, profile, false),
+                EConfigType.Hysteria2 => await AddHysteria2Server(config, profile, false),
+                EConfigType.TUIC => await AddTuicServer(config, profile, false),
+                EConfigType.WireGuard => await AddWireguardServer(config, profile, false),
+                EConfigType.Anytls => await AddAnytlsServer(config, profile, false),
+                EConfigType.Naive => await AddNaiveServer(config, profile, false),
+                EConfigType.MASQUE => await AddMasqueServer(config, profile, false),
+                EConfigType.Custom or EConfigType.Outbound or EConfigType.PolicyGroup or EConfigType.ProxyChain
+                    => await AddServerCommon(config, profile, false),
+                _ => -1,
+            };
+            return status == 0 && profile.IsValid();
+        }
+        finally
+        {
+            _validatingSubscription.Value = previous;
+        }
+    }
 
     /// <summary>
     /// Add multiple servers from string data (common protocols)
@@ -2128,14 +2090,10 @@ public static class ConfigHandler
         {
             return -1;
         }
-        List<ProfileItem>? lstOriSub = null;
-        ProfileItem? activeProfile = null;
         if (isSub && subid.IsNotEmpty())
         {
-            lstOriSub = await AppManager.Instance.ProfileItems(subid);
-            activeProfile = lstOriSub?.FirstOrDefault(t => t.IndexId == config.IndexId);
+            return (await SubscriptionImporter.Import(config, [strData], subid)).Count;
         }
-
         var counter = 0;
         if (Utils.IsBase64String(strData))
         {
@@ -2191,36 +2149,6 @@ public static class ConfigHandler
         if (counter < 1)
         {
             counter = await AddBatchServers4Custom(config, strData, subid, isSub);
-        }
-
-        if (counter > 0 && lstOriSub is { Count: > 0 })
-        {
-            await RemoveServers(config, lstOriSub.Where(item => item.IsSub).ToList());
-        }
-
-        //Select active node
-        if (activeProfile != null)
-        {
-            var lstSub = await AppManager.Instance.ProfileItems(subid);
-            var existItem = FindMatchedProfileItem(lstSub, activeProfile);
-            if (existItem != null)
-            {
-                await ConfigHandler.SetDefaultServerIndex(config, existItem.IndexId);
-            }
-        }
-
-        //Keep the last traffic statistics
-        if (lstOriSub != null)
-        {
-            var lstSub = await AppManager.Instance.ProfileItems(subid);
-            foreach (var item in lstSub)
-            {
-                var existItem = FindMatchedProfileItem(lstOriSub, item);
-                if (existItem != null)
-                {
-                    await StatisticsManager.Instance.CloneServerStatItem(existItem.IndexId, item.IndexId);
-                }
-            }
         }
 
         return counter;
