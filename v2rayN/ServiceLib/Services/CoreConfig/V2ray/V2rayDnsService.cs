@@ -374,12 +374,19 @@ public partial class CoreConfigV2rayService
             {
                 return;
             }
-            foreach (var dnsAddress in dnsAddresses)
+            //foreach (var dnsAddress in dnsAddresses)
+            for (var i = 0; i < dnsAddresses.Count; i++)
             {
+                var dnsAddress = dnsAddresses[i];
                 var dnsServer = CreateDnsServer(dnsAddress, domains, expectedIPs);
                 if (isDirectDns)
                 {
                     dnsServer.tag = $"{Global.DirectDnsTag}-{directDnsTagIndex++}";
+                }
+                if (expectedIPs is not null
+                    && i == expectedIPs.Count - 1)
+                {
+                    dnsServer.finalQuery = true;
                 }
                 var dnsServerNode = JsonUtils.SerializeToNode(dnsServer);
                 dnsItem.servers.Add(dnsServerNode);
