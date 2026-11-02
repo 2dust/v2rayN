@@ -165,7 +165,7 @@ public class ShadowsocksFmt : BaseFmt
                 return null;
             }
             item.SetProtocolExtra(item.GetProtocolExtra() with { SsMethod = userInfoParts.First() });
-            item.Password = Utils.UrlDecode(userInfoParts.Last());
+            item.Password = userInfoParts.Last();
         }
         else
         {
