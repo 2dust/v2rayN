@@ -1911,4 +1911,7 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="MsgSubscriptionChangesPending" xml:space="preserve">
     <value>Subscription updated; connection changes are pending. Reload the core manually to apply them.</value>
   </data>
+  <data name="TbWarp" xml:space="preserve">
+    <value>Warp</value>
+  </data>
 </root>

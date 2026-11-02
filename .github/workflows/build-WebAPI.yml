@@ -46,6 +46,24 @@ permissions:
   contents: read
 
 jobs:
+  macos:
+    name: macOS WebAPI and ServiceLib tests
+    runs-on: macos-latest
+    timeout-minutes: 15
+    env:
+      TUNIT_MAX_PARALLEL_TESTS: 1
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.x'
+      - name: Run ServiceLib.Tests
+        run: dotnet test --project v2rayN/ServiceLib.Tests/ServiceLib.Tests.csproj -c Release
+      - name: Run WebAPI.Tests
+        run: dotnet test --project v2rayN/v2rayN.WebAPI/Tests/v2rayN.WebAPI.Tests.csproj -c Release
+
   identity:
     name: Resolve API build identity
     runs-on: ubuntu-24.04
@@ -133,7 +151,7 @@ jobs:
       - uses: actions/setup-dotnet@v6
         with:
           dotnet-version: '10.x'
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.x'
       - name: Restore WebAPI
@@ -315,7 +333,7 @@ jobs:
       - uses: actions/setup-dotnet@v6
         with:
           dotnet-version: '10.x'
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.x'
       - name: Restore WebAPI
@@ -861,9 +879,9 @@ jobs:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: docker/setup-buildx-action@v3
+      - uses: docker/setup-buildx-action@v4
       - name: Build API container (no push)
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         env:
           DOCKER_BUILD_RECORD_UPLOAD: false
         with:
@@ -888,7 +906,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@v8
         with:
           pattern: v2rayN.WebAPI-*
           path: release-assets

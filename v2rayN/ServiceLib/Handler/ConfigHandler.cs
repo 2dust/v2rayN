@@ -1062,10 +1062,6 @@ public static class ConfigHandler
         profileItem.Address = profileItem.Address.TrimEx();
         profileItem.Username = profileItem.Username.TrimEx();
         profileItem.Password = profileItem.Password.TrimEx();
-        profileItem.Fingerprint = string.Empty;
-        profileItem.Alpn = string.Empty;
-        profileItem.Network = string.Empty;
-        profileItem.AllowInsecure = string.Empty;
         if (profileItem.StreamSecurity.IsNullOrEmpty())
         {
             profileItem.StreamSecurity = Global.StreamSecurity;
