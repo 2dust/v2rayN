@@ -17,6 +17,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\v2rayN.WebAPI.csproj" />
+    <Compile Remove="ProcessHelper/**" />
+    <ProjectReference Include="ProcessHelper/InstanceLockProcessHelper.csproj" ReferenceOutputAssembly="false" OutputItemType="_InstanceLockProcessHelper" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,4 +26,9 @@
     <Using Include="TUnit.Assertions.Should" />
     <Using Include="TUnit.Assertions.Should.Extensions" />
   </ItemGroup>
+  <Target Name="CopyInstanceLockProcessHelper" AfterTargets="CopyFilesToOutputDirectory">
+    <Copy SourceFiles="@(_InstanceLockProcessHelper)" DestinationFolder="$(TargetDir)ProcessHelper" SkipUnchangedFiles="true">
+      <Output TaskParameter="CopiedFiles" ItemName="FileWrites" />
+    </Copy>
+  </Target>
 </Project>
