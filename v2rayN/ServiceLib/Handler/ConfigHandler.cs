@@ -1758,7 +1758,7 @@ public static class ConfigHandler
             profileItem.Subid = subid;
             profileItem.IsSub = isSub;
 
-            if (dnsClient is not null && profileItem.Address.IsNotEmpty())
+            if (dnsClient is not null && profileItem.Address.IsNotEmpty() && !Utils.IsIpAddress(profileItem.Address))
             {
                 if (!dnsCache.TryGetValue(profileItem.Address, out var resolvedAddress))
                 {
