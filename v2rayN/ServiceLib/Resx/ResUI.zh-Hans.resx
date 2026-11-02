@@ -1900,4 +1900,7 @@
   <data name="menuColumns" xml:space="preserve">
     <value>列</value>
   </data>
+  <data name="TbWarp" xml:space="preserve">
+    <value>Warp</value>
+  </data>
 </root>
