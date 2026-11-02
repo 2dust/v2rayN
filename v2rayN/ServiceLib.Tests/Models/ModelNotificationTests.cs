@@ -113,7 +113,7 @@ public class ModelNotificationTests
     [Test]
     public async Task Notifications_DoNotChangeJsonOrSqliteColumns()
     {
-        var item = new SubItem { Id = "subscription", Remarks = "Original", Url = "https://example.com" };
+        var item = new SubItem { Id = "subscription", Remarks = "Original", Url = "https://example.com", PreResolver = "https://resolver.example/dns-query" };
         var json = JsonUtils.Serialize(item, false);
         var count = 0;
         if (item is INotifyPropertyChanged observable)
@@ -129,9 +129,11 @@ public class ModelNotificationTests
 
         await count.Should().BeEqualTo(1);
         await database.Find<SubItem>(item.Id).Remarks.Should().BeEqualTo("Edited");
+        await database.Find<SubItem>(item.Id).PreResolver.Should().BeEqualTo(item.PreResolver);
         var restored = JsonUtils.Deserialize<SubItem>(json)!;
         await restored.Remarks.Should().BeEqualTo("Original");
-        await database.GetTableInfo(nameof(SubItem)).Count.Should().BeEqualTo(17);
-        await JsonUtils.ParseJson(json)!.AsObject().Count.Should().BeEqualTo(8);
+        await restored.PreResolver.Should().BeEqualTo(item.PreResolver);
+        await database.GetTableInfo(nameof(SubItem)).Count.Should().BeEqualTo(18);
+        await JsonUtils.ParseJson(json)!.AsObject().Count.Should().BeEqualTo(9);
     }
 }

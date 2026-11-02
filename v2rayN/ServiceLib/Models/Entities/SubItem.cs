@@ -36,4 +36,6 @@ public class SubItem : NotifyPropertyChangedBase
     public string? Memo { get; set => SetField(ref field, value); }
 
     public ECoreType? CustomCoreType { get; set => SetField(ref field, value); }
+
+    public string? PreResolver { get; set => SetField(ref field, value); }
 }
