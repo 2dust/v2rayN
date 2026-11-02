@@ -89,6 +89,7 @@ public sealed class AppManager
         SQLiteHelper.Instance.CreateTable<ProfileExItem>();
         SQLiteHelper.Instance.CreateTable<DNSItem>();
         SQLiteHelper.Instance.CreateTable<FullConfigTemplateItem>();
+        SQLiteHelper.Instance.CreateTable<WorkflowItem>();
 #pragma warning disable CS0618
         SQLiteHelper.Instance.CreateTable<ProfileGroupItem>();
 #pragma warning restore CS0618
@@ -175,6 +176,20 @@ public sealed class AppManager
     public async Task<List<SubItem>?> SubItems()
     {
         return await SQLiteHelper.Instance.TableAsync<SubItem>().OrderBy(t => t.Sort).ToListAsync();
+    }
+
+    public async Task<List<WorkflowItem>> WorkflowItems()
+    {
+        return await SQLiteHelper.Instance.TableAsync<WorkflowItem>().OrderBy(t => t.Sort).ToListAsync();
+    }
+
+    public async Task<WorkflowItem?> GetWorkflowItem(string? id)
+    {
+        if (id.IsNullOrEmpty())
+        {
+            return null;
+        }
+        return await SQLiteHelper.Instance.TableAsync<WorkflowItem>().FirstOrDefaultAsync(t => t.Id == id);
     }
 
     public async Task<SubItem?> GetSubItem(string? subid)
