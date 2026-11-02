@@ -33,6 +33,7 @@ internal static class SubscriptionImporter
                 var profiles = await Stage(config, content, subId, subscription);
                 staged.AddRange(profiles.Where(profile => profile.SourceUri == null || importedUris.Add(profile.SourceUri)));
             }
+            await ResolveAddresses(staged, subscription?.PreResolver);
         }
         catch (Exception ex)
         {
@@ -60,6 +61,32 @@ internal static class SubscriptionImporter
         finally
         {
             state.Gate.Release();
+        }
+    }
+
+    private static async Task ResolveAddresses(List<StagedProfile> staged, string? preResolver)
+    {
+        if (preResolver.IsNullOrEmpty())
+        {
+            return;
+        }
+        EndpointResolveManager.IDnsResolver? dnsClient = null;
+        var dnsCache = new Dictionary<string, string>();
+        foreach (var item in staged.Where(item => item.SourceUri != null))
+        {
+            var profile = item.Profile;
+            if (profile.Address.IsNullOrEmpty() || Utils.IsIpAddress(profile.Address))
+            {
+                continue;
+            }
+            dnsClient ??= EndpointResolveManager.BuildDnsClient(preResolver);
+            if (!dnsCache.TryGetValue(profile.Address, out var resolvedAddress))
+            {
+                var addresses = await dnsClient.ResolveIpv46Async(profile.Address);
+                resolvedAddress = addresses.FirstOrDefault()?.ToString() ?? profile.Address;
+                dnsCache[profile.Address] = resolvedAddress;
+            }
+            profile.Address = resolvedAddress;
         }
     }
 

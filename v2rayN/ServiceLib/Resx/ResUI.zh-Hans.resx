@@ -1903,4 +1903,7 @@
   <data name="TbWarp" xml:space="preserve">
     <value>Warp</value>
   </data>
+  <data name="LvPreResolve" xml:space="preserve">
+    <value>预解析节点域名</value>
+  </data>
 </root>

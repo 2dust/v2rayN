@@ -9,6 +9,179 @@ public class SubscriptionImportTests
     private const string OriginalUri = "vless://00000000-0000-0000-0000-000000000001@original.example:443?type=tcp&security=tls&sni=original.example#selected";
 
     [Test]
+    [Arguments("203.0.113.10", true)]
+    [Arguments("203.0.113.11", false)]
+    public async Task PreResolverComparesResolvedAddressesBeforeRetainingRenamedIdentity(string nextAddress, bool retainsIdentity)
+    {
+        await using var scope = await ImportScope.Create();
+        await using var dns = new LoopbackDnsServer();
+        await scope.SetPreResolver(dns.Url);
+        var original = await scope.Seed(OriginalUri);
+        await original.Address.Should().BeEqualTo("203.0.113.10");
+        dns.Address = nextAddress;
+
+        var count = await ConfigHandler.AddBatchServers(scope.Config, OriginalUri.Replace("#selected", "#renamed"), scope.SubId, true);
+
+        await count.Should().BeEqualTo(1);
+        var updated = (await AppManager.Instance.ProfileItems(scope.SubId))!.Single();
+        await updated.Address.Should().BeEqualTo(nextAddress);
+        await (updated.IndexId == original.IndexId).Should().BeEqualTo(retainsIdentity);
+        await updated.Sni.Should().BeEqualTo("original.example");
+        await updated.StreamSecurity.Should().BeEqualTo("tls");
+        await dns.QueryCount.Should().BeEqualTo(4);
+    }
+
+    [Test]
+    public async Task PreResolverCachesDomainsAcrossUsedSourcesWithoutChangingTransportHostOrLiteralAddresses()
+    {
+        await using var scope = await ImportScope.Create();
+        await using var dns = new LoopbackDnsServer();
+        var uri = OriginalUri.Replace("type=tcp", "type=ws&host=transport.example");
+        var literalUri = OriginalUri.Replace("@original.example", "@203.0.113.20").Replace("#selected", "#literal");
+        await using var server = new SubscriptionServer((path, _) => Task.FromResult(path == "/main"
+            ? uri + "\n" + literalUri
+            : uri + "\n" + uri.Replace("#selected", "#second")));
+        await scope.SetUrls(server.Url + "/main", server.Url + "/additional");
+        await scope.SetPreResolver(dns.Url);
+
+        var result = await SubscriptionHandler.UpdateProcess(scope.Config, scope.SubId, false, IgnoreUpdate);
+
+        await result.Success.Should().BeTrue();
+        var profiles = (await AppManager.Instance.ProfileItems(scope.SubId))!;
+        await profiles.Should().HaveCount(3);
+        foreach (var profile in profiles.Where(profile => profile.Remarks != "literal"))
+        {
+            await profile.Address.Should().BeEqualTo("203.0.113.10");
+            await profile.Sni.Should().BeEqualTo("original.example");
+            await profile.GetTransportExtra().Host.Should().BeEqualTo("transport.example");
+        }
+        await profiles.Single(profile => profile.Remarks == "literal").Address.Should().BeEqualTo("203.0.113.20");
+        await dns.QueryCount.Should().BeEqualTo(2);
+    }
+
+    [Test]
+    [Arguments(0)]
+    [Arguments(3)]
+    public async Task PreResolverKeepsDomainWhenDnsHasNoAddresses(int responseCode)
+    {
+        await using var scope = await ImportScope.Create();
+        await using var dns = new LoopbackDnsServer { Address = null, ResponseCode = (byte)responseCode };
+        await scope.SetPreResolver(dns.Url);
+
+        var count = await ConfigHandler.AddBatchServers(scope.Config, OriginalUri, scope.SubId, true);
+
+        await count.Should().BeEqualTo(1);
+        await (await AppManager.Instance.ProfileItems(scope.SubId))!.Single().Address.Should().BeEqualTo("original.example");
+        await dns.QueryCount.Should().BeEqualTo(2);
+    }
+
+    [Test]
+    [Arguments(null)]
+    [Arguments("")]
+    public async Task PreResolverDisabledKeepsDomain(string? preResolver)
+    {
+        await using var scope = await ImportScope.Create();
+        await scope.SetPreResolver(preResolver);
+
+        var count = await ConfigHandler.AddBatchServers(scope.Config, OriginalUri, scope.SubId, true);
+
+        await count.Should().BeEqualTo(1);
+        await (await AppManager.Instance.ProfileItems(scope.SubId))!.Single().Address.Should().BeEqualTo("original.example");
+    }
+
+    [Test]
+    [Arguments("203.0.113.20", "203.0.113.20")]
+    [Arguments("[2001:db8::20]", "2001:db8::20")]
+    public async Task PreResolverSkipsLiteralAddresses(string uriAddress, string expectedAddress)
+    {
+        await using var scope = await ImportScope.Create();
+        await using var dns = new LoopbackDnsServer { InvalidResponse = true };
+        await scope.SetPreResolver(dns.Url);
+
+        var count = await ConfigHandler.AddBatchServers(scope.Config, OriginalUri.Replace("@original.example", "@" + uriAddress), scope.SubId, true);
+
+        await count.Should().BeEqualTo(1);
+        await (await AppManager.Instance.ProfileItems(scope.SubId))!.Single().Address.Should().BeEqualTo(expectedAddress);
+        await dns.QueryCount.Should().BeEqualTo(0);
+    }
+
+    [Test]
+    [Arguments(false)]
+    [Arguments(true)]
+    public async Task PreResolverLeavesInternalAndCustomProfilesUnchanged(bool custom)
+    {
+        await using var scope = await ImportScope.Create();
+        await scope.SetPreResolver("unsupported://resolver");
+        var content = custom
+            ? """{"inbounds":[],"outbounds":[{"protocol":"socks","tag":"proxy","settings":{"servers":[{"address":"original.example","port":1080}]}}]}"""
+            : InnerFmt.ToUri([FmtHandler.ResolveConfig(OriginalUri, out _)!])!;
+
+        var count = await ConfigHandler.AddBatchServers(scope.Config, content, scope.SubId, true);
+
+        await count.Should().BeEqualTo(1);
+        var profile = (await AppManager.Instance.ProfileItems(scope.SubId))!.Single();
+        if (custom)
+        {
+            await profile.ConfigType.Should().BeEqualTo(EConfigType.Custom);
+            await (await File.ReadAllTextAsync(Utils.GetConfigPath(profile.Address))).Contains("original.example", StringComparison.Ordinal).Should().BeTrue();
+        }
+        else
+        {
+            await profile.Address.Should().BeEqualTo("original.example");
+        }
+    }
+
+    [Test]
+    public async Task PreResolverFailureRejectsAllUsedSourcesAndPreservesExistingCustomFile()
+    {
+        await using var scope = await ImportScope.Create();
+        const string content = """{"inbounds":[],"outbounds":[{"protocol":"socks","tag":"proxy","settings":{"servers":[{"address":"original.example","port":1080}]}}]}""";
+        await ConfigHandler.AddBatchServers(scope.Config, content, scope.SubId, true);
+        var original = (await AppManager.Instance.ProfileItems(scope.SubId))!.Single();
+        scope.Track(original);
+        var path = Utils.GetConfigPath(original.Address);
+        var originalContent = await File.ReadAllTextAsync(path);
+        await using var dns = new LoopbackDnsServer { InvalidResponse = true };
+        await using var server = new SubscriptionServer((source, _) => Task.FromResult(source == "/main"
+            ? content.Replace("original.example", "changed.example") : OriginalUri));
+        await scope.SetUrls(server.Url + "/main", server.Url + "/additional");
+        await scope.SetPreResolver(dns.Url);
+
+        var result = await SubscriptionHandler.UpdateProcess(scope.Config, scope.SubId, false, IgnoreUpdate);
+
+        await result.Success.Should().BeFalse();
+        var profiles = (await AppManager.Instance.ProfileItems(scope.SubId))!;
+        await profiles.Should().HaveCount(1);
+        await profiles[0].IndexId.Should().BeEqualTo(original.IndexId);
+        await profiles[0].Address.Should().BeEqualTo(original.Address);
+        await (await File.ReadAllTextAsync(path)).Should().BeEqualTo(originalContent);
+    }
+
+    [Test]
+    public async Task PreResolverDelayedOlderRefreshCannotReplaceNewerProfiles()
+    {
+        await using var scope = await ImportScope.Create();
+        var release = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        await using var dns = new LoopbackDnsServer { ResponseGate = release.Task };
+        await scope.SetPreResolver(dns.Url);
+        var older = ConfigHandler.AddBatchServers(scope.Config, OriginalUri, scope.SubId, true);
+        try
+        {
+            await dns.Received.Task.WaitAsync(TimeSpan.FromSeconds(10));
+            await scope.SetPreResolver(null);
+            var newerUri = OriginalUri.Replace("original.example", "newer.example");
+            await (await ConfigHandler.AddBatchServers(scope.Config, newerUri, scope.SubId, true)).Should().BeEqualTo(1);
+        }
+        finally
+        {
+            release.TrySetResult();
+        }
+
+        await (await older).Should().BeEqualTo(-1);
+        await (await AppManager.Instance.ProfileItems(scope.SubId))!.Single().Address.Should().BeEqualTo("newer.example");
+    }
+
+    [Test]
     public async Task MalformedSubscriptionPreservesExistingProfileAndCustomFile()
     {
         await using var scope = await ImportScope.Create();
@@ -625,6 +798,61 @@ public class SubscriptionImportTests
         await scope.Config.IndexId.Should().BeEqualTo(active.IndexId);
     }
 
+    private sealed class LoopbackDnsServer : IAsyncDisposable
+    {
+        private readonly UdpClient _listener = new(new IPEndPoint(IPAddress.Loopback, 0));
+        private readonly CancellationTokenSource _cancellation = new();
+        private readonly Task _serve;
+        private int _queryCount;
+        public string Url => $"udp://127.0.0.1:{((IPEndPoint)_listener.Client.LocalEndPoint!).Port}";
+        public string? Address { get; set; } = "203.0.113.10";
+        public byte ResponseCode { get; set; }
+        public bool InvalidResponse { get; set; }
+        public Task ResponseGate { get; set; } = Task.CompletedTask;
+        public TaskCompletionSource Received { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
+        public int QueryCount => Volatile.Read(ref _queryCount);
+
+        public LoopbackDnsServer() => _serve = Serve();
+
+        private async Task Serve()
+        {
+            while (!_cancellation.IsCancellationRequested)
+            {
+                var request = await _listener.ReceiveAsync(_cancellation.Token);
+                Interlocked.Increment(ref _queryCount);
+                Received.TrySetResult();
+                await ResponseGate.WaitAsync(_cancellation.Token);
+                var response = request.Buffer.ToList();
+                response[2] = 0x81;
+                response[3] = (byte)(0x80 | ResponseCode);
+                if (ResponseCode == 0 && Address != null && request.Buffer[^3] == 1)
+                {
+                    response[7] = 1;
+                    response.AddRange([0xc0, 0x0c, 0, 1, 0, 1, 0, 0, 0, 60, 0, 4]);
+                    response.AddRange(IPAddress.Parse(Address).GetAddressBytes());
+                }
+                await _listener.SendAsync(InvalidResponse ? new byte[] { 0 } : response.ToArray(), request.RemoteEndPoint, _cancellation.Token);
+            }
+        }
+
+        public async ValueTask DisposeAsync()
+        {
+            await _cancellation.CancelAsync();
+            try
+            {
+                await _serve;
+            }
+            catch (OperationCanceledException)
+            {
+            }
+            finally
+            {
+                _listener.Dispose();
+                _cancellation.Dispose();
+            }
+        }
+    }
+
     private sealed class SubscriptionServer : IAsyncDisposable
     {
         private readonly TcpListener _listener = new(IPAddress.Loopback, 0);
@@ -754,6 +982,13 @@ public class SubscriptionImportTests
             var subscription = (await AppManager.Instance.GetSubItem(SubId))!;
             subscription.Url = main;
             subscription.MoreUrl = more;
+            await SQLiteHelper.Instance.ReplaceAsync(subscription);
+        }
+
+        public async Task SetPreResolver(string? preResolver)
+        {
+            var subscription = (await AppManager.Instance.GetSubItem(SubId))!;
+            subscription.PreResolver = preResolver;
             await SQLiteHelper.Instance.ReplaceAsync(subscription);
         }
 
