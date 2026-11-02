@@ -17,7 +17,10 @@ public class NaiveFmt : BaseFmt
             ConfigType = EConfigType.Naive,
             Remarks = parsedUrl.GetComponents(UriComponents.Fragment, UriFormat.Unescaped),
             Address = parsedUrl.IdnHost,
-            Port = parsedUrl.Port,
+            // naive+https:// and naive+quic:// links leave the port out when it is 443
+            // (https://gist.github.com/DuckSoft/ca03913b0a26fc77a1da4d01cc6ab2f1). Uri.Port answers
+            // -1 for an unregistered scheme carrying no port; an explicit ":0" stays 0.
+            Port = parsedUrl.Port == -1 ? 443 : parsedUrl.Port,
         };
         var protocolExtra = item.GetProtocolExtra();
         if (parsedUrl.Scheme.Contains("quic"))
