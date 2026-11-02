@@ -8,7 +8,7 @@ public partial class CoreConfigV2rayService
         _coreConfig.outbounds.InsertRange(0, proxyOutboundList);
         if (proxyOutboundList.Count(n => n.tag.StartsWith(Global.ProxyTag)) > 1)
         {
-            var multipleLoad = _node.GetProtocolExtra().MultipleLoad ?? EMultipleLoad.LeastPing;
+            var multipleLoad = FindFirstPolicyGroupMultipleLoad() ?? EMultipleLoad.LeastPing;
             GenObservatory(multipleLoad);
             GenBalancer(multipleLoad);
         }
@@ -913,5 +913,33 @@ public partial class CoreConfigV2rayService
             }
         }
         return clonedOutbounds;
+    }
+
+    private EMultipleLoad? FindFirstPolicyGroupMultipleLoad()
+    {
+        if (!_node.ConfigType.IsGroupType())
+        {
+            return null;
+        }
+
+        // BFS: the nearest policy group in the group tree decides the multiple load strategy.
+        var queue = new Queue<ProfileItem>([_node]);
+        while (queue.Count > 0)
+        {
+            var node = queue.Dequeue();
+            if (node.ConfigType == EConfigType.PolicyGroup)
+            {
+                return node.GetProtocolExtra().MultipleLoad;
+            }
+            foreach (var childId in Utils.String2List(node.GetProtocolExtra().ChildItems) ?? [])
+            {
+                if (context.AllProxiesMap.TryGetValue(childId, out var childNode)
+                    && childNode.ConfigType.IsGroupType())
+                {
+                    queue.Enqueue(childNode);
+                }
+            }
+        }
+        return null;
     }
 }
