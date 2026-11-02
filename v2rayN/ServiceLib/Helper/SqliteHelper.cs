@@ -28,6 +28,11 @@ public sealed class SQLiteHelper
         return await _dbAsync.InsertAllAsync(models, runInTransaction: true).ConfigureAwait(false);
     }
 
+    public async Task<int> ReplaceAllAsync(IEnumerable models)
+    {
+        return await _dbAsync.InsertAllAsync(models, extra: "OR REPLACE", runInTransaction: true).ConfigureAwait(false);
+    }
+
     public async Task<int> InsertAsync(object model)
     {
         return await _dbAsync.InsertAsync(model);
