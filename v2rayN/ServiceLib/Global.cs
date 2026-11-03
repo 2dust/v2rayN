@@ -42,6 +42,7 @@ public class Global
     public const string SingboxFakeIPFilterFileName = NamespaceSample + "singbox_fakeip_filter";
     public const string ChromeRootCertFileName = NamespaceSample + "chrome_roots_pem";
     public const string MozillaRootCertFileName = NamespaceSample + "mozilla_roots_pem";
+    public const string TaskXmlTemplateFileName = NamespaceSample + "TaskXmlTemplate";
 
     public const string ChromeRootProvider = "chrome";
     public const string MozillaRootProvider = "mozilla";
@@ -496,6 +497,20 @@ public class Global
         "119.29.29.29",
         "223.5.5.5",
         "localhost"
+    ];
+
+    public static readonly List<string> DomainDNS4PreResolveAddress =
+    [
+        "",
+        "https://doh.pub/dns-query",
+        "https://dns.alidns.com/dns-query",
+        "119.29.29.29",
+        "223.5.5.5",
+        "localhost",
+        "https://cloudflare-dns.com/dns-query",
+        "https://dns.google/dns-query",
+        "8.8.8.8",
+        "1.1.1.1",
     ];
 
     public static readonly List<LanguageOption> LanguageOptions =

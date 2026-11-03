@@ -5,6 +5,7 @@
     xmlns:dialogHost="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:semi="https://irihi.tech/semi"
+    xmlns:service="clr-namespace:ServiceLib;assembly=ServiceLib"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
     Name="v2rayN"
     x:DataType="vms:StatusBarViewModel"
@@ -37,7 +38,7 @@
             <TrayIcon
                 Command="{Binding NotifyLeftClickCmd}"
                 Icon="/Assets/NotifyIcon1.ico"
-                ToolTipText="{Binding RunningServerToolTipText}">
+                ToolTipText="{Binding RunningServerToolTipText, FallbackValue={x:Static service:Global.AppName}}">
                 <TrayIcon.Menu>
                     <NativeMenu>
                         <NativeMenuItem

@@ -86,7 +86,10 @@ public class SocksFmt : BaseFmt
     private static ProfileItem? ResolveSocksNew(string result)
     {
         var parsedUrl = Utils.TryUri(result);
-        if (parsedUrl == null)
+        // A legacy socks://base64(user:pass@host:port) link has no port of its own, but System.Uri
+        // accepts many of them, reading the base64 as the host (and whatever follows a '/' as the
+        // path). Leave those to ResolveSocks.
+        if (parsedUrl == null || parsedUrl.Port == -1)
         {
             return null;
         }

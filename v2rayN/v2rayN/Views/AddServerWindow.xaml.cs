@@ -145,12 +145,15 @@ public partial class AddServerWindow
                             this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtSecurity14.Text).DisposeWith(currentTypeDisposables);
                             this.Bind(ViewModel, vm => vm.MasquePath, v => v.txtPath14.Text).DisposeWith(currentTypeDisposables);
                             this.Bind(ViewModel, vm => vm.MasqueHeaders, v => v.txtHeaders14.Text).DisposeWith(currentTypeDisposables);
+                            this.Bind(ViewModel, vm => vm.WarpPublicKey, v => v.txtWarpPublicKey.Text).DisposeWith(currentTypeDisposables);
+                            this.Bind(ViewModel, vm => vm.WarpPrivateKey, v => v.txtWarpPrivateKey.Text).DisposeWith(currentTypeDisposables);
+                            this.Bind(ViewModel, vm => vm.WarpAddress, v => v.txtWarpAddress.Text).DisposeWith(currentTypeDisposables);
                             break;
                     }
                 })
                 .DisposeWith(disposables);
 
-            this.Bind(ViewModel, vm => vm.SelectedSource.Network, v => v.cmbNetwork.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.Network, v => v.cmbNetwork.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.RawHeaderType, v => v.cmbHeaderTypeRaw.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.Host, v => v.txtRequestHostRaw.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.Path, v => v.txtPathRaw.Text).DisposeWith(disposables);
@@ -296,8 +299,6 @@ public partial class AddServerWindow
                 gridMasque.Visibility = Visibility.Visible;
                 sepa2.Visibility = Visibility.Collapsed;
                 gridTransport.Visibility = Visibility.Collapsed;
-                cmbFingerprint.IsEnabled = false;
-                cmbAlpn.IsEnabled = false;
                 break;
         }
         cmbStreamSecurity.ItemsSource = lstStreamSecurity;

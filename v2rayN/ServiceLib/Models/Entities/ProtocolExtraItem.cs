@@ -49,6 +49,9 @@ public record ProtocolExtraItem
     // MASQUE
     public string? MasquePath { get; init; }
     public string? MasqueHeaders { get; init; }
+    public string? WarpPublicKey { get; init; }
+    public string? WarpPrivateKey { get; init; }
+    public string? WarpAddress { get; init; }
 
     // group profile
     public string? GroupType { get; init; }

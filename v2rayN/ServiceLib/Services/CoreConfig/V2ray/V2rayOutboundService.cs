@@ -8,7 +8,7 @@ public partial class CoreConfigV2rayService
         _coreConfig.outbounds.InsertRange(0, proxyOutboundList);
         if (proxyOutboundList.Count(n => n.tag.StartsWith(Global.ProxyTag)) > 1)
         {
-            var multipleLoad = _node.GetProtocolExtra().MultipleLoad ?? EMultipleLoad.LeastPing;
+            var multipleLoad = FindFirstPolicyGroupMultipleLoad() ?? EMultipleLoad.LeastPing;
             GenObservatory(multipleLoad);
             GenBalancer(multipleLoad);
         }
@@ -203,7 +203,7 @@ public partial class CoreConfigV2rayService
                         };
                         var setting = new Outboundsettings4Ray
                         {
-                            address = Utils.String2List(protocolExtra.WgInterfaceAddress)?.Select(s => s.Trim()).ToList() ?? ["172.16.0.2/32"],
+                            address = JsonUtils.SerializeToArray(Utils.String2List(protocolExtra.WgInterfaceAddress)?.Select(s => s.Trim()).ToList() ?? ["172.16.0.2/32"]),
                             secretKey = _node.Password,
                             reserved = Utils.String2List(protocolExtra.WgReserved)?.Select(s => s.Trim()).Select(int.Parse).ToList(),
                             mtu = protocolExtra.WgMtu > 0 ? protocolExtra.WgMtu : Global.TunMtus.First(),
@@ -337,11 +337,6 @@ public partial class CoreConfigV2rayService
                 {
                     tlsSettings.serverName = Utils.String2List(host)?.First();
                 }
-                if (!tlsSettings.echConfigList.IsNullOrEmpty())
-                {
-                    // For legacy xray compatibility, remove this in the future
-                    tlsSettings.echForceQuery = "full";
-                }
                 var certs = CertPemManager.ParsePemChain(_node.Cert);
                 if (certs.Count > 0)
                 {
@@ -428,7 +423,7 @@ public partial class CoreConfigV2rayService
                     }
                     kcpFinalmask.udp?.Reverse();
                     streamSettings.kcpSettings = kcpSettings;
-                    streamSettings.finalmask = kcpFinalmask;
+                    streamSettings.finalmask = (JsonObject)JsonUtils.SerializeToNode(kcpFinalmask);
                     break;
                 //ws
                 case nameof(ETransport.ws):
@@ -489,7 +484,7 @@ public partial class CoreConfigV2rayService
                     }
                     if (xhttpExtra.IsNotEmpty())
                     {
-                        xhttpSettings.extra = JsonUtils.ParseJson(xhttpExtra);
+                        xhttpSettings.extra = JsonUtils.ParseJson(xhttpExtra) as JsonObject;
                     }
 
                     streamSettings.xhttpSettings = xhttpSettings;
@@ -581,7 +576,7 @@ public partial class CoreConfigV2rayService
                         auth = _node.Password,
                     };
                     hy2Finalmask.udp?.Reverse();
-                    streamSettings.finalmask = hy2Finalmask;
+                    streamSettings.finalmask = (JsonObject)JsonUtils.SerializeToNode(hy2Finalmask);
                     break;
 
                 case "masque":
@@ -603,11 +598,21 @@ public partial class CoreConfigV2rayService
                         }
                         headers = userHeaders;
                     }
-                    streamSettings.masqueSettings = new()
+                    var masqueSettings = new MasqueSettings4Ray
                     {
                         path = protocolExtra?.MasquePath.NullIfEmpty(),
                         headers = headers.Count > 0 ? headers : null,
                     };
+                    if (!protocolExtra.WarpPrivateKey.IsNullOrEmpty())
+                    {
+                        masqueSettings.warp = new MasqueWarpSettings4Ray
+                        {
+                            publicKey = protocolExtra.WarpPublicKey,
+                            privateKey = protocolExtra.WarpPrivateKey,
+                            address = Utils.String2List(protocolExtra.WarpAddress)?.Select(s => s.Trim()).ToList(),
+                        };
+                    }
+                    streamSettings.masqueSettings = masqueSettings;
                     break;
 
                 default:
@@ -637,7 +642,7 @@ public partial class CoreConfigV2rayService
                             pathHttp = string.Join(",".AppendQuotes(), arrPath);
                         }
                         request = request.Replace("$requestPath$", $"{pathHttp.AppendQuotes()}");
-                        rawSettings.header.request = JsonUtils.Deserialize<object>(request);
+                        rawSettings.header.request = JsonUtils.SerializeToNode(request) as JsonObject;
 
                         streamSettings.rawSettings = rawSettings;
                     }
@@ -646,7 +651,7 @@ public partial class CoreConfigV2rayService
 
             if (!_node.Finalmask.IsNullOrEmpty())
             {
-                streamSettings.finalmask = JsonUtils.ParseJson(_node.Finalmask);
+                streamSettings.finalmask = JsonUtils.ParseJson(_node.Finalmask) as JsonObject;
             }
         }
         catch (Exception ex)
@@ -809,8 +814,6 @@ public partial class CoreConfigV2rayService
                                              && (n.streamSettings?.sockopt?.dialerProxy?.IsNullOrEmpty() ?? true))
                 .ToList();
 
-        var fragmentMask = BuildFragmentsMasks();
-
         foreach (var outbound in actOutboundWithTlsList)
         {
             var finalMaskJsonObj = JsonUtils.ParseJson(JsonUtils.Serialize(outbound.streamSettings?.finalmask)) as JsonObject ?? new JsonObject();
@@ -818,6 +821,13 @@ public partial class CoreConfigV2rayService
             var tcpFinalmaskList = finalMaskJsonObj["tcp"] as JsonArray ?? [];
             if (tcpFinalmaskList.Count == 0)
             {
+                var fragmentMask = BuildFragmentsMasks();
+                // Xray's tlshello fragment is incompatible with REALITY.
+                if (outbound.streamSettings.security == Global.StreamSecurityReality
+                    && fragmentMask.settings?.packets == "tlshello")
+                {
+                    fragmentMask.settings!.packets = "1-3";
+                }
                 tcpFinalmaskList.Add(JsonUtils.SerializeToNode(fragmentMask));
                 finalMaskJsonObj["tcp"] = tcpFinalmaskList;
             }
@@ -837,10 +847,10 @@ public partial class CoreConfigV2rayService
             protocol = "freedom",
             streamSettings = new StreamSettings4Ray
             {
-                finalmask = new Finalmask4Ray
+                finalmask = JsonUtils.SerializeToNode(new Finalmask4Ray
                 {
                     tcp = [fragmentMask],
-                },
+                }) as JsonObject,
             },
         };
 
@@ -913,5 +923,33 @@ public partial class CoreConfigV2rayService
             }
         }
         return clonedOutbounds;
+    }
+
+    private EMultipleLoad? FindFirstPolicyGroupMultipleLoad()
+    {
+        if (!_node.ConfigType.IsGroupType())
+        {
+            return null;
+        }
+
+        // BFS: the nearest policy group in the group tree decides the multiple load strategy.
+        var queue = new Queue<ProfileItem>([_node]);
+        while (queue.Count > 0)
+        {
+            var node = queue.Dequeue();
+            if (node.ConfigType == EConfigType.PolicyGroup)
+            {
+                return node.GetProtocolExtra().MultipleLoad;
+            }
+            foreach (var childId in Utils.String2List(node.GetProtocolExtra().ChildItems) ?? [])
+            {
+                if (context.AllProxiesMap.TryGetValue(childId, out var childNode)
+                    && childNode.ConfigType.IsGroupType())
+                {
+                    queue.Enqueue(childNode);
+                }
+            }
+        }
+        return null;
     }
 }

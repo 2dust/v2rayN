@@ -789,7 +789,7 @@
                     Grid.Row="2"
                     ColumnDefinitions="300,Auto"
                     IsVisible="False"
-                    RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+                    RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="0"
@@ -845,6 +845,64 @@
                         Classes="TextArea"
                         PlaceholderText="Header: Value"
                         TextWrapping="NoWrap" />
+
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Text="{x:Static resx:ResUI.TbWarp}" />
+                    <Button
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        Margin="{StaticResource MarginLr4}"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Classes="IconButton">
+                        <Button.Content>
+                            <PathIcon Data="{StaticResource SemiIconMore}">
+                                <PathIcon.RenderTransform>
+                                    <RotateTransform Angle="90" />
+                                </PathIcon.RenderTransform>
+                            </PathIcon>
+                        </Button.Content>
+                        <Button.Flyout>
+                            <Flyout>
+                                <StackPanel>
+                                    <TextBlock
+                                        Margin="{StaticResource Margin4}"
+                                        VerticalAlignment="Center"
+                                        FontWeight="Bold"
+                                        Text="{x:Static resx:ResUI.TbXrayOnly}" />
+                                    <TextBlock
+                                        Margin="{StaticResource Margin4}"
+                                        VerticalAlignment="Center"
+                                        Text="{x:Static resx:ResUI.TbPrivateKey}" />
+                                    <TextBox
+                                        x:Name="txtWarpPrivateKey"
+                                        Width="400"
+                                        Margin="{StaticResource Margin4}" />
+                                    <TextBlock
+                                        Margin="{StaticResource Margin4}"
+                                        VerticalAlignment="Center"
+                                        Text="{x:Static resx:ResUI.TbPublicKey}" />
+                                    <TextBox
+                                        x:Name="txtWarpPublicKey"
+                                        Width="400"
+                                        Margin="{StaticResource Margin4}" />
+                                    <TextBlock
+                                        Margin="{StaticResource Margin4}"
+                                        VerticalAlignment="Center"
+                                        Text="{x:Static resx:ResUI.TbLocalAddress}" />
+                                    <TextBox
+                                        x:Name="txtWarpAddress"
+                                        Width="400"
+                                        Margin="{StaticResource Margin4}"
+                                        PlaceholderText="Ipv4, Ipv6" />
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
                 </Grid>
 
                 <Separator

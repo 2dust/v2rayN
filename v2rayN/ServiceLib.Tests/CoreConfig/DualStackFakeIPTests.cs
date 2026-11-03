@@ -56,6 +56,38 @@ public class DualStackFakeIPTests
     }
 
     [Test]
+    public async Task AppConfig_ShouldRoundTripIPv6Settings()
+    {
+        var config = CoreConfigTestFactory.CreateConfig();
+        config.SimpleDNSItem.FakeIPv6 = true;
+        config.SimpleDNSItem.FakeIPv6Range = "2001:2::/48";
+
+        var restored = JsonUtils.Deserialize<Config>(JsonUtils.Serialize(config))!;
+
+        await restored.Should().NotBeNull();
+        await restored.SimpleDNSItem.FakeIPv6.Should().BeEqualTo(true);
+        await restored.SimpleDNSItem.FakeIPv6Range.Should().BeEqualTo("2001:2::/48");
+    }
+
+    [Test]
+    [Arguments(false)]
+    [Arguments(true)]
+    public async Task Xray_ShouldRoundTripSingleAndDualPools(bool enableIPv6)
+    {
+        var context = CreateContext(ECoreType.Xray, enableIPv6, false);
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue();
+        var restored = JsonUtils.Deserialize<V2rayConfig>(result.Data!.ToString())!;
+        await restored.Should().NotBeNull();
+        var roundTrip = JsonUtils.ParseJson(JsonUtils.Serialize(restored))!;
+        var original = JsonUtils.ParseJson(result.Data!.ToString())!;
+        await JsonNode.DeepEquals(original["fakedns"], roundTrip["fakedns"]).Should().BeTrue();
+        await (restored.fakedns is JsonArray).Should().BeEqualTo(enableIPv6);
+        await restored.fakedns.Should().NotBeNull();
+    }
+
+    [Test]
     [Arguments(false, false)]
     [Arguments(true, false)]
     [Arguments(true, true)]

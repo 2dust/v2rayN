@@ -178,7 +178,8 @@ public class CoreProcessTrackerTests
 
     private static string CopySleepExecutable(string directory)
     {
-        var executable = Path.Combine(directory, "sleep-core-test");
+        // Multicall implementations dispatch by basename, so preserve the sleep utility name.
+        var executable = Path.Combine(directory, "sleep");
         File.Copy("/bin/sleep", executable);
         return executable;
     }

@@ -191,13 +191,7 @@ public partial class RoutingRuleSettingViewModel : MyReactiveObject, ICloseable
         }
         if (lst.Count > 0)
         {
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = true,
-                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            };
-            await SetClipboardDataInteraction.HandleSafe(JsonUtils.Serialize(lst, options));
+            await SetClipboardDataInteraction.HandleSafe(JsonUtils.SerializeCamelCase(lst));
         }
     }
 

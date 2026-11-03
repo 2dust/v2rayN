@@ -1,6 +1,5 @@
 namespace ServiceLib.Models.Dto;
 
-[Serializable]
 public class ServerTestItem
 {
     public string? IndexId { get; set; }

@@ -3,7 +3,6 @@ namespace ServiceLib.Models.Dto;
 /// <summary>
 /// https://github.com/2dust/v2rayN/wiki/
 /// </summary>
-[Serializable]
 public class VmessQRCode
 {
     [JsonNumberHandling(JsonNumberHandling.AllowReadingFromString | JsonNumberHandling.WriteAsString)]

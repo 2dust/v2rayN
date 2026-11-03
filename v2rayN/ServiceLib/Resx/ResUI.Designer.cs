@@ -529,6 +529,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Pre-resolve server domains 的本地化字符串。
+        /// </summary>
+        public static string LvPreResolve {
+            get {
+                return ResourceManager.GetString("LvPreResolve", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Previous proxy remarks 的本地化字符串。
         /// </summary>
         public static string LvPrevProfile {
@@ -975,6 +984,15 @@ namespace ServiceLib.Resx {
         public static string menuClose {
             get {
                 return ResourceManager.GetString("menuClose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Columns 的本地化字符串。
+        /// </summary>
+        public static string menuColumns {
+            get {
+                return ResourceManager.GetString("menuColumns", resourceCulture);
             }
         }
         
@@ -5154,6 +5172,15 @@ namespace ServiceLib.Resx {
         public static string TbVerifyPeerCertByName {
             get {
                 return ResourceManager.GetString("TbVerifyPeerCertByName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Warp 的本地化字符串。
+        /// </summary>
+        public static string TbWarp {
+            get {
+                return ResourceManager.GetString("TbWarp", resourceCulture);
             }
         }
         

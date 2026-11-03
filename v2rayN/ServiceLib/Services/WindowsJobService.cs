@@ -24,7 +24,7 @@ public sealed class WindowsJobService : IDisposable
 
         try
         {
-            var length = Marshal.SizeOf(typeof(JOBOBJECT_EXTENDED_LIMIT_INFORMATION));
+            var length = Marshal.SizeOf<JOBOBJECT_EXTENDED_LIMIT_INFORMATION>();
             extendedInfoPtr = Marshal.AllocHGlobal(length);
             Marshal.StructureToPtr(extendedInfo, extendedInfoPtr, false);
 

@@ -34,9 +34,7 @@ public class WebAuthRateLimitTests
         await app.StartAsync();
         try
         {
-            var server = app.Services.GetRequiredService<IServer>();
-            var address = server.Features.Get<IServerAddressesFeature>()!.Addresses.Single();
-            using var client = new HttpClient { BaseAddress = new Uri(address), Timeout = TimeSpan.FromSeconds(20) };
+            using var client = CreateClient(app);
             var statuses = new List<HttpStatusCode>();
             int? retryAfterSeconds = null;
 
@@ -118,6 +116,38 @@ public class WebAuthRateLimitTests
         }
     }
 
+    [Test]
+    [NotInParallel]
+    public async Task LocalRateLimitRequestsDoNotUseTheDefaultProxy()
+    {
+        var proxyBuilder = WebApplication.CreateBuilder();
+        proxyBuilder.WebHost.ConfigureKestrel(options => options.Listen(IPAddress.Loopback, 0));
+        await using var proxy = proxyBuilder.Build();
+        proxy.Run(context =>
+        {
+            context.Response.StatusCode = StatusCodes.Status502BadGateway;
+            return Task.CompletedTask;
+        });
+        await proxy.StartAsync();
+        await using var app = CreatePartitionTestApp();
+        await app.StartAsync();
+        var proxyAddress = proxy.Services.GetRequiredService<IServer>()
+            .Features.Get<IServerAddressesFeature>()!.Addresses.Single();
+        var previousProxy = HttpClient.DefaultProxy;
+        try
+        {
+            HttpClient.DefaultProxy = new FixedProxy(new Uri(proxyAddress));
+            using var client = CreateClient(app);
+            await (await GetLimitedStatusAsync(client, "/setup-limited", "192.0.2.1", 0))
+                .Should().BeEqualTo(HttpStatusCode.OK);
+        }
+        finally
+        {
+            HttpClient.DefaultProxy = previousProxy;
+            await app.StopAsync();
+            await proxy.StopAsync();
+        }
+    }
     private static WebApplication CreatePartitionTestApp()
     {
         var builder = WebApplication.CreateBuilder();
@@ -149,7 +179,11 @@ public class WebAuthRateLimitTests
     {
         var server = app.Services.GetRequiredService<IServer>();
         var address = server.Features.Get<IServerAddressesFeature>()!.Addresses.Single();
-        return new HttpClient { BaseAddress = new Uri(address), Timeout = TimeSpan.FromSeconds(20) };
+        return new HttpClient(new SocketsHttpHandler { UseProxy = false })
+        {
+            BaseAddress = new Uri(address),
+            Timeout = TimeSpan.FromSeconds(20),
+        };
     }
 
     private static async Task<HttpStatusCode> GetLimitedStatusAsync(HttpClient client, string endpoint, string remoteIp, int requestIndex)
@@ -163,6 +197,12 @@ public class WebAuthRateLimitTests
         return response.StatusCode;
     }
 
+    private sealed class FixedProxy(Uri address) : IWebProxy
+    {
+        public ICredentials? Credentials { get; set; }
+        public Uri GetProxy(Uri destination) => address;
+        public bool IsBypassed(Uri host) => false;
+    }
     private sealed class TemporaryDirectory : IDisposable
     {
         public TemporaryDirectory()

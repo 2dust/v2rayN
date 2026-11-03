@@ -84,7 +84,7 @@ public partial class CoreConfigV2rayService
                 {
                     tunInbound.settings.autoOutboundsInterface = bindInterface;
                 }
-                tunInbound.sniffing = inbound.sniffing;
+                tunInbound.sniffing = JsonUtils.DeepCopy(inbound.sniffing);
                 // tunInbound.sniffing.routeOnly = inbound.sniffing.routeOnly;
                 tunInbound.sniffing.routeOnly = true;
 
