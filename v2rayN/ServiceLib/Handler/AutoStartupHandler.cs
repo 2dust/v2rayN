@@ -1,5 +1,3 @@
-using System.Security.Principal;
-
 namespace ServiceLib.Handler;
 
 public static class AutoStartupHandler

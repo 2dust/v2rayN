@@ -204,7 +204,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         }
     }
 
-    private void LstProfiles_DoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)
+    private void LstProfiles_DoubleTapped(object? sender, TappedEventArgs e)
     {
         var source = e.Source as Border;
         if (source?.Name == "HeaderBackground")

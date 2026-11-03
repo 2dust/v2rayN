@@ -1,5 +1,3 @@
-using System.Data;
-
 namespace ServiceLib.Handler;
 
 public static class ConfigHandler

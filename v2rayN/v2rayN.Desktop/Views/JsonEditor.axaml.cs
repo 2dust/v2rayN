@@ -1,4 +1,3 @@
-using System.Text.Json;
 using System.Xml;
 using AvaloniaEdit.Highlighting;
 using AvaloniaEdit.Highlighting.Xshd;
