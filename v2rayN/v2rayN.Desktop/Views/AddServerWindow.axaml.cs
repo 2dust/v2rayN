@@ -38,7 +38,7 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
         {
             this.WhenAnyValue(v => v.ViewModel.SelectedSource)
                 .KeepNotNull()
-                .Subscribe(InitializeData)
+                .Subscribe(editor => InitializeData(editor.ToEntity()))
                 .DisposeWith(disposables);
 
             var configTypeBindings = new SingleReplaceableDisposable();
@@ -321,7 +321,7 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
 
     private void CmbStreamSecurity_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        var security = cmbStreamSecurity.SelectedItem.ToString();
+        var security = cmbStreamSecurity.SelectedItem?.ToString();
         if (security == Global.StreamSecurityReality)
         {
             gridRealityMore.IsVisible = true;
