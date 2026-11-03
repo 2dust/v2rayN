@@ -172,11 +172,23 @@
                                     x:Name="menuSubGroupUpdateViaProxy"
                                     Height="{StaticResource MenuItemHeight}"
                                     Header="{x:Static resx:ResUI.menuSubGroupUpdateViaProxy}" />
-                                <Separator Margin="-40,5" />
-                                <MenuItem
-                                    x:Name="menuWorkflow"
-                                    Height="{StaticResource MenuItemHeight}"
-                                    Header="{x:Static resx:ResUI.menuWorkflowSetting}" />
+                            </MenuItem>
+                        </Menu>
+                        <Separator />
+                        <Menu Margin="0,1" Style="{StaticResource ToolbarMenu}">
+                            <MenuItem
+                                x:Name="menuWorkflow"
+                                Padding="{StaticResource MarginLeftRight8}"
+                                AutomationProperties.Name="{x:Static resx:ResUI.menuWorkflowSetting}">
+                                <MenuItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon
+                                            Margin="{StaticResource MarginRight8}"
+                                            VerticalAlignment="Center"
+                                            Kind="ScriptTextOutline" />
+                                        <TextBlock Text="{x:Static resx:ResUI.menuWorkflowSetting}" />
+                                    </StackPanel>
+                                </MenuItem.Header>
                             </MenuItem>
                         </Menu>
                         <Separator />
