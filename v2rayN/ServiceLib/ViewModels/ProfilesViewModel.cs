@@ -711,15 +711,18 @@ public partial class ProfilesViewModel : MyReactiveObject
         }
     }
 
-    /// <summary>Remove duplicates inside a group and return how many were removed.</summary>
-    public async Task<int> DedupServersAsync(string? subId)
+    /// <summary>
+    /// Remove duplicates inside a group, or in every group when <paramref name="subId"/> is null.
+    /// Returns the number of removed servers and reports the before/after counts for the notice.
+    /// </summary>
+    public async Task<(int Removed, int Old, int New)> DedupServersAsync(string? subId)
     {
         var tuple = await ConfigHandler.DedupServerList(_config, subId);
         if (tuple.Item1 > 0)
         {
             await RefreshServers();
         }
-        return tuple.Item1;
+        return (tuple.Item1 - tuple.Item2, tuple.Item1, tuple.Item2);
     }
 
     /// <summary>Remove servers with an invalid test result and return how many were removed.</summary>
