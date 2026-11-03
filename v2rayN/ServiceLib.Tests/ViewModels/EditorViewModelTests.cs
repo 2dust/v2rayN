@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net.Security;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
+using System.Runtime.CompilerServices;
 using ReactiveUI.Builder;
 using ReactiveUI.Primitives;
 using ReactiveUI.Primitives.Extensions;
@@ -293,6 +294,103 @@ public class EditorViewModelTests
     }
 
     [Test]
+    [Arguments(EConfigType.VMess, true)]
+    [Arguments(EConfigType.Custom, true)]
+    [Arguments(EConfigType.ProxyChain, true)]
+    [Arguments(EConfigType.VMess, false)]
+    [Arguments(EConfigType.Custom, false)]
+    [Arguments(EConfigType.ProxyChain, false)]
+    public async Task AddServerDialog_UsesSavedIdentityForReloadDecision(EConfigType configType, bool makeSavedProfileActive)
+    {
+        using var fixture = new EditorFixture();
+        using var main = new MainWindowFixture(fixture.Config);
+        fixture.Config.SubIndexId = fixture.Name;
+        var active = new ProfileItem { IndexId = $"active-{fixture.Name}", Remarks = fixture.Name, Subid = fixture.Name, Address = "active.example", Port = 443 };
+        await SQLiteHelper.Instance.InsertAsync(active);
+        fixture.Config.IndexId = active.IndexId;
+        string? savedId = null;
+        var previousDialog = AppManager.Instance.WindowDialog;
+        AppManager.Instance.WindowDialog = new DialogStub(async dialog =>
+        {
+            switch (dialog)
+            {
+                case AddServerViewModel profile:
+                    profile.SelectedSource.Remarks = fixture.Name;
+                    profile.SelectedSource.Address = "edited.example";
+                    profile.SelectedSource.Port = 443;
+                    profile.SelectedSource.Password = "edited-password";
+                    await Invoke(profile, "SaveServerAsync");
+                    savedId = profile.SelectedSource.ToEntity().IndexId;
+                    break;
+                case AddServer2ViewModel custom:
+                    custom.SelectedSource.Remarks = fixture.Name;
+                    var file = Utils.GetTempPath($"{fixture.Name}-dialog.json");
+                    await File.WriteAllTextAsync(file, "{}");
+                    try
+                    {
+                        await custom.BrowseServer(file);
+                        await Invoke(custom, "SaveServerAsync");
+                        savedId = custom.SelectedSource.ToEntity().IndexId;
+                        File.Delete(Utils.GetConfigPath(custom.SelectedSource.Address));
+                    }
+                    finally { File.Delete(file); }
+                    break;
+                case AddGroupServerViewModel group:
+                    group.SelectedSource.Remarks = fixture.Name;
+                    group.ChildItemsObs.Add(active);
+                    await Invoke(group, "SaveServerAsync");
+                    savedId = group.SelectedSource.ToEntity().IndexId;
+                    break;
+                default:
+                    throw new InvalidOperationException("Unexpected dialog.");
+            }
+            if (makeSavedProfileActive) await ConfigHandler.SetDefaultServerIndex(fixture.Config, savedId);
+            return true;
+        });
+        try
+        {
+            await main.ViewModel.AddServerAsync(configType).WaitAsync(TimeSpan.FromSeconds(20));
+
+            await string.IsNullOrEmpty(savedId).Should().BeFalse();
+            await (await fixture.Profiles()).Count.Should().BeEqualTo(2);
+            await main.ViewModel.ProfilesViewModel.ProfileItems.Any(item => item.IndexId == savedId).Should().BeTrue();
+            await main.RefreshCount.Should().BeEqualTo(1);
+            await main.ReloadQueued.Should().BeEqualTo(makeSavedProfileActive);
+        }
+        finally { AppManager.Instance.WindowDialog = previousDialog; }
+    }
+
+    [Test]
+    [Arguments(EConfigType.VMess)]
+    [Arguments(EConfigType.Custom)]
+    [Arguments(EConfigType.ProxyChain)]
+    public async Task AddServerDialog_CancelDoesNotPersistRefreshOrReload(EConfigType configType)
+    {
+        using var fixture = new EditorFixture();
+        using var main = new MainWindowFixture(fixture.Config);
+        var previousDialog = AppManager.Instance.WindowDialog;
+        AppManager.Instance.WindowDialog = new DialogStub(dialog =>
+        {
+            switch (dialog)
+            {
+                case AddServerViewModel profile: profile.SelectedSource.Remarks = fixture.Name; break;
+                case AddServer2ViewModel custom: custom.SelectedSource.Remarks = fixture.Name; break;
+                case AddGroupServerViewModel group: group.SelectedSource.Remarks = fixture.Name; break;
+            }
+            return Task.FromResult(false);
+        });
+        try
+        {
+            await main.ViewModel.AddServerAsync(configType).WaitAsync(TimeSpan.FromSeconds(20));
+            await (await fixture.Profiles()).Count.Should().BeEqualTo(0);
+            await fixture.Config.IndexId.Should().BeEqualTo(string.Empty);
+            await main.RefreshCount.Should().BeEqualTo(0);
+            await main.ReloadQueued.Should().BeFalse();
+        }
+        finally { AppManager.Instance.WindowDialog = previousDialog; }
+    }
+
+    [Test]
     [Arguments("RemoteRestore")]
     [Arguments("RemoteBackup")]
     public async Task RemoteOperation_UsesCommittedConfigWithoutApplyingUnsavedEditor(string method)
@@ -312,6 +410,51 @@ public class EditorViewModelTests
     {
         var task = (Task)typeof(T).GetMethod(method, BindingFlags.Instance | BindingFlags.NonPublic)!.Invoke(viewModel, null)!;
         await task.WaitAsync(TimeSpan.FromSeconds(20));
+    }
+
+    private sealed class DialogStub(Func<object, Task<bool>> show) : IWindowDialog
+    {
+        public Task<bool> ShowDialogAsync<TViewModel>(TViewModel vm) where TViewModel : class => show(vm);
+    }
+
+    private sealed class MainWindowFixture : IDisposable
+    {
+        private readonly SemaphoreSlim _refreshGate = new(1, 1);
+        private readonly SemaphoreSlim _reloadGate = new(0, 1);
+        private readonly IDisposable _refreshHandler;
+        public MainWindowViewModel ViewModel { get; }
+        public int RefreshCount { get; private set; }
+        public bool ReloadQueued => (bool)typeof(MainWindowViewModel).GetField("_hasNextReloadJob", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(ViewModel)!;
+
+        public MainWindowFixture(Config config)
+        {
+            // Constructor startup registers jobs and touches core/proxy services. This fixture
+            // initializes only fields used by the real AddServerAsync and refresh paths.
+            ViewModel = (MainWindowViewModel)RuntimeHelpers.GetUninitializedObject(typeof(MainWindowViewModel));
+            var profiles = (ProfilesViewModel)RuntimeHelpers.GetUninitializedObject(typeof(ProfilesViewModel));
+            var status = (StatusBarViewModel)RuntimeHelpers.GetUninitializedObject(typeof(StatusBarViewModel));
+            typeof(MyReactiveObject).GetField("_config", BindingFlags.Static | BindingFlags.NonPublic)!.SetValue(null, config);
+            typeof(ProfilesViewModel).GetField("<ProfileItems>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic)!
+                .SetValue(profiles, new BulkObservableCollection<ProfileItemModel>());
+            var refresh = new Interaction<RxVoid, RxVoid>();
+            typeof(ProfilesViewModel).GetField("<DispatcherRefreshServersBizInteraction>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic)!.SetValue(profiles, refresh);
+            typeof(StatusBarViewModel).GetField("<Servers>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic)!
+                .SetValue(status, new BulkObservableCollection<ComboItem>());
+            typeof(MainWindowViewModel).GetField("<ProfilesViewModel>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic)!.SetValue(ViewModel, profiles);
+            typeof(MainWindowViewModel).GetField("<StatusBarViewModel>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic)!.SetValue(ViewModel, status);
+            typeof(MainWindowViewModel).GetField("_refreshServersSemaphore", BindingFlags.Instance | BindingFlags.NonPublic)!.SetValue(ViewModel, _refreshGate);
+            // Reload's existing overlapping-work guard records the request and returns
+            // before any core startup or system-proxy operation can execute.
+            typeof(MainWindowViewModel).GetField("_reloadSemaphore", BindingFlags.Instance | BindingFlags.NonPublic)!.SetValue(ViewModel, _reloadGate);
+            _refreshHandler = refresh.RegisterHandler(context => { RefreshCount++; context.SetOutput(RxVoid.Default); });
+        }
+
+        public void Dispose()
+        {
+            _refreshHandler.Dispose();
+            _refreshGate.Dispose();
+            _reloadGate.Dispose();
+        }
     }
 
     private sealed class EditorFixture : IDisposable
