@@ -726,11 +726,14 @@ public partial class ProfilesViewModel : MyReactiveObject
             return;
         }
 
-        // Sort is persisted on ProfileExItem, not on ProfileItem, so it is not part of
-        // ProfileModels. Look it up per row instead of ordering by the always-zero default.
+        // Sort lives on ProfileExItem, not on ProfileItem, so ProfileModels cannot order by it.
+        // GetSort scans the whole bag per call, so build the lookup once instead of per row.
+        var sorts = (await ProfileExManager.Instance.GetProfileExs())
+            .GroupBy(t => t.IndexId)
+            .ToDictionary(g => g.Key, g => g.First().Sort);
         var ordered = selectType == EServerSelectType.Last
-            ? lstModel.OrderByDescending(t => ProfileExManager.Instance.GetSort(t.IndexId))
-            : lstModel.OrderBy(t => ProfileExManager.Instance.GetSort(t.IndexId));
+            ? lstModel.OrderByDescending(t => sorts.GetValueOrDefault(t.IndexId))
+            : lstModel.OrderBy(t => sorts.GetValueOrDefault(t.IndexId));
         var target = ordered.FirstOrDefault();
         if (target is null)
         {
