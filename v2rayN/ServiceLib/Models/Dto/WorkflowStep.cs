@@ -39,7 +39,11 @@ public class WorkflowStep : INotifyPropertyChanged
 
     public bool Enabled { get; set; } = true;
 
-    /// <summary>Subscription id for <see cref="EWorkflowAction.UpdateSubscriptions"/>; empty means all.</summary>
+    /// <summary>
+    /// Subscription id the step operates on; empty means every group. Empty is the editor's
+    /// "All groups" choice and is deliberately not substituted with the selected group, so an
+    /// explicit all-groups step stays all-groups at run time.
+    /// </summary>
     public string? SubId { get; set; }
 
     /// <summary>Action dependent argument: sort column, test type or system proxy type.</summary>

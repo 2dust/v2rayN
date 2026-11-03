@@ -720,7 +720,7 @@ public partial class ProfilesViewModel : MyReactiveObject
     /// </summary>
     public async Task SetDefaultServerForGroupAsync(string? subId, EServerSelectType selectType)
     {
-        var lstModel = await AppManager.Instance.ProfileModels(subId ?? _config.SubIndexId, string.Empty);
+        var lstModel = await AppManager.Instance.ProfileModels(subId ?? string.Empty, string.Empty);
         if (lstModel is not { Count: > 0 })
         {
             return;
@@ -744,7 +744,7 @@ public partial class ProfilesViewModel : MyReactiveObject
 
     private async Task<List<ProfileItem>> GetProfilesForGroup(string? subId)
     {
-        var lstModel = await AppManager.Instance.ProfileModels(subId ?? _config.SubIndexId, string.Empty);
+        var lstModel = await AppManager.Instance.ProfileModels(subId ?? string.Empty, string.Empty);
         if (lstModel is not { Count: > 0 })
         {
             return [];

@@ -11,31 +11,31 @@ public sealed class WorkflowRuntime(ProfilesViewModel profiles, Func<string?, bo
         await updateSubscriptions(subId, viaProxy);
     }
 
-    public async Task<int> DeduplicateServers(string subId)
+    public async Task<int> DeduplicateServers(string? subId)
     {
         var count = await profiles.DedupServersAsync(subId);
         NoticeManager.Instance.Enqueue(string.Format(ResUI.RemoveDuplicateServerResult, count, 0));
         return count;
     }
 
-    public async Task SortServers(string subId, string column, bool asc)
+    public async Task SortServers(string? subId, string column, bool asc)
     {
         await profiles.SortServersAsync(subId, column, asc);
     }
 
-    public async Task TestServers(string subId, ESpeedActionType actionType)
+    public async Task TestServers(string? subId, ESpeedActionType actionType)
     {
         await profiles.TestServersAsync(subId, actionType);
     }
 
-    public async Task<int> RemoveInvalidServers(string subId)
+    public async Task<int> RemoveInvalidServers(string? subId)
     {
         var count = await profiles.RemoveInvalidServersAsync(subId);
         NoticeManager.Instance.Enqueue(string.Format(ResUI.RemoveInvalidServerResultTip, count));
         return count;
     }
 
-    public async Task ActivateServer(string subId, EServerSelectType selectType)
+    public async Task ActivateServer(string? subId, EServerSelectType selectType)
     {
         await profiles.SetDefaultServerForGroupAsync(subId, selectType);
     }

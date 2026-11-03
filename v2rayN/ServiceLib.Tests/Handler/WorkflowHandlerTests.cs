@@ -157,22 +157,22 @@ public class WorkflowHandlerTests
             new() { Action = EWorkflowAction.SystemProxy, Parameter = nameof(ESysProxyType.ForcedChange) },
         ]);
 
-        await WorkflowHandler.Run(new Config { SubIndexId = "default-sub" }, workflow, runtime);
+        await WorkflowHandler.Run(workflow, runtime);
 
         await runtime.Calls.Should().BeEquivalentTo(
         [
-            // A subscription step with no group updates every subscription, so SubId stays null.
+            // A step with no group means every group, so SubId stays null (not the selected group).
             "update::True",
-            "dedup:default-sub",
-            "sort:default-sub:SpeedVal:False",
-            "test:default-sub:Speedtest",
-            "activate:default-sub:First",
+            "dedup:",
+            "sort::SpeedVal:False",
+            "test::Speedtest",
+            "activate::First",
             "sysproxy:ForcedChange",
         ]);
     }
 
     [Test]
-    public async Task Run_ShouldPreferStepSubIdOverConfigGroup()
+    public async Task Run_ShouldUseStepSubIdWhenSet()
     {
         var runtime = new RecordingRuntime();
         var workflow = new WorkflowItem { Id = "w1", Remarks = "nightly" };
@@ -181,7 +181,7 @@ public class WorkflowHandlerTests
             new() { Action = EWorkflowAction.DeduplicateServers, SubId = "sub-9" },
         ]);
 
-        await WorkflowHandler.Run(new Config { SubIndexId = "default-sub" }, workflow, runtime);
+        await WorkflowHandler.Run(workflow, runtime);
 
         await runtime.Calls.Should().BeEquivalentTo(["dedup:sub-9"]);
     }
@@ -199,14 +199,14 @@ public class WorkflowHandlerTests
             new() { Action = EWorkflowAction.ActivateServer, Parameter = "not-a-select-type" },
         ]);
 
-        await WorkflowHandler.Run(new Config { SubIndexId = "default-sub" }, workflow, runtime);
+        await WorkflowHandler.Run(workflow, runtime);
 
         await runtime.Calls.Should().BeEquivalentTo(
         [
-            $"sort:default-sub:{nameof(EServerColName.DelayVal)}:False",
-            $"test:default-sub:{nameof(ESpeedActionType.Realping)}",
+            $"sort::{nameof(EServerColName.DelayVal)}:False",
+            $"test::{nameof(ESpeedActionType.Realping)}",
             $"sysproxy:{nameof(ESysProxyType.ForcedClear)}",
-            $"activate:default-sub:{nameof(EServerSelectType.First)}",
+            $"activate::{nameof(EServerSelectType.First)}",
         ]);
     }
 
@@ -220,9 +220,33 @@ public class WorkflowHandlerTests
             new() { Action = EWorkflowAction.UpdateSubscriptions, Enabled = false },
         ]);
 
-        await WorkflowHandler.Run(new Config { SubIndexId = "default-sub" }, workflow, runtime);
+        await WorkflowHandler.Run(workflow, runtime);
 
         await runtime.Calls.Count.Should().BeEqualTo(0);
+    }
+
+    /// <summary>
+    /// An all-groups step must reach the runtime as null, never as the currently selected
+    /// group, so it does not silently narrow to whatever group happens to be selected.
+    /// </summary>
+    [Test]
+    public async Task Run_ShouldKeepAllGroupsStepUnscopedRegardlessOfSelectedGroup()
+    {
+        var runtime = new RecordingRuntime();
+        var workflow = new WorkflowItem { Id = "w1", Remarks = "nightly" };
+        WorkflowHandler.SaveSteps(workflow,
+        [
+            new() { Action = EWorkflowAction.SortServers, SubId = null, Parameter = nameof(EServerColName.SpeedVal) },
+            new() { Action = EWorkflowAction.RemoveInvalidServers, SubId = null },
+        ]);
+
+        await WorkflowHandler.Run(workflow, runtime);
+
+        await runtime.Calls.Should().BeEquivalentTo(
+        [
+            $"sort::{nameof(EServerColName.SpeedVal)}:False",
+            "remove-invalid:",
+        ]);
     }
 
     /// <summary>
@@ -239,31 +263,31 @@ public class WorkflowHandlerTests
             return Task.CompletedTask;
         }
 
-        public Task<int> DeduplicateServers(string subId)
+        public Task<int> DeduplicateServers(string? subId)
         {
             Calls.Add($"dedup:{subId}");
             return Task.FromResult(0);
         }
 
-        public Task SortServers(string subId, string column, bool asc)
+        public Task SortServers(string? subId, string column, bool asc)
         {
             Calls.Add($"sort:{subId}:{column}:{asc}");
             return Task.CompletedTask;
         }
 
-        public Task TestServers(string subId, ESpeedActionType actionType)
+        public Task TestServers(string? subId, ESpeedActionType actionType)
         {
             Calls.Add($"test:{subId}:{actionType}");
             return Task.CompletedTask;
         }
 
-        public Task<int> RemoveInvalidServers(string subId)
+        public Task<int> RemoveInvalidServers(string? subId)
         {
             Calls.Add($"remove-invalid:{subId}");
             return Task.FromResult(0);
         }
 
-        public Task ActivateServer(string subId, EServerSelectType selectType)
+        public Task ActivateServer(string? subId, EServerSelectType selectType)
         {
             Calls.Add($"activate:{subId}:{selectType}");
             return Task.CompletedTask;

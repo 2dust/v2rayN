@@ -17,7 +17,7 @@ public sealed class WorkflowRunner
         _runtime = runtime;
     }
 
-    public async Task Run(Config config, WorkflowItem workflow)
+    public async Task Run(WorkflowItem workflow)
     {
         if (_runtime is null)
         {
@@ -25,6 +25,6 @@ public sealed class WorkflowRunner
             Logging.SaveLog("WorkflowRunner", new InvalidOperationException("Workflow runtime is not registered."));
             return;
         }
-        await WorkflowHandler.Run(config, workflow, _runtime);
+        await WorkflowHandler.Run(workflow, _runtime);
     }
 }
