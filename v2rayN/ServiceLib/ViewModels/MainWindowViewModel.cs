@@ -619,7 +619,8 @@ public partial class MainWindowViewModel : MyReactiveObject
     /// </summary>
     private void RefreshWorkflowRunner()
     {
-        WorkflowRunner.Instance.Register(new WorkflowRuntime(ProfilesViewModel, UpdateSubscriptionProcess));
+        WorkflowRunner.Instance.Register(new WorkflowRuntime(
+            ProfilesViewModel, UpdateSubscriptionProcess, StatusBarViewModel.SetListenerType));
     }
 
     #endregion Subscription

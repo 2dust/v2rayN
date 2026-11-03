@@ -360,7 +360,11 @@ public partial class StatusBarViewModel : MyReactiveObject
 
     #region System proxy and Routings
 
-    private async Task SetListenerType(ESysProxyType type)
+    /// <summary>
+    /// Apply a system proxy mode and persist it. Public so a workflow can await the actual
+    /// OS proxy change instead of only publishing the request event.
+    /// </summary>
+    public async Task SetListenerType(ESysProxyType type)
     {
         if (_config.SystemProxyItem.SysProxyType == type)
         {
