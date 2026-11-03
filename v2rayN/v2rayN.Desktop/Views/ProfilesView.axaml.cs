@@ -418,6 +418,21 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         }
     }
 
+    private async void CopyIpInfo_Click(object? sender, RoutedEventArgs e)
+    {
+        try
+        {
+            if (sender is MenuItem { CommandParameter: string text } && !text.IsNullOrEmpty())
+            {
+                await AvaUtils.SetClipboardData(this, text);
+            }
+        }
+        catch
+        {
+            // Ignore
+        }
+    }
+
     private void StorageUI()
     {
         try
