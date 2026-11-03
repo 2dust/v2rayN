@@ -2,9 +2,14 @@ namespace ServiceLib.ViewModels;
 
 /// <summary>
 /// Bridges <see cref="WorkflowHandler"/> to the profile and status bar view models.
-/// Created by the UI layer once the main view models exist.
+/// Created by the UI layer once the main view models exist. Every operation is awaited to
+/// completion, including the core reload after activation and the OS proxy change, so a
+/// following step never runs against a half-applied state.
 /// </summary>
-public sealed class WorkflowRuntime(ProfilesViewModel profiles, Func<string?, bool, Task> updateSubscriptions) : IWorkflowRuntime
+public sealed class WorkflowRuntime(
+    ProfilesViewModel profiles,
+    Func<string?, bool, Task> updateSubscriptions,
+    Func<ESysProxyType, Task> setSystemProxy) : IWorkflowRuntime
 {
     public async Task UpdateSubscriptions(string? subId, bool viaProxy)
     {
@@ -40,9 +45,8 @@ public sealed class WorkflowRuntime(ProfilesViewModel profiles, Func<string?, bo
         await profiles.SetDefaultServerForGroupAsync(subId, selectType);
     }
 
-    public Task SetSystemProxy(ESysProxyType type)
+    public async Task SetSystemProxy(ESysProxyType type)
     {
-        AppEvents.SysProxyChangeRequested.Publish(type);
-        return Task.CompletedTask;
+        await setSystemProxy(type);
     }
 }
