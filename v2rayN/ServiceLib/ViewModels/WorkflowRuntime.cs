@@ -13,9 +13,9 @@ public sealed class WorkflowRuntime(ProfilesViewModel profiles, Func<string?, bo
 
     public async Task<int> DeduplicateServers(string? subId)
     {
-        var count = await profiles.DedupServersAsync(subId);
-        NoticeManager.Instance.Enqueue(string.Format(ResUI.RemoveDuplicateServerResult, count, 0));
-        return count;
+        var (removed, oldCount, newCount) = await profiles.DedupServersAsync(subId);
+        NoticeManager.Instance.Enqueue(string.Format(ResUI.RemoveDuplicateServerResult, oldCount, newCount));
+        return removed;
     }
 
     public async Task SortServers(string? subId, string column, bool asc)
