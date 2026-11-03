@@ -1,4 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
+using System.Collections;
 
 namespace ServiceLib.Helper;
 
@@ -18,73 +18,47 @@ public sealed class SQLiteHelper
         _dbAsync = new SQLiteAsyncConnection(_connstr, false);
     }
 
-    public CreateTableResult CreateTable<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>()
+    public CreateTableResult CreateTable<T>()
     {
         return _db.CreateTable<T>();
     }
 
-    public async Task<int> InsertAllAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(IEnumerable<T> models)
+    public async Task<int> InsertAllAsync(IEnumerable models)
     {
-        var count = 0;
-        await _dbAsync.RunInTransactionAsync(connection =>
-        {
-            foreach (var model in models)
-            {
-                count += connection.Insert(model, typeof(T));
-            }
-        }).ConfigureAwait(false);
-        return count;
+        return await _dbAsync.InsertAllAsync(models, runInTransaction: true).ConfigureAwait(false);
     }
 
-    public async Task<int> ReplaceAllAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(IEnumerable<T> models)
+    public async Task<int> ReplaceAllAsync(IEnumerable models)
     {
-        var count = 0;
-        await _dbAsync.RunInTransactionAsync(connection =>
-        {
-            foreach (var model in models)
-            {
-                count += connection.InsertOrReplace(model, typeof(T));
-            }
-        }).ConfigureAwait(false);
-        return count;
+        return await _dbAsync.InsertAllAsync(models, extra: "OR REPLACE", runInTransaction: true).ConfigureAwait(false);
     }
 
-    public async Task<int> InsertAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(T model)
+    public async Task<int> InsertAsync(object model)
     {
-        return await _dbAsync.InsertAsync(model, typeof(T));
+        return await _dbAsync.InsertAsync(model);
     }
 
-    public async Task<int> ReplaceAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(T model)
+    public async Task<int> ReplaceAsync(object model)
     {
-        return await _dbAsync.InsertOrReplaceAsync(model, typeof(T));
+        return await _dbAsync.InsertOrReplaceAsync(model);
     }
 
-    public async Task<int> UpdateAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(T model)
+    public async Task<int> UpdateAsync(object model)
     {
-        return await _dbAsync.UpdateAsync(model, typeof(T));
+        return await _dbAsync.UpdateAsync(model);
     }
 
-    public async Task<int> UpdateAllAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(IEnumerable<T> models)
+    public async Task<int> UpdateAllAsync(IEnumerable models)
     {
-        var count = 0;
-        await _dbAsync.RunInTransactionAsync(connection =>
-        {
-            foreach (var model in models)
-            {
-                count += connection.Update(model, typeof(T));
-            }
-        }).ConfigureAwait(false);
-        return count;
+        return await _dbAsync.UpdateAllAsync(models, runInTransaction: true).ConfigureAwait(false);
     }
 
-    public async Task<int> DeleteAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(T model)
+    public async Task<int> DeleteAsync(object model)
     {
-        var mapping = await _dbAsync.GetMappingAsync(typeof(T));
-        var primaryKey = mapping.PK ?? throw new NotSupportedException($"Cannot delete {mapping.TableName}: it has no PK");
-        return await _dbAsync.DeleteAsync(primaryKey.GetValue(model), mapping);
+        return await _dbAsync.DeleteAsync(model);
     }
 
-    public async Task<int> DeleteAllAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>()
+    public async Task<int> DeleteAllAsync<T>()
     {
         return await _dbAsync.DeleteAllAsync<T>();
     }
@@ -94,12 +68,12 @@ public sealed class SQLiteHelper
         return await _dbAsync.ExecuteAsync(sql);
     }
 
-    public async Task<List<T>> QueryAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(string sql) where T : new()
+    public async Task<List<T>> QueryAsync<T>(string sql) where T : new()
     {
         return await _dbAsync.QueryAsync<T>(sql);
     }
 
-    public AsyncTableQuery<T> TableAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>() where T : new()
+    public AsyncTableQuery<T> TableAsync<T>() where T : new()
     {
         return _dbAsync.Table<T>();
     }

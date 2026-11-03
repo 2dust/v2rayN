@@ -1,41 +1,41 @@
 namespace ServiceLib.Models.Entities;
 
-public class SubItem : NotifyPropertyChangedBase
+public class SubItem
 {
     [PrimaryKey]
-    public string Id { get; set => SetField(ref field, value); }
+    public string Id { get; set; }
 
-    public string Remarks { get; set => SetField(ref field, value); }
+    public string Remarks { get; set; }
 
-    public string Url { get; set => SetField(ref field, value); }
+    public string Url { get; set; }
 
-    public string MoreUrl { get; set => SetField(ref field, value); }
+    public string MoreUrl { get; set; }
 
-    public bool Enabled { get; set => SetField(ref field, value); } = true;
+    public bool Enabled { get; set; } = true;
 
-    public string UserAgent { get; set => SetField(ref field, value); } = string.Empty;
+    public string UserAgent { get; set; } = string.Empty;
 
-    public string? RequestHeaders { get; set => SetField(ref field, value); }
+    public string? RequestHeaders { get; set; }
 
-    public int Sort { get; set => SetField(ref field, value); }
+    public int Sort { get; set; }
 
-    public string? Filter { get; set => SetField(ref field, value); }
+    public string? Filter { get; set; }
 
-    public int AutoUpdateInterval { get; set => SetField(ref field, value); }
+    public int AutoUpdateInterval { get; set; }
 
-    public long UpdateTime { get; set => SetField(ref field, value); }
+    public long UpdateTime { get; set; }
 
-    public string? ConvertTarget { get; set => SetField(ref field, value); }
+    public string? ConvertTarget { get; set; }
 
-    public string? PrevProfile { get; set => SetField(ref field, value); }
+    public string? PrevProfile { get; set; }
 
-    public string? NextProfile { get; set => SetField(ref field, value); }
+    public string? NextProfile { get; set; }
 
-    public int? PreSocksPort { get; set => SetField(ref field, value); }
+    public int? PreSocksPort { get; set; }
 
-    public string? Memo { get; set => SetField(ref field, value); }
+    public string? Memo { get; set; }
 
-    public ECoreType? CustomCoreType { get; set => SetField(ref field, value); }
+    public ECoreType? CustomCoreType { get; set; }
 
-    public string? PreResolver { get; set => SetField(ref field, value); }
+    public string? PreResolver { get; set; }
 }

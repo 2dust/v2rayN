@@ -141,8 +141,7 @@ public class CoreConfigV2rayServiceTests
         await headers["User-Agent"]!.GetValue<string>().Should().BeEqualTo("v2rayN");
         await headers["Set-Cookie"]!.AsArray()
             .Select(item => item!.GetValue<string>())
-            .Order(StringComparer.Ordinal).SequenceEqual(["a=1", "b=2"])
-            .Should().BeTrue();
+            .Should().BeEquivalentTo(["a=1", "b=2"]);
     }
 
     [Test]

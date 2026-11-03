@@ -96,6 +96,7 @@ public class ClashProxiesViewModelTests
         public async ValueTask DisposeAsync()
         {
             await _cancellation.CancelAsync();
+            _listener.Stop();
             try
             {
                 await _serverTask;
@@ -105,7 +106,6 @@ public class ClashProxiesViewModelTests
             }
             finally
             {
-                _listener.Stop();
                 _cancellation.Dispose();
             }
         }
