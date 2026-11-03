@@ -6,6 +6,92 @@ namespace ServiceLib.Tests.Manager;
 public class SubscriptionCoreLifecycleTests
 {
     [Test]
+    public async Task EquivalentImportedProfile_PreservesRunningProcessesAndTun()
+    {
+        var config = CoreConfigTestFactory.CreateConfig();
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+        SQLiteHelper.Instance.CreateTable<SubItem>();
+        SQLiteHelper.Instance.CreateTable<ProfileItem>();
+        var subId = $"runtime-refresh-{Guid.NewGuid():N}";
+        await SQLiteHelper.Instance.ReplaceAsync(new SubItem
+        {
+            Id = subId,
+            Remarks = "runtime refresh",
+            Url = "http://127.0.0.1/subscription",
+        });
+        const string source = "socks://user:pass@127.0.0.1:1080#running-profile";
+        await (await ConfigHandler.AddBatchServers(config, source, subId, true)).Should().BeEqualTo(1);
+        var original = (await AppManager.Instance.ProfileItems(subId))!.Single();
+        config.IndexId = original.IndexId;
+
+        using var mainProcess = await StartOwnedProcess();
+        using var preProcess = await StartOwnedProcess();
+        using var mainHandle = Process.GetProcessById(mainProcess.Id);
+        using var preHandle = Process.GetProcessById(preProcess.Id);
+        var mainStarted = mainHandle.StartTime;
+        var preStarted = preHandle.StartTime;
+        var tunRemovals = 0;
+        var manager = new CoreManager(() => { tunRemovals++; return Task.CompletedTask; });
+        await manager.Init(config, (_, _) => Task.CompletedTask);
+        var cleanups = new List<Action>();
+        try
+        {
+            // Existing files let the explicit-reload control reach the stop boundary.
+            // Invalid fixture executables prevent launching a real core or elevation.
+            foreach (var coreType in new[] { ECoreType.Xray, ECoreType.sing_box })
+            {
+                var info = CoreInfoManager.Instance.GetCoreInfo(coreType)!;
+                var originalExes = info.CoreExes;
+                var name = $"owned-no-reload-{Guid.NewGuid():N}";
+                var path = Utils.GetBinPath(Utils.GetExeName(name), coreType.ToString());
+                Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+                await File.WriteAllTextAsync(path, "not a core executable");
+                info.CoreExes = [name];
+                cleanups.Add(() => { info.CoreExes = originalExes; File.Delete(path); });
+                await CoreInfoManager.Instance.GetCoreExecFile(info, out _).Should().BeEqualTo(path);
+            }
+            var main = CoreConfigTestFactory.CreateContext(config, original, ECoreType.Xray);
+            var pre = CoreConfigTestFactory.CreateContext(config,
+                CoreConfigTestFactory.CreateSocksNode(ECoreType.sing_box, "pre"), ECoreType.sing_box)
+                with { IsTunEnabled = true };
+            SetField(manager, "_processService", mainProcess);
+            SetField(manager, "_processPreService", preProcess);
+            var running = await PreparedCoreConfigBundle.CreateAsync(main, pre);
+            SetField(manager, "_runningConfig", running);
+            var mainPath = Utils.GetBinConfigPath(Global.CoreConfigFileName);
+            var prePath = Utils.GetBinConfigPath(Global.CorePreConfigFileName);
+            await File.WriteAllTextAsync(mainPath, "running main bytes");
+            await File.WriteAllTextAsync(prePath, "running pre bytes");
+
+            await (await ConfigHandler.AddBatchServers(config, source, subId, true)).Should().BeEqualTo(1);
+            var selected = await AppManager.Instance.GetProfileItem(config.IndexId);
+            await (selected != null).Should().BeTrue();
+            var candidate = CoreConfigTestFactory.CreateContext(config, selected!, ECoreType.Xray);
+            await (await PreparedCoreConfigBundle.CreateAsync(candidate, pre)).IsEquivalentTo(running).Should().BeTrue();
+            await (await manager.LoadCore(candidate, pre, skipIfUnchanged: true)).Should().BeFalse();
+            await mainHandle.HasExited.Should().BeFalse();
+            await preHandle.HasExited.Should().BeFalse();
+            await mainHandle.StartTime.Should().BeEqualTo(mainStarted);
+            await preHandle.StartTime.Should().BeEqualTo(preStarted);
+            await tunRemovals.Should().BeEqualTo(0);
+            await (await File.ReadAllTextAsync(mainPath)).Should().BeEqualTo("running main bytes");
+            await (await File.ReadAllTextAsync(prePath)).Should().BeEqualTo("running pre bytes");
+
+            // Keep the deliberate launch failure from recovering and probing a pre-core port.
+            SetField(manager, "_runningConfig", null!);
+            await (await manager.LoadCore(candidate, null, skipIfUnchanged: false)).Should().BeFalse();
+            await mainHandle.HasExited.Should().BeTrue();
+            await preHandle.HasExited.Should().BeTrue();
+        }
+        finally
+        {
+            await manager.CoreStop();
+            foreach (var cleanup in cleanups)
+                cleanup();
+        }
+    }
+
+    [Test]
     public async Task UnchangedSubscription_PreservesBothProcessesAndLiveFiles_WithoutRemovingTun()
     {
         using var mainProcess = await StartOwnedProcess();

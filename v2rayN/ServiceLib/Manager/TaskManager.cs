@@ -6,10 +6,10 @@ public class TaskManager
     public static TaskManager Instance => _instance.Value;
     private Config _config;
     private Func<bool, string, Task>? _updateFunc;
-    private Func<SubscriptionRefreshResult, Task>? _subscriptionUpdated;
+    private Func<Task>? _subscriptionUpdated;
 
     public void RegUpdateTask(Config config, Func<bool, string, Task> updateFunc,
-        Func<SubscriptionRefreshResult, Task>? subscriptionUpdated = null)
+        Func<Task>? subscriptionUpdated = null)
     {
         _config = config;
         _updateFunc = updateFunc;
@@ -102,30 +102,24 @@ public class TaskManager
 
         Logging.SaveLog("Execute update subscription");
 
-        var updated = new List<string>();
-        var unavailable = new List<string>();
+        var updated = false;
         foreach (var item in lstSubs)
         {
-            var result = await SubscriptionHandler.UpdateProcess(_config, item.Id, true, async (success, msg) =>
+            await SubscriptionHandler.UpdateProcess(_config, item.Id, true, async (success, msg) =>
             {
                 await _updateFunc?.Invoke(_subscriptionUpdated == null && success, msg);
                 if (success)
                 {
+                    updated = true;
                     Logging.SaveLog($"Update subscription end. {msg}");
                 }
             });
-            updated.AddRange(result.UpdatedSubscriptionIds);
-            unavailable.AddRange(result.UnavailableActiveProfileIds);
             item.UpdateTime = updateTime;
             await ConfigHandler.AddSubItem(_config, item);
             await Task.Delay(1000);
         }
-        if (_subscriptionUpdated != null)
-            await _subscriptionUpdated(new SubscriptionRefreshResult
-            {
-                UpdatedSubscriptionIds = updated.Distinct().ToArray(),
-                UnavailableActiveProfileIds = unavailable.Distinct().ToArray()
-            });
+        if (updated && _subscriptionUpdated != null)
+            await _subscriptionUpdated();
     }
 
     private async Task UpdateTaskRunGeo(int hours)

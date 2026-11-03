@@ -376,10 +376,8 @@ public partial class MainWindowViewModel : MyReactiveObject
         }
     }
 
-    private async Task UpdateSubscriptionCompleted(SubscriptionRefreshResult result)
+    private async Task UpdateSubscriptionCompleted()
     {
-        if (!result.Success)
-            return;
         await RefreshServersDispatcherAsync(preserveDefaultServer: true);
         await Reload(onlyIfChanged: true);
         if (_config.UiItem.EnableAutoAdjustMainLvColWidth)
@@ -573,9 +571,16 @@ public partial class MainWindowViewModel : MyReactiveObject
 
     public async Task UpdateSubscriptionProcess(string subId, bool blProxy)
     {
-        var result = await Task.Run(async () => await SubscriptionHandler.UpdateProcess(_config, subId, blProxy,
-            (success, message) => UpdateTaskHandler(false, message)));
-        await UpdateSubscriptionCompleted(result);
+        var updated = false;
+        await Task.Run(async () => await SubscriptionHandler.UpdateProcess(_config, subId, blProxy,
+            (success, message) =>
+            {
+                if (success)
+                    updated = true;
+                return UpdateTaskHandler(false, message);
+            }));
+        if (updated)
+            await UpdateSubscriptionCompleted();
     }
 
     #endregion Subscription
