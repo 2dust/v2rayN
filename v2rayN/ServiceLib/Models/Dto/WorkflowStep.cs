@@ -13,6 +13,7 @@ public class WorkflowStep : INotifyPropertyChanged
 
     private EWorkflowAction _action;
     private string? _parameter;
+    private string? _subDisplay;
 
     public EWorkflowAction Action
     {
@@ -75,10 +76,24 @@ public class WorkflowStep : INotifyPropertyChanged
 
     /// <summary>
     /// Editor-only group name. <see cref="ViewModels.WorkflowEditViewModel"/> resolves it
-    /// back into <see cref="SubId"/> when the workflow is saved.
+    /// back into <see cref="SubId"/> when the workflow is saved. Notifies on change because
+    /// the subscriptions load asynchronously, so the value is often assigned after the
+    /// editor has already bound its group dropdown.
     /// </summary>
     [JsonIgnore]
-    public string? SubDisplay { get; set; }
+    public string? SubDisplay
+    {
+        get => _subDisplay;
+        set
+        {
+            if (_subDisplay == value)
+            {
+                return;
+            }
+            _subDisplay = value;
+            Notify(nameof(SubDisplay));
+        }
+    }
 
     /// <summary>Editor-only action choices, so the step grid can bind its dropdown to the row item.</summary>
     [JsonIgnore]
