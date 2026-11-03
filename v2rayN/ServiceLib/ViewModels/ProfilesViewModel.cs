@@ -663,6 +663,14 @@ public partial class ProfilesViewModel : MyReactiveObject
     /// <summary>Run a test over a whole group. Completes once the test run finished.</summary>
     public async Task TestServersAsync(string? subId, ESpeedActionType actionType)
     {
+        // SpeedtestService has no FastRealping case, so a step that selects it would
+        // finish without testing anything. Realping is the behavior the interactive
+        // command uses for it, so normalize here to keep the two in step.
+        if (actionType == ESpeedActionType.FastRealping)
+        {
+            actionType = ESpeedActionType.Realping;
+        }
+
         var lstSelected = await GetProfilesForGroup(subId);
         if (lstSelected.Count == 0)
         {
