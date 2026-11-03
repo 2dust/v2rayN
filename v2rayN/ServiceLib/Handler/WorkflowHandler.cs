@@ -12,7 +12,7 @@ public static class WorkflowHandler
     /// <summary>
     /// Execute every enabled step of the workflow. A failing step does not abort the run.
     /// </summary>
-    public static async Task Run(Config config, WorkflowItem workflow, IWorkflowRuntime runtime)
+    public static async Task Run(WorkflowItem workflow, IWorkflowRuntime runtime)
     {
         var steps = DeserializeSteps(workflow).Where(t => t.Enabled).ToList();
         if (steps.Count == 0)
@@ -21,15 +21,14 @@ public static class WorkflowHandler
             return;
         }
 
-        var subId = config.SubIndexId;
         NoticeManager.Instance.SendMessageEx($"{ResUI.WorkflowStartTip} - {workflow.Remarks}");
         for (var i = 0; i < steps.Count; i++)
         {
             var step = steps[i];
-            var prefix = $"[{i + 1}/{steps.Count}] {(step.SubId.IsNotEmpty() ? step.SubId : subId)}";
+            var prefix = $"[{i + 1}/{steps.Count}] {(step.SubId.IsNotEmpty() ? step.SubId : ResUI.AllGroupServers)}";
             try
             {
-                await RunStep(config, step, subId, runtime);
+                await RunStep(step, runtime);
             }
             catch (Exception ex)
             {
@@ -40,34 +39,38 @@ public static class WorkflowHandler
         NoticeManager.Instance.Enqueue($"{ResUI.WorkflowEndTip} - {workflow.Remarks}");
     }
 
-    private static async Task RunStep(Config config, WorkflowStep step, string? subId, IWorkflowRuntime runtime)
+    private static async Task RunStep(WorkflowStep step, IWorkflowRuntime runtime)
     {
+        // An empty SubId is the editor's "All groups" choice, so it is passed through as null
+        // rather than replaced with the selected group. A step that means "everything" must not
+        // silently narrow to one group depending on what the user happened to have selected.
+        var subId = step.SubId.IsNotEmpty() ? step.SubId : null;
+
         switch (step.Action)
         {
             case EWorkflowAction.UpdateSubscriptions:
-                await runtime.UpdateSubscriptions(step.SubId, step.BoolParameter);
+                await runtime.UpdateSubscriptions(subId, step.BoolParameter);
                 break;
 
             case EWorkflowAction.DeduplicateServers:
-                await runtime.DeduplicateServers(step.SubId.IsNotEmpty() ? step.SubId : subId);
+                await runtime.DeduplicateServers(subId);
                 break;
 
             case EWorkflowAction.SortServers:
-                await runtime.SortServers(step.SubId.IsNotEmpty() ? step.SubId : subId,
+                await runtime.SortServers(subId,
                     step.Parameter ?? nameof(EServerColName.DelayVal), step.BoolParameter);
                 break;
 
             case EWorkflowAction.TestServers:
-                await runtime.TestServers(step.SubId.IsNotEmpty() ? step.SubId : subId, ParseTestType(step.Parameter));
+                await runtime.TestServers(subId, ParseTestType(step.Parameter));
                 break;
 
             case EWorkflowAction.RemoveInvalidServers:
-                await runtime.RemoveInvalidServers(step.SubId.IsNotEmpty() ? step.SubId : subId);
+                await runtime.RemoveInvalidServers(subId);
                 break;
 
             case EWorkflowAction.ActivateServer:
-                await runtime.ActivateServer(step.SubId.IsNotEmpty() ? step.SubId : subId,
-                    ParseServerSelectType(step.Parameter));
+                await runtime.ActivateServer(subId, ParseServerSelectType(step.Parameter));
                 break;
 
             case EWorkflowAction.SystemProxy:
