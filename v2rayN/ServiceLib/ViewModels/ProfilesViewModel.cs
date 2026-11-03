@@ -11,6 +11,14 @@ public partial class ProfilesViewModel : MyReactiveObject
     public Interaction<RxVoid, RxVoid> AdjustMainLvColWidthInteraction { get; } = new();
 
     public EventChannel<RxVoid> ReloadRequested { get; } = new();
+
+    /// <summary>
+    /// Awaitable version of <see cref="ReloadRequested"/>, set by the main view model. The
+    /// channel only signals; workflows need to know when the reload actually finished before
+    /// running the next step. Null when no owner is wired (design mode, tests).
+    /// </summary>
+    public Func<Task>? ReloadAsync { get; set; }
+
     public EventChannel<RxVoid> RefreshServersRequested { get; } = new();
 
     #region private prop
@@ -568,7 +576,7 @@ public partial class ProfilesViewModel : MyReactiveObject
         await SetDefaultServer(SelectedProfile.IndexId);
     }
 
-    public async Task SetDefaultServer(string? indexId)
+    public async Task SetDefaultServer(string? indexId, bool waitForReload = false)
     {
         if (indexId.IsNullOrEmpty())
         {
@@ -588,7 +596,16 @@ public partial class ProfilesViewModel : MyReactiveObject
         if (await ConfigHandler.SetDefaultServerIndex(_config, indexId) == 0)
         {
             await RefreshServers();
-            Reload();
+            // Workflows need the reload to be finished before the next step runs; the
+            // interactive command keeps firing the request and returning.
+            if (waitForReload && ReloadAsync is not null)
+            {
+                await ReloadAsync();
+            }
+            else
+            {
+                Reload();
+            }
         }
     }
 
@@ -717,6 +734,8 @@ public partial class ProfilesViewModel : MyReactiveObject
     /// Activate the first or last server of a group, using the persisted sort order (the
     /// order the server list displays). <see cref="EServerSelectType.First"/> therefore
     /// picks the topmost row, so a sort step run beforehand decides which server wins.
+    /// With a null <paramref name="subId"/> the candidate is drawn from every group.
+    /// Completes only after the core reload triggered by the activation has finished.
     /// </summary>
     public async Task SetDefaultServerForGroupAsync(string? subId, EServerSelectType selectType)
     {
@@ -739,7 +758,9 @@ public partial class ProfilesViewModel : MyReactiveObject
         {
             return;
         }
-        await SetDefaultServer(target.IndexId);
+        // Wait for the reload the activation triggers, so the next workflow step sees the
+        // new server instead of the old core still running.
+        await SetDefaultServer(target.IndexId, true);
     }
 
     private async Task<List<ProfileItem>> GetProfilesForGroup(string? subId)
