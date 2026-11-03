@@ -1,3 +1,5 @@
+using ServiceLib.Models.Editors;
+
 namespace ServiceLib.ViewModels;
 
 public partial class BackupAndRestoreViewModel : MyReactiveObject
@@ -10,7 +12,7 @@ public partial class BackupAndRestoreViewModel : MyReactiveObject
     public ReactiveCommand<RxVoid, RxVoid> WebDavCheckCmd { get; }
 
     [Reactive]
-    public partial WebDavItem SelectedSource { get; set; }
+    public partial WebDavEditorModel SelectedSource { get; set; }
 
     [Reactive]
     public partial string OperationMsg { get; set; } = string.Empty;
@@ -32,7 +34,7 @@ public partial class BackupAndRestoreViewModel : MyReactiveObject
             await RemoteRestore();
         });
 
-        SelectedSource = JsonUtils.DeepCopy(_config.WebDavItem);
+        SelectedSource = WebDavEditorModel.FromEntity(_config.WebDavItem);
     }
 
     private void DisplayOperationMsg(string msg = "")
@@ -43,7 +45,7 @@ public partial class BackupAndRestoreViewModel : MyReactiveObject
     private async Task WebDavCheck()
     {
         DisplayOperationMsg();
-        _config.WebDavItem = SelectedSource;
+        _config.WebDavItem = SelectedSource.ToEntity();
         _ = await ConfigHandler.SaveConfig(_config);
 
         var result = await WebDavManager.Instance.CheckConnection();

@@ -1,3 +1,5 @@
+using ServiceLib.Models.Editors;
+
 namespace ServiceLib.ViewModels;
 
 public partial class AddServerViewModel : MyReactiveObject, ICloseable
@@ -5,7 +7,7 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
     public event EventHandler? RequestClose;
 
     [Reactive]
-    public partial ProfileItem SelectedSource { get; set; }
+    public partial ProfileEditorModel SelectedSource { get; set; }
 
     [Reactive]
     public partial string? CoreType { get; set; }
@@ -150,7 +152,7 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
 
     public string TransportHeaderType
     {
-        get => SelectedSource.GetNetwork() switch
+        get => GetCurrentNetwork() switch
         {
             nameof(ETransport.raw) => RawHeaderType,
             nameof(ETransport.kcp) => KcpHeaderType,
@@ -160,7 +162,7 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
         };
         set
         {
-            switch (SelectedSource.GetNetwork())
+            switch (GetCurrentNetwork())
             {
                 case nameof(ETransport.raw):
                     RawHeaderType = value;
@@ -184,7 +186,7 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
 
     public string TransportHost
     {
-        get => SelectedSource.GetNetwork() switch
+        get => GetCurrentNetwork() switch
         {
             nameof(ETransport.raw) => Host,
             nameof(ETransport.ws) => Host,
@@ -195,7 +197,7 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
         };
         set
         {
-            switch (SelectedSource.GetNetwork())
+            switch (GetCurrentNetwork())
             {
                 case nameof(ETransport.raw):
                 case nameof(ETransport.ws):
@@ -214,7 +216,7 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
 
     public string TransportPath
     {
-        get => SelectedSource.GetNetwork() switch
+        get => GetCurrentNetwork() switch
         {
             nameof(ETransport.kcp) => KcpSeed,
             nameof(ETransport.ws) => Path,
@@ -225,7 +227,7 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
         };
         set
         {
-            switch (SelectedSource.GetNetwork())
+            switch (GetCurrentNetwork())
             {
                 case nameof(ETransport.kcp):
                     KcpSeed = value;
@@ -247,12 +249,12 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
 
     public string TransportExtraText
     {
-        get => SelectedSource.GetNetwork() == nameof(ETransport.xhttp)
+        get => GetCurrentNetwork() == nameof(ETransport.xhttp)
             ? XhttpExtra
             : string.Empty;
         set
         {
-            if (SelectedSource.GetNetwork() == nameof(ETransport.xhttp))
+            if (GetCurrentNetwork() == nameof(ETransport.xhttp))
             {
                 XhttpExtra = value;
             }
@@ -298,25 +300,20 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
         this.WhenAnyValue(x => x.Cert)
             .Subscribe(_ => UpdateCertSha());
 
+        SelectedSource = ProfileEditorModel.FromEntity(profileItem);
         if (profileItem.IndexId.IsNullOrEmpty())
         {
-            profileItem.Network = Global.DefaultNetwork;
-            profileItem.StreamSecurity = "";
-            SelectedSource = profileItem;
+            SelectedSource.StreamSecurity = "";
         }
-        else
-        {
-            SelectedSource = JsonUtils.DeepCopy(profileItem);
-        }
-        CoreType = SelectedSource?.CoreType?.ToString();
-        AllowInsecure = SelectedSource?.GetAllowInsecure() == true;
-        MuxEnabled = SelectedSource?.MuxEnabled == true;
-        Network = SelectedSource?.Network ?? Global.DefaultNetwork;
-        Cert = SelectedSource?.Cert ?? string.Empty;
-        CertSha = SelectedSource?.CertSha ?? string.Empty;
+        CoreType = profileItem.CoreType?.ToString();
+        AllowInsecure = profileItem.GetAllowInsecure() == true;
+        MuxEnabled = profileItem.MuxEnabled == true;
+        Network = profileItem.IndexId.IsNullOrEmpty() ? Global.DefaultNetwork : profileItem.Network ?? Global.DefaultNetwork;
+        Cert = profileItem.Cert ?? string.Empty;
+        CertSha = profileItem.CertSha ?? string.Empty;
 
-        var protocolExtra = SelectedSource?.GetProtocolExtra() ?? new();
-        var transport = SelectedSource?.GetTransportExtra() ?? new();
+        var protocolExtra = profileItem.GetProtocolExtra() ?? new();
+        var transport = profileItem.GetTransportExtra() ?? new();
         Ports = protocolExtra.Ports ?? string.Empty;
         AlterId = int.TryParse(protocolExtra.AlterId, out var result) ? result : 0;
         Flow = protocolExtra.Flow ?? string.Empty;
@@ -416,16 +413,17 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
             NoticeManager.Instance.Enqueue(ResUI.InvalidHttpOutboundHeaders);
             return;
         }
-        SelectedSource.CoreType = CoreType.IsNullOrEmpty() ? null : Enum.Parse<ECoreType>(CoreType);
-        SelectedSource.AllowInsecure = AllowInsecure ? Global.StringTrue : Global.StringFalse;
-        SelectedSource.MuxEnabled = MuxEnabled;
-        SelectedSource.Cert = Cert.IsNullOrEmpty() ? string.Empty : Cert;
-        SelectedSource.CertSha = CertSha.IsNullOrEmpty() ? string.Empty : CertSha;
+        var item = SelectedSource.ToEntity();
+        item.CoreType = CoreType.IsNullOrEmpty() ? null : Enum.Parse<ECoreType>(CoreType);
+        item.AllowInsecure = AllowInsecure ? Global.StringTrue : Global.StringFalse;
+        item.MuxEnabled = MuxEnabled;
+        item.Cert = Cert.IsNullOrEmpty() ? string.Empty : Cert;
+        item.CertSha = CertSha.IsNullOrEmpty() ? string.Empty : CertSha;
         if (!Global.Networks.Contains(Network))
         {
             Network = Global.DefaultNetwork;
         }
-        SelectedSource.Network = Network;
+        item.Network = Network;
 
         var transport = new TransportExtraItem
         {
@@ -442,7 +440,7 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
             KcpMtu = KcpMtu > 0 ? KcpMtu : null,
         };
 
-        SelectedSource.SetProtocolExtra(SelectedSource.GetProtocolExtra() with
+        item.SetProtocolExtra(item.GetProtocolExtra() with
         {
             Ports = Ports.NullIfEmpty(),
             AlterId = AlterId > 0 ? AlterId.ToString() : null,
@@ -454,7 +452,7 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
             VmessSecurity = VmessSecurity.NullIfEmpty(),
             VlessEncryption = VlessEncryption.NullIfEmpty(),
             SsMethod = SsMethod.NullIfEmpty(),
-            HttpHeaders = SelectedSource.ConfigType == EConfigType.HTTP ? HttpHeadersJson.NullIfEmpty() : null,
+            HttpHeaders = item.ConfigType == EConfigType.HTTP ? HttpHeadersJson.NullIfEmpty() : null,
             WgPublicKey = WgPublicKey.NullIfEmpty(),
             WgPresharedKey = WgPresharedKey.NullIfEmpty(),
             WgInterfaceAddress = WgInterfaceAddress.NullIfEmpty(),
@@ -474,10 +472,11 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
             WarpPrivateKey = WarpPrivateKey.NullIfEmpty(),
             WarpAddress = WarpAddress.NullIfEmpty(),
         });
-        SelectedSource.SetTransportExtra(transport);
+        item.SetTransportExtra(transport);
 
-        if (await ConfigHandler.AddServer(_config, SelectedSource) == 0)
+        if (await ConfigHandler.AddServer(_config, item) == 0)
         {
+            SelectedSource = ProfileEditorModel.FromEntity(item);
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
             RequestClose?.Invoke(this, EventArgs.Empty);
         }
@@ -522,60 +521,67 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
 
     private async Task FetchCert()
     {
-        if (SelectedSource.StreamSecurity != Global.StreamSecurity)
+        var item = SelectedSource.ToEntity();
+        if (item.StreamSecurity != Global.StreamSecurity)
         {
             return;
         }
-        var domain = SelectedSource.Address;
-        var serverName = SelectedSource.Sni;
+        var domain = item.Address;
+        var serverName = item.Sni;
         if (serverName.IsNullOrEmpty())
         {
             serverName = GetCurrentTransportHost();
         }
         if (serverName.IsNullOrEmpty())
         {
-            serverName = SelectedSource.Address;
+            serverName = item.Address;
         }
-        if (SelectedSource.Port > 0)
+        if (item.Port > 0)
         {
-            domain += $":{SelectedSource.Port}";
+            domain += $":{item.Port}";
         }
 
         (Cert, var certError) = await CertPemManager.Instance.GetCertPemAsync(domain, serverName,
-            verifyPeerCertByName: Utils.String2List(SelectedSource.VerifyPeerCertByName));
+            verifyPeerCertByName: Utils.String2List(item.VerifyPeerCertByName));
         UpdateCertTip(certError);
     }
 
     private async Task FetchCertChain()
     {
-        if (SelectedSource.StreamSecurity != Global.StreamSecurity)
+        var item = SelectedSource.ToEntity();
+        if (item.StreamSecurity != Global.StreamSecurity)
         {
             return;
         }
-        var domain = SelectedSource.Address;
-        var serverName = SelectedSource.Sni;
+        var domain = item.Address;
+        var serverName = item.Sni;
         if (serverName.IsNullOrEmpty())
         {
             serverName = GetCurrentTransportHost();
         }
         if (serverName.IsNullOrEmpty())
         {
-            serverName = SelectedSource.Address;
+            serverName = item.Address;
         }
-        if (SelectedSource.Port > 0)
+        if (item.Port > 0)
         {
-            domain += $":{SelectedSource.Port}";
+            domain += $":{item.Port}";
         }
 
         var (certs, certError) = await CertPemManager.Instance.GetCertChainPemAsync(domain, serverName,
-            verifyPeerCertByName: Utils.String2List(SelectedSource.VerifyPeerCertByName));
+            verifyPeerCertByName: Utils.String2List(item.VerifyPeerCertByName));
         Cert = CertPemManager.ConcatenatePemChain(certs);
         UpdateCertTip(certError);
     }
 
+    private string GetCurrentNetwork()
+    {
+        return new ProfileItem { Network = Network }.GetNetwork();
+    }
+
     private string GetCurrentTransportHost()
     {
-        return SelectedSource.GetNetwork() switch
+        return GetCurrentNetwork() switch
         {
             nameof(ETransport.raw) => Host,
             nameof(ETransport.ws) => Host,

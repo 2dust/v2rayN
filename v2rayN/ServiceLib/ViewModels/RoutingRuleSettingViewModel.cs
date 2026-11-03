@@ -1,3 +1,5 @@
+using ServiceLib.Models.Editors;
+
 namespace ServiceLib.ViewModels;
 
 public partial class RoutingRuleSettingViewModel : MyReactiveObject, ICloseable
@@ -12,7 +14,7 @@ public partial class RoutingRuleSettingViewModel : MyReactiveObject, ICloseable
     private List<RulesItem> _rules;
 
     [Reactive]
-    public partial RoutingItem SelectedRouting { get; set; }
+    public partial RoutingEditorModel SelectedRouting { get; set; }
 
     public BulkObservableCollection<RulesItemModel> RulesItems { get; } = [];
 
@@ -92,8 +94,8 @@ public partial class RoutingRuleSettingViewModel : MyReactiveObject, ICloseable
         });
 
         SelectedSource = new();
-        SelectedRouting = routingItem;
-        _rules = routingItem.Id.IsNullOrEmpty() ? [] : JsonUtils.Deserialize<List<RulesItem>>(SelectedRouting.RuleSet);
+        SelectedRouting = RoutingEditorModel.FromEntity(routingItem);
+        _rules = routingItem.Id.IsNullOrEmpty() ? [] : JsonUtils.Deserialize<List<RulesItem>>(routingItem.RuleSet);
 
         RefreshRulesItems();
     }
@@ -223,7 +225,7 @@ public partial class RoutingRuleSettingViewModel : MyReactiveObject, ICloseable
             NoticeManager.Instance.Enqueue(ResUI.PleaseFillRemarks);
             return;
         }
-        var item = SelectedRouting;
+        var item = SelectedRouting.ToEntity();
         foreach (var it in _rules)
         {
             it.Id = Utils.GetGuid(false);
@@ -233,6 +235,7 @@ public partial class RoutingRuleSettingViewModel : MyReactiveObject, ICloseable
 
         if (await ConfigHandler.SaveRoutingItem(_config, item) == 0)
         {
+            SelectedRouting = RoutingEditorModel.FromEntity(item);
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
             RequestClose?.Invoke(this, EventArgs.Empty);
         }
@@ -256,7 +259,7 @@ public partial class RoutingRuleSettingViewModel : MyReactiveObject, ICloseable
         {
             return;
         }
-        var ret = await AddBatchRoutingRulesAsync(SelectedRouting, result);
+        var ret = await AddBatchRoutingRulesAsync(result);
         if (ret == 0)
         {
             RefreshRulesItems();
@@ -277,7 +280,7 @@ public partial class RoutingRuleSettingViewModel : MyReactiveObject, ICloseable
             }
             stringData = result;
         }
-        var ret = await AddBatchRoutingRulesAsync(SelectedRouting, stringData);
+        var ret = await AddBatchRoutingRulesAsync(stringData);
         if (ret == 0)
         {
             RefreshRulesItems();
@@ -296,7 +299,7 @@ public partial class RoutingRuleSettingViewModel : MyReactiveObject, ICloseable
 
         var downloadHandle = new DownloadService();
         var result = await downloadHandle.TryDownloadString(url, true, "");
-        var ret = await AddBatchRoutingRulesAsync(SelectedRouting, result);
+        var ret = await AddBatchRoutingRulesAsync(result);
         if (ret == 0)
         {
             RefreshRulesItems();
@@ -304,7 +307,7 @@ public partial class RoutingRuleSettingViewModel : MyReactiveObject, ICloseable
         }
     }
 
-    private async Task<int> AddBatchRoutingRulesAsync(RoutingItem routingItem, string? clipboardData)
+    private async Task<int> AddBatchRoutingRulesAsync(string? clipboardData)
     {
         var blReplace = false;
         if (await ShowYesNoInteraction.HandleSafe(ResUI.AddBatchRoutingRulesYesNo) == false)

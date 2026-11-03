@@ -1,3 +1,5 @@
+using ServiceLib.Models.Editors;
+
 namespace ServiceLib.ViewModels;
 
 public partial class AddServer2ViewModel : MyReactiveObject, ICloseable
@@ -7,7 +9,7 @@ public partial class AddServer2ViewModel : MyReactiveObject, ICloseable
     public Interaction<RxVoid, string?> BrowseConfigFileInteraction { get; } = new();
 
     [Reactive]
-    public partial ProfileItem SelectedSource { get; set; }
+    public partial ProfileEditorModel SelectedSource { get; set; }
 
     [Reactive]
     public partial string? CoreType { get; set; }
@@ -42,11 +44,11 @@ public partial class AddServer2ViewModel : MyReactiveObject, ICloseable
             await SaveServerAsync();
         });
 
-        SelectedSource = profileItem.IndexId.IsNullOrEmpty() ? profileItem : JsonUtils.DeepCopy(profileItem);
-        var coreStr = SelectedSource?.CoreType?.ToString();
+        SelectedSource = ProfileEditorModel.FromEntity(profileItem);
+        var coreStr = profileItem.CoreType?.ToString();
         coreStr = coreStr.IsNullOrEmpty() ? Global.CoreTypes.FirstOrDefault() : coreStr;
         CoreType = coreStr;
-        IsSingboxEndpoint = SelectedSource?.GetProtocolExtra()?.IsSingboxEndpoint ?? false;
+        IsSingboxEndpoint = profileItem.GetProtocolExtra()?.IsSingboxEndpoint ?? false;
     }
 
     private async Task SaveServerAsync()
@@ -63,14 +65,16 @@ public partial class AddServer2ViewModel : MyReactiveObject, ICloseable
             NoticeManager.Instance.Enqueue(ResUI.FillServerAddressCustom);
             return;
         }
-        SelectedSource.CoreType = CoreType.IsNullOrEmpty() ? null : Enum.Parse<ECoreType>(CoreType);
-        SelectedSource.SetProtocolExtra(SelectedSource?.GetProtocolExtra() with
+        var item = SelectedSource.ToEntity();
+        item.CoreType = CoreType.IsNullOrEmpty() ? null : Enum.Parse<ECoreType>(CoreType);
+        item.SetProtocolExtra(item.GetProtocolExtra() with
         {
             IsSingboxEndpoint = IsSingboxEndpoint ? true : null,
         });
 
-        if (await ConfigHandler.EditCustomServer(_config, SelectedSource) == 0)
+        if (await ConfigHandler.EditCustomServer(_config, item) == 0)
         {
+            SelectedSource = ProfileEditorModel.FromEntity(item);
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
             RequestClose?.Invoke(this, EventArgs.Empty);
         }
@@ -87,8 +91,8 @@ public partial class AddServer2ViewModel : MyReactiveObject, ICloseable
             return;
         }
 
-        var item = await AppManager.Instance.GetProfileItem(SelectedSource.IndexId);
-        item ??= SelectedSource;
+        var item = SelectedSource.ToEntity();
+        item = await AppManager.Instance.GetProfileItem(item.IndexId) ?? item;
         item.Address = fileName;
         var result = item.ConfigType == EConfigType.Outbound ? await ConfigHandler.AddCustomOutboundServer(_config, item, false) : await ConfigHandler.AddCustomServer(_config, item, false);
         if (result == 0)
@@ -96,7 +100,7 @@ public partial class AddServer2ViewModel : MyReactiveObject, ICloseable
             NoticeManager.Instance.Enqueue(ResUI.SuccessfullyImportedCustomServer);
             if (item.IndexId.IsNotEmpty())
             {
-                SelectedSource = JsonUtils.DeepCopy(item);
+                SelectedSource = ProfileEditorModel.FromEntity(item);
             }
             IsModified = true;
         }
