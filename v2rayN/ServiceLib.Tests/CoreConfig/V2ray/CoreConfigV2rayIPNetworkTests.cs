@@ -109,8 +109,8 @@ public class CoreConfigV2rayIPNetworkTests
         var generated = JsonUtils.Deserialize<V2rayConfig>(result.Data!.ToString())!;
 
         await generated.fakedns.Should().NotBeNull();
-        await generated.fakedns!.ipPool.Should().BeEqualTo(range);
-        await generated.fakedns.poolSize.Should().BeEqualTo(expectedPoolSize);
+        await generated.fakedns!["ipPool"]!.GetValue<string>().Should().BeEqualTo(range);
+        await generated.fakedns["poolSize"]!.GetValue<long>().Should().BeEqualTo(expectedPoolSize);
     }
 
     private static async Task<V2rayConfig> GenerateConfig(Config config)
