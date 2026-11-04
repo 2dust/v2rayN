@@ -38,7 +38,7 @@ public partial class ThemeSettingViewModel : MyReactiveObject
         CurrentFontSize = _config.UiItem.CurrentFontSize;
         CurrentLanguage = _config.UiItem.CurrentLanguage;
 
-        this.WhenAnyValueUnsafe(x => x.CurrentTheme)
+        this.WhenAnyValue(x => x.CurrentTheme)
             .Where(y => y.IsNotEmpty())
             .SubscribeAsync(async _ =>
             {
@@ -50,7 +50,7 @@ public partial class ThemeSettingViewModel : MyReactiveObject
                 }
             });
 
-        this.WhenAnyValueUnsafe(x => x.CurrentFontSize)
+        this.WhenAnyValue(x => x.CurrentFontSize)
             .Where(y => y > 0)
             .SubscribeAsync(async _ =>
             {
@@ -62,7 +62,7 @@ public partial class ThemeSettingViewModel : MyReactiveObject
                 }
             });
 
-        this.WhenAnyValueUnsafe(x => x.CurrentLanguage)
+        this.WhenAnyValue(x => x.CurrentLanguage)
             .Where(y => !y.IsNullOrEmpty())
             .SubscribeAsync(async _ =>
             {
