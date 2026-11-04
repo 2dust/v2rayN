@@ -1,16 +1,9 @@
-using Avalonia.Controls.Notifications;
-using Avalonia.Controls.Primitives;
-using AvaloniaEdit;
 using Semi.Avalonia;
 
 namespace v2rayN.Desktop.ViewModels;
 
 public partial class ThemeSettingViewModel : MyReactiveObject
 {
-    private Style? _fontSizeStyle;
-    private Style? _fontSizeExStyle;
-    private Style? _fontFamilyStyle;
-
     [Reactive] public partial string CurrentTheme { get; set; }
 
     [Reactive] public partial int CurrentFontSize { get; set; }
@@ -102,26 +95,7 @@ public partial class ThemeSettingViewModel : MyReactiveObject
         {
             return;
         }
-
-        var style = new Style(x => Selectors.Or(
-            x.OfType<Button>(),
-            x.OfType<TextBox>(),
-            x.OfType<TextBlock>(),
-            x.OfType<SelectableTextBlock>(),
-            x.OfType<Menu>(),
-            x.OfType<ContextMenu>(),
-            x.OfType<DataGridRow>(),
-            x.OfType<ListBoxItem>(),
-            x.OfType<HeaderedContentControl>(),
-            x.OfType<TextEditor>()
-        ));
-        style.Add(new Setter
-        {
-            Property = TemplatedControl.FontSizeProperty,
-            Value = size,
-        });
-        ReplaceStyle(ref _fontSizeStyle, style);
-
+        Application.Current!.Resources["AppFontSize"] = size;
         ModifyFontSizeEx(size);
     }
 
@@ -129,10 +103,7 @@ public partial class ThemeSettingViewModel : MyReactiveObject
     {
         //DataGrid
         var rowHeight = 20 + (size / 2);
-
-        var style = new Style(x => x.OfType<DataGrid>());
-        style.Add(new Setter(DataGrid.RowHeightProperty, rowHeight));
-        ReplaceStyle(ref _fontSizeExStyle, style);
+        Application.Current!.Resources["DataGridRowHeight"] = rowHeight;
     }
 
     private void ModifyFontFamily()
@@ -145,46 +116,11 @@ public partial class ThemeSettingViewModel : MyReactiveObject
 
         try
         {
-            var style = new Style(x => Selectors.Or(
-                x.OfType<Button>(),
-                x.OfType<TextBox>(),
-                x.OfType<TextBlock>(),
-                x.OfType<SelectableTextBlock>(),
-                x.OfType<Menu>(),
-                x.OfType<ContextMenu>(),
-                x.OfType<DataGridRow>(),
-                x.OfType<ListBoxItem>(),
-                x.OfType<HeaderedContentControl>(),
-                x.OfType<WindowNotificationManager>(),
-                x.OfType<TextEditor>()
-            ));
-            style.Add(new Setter
-            {
-                Property = TemplatedControl.FontFamilyProperty,
-                Value = new FontFamily(currentFontFamily),
-            });
-            ReplaceStyle(ref _fontFamilyStyle, style);
+            Application.Current!.Resources["AppFontFamily"] = currentFontFamily;
         }
         catch (Exception ex)
         {
             Logging.SaveLog("ModifyFontFamily", ex);
         }
-    }
-
-    private static void ReplaceStyle(ref Style? oldStyle, Style newStyle)
-    {
-        var app = Application.Current;
-        if (app is null)
-        {
-            return;
-        }
-
-        if (oldStyle is not null)
-        {
-            app.Styles.Remove(oldStyle);
-        }
-
-        oldStyle = newStyle;
-        app.Styles.Add(newStyle);
     }
 }

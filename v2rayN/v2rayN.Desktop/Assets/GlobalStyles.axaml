@@ -1,4 +1,8 @@
-<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:avaloniaEdit="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
+    xmlns:dialogHost="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia">
     <Design.PreviewWith>
         <Border Padding="20">
             <!--  Add Controls for Previewer Here  -->
@@ -6,7 +10,7 @@
     </Design.PreviewWith>
 
     <Style Selector="DataGrid">
-        <Setter Property="RowHeight" Value="24" />
+        <Setter Property="RowHeight" Value="{DynamicResource DataGridRowHeight}" />
         <Setter Property="ScrollViewer.AllowAutoHide" Value="False" />
     </Style>
 
@@ -28,6 +32,10 @@
         <Setter Property="Theme" Value="{StaticResource LineTabControl}" />
     </Style>
 
+    <Style Selector="TabStrip">
+        <Setter Property="Theme" Value="{StaticResource LineTabStrip}" />
+    </Style>
+
     <Style Selector="Button.IconButton">
         <Setter Property="Width" Value="{StaticResource IconButtonWidth}" />
         <Setter Property="Height" Value="{StaticResource IconButtonHeight}" />
@@ -35,4 +43,16 @@
         <Setter Property="Theme" Value="{DynamicResource BorderlessButton}" />
     </Style>
 
+    <Style Selector="dialogHost|DialogHost">
+        <Setter Property="OverlayBackground" Value="{DynamicResource SemiColorOverlayBackground}" />
+        <Setter Property="Background" Value="{DynamicResource SemiColorFill0}" />
+
+        <Setter Property="dialogHost:DialogHostStyle.BoxShadow" Value="{DynamicResource SemiShadowElevated}" />
+        <Setter Property="dialogHost:DialogHostStyle.CornerRadius" Value="6" />
+    </Style>
+
+    <Style Selector="TextBlock, TextBox, SelectableTextBlock, Button, ToggleButton, ListBoxItem, MenuItem, ComboBoxItem, TabItem, TabStripItem, DataGridCell, HeaderedContentControl, avaloniaEdit|TextEditor">
+        <Setter Property="TextElement.FontFamily" Value="{DynamicResource AppFontFamily}" />
+        <Setter Property="TextElement.FontSize" Value="{DynamicResource AppFontSize}" />
+    </Style>
 </Styles>
