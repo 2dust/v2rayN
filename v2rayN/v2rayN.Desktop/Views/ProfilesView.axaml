@@ -353,10 +353,19 @@
                         Tag="IpInfo">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <SelectableTextBlock
+                                <TextBlock
                                     Margin="{StaticResource MarginLr8}"
                                     VerticalAlignment="Center"
-                                    Text="{Binding Path=IpInfo, Mode=OneWay}" />
+                                    Text="{Binding Path=IpInfo, Mode=OneWay}">
+                                    <TextBlock.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem
+                                                Click="CopyIpInfo_Click"
+                                                CommandParameter="{Binding IpInfo}"
+                                                Header="{x:Static resx:ResUI.menuEditCopy}" />
+                                        </ContextMenu>
+                                    </TextBlock.ContextMenu>
+                                </TextBlock>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

@@ -240,6 +240,7 @@ public class JsonUtils
 [JsonSerializable(typeof(List<Rule4Sbox>))]
 [JsonSerializable(typeof(List<Ruleset4Sbox>))]
 [JsonSerializable(typeof(V2rayConfig))]
+[JsonSerializable(typeof(FakeDns4Ray))]
 [JsonSerializable(typeof(Dns4Ray))]
 [JsonSerializable(typeof(DnsServer4Ray))]
 [JsonSerializable(typeof(Inbounds4Ray))]
