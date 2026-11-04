@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization.Metadata;
+
 namespace ServiceLib.Common;
 
 public class JsonUtils
@@ -77,7 +79,7 @@ public class JsonUtils
             {
                 return default;
             }
-            return JsonSerializer.Deserialize<T>(strJson, _defaultDeserializeOptions);
+            return JsonSerializer.Deserialize(strJson, (JsonTypeInfo<T>)_defaultDeserializeOptions.GetTypeInfo(typeof(T)));
         }
         catch
         {
@@ -130,7 +132,7 @@ public class JsonUtils
                 (false, true) => _defaultSerializeOptions,
                 _ => _defaultSerializeNoIndentedOptions
             };
-            result = JsonSerializer.Serialize(obj, options);
+            result = JsonSerializer.Serialize(obj, (JsonTypeInfo<T>)options.GetTypeInfo(typeof(T)));
         }
         catch (Exception ex)
         {
@@ -161,7 +163,7 @@ public class JsonUtils
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                 TypeInfoResolver = AppJsonContext.Default,
             };
-            result = JsonSerializer.Serialize(obj, options);
+            result = JsonSerializer.Serialize(obj, (JsonTypeInfo<T>)options.GetTypeInfo(typeof(T)));
         }
         catch (Exception ex)
         {
@@ -179,7 +181,7 @@ public class JsonUtils
     public static JsonNode? SerializeToNode<T>(T? obj, bool nullValue = false)
     {
         var options = nullValue ? _nullValueSerializeOptions : _defaultSerializeOptions;
-        return JsonSerializer.SerializeToNode(obj, options);
+        return JsonSerializer.SerializeToNode(obj, (JsonTypeInfo<T>)options.GetTypeInfo(typeof(T)));
     }
 
     public static JsonArray? SerializeToArray(IEnumerable<string>? values)
@@ -191,7 +193,7 @@ public class JsonUtils
         var array = new JsonArray();
         foreach (var value in values)
         {
-            var valueNode = JsonSerializer.SerializeToNode(value, _defaultSerializeOptions);
+            var valueNode = JsonSerializer.SerializeToNode(value, (JsonTypeInfo<string>)_defaultSerializeOptions.GetTypeInfo(typeof(string)));
             array.Add(valueNode);
         }
         return array;
