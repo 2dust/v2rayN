@@ -125,12 +125,25 @@
                     HorizontalAlignment="Stretch" />
                 <DockPanel x:Name="tabDockPanel" Grid.Column="2">
                     <TabStrip
-                        x:Name="tabStrip"
+                        x:Name="tabStripH"
                         Margin="{StaticResource MarginLr8}"
                         DockPanel.Dock="Top">
-                        <TabStripItem Content="{x:Static resx:ResUI.MsgInformationTitle}" />
-                        <TabStripItem Content="{x:Static resx:ResUI.TbProxies}" />
-                        <TabStripItem Content="{x:Static resx:ResUI.TbConnections}" />
+                        <TabStrip.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </TabStrip.ItemsPanel>
+                    </TabStrip>
+                    <TabStrip
+                        x:Name="tabStripV"
+                        Margin="{StaticResource MarginLr8}"
+                        DockPanel.Dock="Left"
+                        IsVisible="False">
+                        <TabStrip.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Vertical" />
+                            </ItemsPanelTemplate>
+                        </TabStrip.ItemsPanel>
                     </TabStrip>
                     <ContentControl x:Name="tabContent" />
                 </DockPanel>
