@@ -88,11 +88,12 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
 
             this.OneWayBind(ViewModel, vm => vm.StatusBarViewModel, v => v.contentStatusBarView.Content).DisposeWith(disposables);
 
+            var layoutBindings = new SingleReplaceableDisposable().DisposeWith(disposables);
             this.WhenAnyValue(v => v.ViewModel.MainGirdOrientation)
                 .ObserveOn(RxSchedulers.MainThreadScheduler)
                 .Subscribe(orientation =>
                 {
-                    UpdateLayout(orientation, disposables);
+                    UpdateLayout(orientation, layoutBindings);
                 })
                 .DisposeWith(disposables);
 
@@ -408,8 +409,10 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         }
     }
 
-    private void UpdateLayout(EGirdOrientation orientation, MultipleDisposable disposable)
+    private void UpdateLayout(EGirdOrientation orientation, SingleReplaceableDisposable disposable)
     {
+        var currentLayoutDisposables = new MultipleDisposable();
+        disposable.Create(currentLayoutDisposables);
         gridMain.IsVisible = true;
         _msgView ??= new MsgView
         {
@@ -464,7 +467,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                             tabStrip.IsVisible = false;
                             tabStrip.Items.Clear();
                         }
-                    }).DisposeWith(disposable);
+                    }).DisposeWith(currentLayoutDisposables);
                 tabStrip.GetObservable(SelectingItemsControl.SelectedIndexProperty)
                     .Subscribe(index =>
                     {
@@ -474,7 +477,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                             2 => _clashConnectionsView,
                             _ => _msgView,
                         };
-                    }).DisposeWith(disposable);
+                    }).DisposeWith(currentLayoutDisposables);
                 break;
 
             case EGirdOrientation.Vertical:
@@ -510,7 +513,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                             tabStrip.IsVisible = false;
                             tabStrip.Items.Clear();
                         }
-                    }).DisposeWith(disposable);
+                    }).DisposeWith(currentLayoutDisposables);
                 tabStrip.GetObservable(SelectingItemsControl.SelectedIndexProperty)
                     .Subscribe(index =>
                     {
@@ -520,7 +523,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                             2 => _clashConnectionsView,
                             _ => _msgView,
                         };
-                    }).DisposeWith(disposable);
+                    }).DisposeWith(currentLayoutDisposables);
                 break;
 
             case EGirdOrientation.Tab:
@@ -557,7 +560,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                             tabStrip.IsVisible = false;
                             tabStrip.Items.Clear();
                         }
-                    }).DisposeWith(disposable);
+                    }).DisposeWith(currentLayoutDisposables);
                 tabStrip.GetObservable(SelectingItemsControl.SelectedIndexProperty)
                     .Subscribe(index =>
                     {
@@ -568,7 +571,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                             3 => _clashConnectionsView,
                             _ => _profilesView,
                         };
-                    }).DisposeWith(disposable);
+                    }).DisposeWith(currentLayoutDisposables);
                 break;
 
         }
