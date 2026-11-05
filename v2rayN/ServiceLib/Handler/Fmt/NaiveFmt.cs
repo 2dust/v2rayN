@@ -30,16 +30,17 @@ public class NaiveFmt : BaseFmt
                 NaiveQuic = true,
             };
         }
-        var rawUserInfo = Utils.UrlDecode(parsedUrl.UserInfo);
+        // Split before decoding: ToUri percent-encodes a ':' inside the username or password.
+        var rawUserInfo = parsedUrl.UserInfo;
         if (rawUserInfo.Contains(':'))
         {
             var split = rawUserInfo.Split(':', 2);
-            item.Username = split[0];
-            item.Password = split[1];
+            item.Username = Utils.UrlDecode(split[0]);
+            item.Password = Utils.UrlDecode(split[1]);
         }
         else
         {
-            item.Password = rawUserInfo;
+            item.Password = Utils.UrlDecode(rawUserInfo);
         }
 
         var query = Utils.ParseQueryString(parsedUrl.Query);
