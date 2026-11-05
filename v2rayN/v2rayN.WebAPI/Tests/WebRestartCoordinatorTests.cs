@@ -224,6 +224,81 @@ public class WebRestartCoordinatorTests
         await starter.StartCount.Should().BeEqualTo(1);
     }
 
+    [Test]
+    public async Task HandoffReportsLockTimeoutWhenDeadlinePassesBetweenClockReads()
+    {
+        const string lockPath = "/data/current/v2rayN.WebAPI.instance.lock";
+        var clock = new ManualTimeProvider(TimeSpan.FromMilliseconds(15));
+        var ownership = new FakeOwnershipProbe();
+        ownership.Set(lockPath, held: true, owner: 123);
+        var starter = new FakeProcessStarter(() => (new FakeReplacementProcess(456), false));
+        var coordinator = new NativeWebRestartCoordinator(
+            new FakeHealthProbe(456),
+            starter,
+            ownership,
+            timeout: TimeSpan.FromMilliseconds(20),
+            pollInterval: TimeSpan.FromMilliseconds(2),
+            delay: clock.Delay,
+            timeProvider: clock);
+
+        var result = await coordinator.StartReplacementAfterOwnerReleaseAsync(
+            lockPath,
+            new Uri("http://127.0.0.1:5080/api/health"),
+            NewCommand());
+
+        await result.Success.Should().BeFalse();
+        await result.Message.Should().Contain("did not release");
+        await starter.StartCount.Should().BeEqualTo(0);
+        await ownership.ReadOwnerProcessId(lockPath).Should().BeEqualTo(123);
+    }
+
+    [Test]
+    [Arguments(20, false)]
+    [Arguments(30, false)]
+    [Arguments(30, true)]
+    public async Task HandoffReportsStartupTimeoutWhenHealthProbeExhaustsDeadline(
+        int elapsedMilliseconds, bool ownershipChanged)
+    {
+        const string lockPath = "/data/current/v2rayN.WebAPI.instance.lock";
+        var clock = new ManualTimeProvider();
+        var ownership = new FakeOwnershipProbe();
+        var replacement = new FakeReplacementProcess(456);
+        var starter = new FakeProcessStarter(() =>
+        {
+            ownership.Set(lockPath, held: true, owner: replacement.Id);
+            return (replacement, true);
+        });
+        var health = new FakeHealthProbe(null, () =>
+        {
+            clock.Advance(TimeSpan.FromMilliseconds(elapsedMilliseconds));
+            if (ownershipChanged)
+            {
+                ownership.Set(lockPath, held: true, owner: 789);
+            }
+        });
+        var coordinator = new NativeWebRestartCoordinator(
+            health,
+            starter,
+            ownership,
+            timeout: TimeSpan.FromMilliseconds(20),
+            pollInterval: TimeSpan.FromMilliseconds(2),
+            delay: clock.Delay,
+            timeProvider: clock);
+
+        var result = await coordinator.StartReplacementAfterOwnerReleaseAsync(
+            lockPath,
+            new Uri("http://127.0.0.1:5080/api/health"),
+            NewCommand());
+
+        await result.Success.Should().BeFalse();
+        await result.Message.Should().Contain("did not become healthy");
+        await result.ReplacementProcessId.Should().BeEqualTo(replacement.Id);
+        await starter.StartCount.Should().BeEqualTo(1);
+        await replacement.Killed.Should().BeEqualTo(!ownershipChanged);
+        await replacement.Disposed.Should().BeTrue();
+        await ownership.ReadOwnerProcessId(lockPath).Should().BeEqualTo(ownershipChanged ? 789 : replacement.Id);
+    }
+
     private static WebReplacementCommand NewCommand() => new(
         "/usr/bin/setsid",
         ["/opt/v2rayN.WebAPI", WebLaunchOptions.BackgroundChildFlag],
@@ -269,18 +344,47 @@ public class WebRestartCoordinatorTests
         public int Id { get; } = id;
         public bool HasExited { get; } = hasExited;
         public bool Killed { get; private set; }
+        public bool Disposed { get; private set; }
         public void KillTree() => Killed = true;
-        public void Dispose() { }
+        public void Dispose() => Disposed = true;
     }
 
-    private sealed class FakeHealthProbe(int? processId) : IWebHealthProbe
+    private sealed class FakeHealthProbe(int? processId, Action? onProbe = null) : IWebHealthProbe
     {
         public Uri? LastUri { get; private set; }
 
         public Task<WebHealthProbeResult> ProbeAsync(Uri healthUri, CancellationToken cancellationToken)
         {
             LastUri = healthUri;
+            onProbe?.Invoke();
             return Task.FromResult(new WebHealthProbeResult(processId.HasValue, processId));
+        }
+    }
+
+    private sealed class ManualTimeProvider(TimeSpan timestampReadDuration = default) : TimeProvider
+    {
+        private long _timestamp;
+
+        public override long TimestampFrequency => TimeSpan.TicksPerSecond;
+
+        public override long GetTimestamp()
+        {
+            var timestamp = _timestamp;
+            _timestamp += timestampReadDuration.Ticks;
+            return timestamp;
+        }
+
+        public void Advance(TimeSpan duration)
+        {
+            if (duration < TimeSpan.Zero) throw new ArgumentOutOfRangeException(nameof(duration));
+            _timestamp += duration.Ticks;
+        }
+
+        public Task Delay(TimeSpan duration, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            Advance(duration);
+            return Task.CompletedTask;
         }
     }
 }

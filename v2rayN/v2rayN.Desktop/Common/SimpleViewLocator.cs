@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using Avalonia.Controls.Templates;
 using v2rayN.Desktop.ViewModels;
 using v2rayN.Desktop.Views;
@@ -10,7 +9,6 @@ public class SimpleViewLocator : IDataTemplate
     private static readonly Lazy<SimpleViewLocator> _instance = new(() => new SimpleViewLocator());
 
     private readonly Dictionary<Type, Func<Control?>> _locator = new();
-    private readonly ConditionalWeakTable<object, Control> _cachedViews = new();
 
     private SimpleViewLocator()
     {
@@ -47,36 +45,14 @@ public class SimpleViewLocator : IDataTemplate
             return new TextBlock { Text = "No VM provided" };
         }
 
-        var vmType = data.GetType();
-        if (!_locator.TryGetValue(vmType, out var factory))
-        {
-            return new TextBlock { Text = $"VM Not Registered: {vmType}" };
-        }
+        _locator.TryGetValue(data.GetType(), out var factory);
 
-        if (ShouldCache(vmType))
-        {
-            return _cachedViews.GetValue(data, _ => CreateView(factory, vmType));
-        }
-
-        return CreateView(factory, vmType);
+        return factory?.Invoke() ?? new TextBlock { Text = $"VM Not Registered: {data.GetType()}" };
     }
 
     public bool Match(object? data)
     {
         return data is MyReactiveObject;
-    }
-
-    private static bool ShouldCache(Type vmType)
-    {
-        return vmType == typeof(MsgViewModel)
-               || vmType == typeof(ClashProxiesViewModel)
-               || vmType == typeof(ClashConnectionsViewModel)
-               || vmType == typeof(ProfilesViewModel);
-    }
-
-    private static Control CreateView(Func<Control?> factory, Type vmType)
-    {
-        return factory.Invoke() ?? new TextBlock { Text = $"View Factory Returned Null: {vmType}" };
     }
 
     public void RegisterViewFactory<TViewModel>(Func<Control> factory) where TViewModel : class

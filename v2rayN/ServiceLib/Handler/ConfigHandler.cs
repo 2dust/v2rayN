@@ -1,5 +1,3 @@
-using System.Data;
-
 namespace ServiceLib.Handler;
 
 public static class ConfigHandler
@@ -118,6 +116,8 @@ public static class ConfigHandler
         config.SimpleDNSItem ??= InitBuiltinSimpleDNS();
         config.SimpleDNSItem.BlockAAAAQuery ??= false;
         config.SimpleDNSItem.FakeIPRange ??= Global.FakeIPRanges.FirstOrDefault();
+        config.SimpleDNSItem.FakeIPv6 ??= false;
+        config.SimpleDNSItem.FakeIPv6Range ??= Global.FakeIPv6Ranges.First();
         config.SimpleDNSItem.GlobalFakeIp ??= true;
         config.SimpleDNSItem.BootstrapDNS ??= Global.DomainPureIPDNSAddress.FirstOrDefault();
         config.SimpleDNSItem.ServeStale ??= false;

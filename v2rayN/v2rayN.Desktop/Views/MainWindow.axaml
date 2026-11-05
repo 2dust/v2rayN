@@ -18,15 +18,6 @@
     ShowInTaskbar="True"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-    <Window.Styles>
-        <!-- Keep the log selected; hide only the strip when it has no other tabs. -->
-        <Style Selector="TabControl.logPane /template/ ItemsPresenter#PART_ItemsPresenter">
-            <Setter Property="IsVisible" Value="{Binding ShowClashUI}" />
-        </Style>
-        <Style Selector="TabControl.logPane /template/ Border#PART_BorderSeparator">
-            <Setter Property="IsVisible" Value="{Binding ShowClashUI}" />
-        </Style>
-    </Window.Styles>
     <dialogHost:DialogHost CloseOnClickAway="True" DisableOpeningAnimation="True">
         <DockPanel>
             <DockPanel Margin="{StaticResource Margin8}" DockPanel.Dock="Top">
@@ -123,47 +114,39 @@
 
             <ContentControl x:Name="contentStatusBarView" DockPanel.Dock="Bottom" />
 
-            <Grid>
-                <Grid
-                    x:Name="gridMain"
-                    ColumnDefinitions="1*,10,1*"
-                    IsVisible="False">
-                    <ContentControl x:Name="tabProfiles" Grid.Column="0" />
-                    <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
-                    <TabControl
-                        x:Name="tabMain"
-                        Grid.Column="2"
-                        Classes="logPane"
-                        HorizontalContentAlignment="Left">
-                        <TabItem x:Name="tabMsgView" Header="{x:Static resx:ResUI.MsgInformationTitle}" />
-                        <TabItem x:Name="tabClashProxies" Header="{x:Static resx:ResUI.TbProxies}" />
-                        <TabItem x:Name="tabClashConnections" Header="{x:Static resx:ResUI.TbConnections}" />
-                    </TabControl>
-                </Grid>
-                <Grid
-                    x:Name="gridMain1"
-                    IsVisible="False"
-                    RowDefinitions="1*,10,1*">
-                    <ContentControl x:Name="tabProfiles1" Grid.Row="0" />
-                    <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" />
-                    <TabControl
-                        x:Name="tabMain1"
-                        Grid.Row="2"
-                        Classes="logPane"
-                        TabStripPlacement="Left">
-                        <TabItem x:Name="tabMsgView1" Header="{x:Static resx:ResUI.MsgInformationTitle}" />
-                        <TabItem x:Name="tabClashProxies1" Header="{x:Static resx:ResUI.TbProxies}" />
-                        <TabItem x:Name="tabClashConnections1" Header="{x:Static resx:ResUI.TbConnections}" />
-                    </TabControl>
-                </Grid>
-                <Grid x:Name="gridMain2" IsVisible="False">
-                    <TabControl x:Name="tabMain2" TabStripPlacement="Left">
-                        <TabItem x:Name="tabProfiles2" Header="{x:Static resx:ResUI.menuServers}" />
-                        <TabItem x:Name="tabMsgView2" Header="{x:Static resx:ResUI.MsgInformationTitle}" />
-                        <TabItem x:Name="tabClashProxies2" Header="{x:Static resx:ResUI.TbProxies}" />
-                        <TabItem x:Name="tabClashConnections2" Header="{x:Static resx:ResUI.TbConnections}" />
-                    </TabControl>
-                </Grid>
+            <Grid
+                x:Name="gridMain"
+                ColumnDefinitions="1*,10,1*"
+                IsVisible="False">
+                <ContentControl x:Name="tabProfiles" Grid.Column="0" />
+                <GridSplitter
+                    x:Name="gridSplitter"
+                    Grid.Column="1"
+                    HorizontalAlignment="Stretch" />
+                <DockPanel x:Name="tabDockPanel" Grid.Column="2">
+                    <TabStrip
+                        x:Name="tabStripH"
+                        Margin="{StaticResource MarginLr8}"
+                        DockPanel.Dock="Top">
+                        <TabStrip.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </TabStrip.ItemsPanel>
+                    </TabStrip>
+                    <TabStrip
+                        x:Name="tabStripV"
+                        Margin="{StaticResource MarginLr8}"
+                        DockPanel.Dock="Left"
+                        IsVisible="False">
+                        <TabStrip.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Vertical" />
+                            </ItemsPanelTemplate>
+                        </TabStrip.ItemsPanel>
+                    </TabStrip>
+                    <ContentControl x:Name="tabContent" />
+                </DockPanel>
             </Grid>
         </DockPanel>
     </dialogHost:DialogHost>

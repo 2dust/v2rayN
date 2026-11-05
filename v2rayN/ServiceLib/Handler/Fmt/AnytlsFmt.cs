@@ -17,7 +17,10 @@ public class AnytlsFmt : BaseFmt
             ConfigType = EConfigType.Anytls,
             Remarks = parsedUrl.GetComponents(UriComponents.Fragment, UriFormat.Unescaped),
             Address = parsedUrl.IdnHost,
-            Port = parsedUrl.Port,
+            // The URI scheme makes the port optional and defaults it to 443
+            // (https://github.com/anytls/anytls-go/blob/main/docs/uri_scheme.md). Uri.Port answers
+            // -1 for an unregistered scheme carrying no port; an explicit ":0" stays 0.
+            Port = parsedUrl.Port == -1 ? 443 : parsedUrl.Port,
         };
         var rawUserInfo = Utils.UrlDecode(parsedUrl.UserInfo);
         item.Password = rawUserInfo;

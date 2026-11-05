@@ -26,7 +26,6 @@
             <TextBlock
                 x:Name="txtMessage"
                 VerticalAlignment="Center"
-                FontSize="14"
                 LineHeight="22"
                 TextWrapping="Wrap" />
         </ScrollViewer>

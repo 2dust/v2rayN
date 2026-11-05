@@ -20,17 +20,9 @@
     <Application.Styles>
         <semi:SemiTheme />
         <semi:AvaloniaEditSemiTheme />
-        <StyleInclude Source="Assets/GlobalStyles.axaml" />
         <StyleInclude Source="avares://Semi.Avalonia.DataGrid/Index.axaml" />
         <dialogHost:DialogHostStyles />
-
-        <Style Selector="dialogHost|DialogHost">
-            <Setter Property="OverlayBackground" Value="{DynamicResource SemiColorOverlayBackground}" />
-            <Setter Property="Background" Value="{DynamicResource SemiColorFill0}" />
-
-            <Setter Property="dialogHost:DialogHostStyle.BoxShadow" Value="{DynamicResource SemiShadowElevated}" />
-            <Setter Property="dialogHost:DialogHostStyle.CornerRadius" Value="6" />
-        </Style>
+        <StyleInclude Source="Assets/GlobalStyles.axaml" />
     </Application.Styles>
 
     <TrayIcon.Icons>

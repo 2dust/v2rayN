@@ -1153,7 +1153,7 @@
     <value>ACK aşkarlaması mümkün olmadıqda ehtiyat gecikmə (məsələn, 500ms). Yalnız sing-box. Boş = standart.</value>
   </data>
   <data name="FillFragmentParameterError" xml:space="preserve">
-    <value>Aralıq formatı yanlışdır. &apos;başlanğıc-son&apos; formatından istifadə edin (məsələn, 50-100).</value>
+    <value>Aralıq formatı yanlışdır. 'başlanğıc-son' formatından istifadə edin (məsələn, 50-100).</value>
   </data>
   <data name="TbSettingsEnableCacheFile4Sbox" xml:space="preserve">
     <value>sing-box üçün keş faylını aktiv et (qayda dəsti faylları)</value>
@@ -1453,7 +1453,7 @@
     <value>SVCB və HTTPS sorğularını blokla</value>
   </data>
   <data name="TbDNSHostsConfig" xml:space="preserve">
-    <value>DNS hostları: (hər sətirdə &quot;domain1 ip1 ip2&quot;)</value>
+    <value>DNS hostları: (hər sətirdə "domain1 ip1 ip2")</value>
   </data>
   <data name="ThBasicDNSSettings" xml:space="preserve">
     <value>Əsas DNS parametrləri</value>
@@ -1558,25 +1558,25 @@
     <value>Ehtiyat seçim</value>
   </data>
   <data name="MsgCoreNotSupportNetwork" xml:space="preserve">
-    <value>&apos;{0}&apos; nüvəsi &apos;{1}&apos; şəbəkə növünü dəstəkləmir</value>
+    <value>'{0}' nüvəsi '{1}' şəbəkə növünü dəstəkləmir</value>
   </data>
   <data name="MsgCoreNotSupportProtocolTransport" xml:space="preserve">
     <value>'{0}' nüvəsi '{1}' protokolunu '{2}' ötürmə protokolu ilə dəstəkləmir</value>
   </data>
   <data name="MsgCoreNotSupportProtocol" xml:space="preserve">
-    <value>&apos;{0}&apos; nüvəsi &apos;{1}&apos; protokolunu dəstəkləmir</value>
+    <value>'{0}' nüvəsi '{1}' protokolunu dəstəkləmir</value>
   </data>
   <data name="MsgInvalidProperty" xml:space="preserve">
     <value>{0} xassəsi yanlışdır, yoxlayın</value>
   </data>
   <data name="MsgNotSupportProtocol" xml:space="preserve">
-    <value>&apos;{0}&apos; protokolu dəstəklənmir</value>
+    <value>'{0}' protokolu dəstəklənmir</value>
   </data>
   <data name="TbSettingsHide2TrayWhenCloseTip" xml:space="preserve">
     <value>Sistemdə sistem paneli funksiyası yoxdursa, bunu aktiv etməyin</value>
   </data>
   <data name="TbRuleTypeTips" xml:space="preserve">
-    <value>Marşrutlaşdırma və DNS üçün ayrı qaydalar təyin edə və ya hər ikisinə tətbiq etmək üçün &quot;ALL&quot; seçə bilərsiniz</value>
+    <value>Marşrutlaşdırma və DNS üçün ayrı qaydalar təyin edə və ya hər ikisinə tətbiq etmək üçün "ALL" seçə bilərsiniz</value>
   </data>
   <data name="TbRuleType" xml:space="preserve">
     <value>Qayda növü</value>
@@ -1654,10 +1654,10 @@ Təyin edildikdə sertifikat sabitlənəcək və "Təhlükəsiz olmayan əlaqəy
     <value>Standart olaraq yalnız marşrutlaşdırma zamanı həll üçün çağırılır; uzaq serverin bu DNS-ə çata bildiyinə əmin olun</value>
   </data>
   <data name="TbDirectResolveStrategyTips" xml:space="preserve">
-    <value>Təyin edilməyibsə və ya &quot;AsIs&quot; seçilibsə, DNS həlli sistem DNS-indən istifadə edir; əks halda daxili DNS modulu istifadə olunur.</value>
+    <value>Təyin edilməyibsə və ya "AsIs" seçilibsə, DNS həlli sistem DNS-indən istifadə edir; əks halda daxili DNS modulu istifadə olunur.</value>
   </data>
   <data name="TbRemoteResolveStrategyTips" xml:space="preserve">
-    <value>Təyin edilməyibsə və ya &quot;AsIs&quot; seçilibsə, DNS həlli uzaq serverin DNS-i tərəfindən aparılır; əks halda daxili DNS modulu istifadə olunur.</value>
+    <value>Təyin edilməyibsə və ya "AsIs" seçilibsə, DNS həlli uzaq serverin DNS-i tərəfindən aparılır; əks halda daxili DNS modulu istifadə olunur.</value>
   </data>
   <data name="TbHopInt7" xml:space="preserve">
     <value>Port dəyişmə intervalı</value>
@@ -1891,7 +1891,7 @@ Təyin edildikdə sertifikat sabitlənəcək və "Təhlükəsiz olmayan əlaqəy
     <value>HTTP başlıqları (JSON)</value>
   </data>
   <data name="SubRequestHeadersTips" xml:space="preserve">
-    <value>İstəyə bağlıdır. Nümunə: {&quot;X-hwid&quot;: &quot;my_device&quot;}. Dəyərlər abunəlik çevirmə xidməti də daxil olmaqla, bu qrupdakı bütün URL-lər üçün standart başlıqları əvəz edir.</value>
+    <value>İstəyə bağlıdır. Nümunə: {"X-hwid": "my_device"}. Dəyərlər abunəlik çevirmə xidməti də daxil olmaqla, bu qrupdakı bütün URL-lər üçün standart başlıqları əvəz edir.</value>
   </data>
   <data name="SubRequestHeadersInvalid" xml:space="preserve">
     <value>HTTP başlıqları yanlışdır. Unikal başlıq adları və sətir dəyərləri olan JSON obyektindən istifadə edin. Başlıq adlarında və dəyərlərində sətirsonu simvolları olmamalıdır.</value>

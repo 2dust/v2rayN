@@ -1,4 +1,6 @@
 using Avalonia.Controls.Notifications;
+using Avalonia.Controls.Primitives;
+using Avalonia.Layout;
 using DialogHostAvalonia;
 using v2rayN.Desktop.Base;
 using v2rayN.Desktop.Common;
@@ -9,11 +11,15 @@ namespace v2rayN.Desktop.Views;
 public partial class MainWindow : WindowBase<MainWindowViewModel>
 {
     private static Config _config;
-    private readonly SingleReplaceableDisposable _layoutBindingsDisposable = new();
     private readonly WindowNotificationManager? _manager;
     private CheckUpdateView? _checkUpdateView;
     private BackupAndRestoreView? _backupAndRestoreView;
     private bool _blCloseByUser = false;
+
+    private MsgView? _msgView;
+    private ProfilesView? _profilesView;
+    private ClashConnectionsView? _clashConnectionsView;
+    private ClashProxiesView? _clashProxiesView;
 
     public MainWindow()
     {
@@ -81,11 +87,13 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
 
             this.OneWayBind(ViewModel, vm => vm.StatusBarViewModel, v => v.contentStatusBarView.Content).DisposeWith(disposables);
 
-            _layoutBindingsDisposable.DisposeWith(disposables);
-
+            var layoutBindings = new SingleReplaceableDisposable().DisposeWith(disposables);
             this.WhenAnyValue(v => v.ViewModel.MainGirdOrientation)
                 .ObserveOn(RxSchedulers.MainThreadScheduler)
-                .Subscribe(UpdateLayout)
+                .Subscribe(orientation =>
+                {
+                    UpdateLayout(orientation, layoutBindings);
+                })
                 .DisposeWith(disposables);
 
             ViewModel.ReadTextFromClipboardInteraction.RegisterHandler(async interaction =>
@@ -367,7 +375,6 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         {
             ShowHideWindow(false);
         }
-        RestoreUI();
     }
 
     private void RestoreUI()
@@ -381,8 +388,8 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
             }
             else if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Vertical)
             {
-                gridMain1.RowDefinitions[0].Height = new GridLength(_config.UiItem.MainGirdHeight1, GridUnitType.Star);
-                gridMain1.RowDefinitions[2].Height = new GridLength(_config.UiItem.MainGirdHeight2, GridUnitType.Star);
+                gridMain.RowDefinitions[0].Height = new GridLength(_config.UiItem.MainGirdHeight1, GridUnitType.Star);
+                gridMain.RowDefinitions[2].Height = new GridLength(_config.UiItem.MainGirdHeight2, GridUnitType.Star);
             }
         }
     }
@@ -397,74 +404,180 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         }
         else if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Vertical)
         {
-            ConfigHandler.SaveMainGirdHeight(_config, gridMain1.RowDefinitions[0].ActualHeight, gridMain1.RowDefinitions[2].ActualHeight);
+            ConfigHandler.SaveMainGirdHeight(_config, gridMain.RowDefinitions[0].ActualHeight, gridMain.RowDefinitions[2].ActualHeight);
         }
     }
 
-    private void UpdateLayout(EGirdOrientation orientation)
+    private void UpdateLayout(EGirdOrientation orientation, SingleReplaceableDisposable disposable)
     {
         var currentLayoutDisposables = new MultipleDisposable();
-        _layoutBindingsDisposable.Create(currentLayoutDisposables);
-
-        ClearLayoutContent();
-
-        gridMain.IsVisible = orientation == EGirdOrientation.Horizontal;
-        gridMain1.IsVisible = orientation == EGirdOrientation.Vertical;
-        gridMain2.IsVisible = orientation == EGirdOrientation.Tab;
+        disposable.Create(currentLayoutDisposables);
+        gridMain.IsVisible = true;
+        _msgView ??= new MsgView
+        {
+            DataContext = ViewModel?.MsgViewModel,
+        };
+        _profilesView ??= new ProfilesView
+        {
+            DataContext = ViewModel?.ProfilesViewModel,
+        };
+        _clashProxiesView ??= new ClashProxiesView
+        {
+            DataContext = ViewModel?.ClashProxiesViewModel,
+        };
+        _clashConnectionsView ??= new ClashConnectionsView
+        {
+            DataContext = ViewModel?.ClashConnectionsViewModel,
+        };
 
         switch (orientation)
         {
             case EGirdOrientation.Horizontal:
-                this.OneWayBind(ViewModel, vm => vm.ProfilesViewModel, v => v.tabProfiles.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.MsgViewModel, v => v.tabMsgView.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ClashProxiesViewModel, v => v.tabClashProxies.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ClashConnectionsViewModel, v => v.tabClashConnections.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies.IsVisible).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections.IsVisible).DisposeWith(currentLayoutDisposables);
-                this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain.SelectedIndex).DisposeWith(currentLayoutDisposables);
+            default:
+                gridMain.ColumnDefinitions = new ColumnDefinitions("1*,10,1*");
+                gridMain.RowDefinitions = new RowDefinitions("1*");
+                Grid.SetColumn(tabProfiles, 0);
+                Grid.SetColumn(gridSplitter, 1);
+                Grid.SetColumn(tabDockPanel, 2);
+                Grid.SetRow(tabProfiles, 0);
+                Grid.SetRow(gridSplitter, 0);
+                Grid.SetRow(tabDockPanel, 0);
+                tabStripH.IsVisible = true;
+                tabStripV.IsVisible = false;
+                gridSplitter.IsVisible = true;
+                gridSplitter.HorizontalAlignment = HorizontalAlignment.Stretch;
+                tabContent.Content = null;
+                tabProfiles.Content = _profilesView;
+                this.WhenAnyValue(x => x.ViewModel!.ShowClashUI)
+                    .ObserveOn(RxSchedulers.MainThreadScheduler)
+                    .Subscribe(show =>
+                    {
+                        if (show)
+                        {
+                            tabStripH.ItemsSource = new List<string>
+                            {
+                                ResUI.MsgInformationTitle,
+                                ResUI.TbProxies,
+                                ResUI.TbConnections,
+                            };
+                            tabStripH.IsVisible = true;
+                        }
+                        else
+                        {
+                            tabStripH.IsVisible = false;
+                            tabStripH.ItemsSource = new List<string>();
+                        }
+                    }).DisposeWith(currentLayoutDisposables);
+                tabStripH.GetObservable(SelectingItemsControl.SelectedIndexProperty)
+                    .Subscribe(index =>
+                    {
+                        tabContent.Content = index switch
+                        {
+                            1 => _clashProxiesView,
+                            2 => _clashConnectionsView,
+                            _ => _msgView,
+                        };
+                    }).DisposeWith(currentLayoutDisposables);
                 break;
 
             case EGirdOrientation.Vertical:
-                this.OneWayBind(ViewModel, vm => vm.ProfilesViewModel, v => v.tabProfiles1.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.MsgViewModel, v => v.tabMsgView1.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ClashProxiesViewModel, v => v.tabClashProxies1.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ClashConnectionsViewModel, v => v.tabClashConnections1.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies1.IsVisible).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections1.IsVisible).DisposeWith(currentLayoutDisposables);
-                this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain1.SelectedIndex).DisposeWith(currentLayoutDisposables);
+                gridMain.RowDefinitions = new RowDefinitions("1*,10,1*");
+                gridMain.ColumnDefinitions = new ColumnDefinitions("1*");
+                Grid.SetRow(tabProfiles, 0);
+                Grid.SetRow(gridSplitter, 1);
+                Grid.SetRow(tabDockPanel, 2);
+                Grid.SetColumn(tabProfiles, 0);
+                Grid.SetColumn(gridSplitter, 0);
+                Grid.SetColumn(tabDockPanel, 0);
+                tabStripV.IsVisible = true;
+                tabStripH.IsVisible = false;
+                gridSplitter.IsVisible = true;
+                gridSplitter.VerticalAlignment = VerticalAlignment.Stretch;
+                tabContent.Content = null;
+                tabProfiles.Content = _profilesView;
+                this.WhenAnyValue(x => x.ViewModel!.ShowClashUI)
+                    .ObserveOn(RxSchedulers.MainThreadScheduler)
+                    .Subscribe(show =>
+                    {
+                        if (show)
+                        {
+                            tabStripV.ItemsSource = new List<string>
+                            {
+                                ResUI.MsgInformationTitle,
+                                ResUI.TbProxies,
+                                ResUI.TbConnections,
+                            };
+                            tabStripV.IsVisible = true;
+                        }
+                        else
+                        {
+                            tabStripV.IsVisible = false;
+                            tabStripV.ItemsSource = new List<string>();
+                        }
+                    }).DisposeWith(currentLayoutDisposables);
+                tabStripV.GetObservable(SelectingItemsControl.SelectedIndexProperty)
+                    .Subscribe(index =>
+                    {
+                        tabContent.Content = index switch
+                        {
+                            1 => _clashProxiesView,
+                            2 => _clashConnectionsView,
+                            _ => _msgView,
+                        };
+                    }).DisposeWith(currentLayoutDisposables);
                 break;
 
             case EGirdOrientation.Tab:
-            default:
-                this.OneWayBind(ViewModel, vm => vm.ProfilesViewModel, v => v.tabProfiles2.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.MsgViewModel, v => v.tabMsgView2.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ClashProxiesViewModel, v => v.tabClashProxies2.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ClashConnectionsViewModel, v => v.tabClashConnections2.Content).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashProxies2.IsVisible).DisposeWith(currentLayoutDisposables);
-                this.OneWayBind(ViewModel, vm => vm.ShowClashUI, v => v.tabClashConnections2.IsVisible).DisposeWith(currentLayoutDisposables);
-                this.Bind(ViewModel, vm => vm.TabMainSelectedIndex, v => v.tabMain2.SelectedIndex).DisposeWith(currentLayoutDisposables);
+                gridMain.RowDefinitions = new RowDefinitions("1*");
+                gridMain.ColumnDefinitions = new ColumnDefinitions("1*");
+                Grid.SetColumn(tabProfiles, 0);
+                Grid.SetColumn(gridSplitter, 0);
+                Grid.SetColumn(tabDockPanel, 0);
+                Grid.SetRow(tabProfiles, 0);
+                Grid.SetRow(gridSplitter, 0);
+                Grid.SetRow(tabDockPanel, 0);
+                tabStripV.IsVisible = true;
+                tabStripH.IsVisible = false;
+                gridSplitter.IsVisible = false;
+                tabContent.Content = null;
+                tabProfiles.Content = null;
+                this.WhenAnyValue(x => x.ViewModel!.ShowClashUI)
+                    .ObserveOn(RxSchedulers.MainThreadScheduler)
+                    .Subscribe(show =>
+                    {
+                        if (show)
+                        {
+                            tabStripV.ItemsSource = new List<string>
+                            {
+                                ResUI.menuServers,
+                                ResUI.MsgInformationTitle,
+                                ResUI.TbProxies,
+                                ResUI.TbConnections,
+                            };
+                            tabStripV.IsVisible = true;
+                        }
+                        else
+                        {
+                            tabStripV.IsVisible = false;
+                            tabStripV.ItemsSource = new List<string>();
+                        }
+                    }).DisposeWith(currentLayoutDisposables);
+                tabStripV.GetObservable(SelectingItemsControl.SelectedIndexProperty)
+                    .Subscribe(index =>
+                    {
+                        tabContent.Content = index switch
+                        {
+                            1 => _msgView,
+                            2 => _clashProxiesView,
+                            3 => _clashConnectionsView,
+                            _ => _profilesView,
+                        };
+                    }).DisposeWith(currentLayoutDisposables);
                 break;
+
         }
 
         RestoreUI();
-    }
-
-    private void ClearLayoutContent()
-    {
-        tabProfiles.Content = null;
-        tabMsgView.Content = null;
-        tabClashProxies.Content = null;
-        tabClashConnections.Content = null;
-
-        tabProfiles1.Content = null;
-        tabMsgView1.Content = null;
-        tabClashProxies1.Content = null;
-        tabClashConnections1.Content = null;
-
-        tabProfiles2.Content = null;
-        tabMsgView2.Content = null;
-        tabClashProxies2.Content = null;
-        tabClashConnections2.Content = null;
     }
 
     private void AddHelpMenuItem()
