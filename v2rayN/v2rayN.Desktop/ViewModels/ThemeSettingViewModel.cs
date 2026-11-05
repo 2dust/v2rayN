@@ -31,6 +31,9 @@ public partial class ThemeSettingViewModel : MyReactiveObject
         CurrentFontSize = _config.UiItem.CurrentFontSize;
         CurrentLanguage = _config.UiItem.CurrentLanguage;
 
+        // Set Default Value
+        ModifyFontSizeEx(12);
+
         this.WhenAnyValue(x => x.CurrentTheme)
             .Where(y => y.IsNotEmpty())
             .SubscribeAsync(async _ =>

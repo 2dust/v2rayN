@@ -1,6 +1,5 @@
 using Avalonia.Controls.Notifications;
 using Avalonia.Controls.Primitives;
-using Avalonia.Controls.Templates;
 using Avalonia.Layout;
 using DialogHostAvalonia;
 using v2rayN.Desktop.Base;
@@ -88,11 +87,12 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
 
             this.OneWayBind(ViewModel, vm => vm.StatusBarViewModel, v => v.contentStatusBarView.Content).DisposeWith(disposables);
 
+            var layoutBindings = new SingleReplaceableDisposable().DisposeWith(disposables);
             this.WhenAnyValue(v => v.ViewModel.MainGirdOrientation)
                 .ObserveOn(RxSchedulers.MainThreadScheduler)
                 .Subscribe(orientation =>
                 {
-                    UpdateLayout(orientation, disposables);
+                    UpdateLayout(orientation, layoutBindings);
                 })
                 .DisposeWith(disposables);
 
@@ -408,8 +408,10 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
         }
     }
 
-    private void UpdateLayout(EGirdOrientation orientation, MultipleDisposable disposable)
+    private void UpdateLayout(EGirdOrientation orientation, SingleReplaceableDisposable disposable)
     {
+        var currentLayoutDisposables = new MultipleDisposable();
+        disposable.Create(currentLayoutDisposables);
         gridMain.IsVisible = true;
         _msgView ??= new MsgView
         {
@@ -440,32 +442,33 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                 Grid.SetRow(tabProfiles, 0);
                 Grid.SetRow(gridSplitter, 0);
                 Grid.SetRow(tabDockPanel, 0);
-                DockPanel.SetDock(tabStrip, Dock.Top);
-                tabProfiles.Content = _profilesView;
+                tabStripH.IsVisible = true;
+                tabStripV.IsVisible = false;
+                gridSplitter.IsVisible = true;
                 gridSplitter.HorizontalAlignment = HorizontalAlignment.Stretch;
-                tabStrip.ItemsPanel = new FuncTemplate<Panel?>(() => new StackPanel
-                {
-                    Orientation = Orientation.Horizontal,
-                });
+                tabContent.Content = null;
+                tabProfiles.Content = _profilesView;
                 this.WhenAnyValue(x => x.ViewModel!.ShowClashUI)
                     .ObserveOn(RxSchedulers.MainThreadScheduler)
                     .Subscribe(show =>
                     {
                         if (show)
                         {
-                            tabStrip.Items.Clear();
-                            tabStrip.Items.Add(new TabStripItem { Content = ResUI.MsgInformationTitle });
-                            tabStrip.Items.Add(new TabStripItem { Content = ResUI.TbProxies });
-                            tabStrip.Items.Add(new TabStripItem { Content = ResUI.TbConnections });
-                            tabStrip.IsVisible = true;
+                            tabStripH.ItemsSource = new List<string>
+                            {
+                                ResUI.MsgInformationTitle,
+                                ResUI.TbProxies,
+                                ResUI.TbConnections,
+                            };
+                            tabStripH.IsVisible = true;
                         }
                         else
                         {
-                            tabStrip.IsVisible = false;
-                            tabStrip.Items.Clear();
+                            tabStripH.IsVisible = false;
+                            tabStripH.ItemsSource = new List<string>();
                         }
-                    }).DisposeWith(disposable);
-                tabStrip.GetObservable(SelectingItemsControl.SelectedIndexProperty)
+                    }).DisposeWith(currentLayoutDisposables);
+                tabStripH.GetObservable(SelectingItemsControl.SelectedIndexProperty)
                     .Subscribe(index =>
                     {
                         tabContent.Content = index switch
@@ -474,7 +477,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                             2 => _clashConnectionsView,
                             _ => _msgView,
                         };
-                    }).DisposeWith(disposable);
+                    }).DisposeWith(currentLayoutDisposables);
                 break;
 
             case EGirdOrientation.Vertical:
@@ -486,32 +489,33 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                 Grid.SetColumn(tabProfiles, 0);
                 Grid.SetColumn(gridSplitter, 0);
                 Grid.SetColumn(tabDockPanel, 0);
-                DockPanel.SetDock(tabStrip, Dock.Left);
-                tabProfiles.Content = _profilesView;
+                tabStripV.IsVisible = true;
+                tabStripH.IsVisible = false;
+                gridSplitter.IsVisible = true;
                 gridSplitter.VerticalAlignment = VerticalAlignment.Stretch;
-                tabStrip.ItemsPanel = new FuncTemplate<Panel?>(() => new StackPanel
-                {
-                    Orientation = Orientation.Vertical,
-                });
+                tabContent.Content = null;
+                tabProfiles.Content = _profilesView;
                 this.WhenAnyValue(x => x.ViewModel!.ShowClashUI)
                     .ObserveOn(RxSchedulers.MainThreadScheduler)
                     .Subscribe(show =>
                     {
                         if (show)
                         {
-                            tabStrip.Items.Clear();
-                            tabStrip.Items.Add(new TabStripItem { Content = ResUI.MsgInformationTitle });
-                            tabStrip.Items.Add(new TabStripItem { Content = ResUI.TbProxies });
-                            tabStrip.Items.Add(new TabStripItem { Content = ResUI.TbConnections });
-                            tabStrip.IsVisible = true;
+                            tabStripV.ItemsSource = new List<string>
+                            {
+                                ResUI.MsgInformationTitle,
+                                ResUI.TbProxies,
+                                ResUI.TbConnections,
+                            };
+                            tabStripV.IsVisible = true;
                         }
                         else
                         {
-                            tabStrip.IsVisible = false;
-                            tabStrip.Items.Clear();
+                            tabStripV.IsVisible = false;
+                            tabStripV.ItemsSource = new List<string>();
                         }
-                    }).DisposeWith(disposable);
-                tabStrip.GetObservable(SelectingItemsControl.SelectedIndexProperty)
+                    }).DisposeWith(currentLayoutDisposables);
+                tabStripV.GetObservable(SelectingItemsControl.SelectedIndexProperty)
                     .Subscribe(index =>
                     {
                         tabContent.Content = index switch
@@ -520,7 +524,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                             2 => _clashConnectionsView,
                             _ => _msgView,
                         };
-                    }).DisposeWith(disposable);
+                    }).DisposeWith(currentLayoutDisposables);
                 break;
 
             case EGirdOrientation.Tab:
@@ -532,33 +536,33 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                 Grid.SetRow(tabProfiles, 0);
                 Grid.SetRow(gridSplitter, 0);
                 Grid.SetRow(tabDockPanel, 0);
-                DockPanel.SetDock(tabStrip, Dock.Left);
+                tabStripV.IsVisible = true;
+                tabStripH.IsVisible = false;
+                gridSplitter.IsVisible = false;
+                tabContent.Content = null;
                 tabProfiles.Content = null;
-                gridSplitter.VerticalAlignment = VerticalAlignment.Stretch;
-                tabStrip.ItemsPanel = new FuncTemplate<Panel?>(() => new StackPanel
-                {
-                    Orientation = Orientation.Vertical,
-                });
                 this.WhenAnyValue(x => x.ViewModel!.ShowClashUI)
                     .ObserveOn(RxSchedulers.MainThreadScheduler)
                     .Subscribe(show =>
                     {
                         if (show)
                         {
-                            tabStrip.Items.Clear();
-                            tabStrip.Items.Add(new TabStripItem { Content = ResUI.menuServers });
-                            tabStrip.Items.Add(new TabStripItem { Content = ResUI.MsgInformationTitle });
-                            tabStrip.Items.Add(new TabStripItem { Content = ResUI.TbProxies });
-                            tabStrip.Items.Add(new TabStripItem { Content = ResUI.TbConnections });
-                            tabStrip.IsVisible = true;
+                            tabStripV.ItemsSource = new List<string>
+                            {
+                                ResUI.menuServers,
+                                ResUI.MsgInformationTitle,
+                                ResUI.TbProxies,
+                                ResUI.TbConnections,
+                            };
+                            tabStripV.IsVisible = true;
                         }
                         else
                         {
-                            tabStrip.IsVisible = false;
-                            tabStrip.Items.Clear();
+                            tabStripV.IsVisible = false;
+                            tabStripV.ItemsSource = new List<string>();
                         }
-                    }).DisposeWith(disposable);
-                tabStrip.GetObservable(SelectingItemsControl.SelectedIndexProperty)
+                    }).DisposeWith(currentLayoutDisposables);
+                tabStripV.GetObservable(SelectingItemsControl.SelectedIndexProperty)
                     .Subscribe(index =>
                     {
                         tabContent.Content = index switch
@@ -568,7 +572,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                             3 => _clashConnectionsView,
                             _ => _profilesView,
                         };
-                    }).DisposeWith(disposable);
+                    }).DisposeWith(currentLayoutDisposables);
                 break;
 
         }
