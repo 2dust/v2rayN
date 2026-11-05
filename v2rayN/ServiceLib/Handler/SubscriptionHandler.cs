@@ -2,7 +2,13 @@ namespace ServiceLib.Handler;
 
 public static class SubscriptionHandler
 {
-    public static async Task UpdateProcess(Config config, string subId, bool blProxy, Func<bool, string, Task> updateFunc)
+    private static DownloadService _directDownloadService = null!;
+    private static DownloadService _proxyDownloadService = null!;
+
+    private static List<DownloadService> _orderedDownloadServices = null!;
+
+    public static async Task UpdateProcess(Config config, string subId, bool blProxy,
+        Func<bool, string, Task> updateFunc)
     {
         await updateFunc?.Invoke(false, ResUI.MsgUpdateSubscriptionStart);
         var subItem = await AppManager.Instance.SubItems();
@@ -24,18 +30,18 @@ public static class SubscriptionHandler
                 }
 
                 var hashCode = $"{item.Remarks}->";
-                if (item.Enabled == false)
+                if (!item.Enabled)
                 {
                     await updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgSkipSubscriptionUpdate}");
                     continue;
                 }
 
                 // Create download handler
-                var downloadHandle = CreateDownloadHandler(item, hashCode, updateFunc);
+                await CreateDownloadHandler(item, blProxy, hashCode, updateFunc);
                 await updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgStartGettingSubscriptions}");
 
                 // Get all subscription content (main subscription + additional subscriptions)
-                var result = await DownloadAllSubscriptions(config, item, blProxy, downloadHandle);
+                var result = await DownloadAllSubscriptions(config, item);
 
                 // Process download result
                 if (await ProcessDownloadResult(config, item.Id, result, hashCode, updateFunc))
@@ -80,53 +86,68 @@ public static class SubscriptionHandler
         return true;
     }
 
-    private static DownloadService CreateDownloadHandler(SubItem item, string hashCode, Func<bool, string, Task> updateFunc)
+    private static async Task CreateDownloadHandler(SubItem item, bool blProxy, string hashCode,
+        Func<bool, string, Task> updateFunc)
     {
         if (!HttpRequestHeadersHelper.TryParse(item.RequestHeaders, out var requestHeaders))
         {
             throw new FormatException(ResUI.SubRequestHeadersInvalid);
         }
 
-        var downloadHandle = new DownloadService
+        var userAgent = item.UserAgent.IsNullOrEmpty() ? Utils.GetVersion(false) : item.UserAgent;
+        _proxyDownloadService = new DownloadService
         {
-            AcceptHeader = "*/*",
-            RequestHeaders = requestHeaders
+            GetHandlerFunc = () =>
+                HttpRequestHeadersHelper.CreateHandler(HttpClientHelper.Instance.ProxyHandler, userAgent, "*/*",
+                    requestHeaders),
         };
-        downloadHandle.Error += (sender2, args) =>
+        _directDownloadService = new DownloadService
         {
-            updateFunc?.Invoke(false, $"{hashCode}{args.GetException().Message}");
+            GetHandlerFunc = () =>
+                HttpRequestHeadersHelper.CreateHandler(HttpClientHelper.Instance.DirectHandler, userAgent, "*/*",
+                    requestHeaders),
         };
-        return downloadHandle;
+        _orderedDownloadServices = blProxy
+            ? new List<DownloadService>
+            {
+                _proxyDownloadService,
+                _directDownloadService,
+            }
+            : new List<DownloadService>
+            {
+                _directDownloadService,
+                _proxyDownloadService,
+            };
     }
 
-    private static async Task<string> DownloadSubscriptionContent(DownloadService downloadHandle, string url, bool blProxy, string userAgent)
+    private static async Task<string> DownloadSubscriptionContent(string url)
     {
-        var result = await downloadHandle.TryDownloadString(url, blProxy, userAgent);
+        var result = await _orderedDownloadServices[0].TryDownloadString(url);
 
-        // If download with proxy fails, try direct connection
-        if (blProxy && result.IsNullOrEmpty())
+        // try other ways
+        if (result.IsNullOrEmpty())
         {
-            result = await downloadHandle.TryDownloadString(url, false, userAgent);
+            result = await _orderedDownloadServices[1].TryDownloadString(url);
         }
 
         return result ?? string.Empty;
     }
 
-    private static async Task<string> DownloadAllSubscriptions(Config config, SubItem item, bool blProxy, DownloadService downloadHandle)
+    private static async Task<string> DownloadAllSubscriptions(Config config, SubItem item)
     {
         // Download main subscription content
-        var result = await DownloadMainSubscription(config, item, blProxy, downloadHandle);
+        var result = await DownloadMainSubscription(config, item);
 
         // Process additional subscription links (if any)
         if (item.ConvertTarget.IsNullOrEmpty() && item.MoreUrl.TrimEx().IsNotEmpty())
         {
-            result = await DownloadAdditionalSubscriptions(item, result, blProxy, downloadHandle);
+            result = await DownloadAdditionalSubscriptions(item, result);
         }
 
         return result;
     }
 
-    private static async Task<string> DownloadMainSubscription(Config config, SubItem item, bool blProxy, DownloadService downloadHandle)
+    private static async Task<string> DownloadMainSubscription(Config config, SubItem item)
     {
         // Prepare subscription URL and download directly
         var url = Utils.GetPunycode(item.Url.TrimEx());
@@ -152,10 +173,10 @@ public static class SubscriptionHandler
         }
 
         // Download and return result directly
-        return await DownloadSubscriptionContent(downloadHandle, url, blProxy, item.UserAgent);
+        return await DownloadSubscriptionContent(url);
     }
 
-    private static async Task<string> DownloadAdditionalSubscriptions(SubItem item, string mainResult, bool blProxy, DownloadService downloadHandle)
+    private static async Task<string> DownloadAdditionalSubscriptions(SubItem item, string mainResult)
     {
         var result = mainResult;
 
@@ -175,7 +196,7 @@ public static class SubscriptionHandler
                 continue;
             }
 
-            var additionalResult = await DownloadSubscriptionContent(downloadHandle, url2, blProxy, item.UserAgent);
+            var additionalResult = await DownloadSubscriptionContent(url2);
 
             if (additionalResult.IsNotEmpty())
             {
@@ -194,7 +215,8 @@ public static class SubscriptionHandler
         return result;
     }
 
-    private static async Task<bool> ProcessDownloadResult(Config config, string id, string result, string hashCode, Func<bool, string, Task> updateFunc)
+    private static async Task<bool> ProcessDownloadResult(Config config, string id, string result, string hashCode,
+        Func<bool, string, Task> updateFunc)
     {
         if (result.IsNullOrEmpty())
         {
@@ -222,8 +244,8 @@ public static class SubscriptionHandler
 
         // Update completion message
         await updateFunc?.Invoke(false, ret > 0
-                ? $"{hashCode}{ResUI.MsgUpdateSubscriptionEnd}"
-                : $"{hashCode}{ResUI.MsgFailedImportSubscription}");
+            ? $"{hashCode}{ResUI.MsgUpdateSubscriptionEnd}"
+            : $"{hashCode}{ResUI.MsgFailedImportSubscription}");
 
         return ret > 0;
     }

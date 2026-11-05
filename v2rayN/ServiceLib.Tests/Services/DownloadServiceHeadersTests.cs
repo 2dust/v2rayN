@@ -22,15 +22,20 @@ public class DownloadServiceHeadersTests
             }
             """;
         await HttpRequestHeadersHelper.TryParse(json, out var headers).Should().BeTrue();
-        var service = new DownloadService { AcceptHeader = "*/*", RequestHeaders = headers };
+        IWebProxy? proxy = useProxy ? new WebProxy(server.Url) : null;
+        var handler = proxy is null ? HttpClientHelper.Instance.DirectHandler : HttpClientHelper.CreateProxySocketsHttpHandler(proxy);
+        var headersHandler = HttpRequestHeadersHelper.CreateHandler(handler, "CustomSubscriptionClient/1.0", "*/*", headers);
+        var service = new DownloadService
+        {
+            GetHandlerFunc = () => headersHandler,
+        };
         var uri = new UriBuilder(useProxy ? "http://subscription.invalid/sub" : server.Url)
         {
             UserName = "user",
-            Password = "password"
+            Password = "password",
         }.Uri;
-        IWebProxy? proxy = useProxy ? new WebProxy(server.Url) : null;
 
-        var content = await service.TryDownloadString(uri.AbsoluteUri, proxy, "OriginalClient/1.0").WaitAsync(TimeSpan.FromSeconds(20));
+        var content = await service.TryDownloadString(uri.AbsoluteUri).WaitAsync(TimeSpan.FromSeconds(20));
 
         await content.Should().BeEqualTo(SubscriptionHttpServer.Body);
         await (server.Requests.Count >= (failFirstRequest ? 2 : 1)).Should().BeTrue();
@@ -52,12 +57,13 @@ public class DownloadServiceHeadersTests
     {
         await CertPemManager.Instance.Init(new Config { GuiItem = new GUIItem() });
         await using var server = new SubscriptionHttpServer(failFirstRequest);
-        var service = new DownloadService { AcceptHeader = "*/*" };
+        var handler = HttpRequestHeadersHelper.CreateHandler(HttpClientHelper.Instance.DirectHandler, "ExistingClient/1.0", "*/*", null);
+        var service = new DownloadService { GetHandlerFunc = () => handler };
+        var helper = new DownloaderHelper { GetHandlerFunc = () => handler };
         var uri = new UriBuilder(server.Url) { UserName = "user", Password = "password" }.Uri;
 
-        var content = await service.TryDownloadString(uri.AbsoluteUri, (IWebProxy?)null, "ExistingClient/1.0").WaitAsync(TimeSpan.FromSeconds(20));
-
-        await content.Should().BeEqualTo(SubscriptionHttpServer.Body);
+        await (await service.TryDownloadString(uri.AbsoluteUri).WaitAsync(TimeSpan.FromSeconds(20))).Should().BeEqualTo(SubscriptionHttpServer.Body);
+        await (await helper.DownloadStringAsync(uri.AbsoluteUri).WaitAsync(TimeSpan.FromSeconds(20))).Should().BeEqualTo(SubscriptionHttpServer.Body);
         foreach (var request in server.Requests)
         {
             await request["Accept"].Should().BeEqualTo("*/*");
@@ -72,15 +78,15 @@ public class DownloadServiceHeadersTests
     {
         await CertPemManager.Instance.Init(new Config { GuiItem = new GUIItem() });
         await using var server = new SubscriptionHttpServer();
+        var handler = HttpRequestHeadersHelper.CreateHandler(HttpClientHelper.Instance.DirectHandler, "TestClient/1.0", "*/*", new Dictionary<string, string> { ["X-hwid"] = "first-device" });
         var subscription = new DownloadService
         {
-            AcceptHeader = "*/*",
-            RequestHeaders = new Dictionary<string, string> { ["X-hwid"] = "first-device" }
+            GetHandlerFunc = () => handler,
         };
         var ordinaryDownload = new DownloadService();
 
-        await (await subscription.TryDownloadString(server.Url, (IWebProxy?)null, "TestClient/1.0")).Should().BeEqualTo(SubscriptionHttpServer.Body);
-        await (await ordinaryDownload.TryDownloadString(server.Url, (IWebProxy?)null, "TestClient/1.0")).Should().BeEqualTo(SubscriptionHttpServer.Body);
+        await (await subscription.TryDownloadString(server.Url)).Should().BeEqualTo(SubscriptionHttpServer.Body);
+        await (await ordinaryDownload.TryDownloadString(server.Url)).Should().BeEqualTo(SubscriptionHttpServer.Body);
 
         var requests = server.Requests.ToArray();
         await requests.Length.Should().BeEqualTo(2);

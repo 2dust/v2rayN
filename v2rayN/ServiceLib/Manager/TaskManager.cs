@@ -121,7 +121,7 @@ public class TaskManager
         {
             Logging.SaveLog("Execute update geo files");
 
-            await new UpdateService(_config, async (success, msg) =>
+            await new UpdateService(await DownloadService.CreateDownloadService(_config.CheckUpdateItem.UpdateViaProxy), _config, async (success, msg) =>
             {
                 await _updateFunc?.Invoke(false, msg);
             }).UpdateGeoFileAll();
@@ -132,9 +132,9 @@ public class TaskManager
     {
         Logging.SaveLog("Execute check update");
 
-        var updateService = new UpdateService(_config, async (success, msg) => await Task.CompletedTask);
+        var updateService = new UpdateService(await DownloadService.CreateDownloadService(_config.CheckUpdateItem.UpdateViaProxy), _config, async (success, msg) => await Task.CompletedTask);
 
-        var msgs = await updateService.CheckHasUpdateOnlyAll(_config.CheckUpdateItem.UpdateViaProxy);
+        var msgs = await updateService.CheckHasUpdateOnlyAll();
         foreach (var msg in msgs)
         {
             await _updateFunc?.Invoke(false, msg);

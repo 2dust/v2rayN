@@ -2644,8 +2644,8 @@ public static class ConfigHandler
     /// <returns>0 if successful</returns>
     public static async Task<int> InitExternalRouting(Config config, bool blImportAdvancedRules = false)
     {
-        var downloadHandle = new DownloadService();
-        var templateContent = await downloadHandle.TryDownloadString(config.ConstItem.RouteRulesTemplateSourceUrl, true, "");
+        var downloadHandle = await DownloadService.CreateDownloadService();
+        var templateContent = await downloadHandle.TryDownloadString(config.ConstItem.RouteRulesTemplateSourceUrl);
         if (templateContent.IsNullOrEmpty())
         {
             return await InitBuiltinRouting(config, blImportAdvancedRules); // fallback
@@ -2674,7 +2674,7 @@ public static class ConfigHandler
 
             var ruleSetsString = !item.RuleSet.IsNullOrEmpty()
                 ? item.RuleSet
-                : await downloadHandle.TryDownloadString(item.Url, true, "");
+                : await downloadHandle.TryDownloadString(item.Url);
 
             if (ruleSetsString.IsNullOrEmpty())
             {
@@ -2872,8 +2872,8 @@ public static class ConfigHandler
     {
         var currentItem = await AppManager.Instance.GetDNSItem(type);
 
-        var downloadHandle = new DownloadService();
-        var templateContent = await downloadHandle.TryDownloadString(url, true, "");
+        var downloadHandle = await DownloadService.CreateDownloadService();
+        var templateContent = await downloadHandle.TryDownloadString(url);
         if (templateContent.IsNullOrEmpty())
         {
             return currentItem;
@@ -2887,12 +2887,12 @@ public static class ConfigHandler
 
         if (!template.NormalDNS.IsNullOrEmpty())
         {
-            template.NormalDNS = await downloadHandle.TryDownloadString(template.NormalDNS, true, "");
+            template.NormalDNS = await downloadHandle.TryDownloadString(template.NormalDNS);
         }
 
         if (!template.TunDNS.IsNullOrEmpty())
         {
-            template.TunDNS = await downloadHandle.TryDownloadString(template.TunDNS, true, "");
+            template.TunDNS = await downloadHandle.TryDownloadString(template.TunDNS);
         }
 
         template.Id = currentItem.Id;
@@ -2922,20 +2922,16 @@ public static class ConfigHandler
         };
     }
 
-    public static async Task<SimpleDNSItem> GetExternalSimpleDNSItem(string url)
+    public static async Task<SimpleDNSItem?> GetExternalSimpleDNSItem(string url)
     {
-        var downloadHandle = new DownloadService();
-        var templateContent = await downloadHandle.TryDownloadString(url, true, "");
+        var downloadHandle = await DownloadService.CreateDownloadService();
+        var templateContent = await downloadHandle.TryDownloadString(url);
         if (templateContent.IsNullOrEmpty())
         {
             return null;
         }
 
         var template = JsonUtils.Deserialize<SimpleDNSItem>(templateContent);
-        if (template == null)
-        {
-            return null;
-        }
 
         return template;
     }

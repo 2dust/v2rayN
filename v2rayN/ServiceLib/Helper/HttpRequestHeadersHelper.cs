@@ -39,9 +39,29 @@ public static class HttpRequestHeadersHelper
         }
     }
 
-    public static HttpMessageHandler CreateHandler(HttpMessageHandler innerHandler, IReadOnlyDictionary<string, string>? headers)
+    public static HttpMessageHandler CreateHandler(HttpMessageHandler innerHandler,
+        IReadOnlyDictionary<string, string>? headers)
     {
         return headers is { Count: > 0 } ? new RequestHeadersHandler(innerHandler, headers) : innerHandler;
+    }
+
+    public static HttpMessageHandler CreateHandler(HttpMessageHandler innerHandler,
+        string userAgent, string acceptHeader,
+        IReadOnlyDictionary<string, string>? headers)
+    {
+        var allHeaders = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        allHeaders["User-Agent"] = userAgent;
+        allHeaders["Accept"] = acceptHeader;
+
+        if (headers is { Count: > 0 })
+        {
+            foreach (var header in headers)
+            {
+                allHeaders[header.Key] = header.Value;
+            }
+        }
+
+        return new RequestHeadersHandler(innerHandler, allHeaders);
     }
 
     private static bool TryAddHeader(HttpRequestMessage request, string name, string value)
@@ -52,13 +72,16 @@ public static class HttpRequestHeadersHelper
         }
 
         return request.Headers.TryAddWithoutValidation(name, value)
-            || request.Content!.Headers.TryAddWithoutValidation(name, value);
+               || request.Content!.Headers.TryAddWithoutValidation(name, value);
     }
 
-    private sealed class RequestHeadersHandler(HttpMessageHandler innerHandler, IReadOnlyDictionary<string, string> headers)
+    private sealed class RequestHeadersHandler(
+        HttpMessageHandler innerHandler,
+        IReadOnlyDictionary<string, string> headers)
         : DelegatingHandler(innerHandler)
     {
-        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
+            CancellationToken cancellationToken)
         {
             using var customHeaders = new HttpRequestMessage { Content = new ByteArrayContent([]) };
             foreach (var header in headers)

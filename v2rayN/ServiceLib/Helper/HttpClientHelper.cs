@@ -1,78 +1,90 @@
-using System.Net.Http.Headers;
-using System.Net.Mime;
-
 namespace ServiceLib.Helper;
 
 /// <summary>
 /// </summary>
 public class HttpClientHelper
 {
-    private static readonly Lazy<HttpClientHelper> _instance = new(() =>
-    {
-        SocketsHttpHandler handler = new() { UseCookies = false };
-        HttpClientHelper helper = new(new HttpClient(handler));
-        return helper;
-    });
+    private static readonly Lazy<HttpClientHelper> _instance = new(() => new());
+
+    // private readonly SocketsHttpHandler _directHandler = CreateSocketsHttpHandler(false);
+    private readonly Lazy<SocketsHttpHandler> _directHandlerLazy = new(() => CreateSocketsHttpHandler(false));
+    private Uri _proxyUri = null!;
 
     public static HttpClientHelper Instance => _instance.Value;
-    private readonly HttpClient httpClient;
 
-    private HttpClientHelper(HttpClient httpClient)
+    public SocketsHttpHandler DirectHandler => _directHandlerLazy.Value;
+
+    public SocketsHttpHandler ProxyHandler
     {
-        this.httpClient = httpClient;
+        get
+        {
+            var port = AppManager.Instance.GetLocalPort(EInboundProtocol.socks);
+            var proxyUri = new Uri($"socks5://{Global.Loopback}:{port}");
+            if (_proxyUri != proxyUri)
+            {
+                //field?.Dispose();
+                _proxyUri = proxyUri;
+                field = CreateProxySocketsHttpHandler(port);
+            }
+            return field;
+        }
+    } = null!;
+
+    public SocketsHttpHandler GetHandler(bool useProxy)
+    {
+        return useProxy ? ProxyHandler : DirectHandler;
     }
 
-    public async Task<string?> TryGetAsync(string url, CancellationToken cancellationToken = default)
+    public HttpClient GetHttpClient(bool useProxy)
     {
-        if (url.IsNullOrEmpty())
-        {
-            return null;
-        }
-
-        try
-        {
-            var response = await httpClient.GetAsync(url, cancellationToken);
-            return await response.Content.ReadAsStringAsync(cancellationToken);
-        }
-        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
-        {
-            throw;
-        }
-        catch
-        {
-            return null;
-        }
+        var handler = GetHandler(useProxy);
+        var client = new HttpClient(handler, false);
+        return client;
     }
 
-    public async Task<string?> GetAsync(string url)
+    public static SocketsHttpHandler CreateSocketsHttpHandler(bool useProxy)
     {
-        if (url.IsNullOrEmpty())
+        SocketsHttpHandler handler;
+        if (!useProxy)
         {
-            return null;
+            handler = new()
+            {
+                UseProxy = false,
+                UseCookies = false,
+                ConnectTimeout = Global.DirectDownloadConnect,
+            };
         }
-        return await httpClient.GetStringAsync(url);
+        else
+        {
+            var port = AppManager.Instance.GetLocalPort(EInboundProtocol.socks);
+            handler = CreateProxySocketsHttpHandler(port);
+        }
+        var certificateChainPolicy = CertPemManager.Instance.BuildCertificateChainPolicy();
+        if (certificateChainPolicy != null)
+        {
+            handler.SslOptions.CertificateChainPolicy = certificateChainPolicy;
+            handler.SslOptions.RemoteCertificateValidationCallback = null;
+        }
+        return handler;
     }
 
-    public async Task PutAsync(string url, Dictionary<string, string> headers)
+    public static SocketsHttpHandler CreateProxySocketsHttpHandler(IWebProxy proxy)
     {
-        var jsonContent = JsonUtils.Serialize(headers);
-        var content = new StringContent(jsonContent, Encoding.UTF8, MediaTypeNames.Application.Json);
-
-        await httpClient.PutAsync(url, content);
+        return new SocketsHttpHandler
+        {
+            UseCookies = false,
+            Proxy = proxy,
+            ConnectTimeout = Global.ProxyDownloadConnect,
+        };
     }
 
-    public async Task PatchAsync(string url, Dictionary<string, string> headers)
+    public static SocketsHttpHandler CreateProxySocketsHttpHandler(int port)
     {
-        var myContent = JsonUtils.Serialize(headers);
-        var buffer = Encoding.UTF8.GetBytes(myContent);
-        var byteContent = new ByteArrayContent(buffer);
-        byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
-        await httpClient.PatchAsync(url, byteContent);
-    }
-
-    public async Task DeleteAsync(string url)
-    {
-        await httpClient.DeleteAsync(url);
+        return new SocketsHttpHandler
+        {
+            UseCookies = false,
+            Proxy = new WebProxy($"socks5://{Global.Loopback}:{port}"),
+            ConnectTimeout = Global.ProxyDownloadConnect,
+        };
     }
 }
