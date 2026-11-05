@@ -142,11 +142,12 @@ public class DownloaderHelper
         };
         var downloadOpt = new DownloadConfiguration()
         {
-            ChunkCount = 100,
-            MinimumChunkSize = 8 * 1024 * 1024, // 8 MB
-            MinimumSizeOfChunking = 8 * 1024 * 1024, // 8 MB
+            ChunkCount = 16,
             ParallelDownload = true,
             ParallelCount = 4,
+
+            MinimumChunkSize = 2 * 1024 * 1024, // 2 MB
+            MinimumSizeOfChunking = 4 * 1024 * 1024, // 4 MB
 
             RequestConfiguration = requestConfiguration,
             CustomHttpMessageHandlerFactory = () => GetSocketsHttpHandler(requestConfiguration),
