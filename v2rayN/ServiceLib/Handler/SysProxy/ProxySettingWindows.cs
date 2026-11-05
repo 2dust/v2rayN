@@ -5,7 +5,10 @@ namespace ServiceLib.Handler.SysProxy;
 [SupportedOSPlatform("windows")]
 public static class ProxySettingWindows
 {
+    private static readonly string _tag = "ProxySettingWindows";
     private const string _regPath = @"Software\Microsoft\Windows\CurrentVersion\Internet Settings";
+    private const string _winHttpRegPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\Connections";
+    private const string _winHttpSettingsValue = "WinHttpSettings";
 
     private static bool SetProxyFallback(string? strProxy, string? exceptions, int type)
     {
@@ -39,7 +42,99 @@ public static class ProxySettingWindows
     /// <exception cref="ApplicationException">Error message with win32 error code</exception>
     public static bool UnsetProxy()
     {
-        return SetProxy(null, null, 1);
+        var result = SetProxy(null, null, 1);
+        // WinHTTP keeps its own machine-wide proxy configuration (netsh winhttp).
+        // A stale loopback entry there breaks Microsoft Store and other system
+        // components once the local proxy is no longer running, so clear it too.
+        _ = UnsetWinHttpProxy();
+        return result;
+    }
+
+    /// <summary>
+    /// Reset the machine-wide WinHTTP proxy (equivalent of "netsh winhttp reset proxy").
+    /// Only a loopback proxy (127.0.0.1 / localhost / [::1]) is removed, i.e. a leftover
+    /// of a local proxy tool; a deliberately configured non-local WinHTTP proxy is kept.
+    /// </summary>
+    /// <returns>true if no stale WinHTTP proxy remains</returns>
+    public static bool UnsetWinHttpProxy()
+    {
+        try
+        {
+            using var regKey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(_winHttpRegPath, false);
+            if (regKey?.GetValue(_winHttpSettingsValue) is not byte[] blob)
+            {
+                return true; // no WinHTTP proxy configured
+            }
+
+            if (!IsLoopbackProxy(blob))
+            {
+                Logging.SaveLog($"{_tag}: a non-loopback WinHTTP proxy is configured, leaving it untouched");
+                return false;
+            }
+
+            if (DeleteWinHttpSettings())
+            {
+                Logging.SaveLog($"{_tag}: removed stale loopback WinHTTP proxy");
+                return true;
+            }
+
+            // HKLM requires administrator rights: fall back to an elevated netsh (one-time UAC prompt)
+            Logging.SaveLog($"{_tag}: removing stale WinHTTP proxy requires administrator rights, requesting elevation");
+            var proc = Process.Start(new ProcessStartInfo
+            {
+                FileName = "netsh",
+                Arguments = "winhttp reset proxy",
+                Verb = "runas",
+                UseShellExecute = true,
+                CreateNoWindow = true,
+            });
+            proc?.WaitForExit(60000);
+            return proc?.ExitCode == 0;
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+            return false;
+        }
+    }
+
+    private static bool DeleteWinHttpSettings()
+    {
+        try
+        {
+            using var regKey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(_winHttpRegPath, true);
+            if (regKey == null)
+            {
+                return false;
+            }
+            regKey.DeleteValue(_winHttpSettingsValue, false);
+            return true;
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return false;
+        }
+        catch (System.Security.SecurityException)
+        {
+            return false;
+        }
+    }
+
+    private static bool IsLoopbackProxy(byte[] blob)
+    {
+        // The WinHttpSettings blob embeds the proxy server string; search both
+        // ANSI and UTF-16LE interpretations for a loopback address.
+        var ascii = Encoding.ASCII.GetString(blob);
+        var unicode = Encoding.Unicode.GetString(blob);
+        foreach (var marker in new[] { "127.0.0.1", "localhost", "[::1]" })
+        {
+            if (ascii.Contains(marker, StringComparison.OrdinalIgnoreCase)
+                || unicode.Contains(marker, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     /// <summary>
