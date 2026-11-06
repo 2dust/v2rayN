@@ -6,11 +6,14 @@ public class TaskManager
     public static TaskManager Instance => _instance.Value;
     private Config _config;
     private Func<bool, string, Task>? _updateFunc;
+    private Func<Task>? _subscriptionUpdated;
 
-    public void RegUpdateTask(Config config, Func<bool, string, Task> updateFunc)
+    public void RegUpdateTask(Config config, Func<bool, string, Task> updateFunc,
+        Func<Task>? subscriptionUpdated = null)
     {
         _config = config;
         _updateFunc = updateFunc;
+        _subscriptionUpdated = subscriptionUpdated;
 
         Task.Run(ScheduledTasks);
     }
@@ -99,13 +102,15 @@ public class TaskManager
 
         Logging.SaveLog("Execute update subscription");
 
+        var updated = false;
         foreach (var item in lstSubs)
         {
             await SubscriptionHandler.UpdateProcess(_config, item.Id, true, async (success, msg) =>
             {
-                await _updateFunc?.Invoke(success, msg);
+                await _updateFunc?.Invoke(_subscriptionUpdated == null && success, msg);
                 if (success)
                 {
+                    updated = true;
                     Logging.SaveLog($"Update subscription end. {msg}");
                 }
             });
@@ -113,6 +118,8 @@ public class TaskManager
             await ConfigHandler.AddSubItem(_config, item);
             await Task.Delay(1000);
         }
+        if (updated && _subscriptionUpdated != null)
+            await _subscriptionUpdated();
     }
 
     private async Task UpdateTaskRunGeo(int hours)

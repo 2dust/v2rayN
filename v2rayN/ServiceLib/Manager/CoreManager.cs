@@ -17,6 +17,24 @@ public class CoreManager
     private bool _linuxSudo = false;
     private Func<bool, string, Task>? _updateFunc;
     private const string _tag = "CoreHandler";
+    private readonly SemaphoreSlim _lifecycleSemaphore = new(1, 1);
+    private readonly Func<Task> _removeTunDevice;
+    private PreparedCoreConfigBundle? _runningConfig;
+
+    public CoreManager(Func<Task>? removeTunDevice = null)
+    {
+        _removeTunDevice = removeTunDevice ?? (() => Utils.IsWindows() ? WindowsUtils.RemoveTunDevice() : Task.CompletedTask);
+    }
+
+    public bool IsRunning => _processService is { HasExited: false };
+    public bool HasRunningConfiguration => _runningConfig != null;
+    public bool HasPendingConfigurationChanges { get; private set; }
+
+    internal async Task DeferSubscriptionChanges()
+    {
+        HasPendingConfigurationChanges = true;
+        await UpdateFunc(true, ResUI.MsgSubscriptionChangesPending);
+    }
 
     public async Task Init(Config config, Func<bool, string, Task> updateFunc)
     {
@@ -62,45 +80,120 @@ public class CoreManager
 
     /// <param name="mainContext">Resolved main context (with pre-socks ports already merged if applicable).</param>
     /// <param name="preContext">Optional pre-socks context passed to <see cref="CoreStartPreService"/>.</param>
-    public async Task LoadCore(CoreConfigContext? mainContext, CoreConfigContext? preContext)
+    public async Task<bool> LoadCore(CoreConfigContext? mainContext, CoreConfigContext? preContext, bool skipIfUnchanged = false, Func<bool>? isCurrent = null)
     {
+        await _lifecycleSemaphore.WaitAsync();
+        try
+        {
+            return await LoadCoreLocked(mainContext, preContext, skipIfUnchanged, isCurrent);
+        }
+        finally { _lifecycleSemaphore.Release(); }
+    }
+
+    private async Task<bool> LoadCoreLocked(CoreConfigContext? mainContext, CoreConfigContext? preContext, bool skipIfUnchanged, Func<bool>? isCurrent)
+    {
+        // A background refresh must not start a deliberately stopped core or guess an unknown baseline.
+        if (skipIfUnchanged && (!IsRunning || _runningConfig == null))
+            return false;
         if (mainContext == null)
         {
             await UpdateFunc(false, ResUI.CheckServerSettings);
-            return;
+            return false;
         }
 
-        var node = mainContext.Node;
-        var fileName = Utils.GetBinConfigPath(Global.CoreConfigFileName);
-        var result = await CoreConfigHandler.GenerateClientConfig(mainContext, fileName);
-        if (result.Success != true)
+        var configState = PreparedCoreConfigBundle.CaptureConfigState(_config);
+        PreparedCoreConfigBundle candidate;
+        try
         {
-            await UpdateFunc(true, result.Msg);
-            return;
+            candidate = await PreparedCoreConfigBundle.CreateAsync(mainContext, preContext);
+        }
+        catch (Exception ex)
+        {
+            await UpdateFunc(true, ex.Message);
+            return false;
+        }
+        if (isCurrent?.Invoke() == false || (skipIfUnchanged && configState != PreparedCoreConfigBundle.CaptureConfigState(_config)))
+            return false;
+        if (skipIfUnchanged)
+        {
+            var comparison = candidate.CompareTo(_runningConfig);
+            if (comparison == ECoreConfigChange.Unknown)
+            {
+                await DeferSubscriptionChanges();
+                return false;
+            }
+            if (comparison == ECoreConfigChange.Unchanged
+                && (preContext == null || _processPreService is { HasExited: false }))
+            {
+                HasPendingConfigurationChanges = false;
+                return false;
+            }
         }
 
+        var node = candidate.MainContext.Node;
         await UpdateFunc(false, $"{node.GetSummary()}");
         await UpdateFunc(false, $"{Utils.GetRuntimeInfo()}");
         await UpdateFunc(false, string.Format(ResUI.StartService, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")));
-        await CoreStop();
-        await Task.Delay(100);
-
-        if (Utils.IsWindows() && (mainContext?.IsTunEnabled == true || preContext?.IsTunEnabled == true))
+        if (isCurrent?.Invoke() == false)
+            return false;
+        var previous = _runningConfig;
+        var applying = false;
+        try
         {
-            await Task.Delay(100);
-            await WindowsUtils.RemoveTunDevice();
-        }
-
-        await CoreStart(mainContext);
-        await WaitForProxyPort(preContext);
-        await CoreStartPreService(preContext);
-
-        AppManager.Instance.RunningCoreType = preContext?.RunCoreType ?? mainContext.RunCoreType;
-
-        if (_processService != null)
-        {
+            candidate.CheckExecutables();
+            using var files = await candidate.StageAsync();
+            if (isCurrent?.Invoke() == false)
+                return false;
+            applying = true;
+            if (!await StartPrepared(candidate, files, isCurrent))
+                return false;
+            if (!IsRunning || (candidate.PreContext != null && _processPreService is not { HasExited: false }))
+                throw new InvalidOperationException(ResUI.FailedToRunCore);
+            _runningConfig = candidate;
+            HasPendingConfigurationChanges = false;
+            AppManager.Instance.RunningCoreType = candidate.PreContext?.RunCoreType ?? candidate.MainContext.RunCoreType;
             await UpdateFunc(true, $"{node.GetSummary()}");
+            return true;
         }
+        catch (Exception ex)
+        {
+            await UpdateFunc(true, ex.Message);
+            // Recovery may interrupt sessions; only preparation/equality failures preserve the old processes.
+            if (previous != null && applying)
+            {
+                try
+                {
+                    using var recoveryFiles = await previous.StageAsync();
+                    await StartPrepared(previous, recoveryFiles);
+                    if (IsRunning && (previous.PreContext == null || _processPreService is { HasExited: false }))
+                        _runningConfig = previous;
+                }
+                catch (Exception recoveryError)
+                {
+                    await UpdateFunc(true, recoveryError.Message);
+                }
+            }
+            return false;
+        }
+    }
+
+    private async Task<bool> StartPrepared(PreparedCoreConfigBundle bundle, PreparedCoreConfigFiles files, Func<bool>? isCurrent = null)
+    {
+        if (isCurrent?.Invoke() == false)
+            return false;
+        await CoreStopLocked(clearRunningConfig: false);
+        await Task.Delay(100);
+        if (isCurrent?.Invoke() == false)
+            throw new OperationCanceledException(ResUI.CheckServerSettings);
+        files.Commit();
+        if (Utils.IsWindows() && (bundle.MainContext.IsTunEnabled || bundle.PreContext?.IsTunEnabled == true))
+            await _removeTunDevice();
+        if (isCurrent?.Invoke() == false)
+            throw new OperationCanceledException(ResUI.CheckServerSettings);
+        await CoreStart(bundle.MainContext);
+        await WaitForProxyPort(bundle.PreContext);
+        await CoreStartPreService(bundle.PreContext);
+        return true;
     }
 
     public async Task<ProcessService?> LoadCoreConfigSpeedtest(List<ServerTestItem> selecteds)
@@ -146,6 +239,19 @@ public class CoreManager
 
     public async Task CoreStop()
     {
+        await _lifecycleSemaphore.WaitAsync();
+        try
+        { await CoreStopLocked(); }
+        finally { _lifecycleSemaphore.Release(); }
+    }
+
+    private async Task CoreStopLocked(bool clearRunningConfig = true)
+    {
+        if (clearRunningConfig)
+        {
+            _runningConfig = null;
+            HasPendingConfigurationChanges = false;
+        }
         try
         {
             if (_linuxSudo)
@@ -179,7 +285,7 @@ public class CoreManager
     private async Task CoreStart(CoreConfigContext context)
     {
         var node = context.Node;
-        var coreType = AppManager.Instance.GetCoreType(node, node.ConfigType);
+        var coreType = context.RunCoreType;
         var coreInfo = CoreInfoManager.Instance.GetCoreInfo(coreType);
 
         var displayLog = node.ConfigType != EConfigType.Custom || node.DisplayLog;
@@ -195,19 +301,14 @@ public class CoreManager
     {
         if (_processService is { HasExited: false } && preContext != null)
         {
-            var preCoreType = preContext?.Node?.CoreType ?? ECoreType.sing_box;
-            var fileName = Utils.GetBinConfigPath(Global.CorePreConfigFileName);
-            var result = await CoreConfigHandler.GenerateClientConfig(preContext, fileName);
-            if (result.Success)
+            var preCoreType = preContext.RunCoreType;
+            var coreInfo = CoreInfoManager.Instance.GetCoreInfo(preCoreType);
+            var proc = await RunProcess(coreInfo, Global.CorePreConfigFileName, true, true, preContext.IsTunEnabled);
+            if (proc is null)
             {
-                var coreInfo = CoreInfoManager.Instance.GetCoreInfo(preCoreType);
-                var proc = await RunProcess(coreInfo, Global.CorePreConfigFileName, true, true, preContext.IsTunEnabled);
-                if (proc is null)
-                {
-                    return;
-                }
-                _processPreService = proc;
+                return;
             }
+            _processPreService = proc;
         }
     }
 

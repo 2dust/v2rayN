@@ -9,7 +9,7 @@ public static class CoreConfigHandler
 
     public static async Task<RetResult> GenerateClientConfig(CoreConfigContext context, string? fileName)
     {
-        var config = AppManager.Instance.Config;
+        var config = context.AppConfig;
         var result = new RetResult();
         var node = context.Node;
 
@@ -18,7 +18,7 @@ public static class CoreConfigHandler
             result = node.CoreType switch
             {
                 ECoreType.mihomo => await new CoreConfigClashService(config, context.IsTunEnabled).GenerateClientCustomConfig(node, fileName),
-                _ => await GenerateClientCustomConfig(node, fileName)
+                _ => await GenerateClientCustomConfig(node)
             };
         }
         else if (context.RunCoreType == ECoreType.sing_box)
@@ -41,21 +41,15 @@ public static class CoreConfigHandler
         return result;
     }
 
-    private static async Task<RetResult> GenerateClientCustomConfig(ProfileItem node, string? fileName)
+    private static async Task<RetResult> GenerateClientCustomConfig(ProfileItem node)
     {
         var ret = new RetResult();
         try
         {
-            if (node == null || fileName is null)
+            if (node == null)
             {
                 ret.Msg = ResUI.CheckServerSettings;
                 return ret;
-            }
-
-            if (File.Exists(fileName))
-            {
-                File.SetAttributes(fileName, FileAttributes.Normal); //If the file has a read-only attribute, direct deletion will fail
-                File.Delete(fileName);
             }
 
             var addressFileName = node.Address;
@@ -68,19 +62,10 @@ public static class CoreConfigHandler
                 ret.Msg = ResUI.FailedGenDefaultConfiguration;
                 return ret;
             }
-            File.Copy(addressFileName, fileName);
-            File.SetAttributes(fileName, FileAttributes.Normal); //Copy will keep the attributes of addressFileName, so we need to add write permissions to fileName just in case of addressFileName is a read-only file.
-
-            //check again
-            if (!File.Exists(fileName))
-            {
-                ret.Msg = ResUI.FailedGenDefaultConfiguration;
-                return ret;
-            }
-
+            ret.Data = await File.ReadAllTextAsync(addressFileName);
             ret.Msg = string.Format(ResUI.SuccessfulConfiguration, "");
             ret.Success = true;
-            return await Task.FromResult(ret);
+            return ret;
         }
         catch (Exception ex)
         {

@@ -2,6 +2,8 @@ namespace ServiceLib.Services.CoreConfig;
 
 public partial class CoreConfigV2rayService
 {
+    private static readonly string _macTunDeviceName = $"utun{Random.Shared.Next(99)}";
+
     private void GenInbounds()
     {
         try
@@ -62,7 +64,7 @@ public partial class CoreConfigV2rayService
                 var tunInbound =
                     JsonUtils.Deserialize<Inbounds4Ray>(EmbedUtils.GetEmbedText(Global.V2raySampleTunInbound)) ??
                     new Inbounds4Ray();
-                tunInbound.settings.name = context.IsMacOS ? $"utun{new Random().Next(99)}" : "xray_tun";
+                tunInbound.settings.name = context.IsMacOS ? _macTunDeviceName : "xray_tun";
                 tunInbound.settings.MTU = _config.TunModeItem.Mtu;
 
                 var address = _config.TunModeItem.IPv4Address.NullIfEmpty() ?? Global.TunIPv4Address.First();

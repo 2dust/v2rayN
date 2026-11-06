@@ -260,12 +260,16 @@ public partial class StatusBarViewModel : MyReactiveObject
         await Task.Delay(1000);
     }
 
-    public async Task RefreshServersBiz()
+    public async Task RefreshServersBiz(bool preserveDefaultServer = false)
     {
         await RefreshServersMenu();
 
         //display running server
-        var running = await ConfigHandler.GetDefaultServer(_config);
+        var running = preserveDefaultServer || CoreManager.Instance.HasRunningConfiguration
+            ? await AppManager.Instance.GetProfileItem(_config.IndexId)
+            : await ConfigHandler.GetDefaultServer(_config);
+        if (running == null && CoreManager.Instance.HasRunningConfiguration)
+            return;
         if (running != null)
         {
             RunningServerDisplay = running.GetSummary();
