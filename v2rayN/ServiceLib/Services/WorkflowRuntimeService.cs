@@ -1,4 +1,6 @@
-namespace ServiceLib.ViewModels;
+using ServiceLib.ViewModels;
+
+namespace ServiceLib.Services;
 
 /// <summary>
 /// Bridges <see cref="WorkflowHandler"/> to the profile and status bar view models.
@@ -6,7 +8,7 @@ namespace ServiceLib.ViewModels;
 /// completion, including the core reload after activation and the OS proxy change, so a
 /// following step never runs against a half-applied state.
 /// </summary>
-public sealed class WorkflowRuntime(
+public sealed class WorkflowRuntimeService(
     ProfilesViewModel profiles,
     Func<string?, bool, Task> updateSubscriptions,
     Func<ESysProxyType, Task> setSystemProxy) : IWorkflowRuntime
