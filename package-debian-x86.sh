@@ -434,7 +434,7 @@ bundle_url_for_rid() {
   local rid="$1"
 
   case "$rid" in
-    linux-x86) echo "https://raw.githubusercontent.com/autorepobot/v2rayN-SIG-bin/refs/heads/master/v2rayN-linux-86.zip" ;;
+    linux-x86) echo "https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-86.zip" ;;
     *)         return 1 ;;
   esac
 }
