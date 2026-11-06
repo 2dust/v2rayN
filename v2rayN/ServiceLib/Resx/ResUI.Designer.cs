@@ -223,6 +223,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Enter a valid IPv6 CIDR range with at least two addresses, for example fc00::/18. 的本地化字符串。
+        /// </summary>
+        public static string FillCorrectFakeIPv6Range {
+            get {
+                return ResourceManager.GetString("FillCorrectFakeIPv6Range", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Please enter the correct port format. 的本地化字符串。
         /// </summary>
         public static string FillCorrectServerPort {
@@ -525,6 +534,15 @@ namespace ServiceLib.Resx {
         public static string LvPort {
             get {
                 return ResourceManager.GetString("LvPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Pre-resolve server domains 的本地化字符串。
+        /// </summary>
+        public static string LvPreResolve {
+            get {
+                return ResourceManager.GetString("LvPreResolve", resourceCulture);
             }
         }
         
@@ -975,6 +993,15 @@ namespace ServiceLib.Resx {
         public static string menuClose {
             get {
                 return ResourceManager.GetString("menuClose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Columns 的本地化字符串。
+        /// </summary>
+        public static string menuColumns {
+            get {
+                return ResourceManager.GetString("menuColumns", resourceCulture);
             }
         }
         
@@ -3223,6 +3250,24 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 IPv6 FakeIP 的本地化字符串。
+        /// </summary>
+        public static string TbFakeIPv6 {
+            get {
+                return ResourceManager.GetString("TbFakeIPv6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Return fake IPv6 addresses as well. Requires FakeIP to be enabled and AAAA queries to be allowed. 的本地化字符串。
+        /// </summary>
+        public static string TbFakeIPv6Tips {
+            get {
+                return ResourceManager.GetString("TbFakeIPv6Tips", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Fallback 的本地化字符串。
         /// </summary>
         public static string TbFallback {
@@ -5163,6 +5208,15 @@ namespace ServiceLib.Resx {
         public static string TbVerifyPeerCertByName {
             get {
                 return ResourceManager.GetString("TbVerifyPeerCertByName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Warp 的本地化字符串。
+        /// </summary>
+        public static string TbWarp {
+            get {
+                return ResourceManager.GetString("TbWarp", resourceCulture);
             }
         }
         

@@ -497,13 +497,14 @@
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsBindInterface}" />
-                        <TextBox
+                        <ComboBox
                             x:Name="txtbindInterface"
                             Grid.Row="22"
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin8}"
-                            Style="{StaticResource DefTextBox}" />
+                            IsEditable="True"
+                            Style="{StaticResource DefComboBox}" />
                         <TextBlock
                             Grid.Row="22"
                             Grid.Column="2"

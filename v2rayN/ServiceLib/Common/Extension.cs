@@ -143,7 +143,7 @@ public static class Extension
         [CallerFilePath] string filePath = "",
         [CallerLineNumber] int lineNumber = 0)
     {
-        return Signal.Defer(() => interaction.Handle(input))
+        return Signal.Defer(() => interaction.WhenHandled(input))
             .Catch<TOutput, UnhandledInteractionException<TInput, TOutput>>(ex =>
             {
                 Logging.SaveLog($"Unhandled interaction exception in {memberName} at {filePath}:{lineNumber}", ex);

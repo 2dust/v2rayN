@@ -1,6 +1,5 @@
 namespace ServiceLib.Models.Configs;
 
-[Serializable]
 public class Config
 {
     #region property

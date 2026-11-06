@@ -69,7 +69,7 @@ public partial class QRCodeAvaloniaUtils
 
             var bmi = new BITMAPINFO
             {
-                biSize = Marshal.SizeOf(typeof(BITMAPINFO)),
+                biSize = Marshal.SizeOf<BITMAPINFO>(),
                 biWidth = width,
                 biHeight = -height,
                 biPlanes = 1,

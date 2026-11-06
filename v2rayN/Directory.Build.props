@@ -1,7 +1,7 @@
 <Project>
 
     <PropertyGroup>
-        <Version>7.25.5</Version>
+        <Version>7.25.6</Version>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -28,5 +28,15 @@
         <UseSystemResourceKeys>true</UseSystemResourceKeys>
         <PublishSingleFile>true</PublishSingleFile>
         <PublishReadyToRun>false</PublishReadyToRun>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <IsAot Condition="'$(IsAot)' == ''">false</IsAot>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(IsAot)' == 'true'">
+        <PublishAot>true</PublishAot>
+        <PublishTrimmed>true</PublishTrimmed>
+        <DefineConstants>$(DefineConstants);V2RAYN_IS_AOT</DefineConstants>
     </PropertyGroup>
 </Project>

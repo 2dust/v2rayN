@@ -149,10 +149,11 @@
                     CanUserResizeColumns="True"
                     CanUserSortColumns="False"
                     GridLinesVisibility="All"
-                    HeadersVisibility="Column"
+                    HeadersVisibility="All"
                     IsReadOnly="True"
                     ItemsSource="{Binding ChildItemsObs}"
-                    SelectionMode="Extended">
+                    SelectionMode="Extended"
+                    ShowRowNumbers="True">
                     <DataGrid.ContextMenu>
                         <ContextMenu>
                             <MenuItem x:Name="menuAddChildServer" Header="{x:Static resx:ResUI.menuAddChildServer}" />
@@ -221,10 +222,11 @@
                     CanUserResizeColumns="True"
                     CanUserSortColumns="False"
                     GridLinesVisibility="All"
-                    HeadersVisibility="Column"
+                    HeadersVisibility="All"
                     IsReadOnly="True"
                     ItemsSource="{Binding AllProfilePreviewItemsObs}"
-                    SelectionMode="Extended">
+                    SelectionMode="Extended"
+                    ShowRowNumbers="True">
                     <DataGrid.Columns>
                         <DataGridTextColumn
                             Width="150"

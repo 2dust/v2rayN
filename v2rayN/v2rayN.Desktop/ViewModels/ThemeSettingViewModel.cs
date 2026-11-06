@@ -1,6 +1,3 @@
-using Avalonia.Controls.Notifications;
-using Avalonia.Controls.Primitives;
-using AvaloniaEdit;
 using Semi.Avalonia;
 
 namespace v2rayN.Desktop.ViewModels;
@@ -33,6 +30,9 @@ public partial class ThemeSettingViewModel : MyReactiveObject
         CurrentTheme = _config.UiItem.CurrentTheme;
         CurrentFontSize = _config.UiItem.CurrentFontSize;
         CurrentLanguage = _config.UiItem.CurrentLanguage;
+
+        // Set Default Value
+        ModifyFontSizeEx(12);
 
         this.WhenAnyValue(x => x.CurrentTheme)
             .Where(y => y.IsNotEmpty())
@@ -75,19 +75,20 @@ public partial class ThemeSettingViewModel : MyReactiveObject
     private void ModifyTheme()
     {
         var app = Application.Current;
-        if (app is not null)
+        if (app is null)
         {
-            app.RequestedThemeVariant = CurrentTheme switch
-            {
-                nameof(ETheme.Dark) => ThemeVariant.Dark,
-                nameof(ETheme.Light) => ThemeVariant.Light,
-                nameof(ETheme.Aquatic) => SemiTheme.Aquatic,
-                nameof(ETheme.Desert) => SemiTheme.Desert,
-                nameof(ETheme.Dusk) => SemiTheme.Dusk,
-                nameof(ETheme.NightSky) => SemiTheme.NightSky,
-                _ => ThemeVariant.Default,
-            };
+            return;
         }
+        app.RequestedThemeVariant = CurrentTheme switch
+        {
+            nameof(ETheme.Dark) => ThemeVariant.Dark,
+            nameof(ETheme.Light) => ThemeVariant.Light,
+            nameof(ETheme.Aquatic) => SemiTheme.Aquatic,
+            nameof(ETheme.Desert) => SemiTheme.Desert,
+            nameof(ETheme.Dusk) => SemiTheme.Dusk,
+            nameof(ETheme.NightSky) => SemiTheme.NightSky,
+            _ => ThemeVariant.Default,
+        };
     }
 
     private void ModifyFontSize()
@@ -97,26 +98,7 @@ public partial class ThemeSettingViewModel : MyReactiveObject
         {
             return;
         }
-
-        Style style = new(x => Selectors.Or(
-            x.OfType<Button>(),
-            x.OfType<TextBox>(),
-            x.OfType<TextBlock>(),
-            x.OfType<SelectableTextBlock>(),
-            x.OfType<Menu>(),
-            x.OfType<ContextMenu>(),
-            x.OfType<DataGridRow>(),
-            x.OfType<ListBoxItem>(),
-            x.OfType<HeaderedContentControl>(),
-            x.OfType<TextEditor>()
-        ));
-        style.Add(new Setter()
-        {
-            Property = TemplatedControl.FontSizeProperty,
-            Value = size,
-        });
-        Application.Current?.Styles.Add(style);
-
+        Application.Current!.Resources["AppFontSize"] = size;
         ModifyFontSizeEx(size);
     }
 
@@ -124,9 +106,7 @@ public partial class ThemeSettingViewModel : MyReactiveObject
     {
         //DataGrid
         var rowHeight = 20 + (size / 2);
-        var style = new Style(x => x.OfType<DataGrid>());
-        style.Add(new Setter(DataGrid.RowHeightProperty, rowHeight));
-        Application.Current?.Styles.Add(style);
+        Application.Current!.Resources["DataGridRowHeight"] = rowHeight;
     }
 
     private void ModifyFontFamily()
@@ -139,25 +119,7 @@ public partial class ThemeSettingViewModel : MyReactiveObject
 
         try
         {
-            Style style = new(x => Selectors.Or(
-                x.OfType<Button>(),
-                x.OfType<TextBox>(),
-                x.OfType<TextBlock>(),
-                x.OfType<SelectableTextBlock>(),
-                x.OfType<Menu>(),
-                x.OfType<ContextMenu>(),
-                x.OfType<DataGridRow>(),
-                x.OfType<ListBoxItem>(),
-                x.OfType<HeaderedContentControl>(),
-                x.OfType<WindowNotificationManager>(),
-                x.OfType<TextEditor>()
-            ));
-            style.Add(new Setter()
-            {
-                Property = TemplatedControl.FontFamilyProperty,
-                Value = new FontFamily(currentFontFamily),
-            });
-            Application.Current?.Styles.Add(style);
+            Application.Current!.Resources["AppFontFamily"] = currentFontFamily;
         }
         catch (Exception ex)
         {

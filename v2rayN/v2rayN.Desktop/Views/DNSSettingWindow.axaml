@@ -242,7 +242,7 @@
                         x:Name="gridAdvancedDNSSettings"
                         Margin="{StaticResource Margin8}"
                         ColumnDefinitions="Auto,Auto,*"
-                        RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
+                        RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
 
                         <TextBlock
                             x:Name="txtAdvancedDNSSettingsInvalid"
@@ -317,16 +317,49 @@
                             Grid.Column="0"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbFakeIPv6}" />
+                        <Grid x:Name="gridFakeIPv6" Grid.Row="4" Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <ToggleSwitch
+                                x:Name="togFakeIPv6"
+                                Grid.Column="0"
+                                Margin="{StaticResource Margin4}"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center" />
+                            <ComboBox
+                                x:Name="cmbFakeIPv6Range"
+                                Grid.Column="1"
+                                Margin="{StaticResource Margin4}"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center"
+                                IsEditable="True" />
+                        </Grid>
+                        <TextBlock
+                            Grid.Row="4"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbFakeIPv6Tips}"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Grid.Row="5"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbBlockSVCBHTTPSQueries}" />
                         <ToggleSwitch
                             x:Name="togBlockBindingQuery"
-                            Grid.Row="4"
+                            Grid.Row="5"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center" />
                         <TextBlock
-                            Grid.Row="4"
+                            Grid.Row="5"
                             Grid.Column="2"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
@@ -334,20 +367,20 @@
                             TextWrapping="Wrap" />
 
                         <TextBlock
-                            Grid.Row="5"
+                            Grid.Row="6"
                             Grid.Column="0"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbBlockAAAAQueries}" />
                         <ToggleSwitch
                             x:Name="togBlockAAAAQuery"
-                            Grid.Row="5"
+                            Grid.Row="6"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center" />
                         <TextBlock
-                            Grid.Row="5"
+                            Grid.Row="6"
                             Grid.Column="2"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
@@ -355,21 +388,21 @@
                             TextWrapping="Wrap" />
 
                         <TextBlock
-                            Grid.Row="6"
+                            Grid.Row="7"
                             Grid.Column="0"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
                             Text="{x:Static resx:ResUI.TbValidateDirectExpectedIPs}" />
                         <ComboBox
                             x:Name="cmbDirectExpectedIPs"
-                            Grid.Row="6"
+                            Grid.Row="7"
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
                             IsEditable="True" />
                         <TextBlock
-                            Grid.Row="6"
+                            Grid.Row="7"
                             Grid.Column="2"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
@@ -377,7 +410,7 @@
                             TextWrapping="Wrap" />
 
                         <TextBlock
-                            Grid.Row="7"
+                            Grid.Row="8"
                             Grid.Column="0"
                             Grid.ColumnSpan="3"
                             Margin="{StaticResource Margin4}"
@@ -386,7 +419,7 @@
 
                         <TextBox
                             x:Name="txtHosts"
-                            Grid.Row="8"
+                            Grid.Row="9"
                             Grid.Column="0"
                             Grid.ColumnSpan="3"
                             Margin="{StaticResource Margin4}"

@@ -219,7 +219,8 @@ public partial class StatusBarViewModel : MyReactiveObject
         await ConfigHandler.InitBuiltinRouting(_config);
         await RefreshRoutingsMenu();
         await InboundDisplayStatus();
-        await ChangeSystemProxyAsync(_config.SystemProxyItem.SysProxyType, true);
+        // The view refreshes its icon on initialization; interaction handlers are not registered yet.
+        await ChangeSystemProxyAsync(_config.SystemProxyItem.SysProxyType, false);
 
         BlRouting = true;
     }

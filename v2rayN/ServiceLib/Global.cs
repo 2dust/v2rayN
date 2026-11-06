@@ -42,6 +42,7 @@ public class Global
     public const string SingboxFakeIPFilterFileName = NamespaceSample + "singbox_fakeip_filter";
     public const string ChromeRootCertFileName = NamespaceSample + "chrome_roots_pem";
     public const string MozillaRootCertFileName = NamespaceSample + "mozilla_roots_pem";
+    public const string TaskXmlTemplateFileName = NamespaceSample + "TaskXmlTemplate";
 
     public const string ChromeRootProvider = "chrome";
     public const string MozillaRootProvider = "mozilla";
@@ -498,6 +499,20 @@ public class Global
         "localhost"
     ];
 
+    public static readonly List<string> DomainDNS4PreResolveAddress =
+    [
+        "",
+        "https://doh.pub/dns-query",
+        "https://dns.alidns.com/dns-query",
+        "119.29.29.29",
+        "223.5.5.5",
+        "localhost",
+        "https://cloudflare-dns.com/dns-query",
+        "https://dns.google/dns-query",
+        "8.8.8.8",
+        "1.1.1.1",
+    ];
+
     public static readonly List<LanguageOption> LanguageOptions =
     [
         new("zh-Hans", "简体中文"),
@@ -666,10 +681,10 @@ public class Global
         { ECoreType.Xray, "XTLS/Xray-core" },
         { ECoreType.sing_box, "SagerNet/sing-box" },
         { ECoreType.mihomo, "MetaCubeX/mihomo" },
-        { ECoreType.hysteria, "apernet/hysteria" },
-        { ECoreType.hysteria2, "apernet/hysteria" },
+        { ECoreType.hysteria, "HyNetworks/hysteria" },
+        { ECoreType.hysteria2, "HyNetworks/hysteria" },
         { ECoreType.naiveproxy, "klzgrad/naiveproxy" },
-        { ECoreType.tuic, "EAimTY/tuic" },
+        { ECoreType.tuic, "tuic-protocol/tuic" },
         { ECoreType.juicity, "juicity/juicity" },
         { ECoreType.brook, "txthinking/brook" },
         { ECoreType.overtls, "ShadowsocksR-Live/overtls" },
@@ -766,6 +781,12 @@ public class Global
     [
         "198.18.0.0/15",
         "11.0.0.0/8",
+    ];
+
+    public static readonly List<string> FakeIPv6Ranges =
+    [
+        "fc00::/18",
+        "2001:2::/48",
     ];
 
     public static readonly List<string> RootCertProviders =

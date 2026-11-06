@@ -8,6 +8,8 @@ public partial class DNSSettingViewModel : MyReactiveObject, ICloseable
     [Reactive] public partial bool AddCommonHosts { get; set; }
     [Reactive] public partial bool FakeIP { get; set; }
     [Reactive] public partial string FakeIPRange { get; set; }
+    [Reactive] public partial bool FakeIPv6 { get; set; }
+    [Reactive] public partial string FakeIPv6Range { get; set; }
     [Reactive] public partial bool BlockBindingQuery { get; set; }
     [Reactive] public partial bool BlockAAAAQuery { get; set; }
     [Reactive] public partial string DirectDNS { get; set; }
@@ -35,7 +37,8 @@ public partial class DNSSettingViewModel : MyReactiveObject, ICloseable
     [Reactive] public partial bool RayCustomDNSEnableCompatible { get; set; }
     [Reactive] public partial bool SBCustomDNSEnableCompatible { get; set; }
 
-    public bool IsSimpleDNSEnabled => !(RayCustomDNSEnableCompatible && SBCustomDNSEnableCompatible);
+    [ObservableAsProperty] public partial bool IsSimpleDNSEnabled { get; }
+    [ObservableAsProperty] public partial bool IsFakeIPv6Available { get; }
 
     public ReactiveCommand<RxVoid, RxVoid> SaveCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> ImportDefConfig4V2rayCompatibleCmd { get; }
@@ -60,8 +63,17 @@ public partial class DNSSettingViewModel : MyReactiveObject, ICloseable
             await Task.CompletedTask;
         });
 
-        this.WhenAnyValue(x => x.RayCustomDNSEnableCompatible, x => x.SBCustomDNSEnableCompatible)
-            .Subscribe(_ => this.RaisePropertyChanged(nameof(IsSimpleDNSEnabled)));
+        _isSimpleDNSEnabledHelper = this.WhenAnyValue(
+                x => x.RayCustomDNSEnableCompatible,
+                x => x.SBCustomDNSEnableCompatible,
+                (a, b) => !(a && b))
+            .ToProperty(this, nameof(IsSimpleDNSEnabled));
+
+        _isFakeIPv6AvailableHelper = this.WhenAnyValue(
+                x => x.FakeIP,
+                x => x.BlockAAAAQuery,
+                (fakeIP, blockAAAA) => fakeIP && !blockAAAA)
+            .ToProperty(this, nameof(IsFakeIPv6Available));
 
         _ = Init();
     }
@@ -74,6 +86,8 @@ public partial class DNSSettingViewModel : MyReactiveObject, ICloseable
         AddCommonHosts = item.AddCommonHosts ?? false;
         FakeIP = item.FakeIP ?? false;
         FakeIPRange = item.FakeIPRange ?? string.Empty;
+        FakeIPv6 = item.FakeIPv6 ?? false;
+        FakeIPv6Range = item.FakeIPv6Range ?? Global.FakeIPv6Ranges.First();
         BlockBindingQuery = item.BlockBindingQuery ?? false;
         BlockAAAAQuery = item.BlockAAAAQuery ?? false;
         DirectDNS = item.DirectDNS ?? string.Empty;
@@ -105,10 +119,19 @@ public partial class DNSSettingViewModel : MyReactiveObject, ICloseable
 
     private async Task SaveSettingAsync()
     {
+        if (IsSimpleDNSEnabled && IsFakeIPv6Available && FakeIPv6
+            && !FakeIPUtils.TryParseIPv6Range(FakeIPv6Range, out _, out _))
+        {
+            NoticeManager.Instance.Enqueue(ResUI.FillCorrectFakeIPv6Range);
+            return;
+        }
+
         _config.SimpleDNSItem.UseSystemHosts = UseSystemHosts;
         _config.SimpleDNSItem.AddCommonHosts = AddCommonHosts;
         _config.SimpleDNSItem.FakeIP = FakeIP;
         _config.SimpleDNSItem.FakeIPRange = FakeIPRange;
+        _config.SimpleDNSItem.FakeIPv6 = FakeIPv6;
+        _config.SimpleDNSItem.FakeIPv6Range = FakeIPv6Range;
         _config.SimpleDNSItem.BlockBindingQuery = BlockBindingQuery;
         _config.SimpleDNSItem.BlockAAAAQuery = BlockAAAAQuery;
         _config.SimpleDNSItem.DirectDNS = DirectDNS;

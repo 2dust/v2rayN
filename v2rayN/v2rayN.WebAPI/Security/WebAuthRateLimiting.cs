@@ -1,0 +1,53 @@
+using System.Net;
+using System.Threading.RateLimiting;
+using Microsoft.AspNetCore.RateLimiting;
+
+namespace v2rayN.WebAPI.Security;
+
+public static class WebAuthRateLimiting
+{
+    public const string LoginPolicy = "WebAPI-auth-login";
+    public const string SetupPolicy = "WebAPI-auth-setup";
+
+    public static void Configure(RateLimiterOptions options)
+    {
+        options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+        options.OnRejected = (context, _) =>
+        {
+            if (context.Lease.TryGetMetadata(MetadataName.RetryAfter, out var retryAfter))
+            {
+                var seconds = Math.Ceiling(retryAfter.TotalSeconds);
+                context.HttpContext.Response.Headers["Retry-After"] = seconds.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            }
+            return ValueTask.CompletedTask;
+        };
+        options.AddPolicy(LoginPolicy, context => CreateIpPartition(context, permitLimit: 5));
+        options.AddPolicy(SetupPolicy, context => CreateIpPartition(context, permitLimit: 10));
+    }
+
+    private static RateLimitPartition<string> CreateIpPartition(HttpContext context, int permitLimit) =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            GetPartitionKey(context.Connection.RemoteIpAddress),
+            _ => new FixedWindowRateLimiterOptions
+            {
+                AutoReplenishment = true,
+                PermitLimit = permitLimit,
+                QueueLimit = 0,
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                Window = TimeSpan.FromMinutes(1),
+            });
+
+    private static string GetPartitionKey(IPAddress? address)
+    {
+        if (address is null)
+        {
+            return "unknown";
+        }
+
+        return IsLoopback(address) ? "loopback" : address.ToString();
+    }
+
+    private static bool IsLoopback(IPAddress address) =>
+        IPAddress.IsLoopback(address)
+        || (address.IsIPv4MappedToIPv6 && IPAddress.IsLoopback(address.MapToIPv4()));
+}

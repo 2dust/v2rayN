@@ -1,6 +1,5 @@
 namespace ServiceLib.Models.Dto;
 
-[Serializable]
 public class SpeedTestResult
 {
     public string? IndexId { get; set; }

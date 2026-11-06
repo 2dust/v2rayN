@@ -448,7 +448,7 @@ public partial class ProfilesViewModel : MyReactiveObject
             return null;
         }
 
-        var orderProfiles = SelectedProfiles?.OrderBy(t => t.Sort);
+        var orderProfiles = SelectedProfiles?.OrderBy(t => t.Sort).ToList();
         if (latest)
         {
             lstSelected.AddRange(await AppManager.Instance.GetProfileItemsOrderedByIndexIds(orderProfiles.Select(sp => sp?.IndexId)));
@@ -702,6 +702,33 @@ public partial class ProfilesViewModel : MyReactiveObject
         }
     }
 
+    public async Task MoveServersTo(
+        IReadOnlyList<int> sourceIndices,
+        int insertIndex)
+    {
+        if (sourceIndices.Count == 0 ||
+            insertIndex < 0 ||
+            insertIndex > ProfileItems.Count)
+        {
+            return;
+        }
+
+        var orderedProfileIds = ProfileItems
+            .Select(item => item.IndexId)
+            .ToList();
+
+        var result = await ConfigHandler.MoveServersTo(
+            _config,
+            orderedProfileIds,
+            sourceIndices,
+            insertIndex);
+
+        if (result == 0)
+        {
+            await RefreshServers();
+        }
+    }
+
     public async Task ServerSpeedtest(ESpeedActionType actionType)
     {
         List<ProfileItem>? lstSelected;
@@ -712,7 +739,7 @@ public partial class ProfilesViewModel : MyReactiveObject
                 actionType = ESpeedActionType.Realping;
             }
 
-            lstSelected = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(ProfileItems?.OrderBy(t => t.Sort)));
+            lstSelected = JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(ProfileItems?.OrderBy(t => t.Sort).ToList()));
         }
         else
         {

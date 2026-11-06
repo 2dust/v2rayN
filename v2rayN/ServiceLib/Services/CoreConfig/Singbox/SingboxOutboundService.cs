@@ -356,6 +356,8 @@ public partial class CoreConfigSingboxService
             {
                 case EConfigType.WireGuard:
                     {
+                        endpoint.server = null;
+                        endpoint.server_port = null;
                         endpoint.address = Utils.String2List(protocolExtra.WgInterfaceAddress)?.Select(s => s.Trim()).ToList() ?? ["172.16.0.2/32"];
                         var peer = new Peer4Sbox
                         {
@@ -523,7 +525,7 @@ public partial class CoreConfigSingboxService
                         transport.type = nameof(ETransport.http);
                         transport.host = transportExtra.Host.IsNullOrEmpty()
                             ? null
-                            : Utils.String2List(transportExtra.Host);
+                            : JsonUtils.SerializeToArray(Utils.String2List(transportExtra.Host));
                         transport.path = transportExtra.Path.NullIfEmpty();
                         if (!useragentValue.IsNullOrEmpty())
                         {

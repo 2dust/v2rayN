@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="TUnit" />
+    <PackageReference Include="TUnit.Assertions.Should" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\v2rayN.WebAPI.csproj" />
+    <Compile Remove="ProcessHelper/**" />
+    <ProjectReference Include="ProcessHelper/InstanceLockProcessHelper.csproj" ReferenceOutputAssembly="false" OutputItemType="_InstanceLockProcessHelper" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="TUnit" />
+    <Using Include="TUnit.Assertions.Should" />
+    <Using Include="TUnit.Assertions.Should.Extensions" />
+  </ItemGroup>
+  <Target Name="CopyInstanceLockProcessHelper" AfterTargets="CopyFilesToOutputDirectory">
+    <Copy SourceFiles="@(_InstanceLockProcessHelper)" DestinationFolder="$(TargetDir)ProcessHelper" SkipUnchangedFiles="true">
+      <Output TaskParameter="CopiedFiles" ItemName="FileWrites" />
+    </Copy>
+  </Target>
+</Project>
