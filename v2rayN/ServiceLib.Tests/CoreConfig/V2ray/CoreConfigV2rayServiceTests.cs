@@ -59,6 +59,48 @@ public class CoreConfigV2rayServiceTests
     }
 
     [Test]
+    public async Task GenerateClientConfigContent_BindInterface_ShouldSetOutboundInterface()
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
+        config.CoreBasicItem.BindInterface = "eth0";
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+        var node = CoreConfigTestFactory.CreateVmessNode(ECoreType.Xray);
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray);
+
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue();
+        var v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(result.Data!.ToString());
+        var proxy = v2rayConfig!.outbounds.First(o => o.tag == Global.ProxyTag);
+        await proxy.streamSettings!.sockopt!.Interface.Should().BeEqualTo("eth0");
+    }
+
+    [Test]
+    public async Task GenerateClientConfigContent_BindInterfaceAuto_ShouldResolveOrGracefullySkip()
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
+        config.CoreBasicItem.BindInterface = Global.Auto;
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+        var node = CoreConfigTestFactory.CreateVmessNode(ECoreType.Xray);
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray);
+
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue();
+        var v2rayConfig = JsonUtils.Deserialize<V2rayConfig>(result.Data!.ToString());
+        var proxy = v2rayConfig!.outbounds.First(o => o.tag == Global.ProxyTag);
+        var expectedPhysicalNic = NetworkUtils.GetDefaultPhysicalInterfaceName();
+        if (expectedPhysicalNic.IsNullOrEmpty())
+        {
+            await (proxy.streamSettings?.sockopt?.Interface).Should().BeNull().Or.BeEmpty();
+        }
+        else
+        {
+            await proxy.streamSettings!.sockopt!.Interface.Should().BeEqualTo(expectedPhysicalNic);
+        }
+    }
+
+    [Test]
     public async Task GenerateClientConfigContent_RealityFragment_ShouldUsePacketRangeOnlyForReality()
     {
         static ProfileItem CreateVlessNode(string indexId, string streamSecurity)

@@ -48,6 +48,7 @@ public class Global
     public const string MozillaRootProvider = "mozilla";
 
     public const string DefaultSecurity = "auto";
+    public const string Auto = "AUTO";
     public const string DefaultNetwork = "raw";
     public const string RawHeaderHttp = "http";
     public const string None = "none";

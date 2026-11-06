@@ -125,14 +125,17 @@ public class CoreConfigContextBuilder
             appConfig.CoreBasicItem.SendThrough = string.Empty;
             context = context with { AppConfig = appConfig };
         }
-        if (!context.AppConfig.CoreBasicItem.BindInterface.IsNullOrEmpty()
-            && (!Utils.ContainsInterfaceName(context.AppConfig.CoreBasicItem.BindInterface)
-            || !(context.IsTunEnabled || context.IsWindows)))
+        if (!context.AppConfig.CoreBasicItem.BindInterface.IsNullOrEmpty())
         {
-            validatorResult.Warnings.Add(string.Format(ResUI.MsgInvalidProperty, ResUI.TbSettingsBindInterface));
-            var appConfig = JsonUtils.DeepCopy(config);
-            appConfig.CoreBasicItem.BindInterface = string.Empty;
-            context = context with { AppConfig = appConfig };
+            var isAuto = context.AppConfig.CoreBasicItem.BindInterface.Equals(Global.Auto, StringComparison.OrdinalIgnoreCase);
+            if ((!isAuto && !Utils.ContainsInterfaceName(context.AppConfig.CoreBasicItem.BindInterface))
+                || !(context.IsTunEnabled || context.IsWindows))
+            {
+                validatorResult.Warnings.Add(string.Format(ResUI.MsgInvalidProperty, ResUI.TbSettingsBindInterface));
+                var appConfig = JsonUtils.DeepCopy(config);
+                appConfig.CoreBasicItem.BindInterface = string.Empty;
+                context = context with { AppConfig = appConfig };
+            }
         }
 
         return new CoreConfigContextBuilderResult(context, validatorResult);

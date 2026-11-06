@@ -1,3 +1,7 @@
+using System.Net;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
+
 namespace ServiceLib.Common;
 
 public static class NetworkUtils
@@ -39,6 +43,51 @@ public static class NetworkUtils
         "虚拟", "回环", "环回"
     ];
 
+    public static List<string> GetBindInterfaceNames()
+    {
+        return GetLocalNetworkInterfaceNames().Prepend(Global.Auto).AppendEmpty();
+    }
+
+    public static string? GetRealBindInterfaceName(string? bindInterface)
+    {
+        var trimmed = bindInterface?.TrimEx();
+        if (trimmed.IsNullOrEmpty())
+        {
+            return null;
+        }
+
+        if (trimmed.Equals(Global.Auto, StringComparison.OrdinalIgnoreCase))
+        {
+            return GetDefaultPhysicalInterfaceName();
+        }
+
+        return trimmed;
+    }
+
+    public static string? GetDefaultPhysicalInterfaceName()
+    {
+        try
+        {
+            var upPhysicalNics = NetworkInterface.GetAllNetworkInterfaces()
+                .Where(IsAllowedPhysicalInterface)
+                .ToList();
+
+            var gatewayNics = upPhysicalNics.Where(HasIPv4Gateway).ToList();
+            var candidates = gatewayNics.Count > 0 ? gatewayNics : upPhysicalNics;
+
+            var bestNic = candidates.FirstOrDefault(ni =>
+                ni.NetworkInterfaceType is NetworkInterfaceType.Ethernet or NetworkInterfaceType.GigabitEthernet)
+                ?? candidates.FirstOrDefault(ni => ni.NetworkInterfaceType == NetworkInterfaceType.Wireless80211)
+                ?? candidates.FirstOrDefault();
+
+            return bestNic?.Name;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
     public static List<string> GetLocalNetworkInterfaceNames()
     {
         try
@@ -54,6 +103,21 @@ public static class NetworkUtils
         catch
         {
             return [];
+        }
+    }
+
+    private static bool HasIPv4Gateway(NetworkInterface ni)
+    {
+        try
+        {
+            return ni.GetIPProperties().GatewayAddresses.Any(g =>
+                g.Address.AddressFamily == AddressFamily.InterNetwork
+                && !IPAddress.Any.Equals(g.Address)
+                && !IPAddress.None.Equals(g.Address));
+        }
+        catch
+        {
+            return false;
         }
     }
 
