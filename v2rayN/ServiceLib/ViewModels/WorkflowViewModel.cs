@@ -117,6 +117,6 @@ public partial class WorkflowViewModel : MyReactiveObject
             NoticeManager.Instance.Enqueue(ResUI.WorkflowRunSelectTip);
             return;
         }
-        await WorkflowRunner.Instance.Run(item);
+        await WorkflowRunnerManager.Instance.Run(item);
     }
 }
