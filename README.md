@@ -44,11 +44,11 @@ Read the Wiki for usage guides and configuration details.
 
 ## Supported Platforms / 支持平台
 
-| Platform / 平台 | x64 | x86 | arm64 | riscv64 | loong64 |
-| --- | --- | --- | --- | --- | --- |
-| Windows | ✅ | ✅ | ✅ | - | - |
-| Linux | ✅ | - | ✅ | ✅ | ✅ |
-| macOS | ✅ | - | ✅ | - | - |
+| Platform / 平台 | x64 | x86 | arm64 | riscv64 | loong64 | ppc64le |
+| --- | --- | --- | --- | --- | --- | --- |
+| Windows | ✅ | ✅ | ✅ | - | - | - |
+| Linux | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| macOS | ✅ | - | ✅ | - | - | - |
 
 Minimum OS requirements: [Release files introduction](https://github.com/2dust/v2rayN/wiki/Release-files-introduction) / 最低系统要求：[发布文件介绍](https://github.com/2dust/v2rayN/wiki/Release-files-introduction)
 
