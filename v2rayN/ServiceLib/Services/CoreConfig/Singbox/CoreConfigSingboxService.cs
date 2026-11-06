@@ -97,6 +97,7 @@ public partial class CoreConfigSingboxService(CoreConfigContext context)
 
             GenLog();
             GenMinimizedDns();
+            GenOutboundDnsProtect();
             _coreConfig.inbounds.Clear();
             _coreConfig.outbounds.RemoveAt(0);
 
@@ -218,6 +219,7 @@ public partial class CoreConfigSingboxService(CoreConfigContext context)
             GenLog();
             GenOutbounds();
             GenMinimizedDns();
+            GenOutboundDnsProtect();
 
             _coreConfig.route.rules.Clear();
             _coreConfig.inbounds.Clear();

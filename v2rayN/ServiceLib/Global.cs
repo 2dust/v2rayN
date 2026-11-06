@@ -111,6 +111,7 @@ public class Global
     public const string SingboxDirectDNSTagTemplate = "direct-dns-{0}";
     public const string SingboxRemoteDNSTagTemplate = "remote-dns-{0}";
     public const string SingboxLocalDNSTag = "local-local";
+    public const string SingboxOutboundDNSTag = "outbound-dns-1";
     public const string SingboxHostsDNSTag = "hosts-dns";
     public const string SingboxFakeDNSTag = "fake-dns";
     public const string SingboxSrsDownloadHttpClientTag = "srs-download-http-client";

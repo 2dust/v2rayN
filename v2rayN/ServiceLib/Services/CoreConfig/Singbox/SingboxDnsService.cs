@@ -615,7 +615,67 @@ public partial class CoreConfigSingboxService
         _coreConfig.dns = dns4Sbox;
     }
 
-    private Rule4Sbox? BuildProtectDomainRule()
+    /// <summary>
+    ///     Applies only the outbound-related DNS preferences to a speedtest config:
+    ///     the outbound domain resolution address (used to resolve the protected/node
+    ///     domains) and the outbound resolution strategy. The user's full custom DNS
+    ///     JSON (NormalDNS/TunDNS) is intentionally not injected so speedtest stays
+    ///     lightweight. Uses only sing-box 1.14 domain_resolver fields.
+    /// </summary>
+    private void GenOutboundDnsProtect()
+    {
+        try
+        {
+            var dnsItem = context.RawDnsItem;
+            // Only apply outbound DNS preferences when custom DNS is enabled,
+            // mirroring GenDns()/GenDnsCustom(). When custom DNS is disabled these
+            // fields are ignored, matching normal-mode behavior.
+            if (dnsItem is not { Enabled: true })
+            {
+                return;
+            }
+
+            _coreConfig.dns ??= new();
+            _coreConfig.dns.servers ??= [];
+            _coreConfig.dns.rules ??= [];
+
+            // Use a dedicated tag to avoid colliding with the bootstrap server tag
+            // (Global.SingboxLocalDNSTag), which would be rejected by sing-box.
+            var tag = Global.SingboxOutboundDNSTag;
+            var finalDnsAddress = string.IsNullOrEmpty(dnsItem?.DomainDNSAddress)
+                ? Global.DomainPureIPDNSAddress.FirstOrDefault()
+                : dnsItem?.DomainDNSAddress;
+
+            var localDnsServer = ParseDnsAddress(finalDnsAddress);
+            if (localDnsServer == null)
+            {
+                return;
+            }
+            localDnsServer.tag = tag;
+            _coreConfig.dns.servers.Add(localDnsServer);
+
+            // Bind the protected (node) domains to the outbound DNS address.
+            var protectDomainRule = BuildProtectDomainRule(tag);
+            if (protectDomainRule != null)
+            {
+                _coreConfig.dns.rules.Insert(0, protectDomainRule);
+            }
+
+            // Outbound resolution strategy (解析偏好) via the 1.14 domain_resolver.
+            _coreConfig.route ??= new();
+            _coreConfig.route.default_domain_resolver = new()
+            {
+                server = tag,
+                strategy = Utils.DomainStrategy4Sbox(dnsItem?.DomainStrategy4Freedom),
+            };
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+    }
+
+    private Rule4Sbox? BuildProtectDomainRule(string? serverTag = null)
     {
         if (context.ProtectDomainList.Count == 0)
         {
@@ -623,7 +683,7 @@ public partial class CoreConfigSingboxService
         }
         return new()
         {
-            server = Global.SingboxLocalDNSTag,
+            server = serverTag ?? Global.SingboxLocalDNSTag,
             domain = context.ProtectDomainList.ToList(),
         };
     }
