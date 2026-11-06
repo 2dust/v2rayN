@@ -163,7 +163,6 @@
                 CanUserReorderColumns="True"
                 CanUserResizeColumns="True"
                 Classes.InsetContent="True"
-                FrozenColumnCount="2"
                 GridLinesVisibility="All"
                 HeadersVisibility="All"
                 IsReadOnly="False"
