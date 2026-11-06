@@ -334,7 +334,7 @@ download_nuget_packages() {
 prepare_dotnet_sdk() {
   echo "[+] Using host .NET SDK for cross-target $X86_RID"
   dotnet --info
-  DOTNET_SDK_DIR="${DOTNET_ROOT:-$(dirname "$(command -v dotnet)")}" 
+  DOTNET_SDK_DIR="${DOTNET_ROOT:-$(dirname "$(command -v dotnet)")}"
 }
 
 patch_x86_sdk() {
