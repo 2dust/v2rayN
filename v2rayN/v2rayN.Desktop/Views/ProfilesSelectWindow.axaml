@@ -83,7 +83,6 @@
                     BorderThickness="1"
                     CanUserReorderColumns="True"
                     CanUserResizeColumns="True"
-                    FrozenColumnCount="2"
                     GridLinesVisibility="All"
                     HeadersVisibility="All"
                     IsReadOnly="True"
