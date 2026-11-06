@@ -25,7 +25,14 @@ public partial class MessageBoxDialog : Window
         btnYes.Click += BtnYes_Click;
         btnNo.Click += BtnNo_Click;
 
+        Opened += MessageBoxDialog_Opened;
+
         CanMinimize = false;
+    }
+
+    private void MessageBoxDialog_Opened(object? sender, EventArgs e)
+    {
+        btnYes.Focus();
     }
 
     private void BtnYes_Click(object? sender, RoutedEventArgs e)
