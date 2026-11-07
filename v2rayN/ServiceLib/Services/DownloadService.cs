@@ -43,10 +43,9 @@ public class DownloadService
 
     public static DownloadService CreateDownloadServiceWithFallback(bool preferProxy = true)
     {
-        var handler = HttpClientHelper.Instance.CreateFallbackHandler(preferProxy);
         return new DownloadService
         {
-            GetHandlerFunc = () => handler,
+            GetHandlerFunc = () => HttpClientHelper.Instance.CreateFallbackHandler(preferProxy),
         };
     }
 

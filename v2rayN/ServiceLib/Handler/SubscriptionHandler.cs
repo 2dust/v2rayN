@@ -1,14 +1,14 @@
 namespace ServiceLib.Handler;
 
-public static class SubscriptionHandler
+public class SubscriptionHandler(
+    Config config,
+    bool blProxy,
+    Func<bool, string, Task> updateFunc)
 {
-    private static DownloadService _directDownloadService = null!;
-    private static DownloadService _proxyDownloadService = null!;
+    private readonly Config _config = config;
+    private readonly bool _blProxy = blProxy;
 
-    private static List<DownloadService> _orderedDownloadServices = null!;
-
-    public static async Task UpdateProcess(Config config, string subId, bool blProxy,
-        Func<bool, string, Task> updateFunc)
+    public async Task UpdateProcess(string subId)
     {
         await updateFunc?.Invoke(false, ResUI.MsgUpdateSubscriptionStart);
         var subItem = await AppManager.Instance.SubItems();
@@ -36,15 +36,14 @@ public static class SubscriptionHandler
                     continue;
                 }
 
-                // Create download handler
-                await CreateDownloadHandler(item, blProxy, hashCode, updateFunc);
+                var processor = new SubscriptionHandlerProcessor(this, item);
                 await updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgStartGettingSubscriptions}");
 
                 // Get all subscription content (main subscription + additional subscriptions)
-                var result = await DownloadAllSubscriptions(config, item);
+                var result = await processor.DownloadAllSubscriptions();
 
                 // Process download result
-                if (await ProcessDownloadResult(config, item.Id, result, hashCode, updateFunc))
+                if (await ProcessDownloadResult(item.Id, result, hashCode))
                 {
                     successCount++;
                 }
@@ -63,7 +62,7 @@ public static class SubscriptionHandler
         await updateFunc?.Invoke(successCount > 0, $"{ResUI.MsgUpdateSubscriptionEnd}");
     }
 
-    private static bool IsValidSubscription(SubItem item, string subId)
+    private bool IsValidSubscription(SubItem item, string subId)
     {
         var id = item.Id.TrimEx();
         var url = item.Url.TrimEx();
@@ -86,137 +85,7 @@ public static class SubscriptionHandler
         return true;
     }
 
-    private static async Task CreateDownloadHandler(SubItem item, bool blProxy, string hashCode,
-        Func<bool, string, Task> updateFunc)
-    {
-        if (!HttpRequestHeadersHelper.TryParse(item.RequestHeaders, out var requestHeaders))
-        {
-            throw new FormatException(ResUI.SubRequestHeadersInvalid);
-        }
-
-        var userAgent = item.UserAgent.IsNullOrEmpty() ? Utils.GetVersion(false) : item.UserAgent;
-        _proxyDownloadService = new DownloadService
-        {
-            GetHandlerFunc = () =>
-                HttpRequestHeadersHelper.CreateHandler(HttpClientHelper.Instance.ProxyHandler, userAgent, "*/*",
-                    requestHeaders),
-        };
-        _directDownloadService = new DownloadService
-        {
-            GetHandlerFunc = () =>
-                HttpRequestHeadersHelper.CreateHandler(HttpClientHelper.Instance.DirectHandler, userAgent, "*/*",
-                    requestHeaders),
-        };
-        _orderedDownloadServices = blProxy
-            ? new List<DownloadService>
-            {
-                _proxyDownloadService,
-                _directDownloadService,
-            }
-            : new List<DownloadService>
-            {
-                _directDownloadService,
-                _proxyDownloadService,
-            };
-    }
-
-    private static async Task<string> DownloadSubscriptionContent(string url)
-    {
-        var result = await _orderedDownloadServices[0].TryDownloadString(url);
-
-        // try other ways
-        if (result.IsNullOrEmpty())
-        {
-            result = await _orderedDownloadServices[1].TryDownloadString(url);
-        }
-
-        return result ?? string.Empty;
-    }
-
-    private static async Task<string> DownloadAllSubscriptions(Config config, SubItem item)
-    {
-        // Download main subscription content
-        var result = await DownloadMainSubscription(config, item);
-
-        // Process additional subscription links (if any)
-        if (item.ConvertTarget.IsNullOrEmpty() && item.MoreUrl.TrimEx().IsNotEmpty())
-        {
-            result = await DownloadAdditionalSubscriptions(item, result);
-        }
-
-        return result;
-    }
-
-    private static async Task<string> DownloadMainSubscription(Config config, SubItem item)
-    {
-        // Prepare subscription URL and download directly
-        var url = Utils.GetPunycode(item.Url.TrimEx());
-
-        // If conversion is needed
-        if (item.ConvertTarget.IsNotEmpty())
-        {
-            var subConvertUrl = config.ConstItem.SubConvertUrl.IsNullOrEmpty()
-                ? Global.SubConvertUrls.FirstOrDefault()
-                : config.ConstItem.SubConvertUrl;
-
-            url = string.Format(subConvertUrl!, Utils.UrlEncode(url));
-
-            if (!url.Contains("target="))
-            {
-                url += $"&target={item.ConvertTarget}";
-            }
-
-            if (!url.Contains("config="))
-            {
-                url += $"&config={Global.SubConvertConfig.FirstOrDefault()}";
-            }
-        }
-
-        // Download and return result directly
-        return await DownloadSubscriptionContent(url);
-    }
-
-    private static async Task<string> DownloadAdditionalSubscriptions(SubItem item, string mainResult)
-    {
-        var result = mainResult;
-
-        // If main subscription result is Base64 encoded, decode it first
-        if (result.IsNotEmpty() && Utils.IsBase64String(result))
-        {
-            result = Utils.Base64Decode(result);
-        }
-
-        // Process additional URL list
-        var lstUrl = item.MoreUrl.TrimEx().Split(",") ?? [];
-        foreach (var it in lstUrl)
-        {
-            var url2 = Utils.GetPunycode(it);
-            if (url2.IsNullOrEmpty())
-            {
-                continue;
-            }
-
-            var additionalResult = await DownloadSubscriptionContent(url2);
-
-            if (additionalResult.IsNotEmpty())
-            {
-                // Process additional subscription results, add to main result
-                if (Utils.IsBase64String(additionalResult))
-                {
-                    result += Environment.NewLine + Utils.Base64Decode(additionalResult);
-                }
-                else
-                {
-                    result += Environment.NewLine + additionalResult;
-                }
-            }
-        }
-
-        return result;
-    }
-
-    private static async Task<bool> ProcessDownloadResult(Config config, string id, string result, string hashCode,
-        Func<bool, string, Task> updateFunc)
+    private async Task<bool> ProcessDownloadResult(string id, string result, string hashCode)
     {
         if (result.IsNullOrEmpty())
         {
@@ -235,7 +104,7 @@ public static class SubscriptionHandler
         await updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgStartParsingSubscription}");
 
         // Add servers to configuration
-        var ret = await ConfigHandler.AddBatchServers(config, result, id, true);
+        var ret = await ConfigHandler.AddBatchServers(_config, result, id, true);
         if (ret <= 0)
         {
             Logging.SaveLog("FailedImportSubscription");
@@ -248,5 +117,162 @@ public static class SubscriptionHandler
             : $"{hashCode}{ResUI.MsgFailedImportSubscription}");
 
         return ret > 0;
+    }
+
+    private class SubscriptionHandlerProcessor
+    {
+        private readonly DownloadService[] _downloadServices;
+        private readonly SubscriptionHandler _handler;
+        private readonly SubItem _item;
+
+        public SubscriptionHandlerProcessor(SubscriptionHandler handler, SubItem item)
+        {
+            _handler = handler;
+            _item = item;
+            _downloadServices = CreateDownloadHandler();
+        }
+
+        private DownloadService[] CreateDownloadHandler()
+        {
+            if (!HttpRequestHeadersHelper.TryParse(_item.RequestHeaders, out var requestHeaders))
+            {
+                throw new FormatException(ResUI.SubRequestHeadersInvalid);
+            }
+
+            var userAgent = _item.UserAgent.IsNullOrEmpty() ? Utils.GetVersion(false) : _item.UserAgent;
+            //var proxyDownloadService = new DownloadService
+            //{
+            //    GetHandlerFunc = () =>
+            //        HttpRequestHeadersHelper.CreateHandler(HttpClientHelper.Instance.ProxyHandler, userAgent, "*/*",
+            //            requestHeaders),
+            //};
+            //var directDownloadService = new DownloadService
+            //{
+            //    GetHandlerFunc = () =>
+            //        HttpRequestHeadersHelper.CreateHandler(HttpClientHelper.Instance.DirectHandler, userAgent, "*/*",
+            //            requestHeaders),
+            //};
+            //return _handler._blProxy
+            //    ? [
+            //        proxyDownloadService,
+            //    directDownloadService,
+            //    ]
+            //    : [
+            //        directDownloadService,
+            //    proxyDownloadService,
+            //    ];
+            var handler = HttpClientHelper.Instance.CreateFallbackHandler(_handler._blProxy);
+            var headersHandler = HttpRequestHeadersHelper.CreateHandler(handler, userAgent, "*/*", requestHeaders);
+            return
+            [
+                new DownloadService
+                {
+                    GetHandlerFunc = () => headersHandler,
+                },
+            ];
+        }
+
+        private async Task<string> DownloadSubscriptionContent(string url)
+        {
+            //var result = await downloadServices[0].TryDownloadString(url);
+
+            //// try other ways
+            //if (result.IsNullOrEmpty())
+            //{
+            //    result = await downloadServices[1].TryDownloadString(url);
+            //}
+            foreach (var downloadService in _downloadServices)
+            {
+                var result = await downloadService.TryDownloadString(url);
+                if (!result.IsNullOrEmpty())
+                {
+                    return result;
+                }
+            }
+
+            return string.Empty;
+        }
+
+        public async Task<string> DownloadAllSubscriptions()
+        {
+            // Download main subscription content
+            var result = await DownloadMainSubscription();
+
+            // Process additional subscription links (if any)
+            if (_item.ConvertTarget.IsNullOrEmpty() && _item.MoreUrl.TrimEx().IsNotEmpty())
+            {
+                result = await DownloadAdditionalSubscriptions(result);
+            }
+
+            return result;
+        }
+
+        private async Task<string> DownloadMainSubscription()
+        {
+            // Prepare subscription URL and download directly
+            var url = Utils.GetPunycode(_item.Url.TrimEx());
+
+            // If conversion is needed
+            if (_item.ConvertTarget.IsNotEmpty())
+            {
+                var subConvertUrl = _handler._config.ConstItem.SubConvertUrl.IsNullOrEmpty()
+                    ? Global.SubConvertUrls.FirstOrDefault()
+                    : _handler._config.ConstItem.SubConvertUrl;
+
+                url = string.Format(subConvertUrl!, Utils.UrlEncode(url));
+
+                if (!url.Contains("target="))
+                {
+                    url += $"&target={_item.ConvertTarget}";
+                }
+
+                if (!url.Contains("config="))
+                {
+                    url += $"&config={Global.SubConvertConfig.FirstOrDefault()}";
+                }
+            }
+
+            // Download and return result directly
+            return await DownloadSubscriptionContent(url);
+        }
+
+        private async Task<string> DownloadAdditionalSubscriptions(string mainResult)
+        {
+            var result = mainResult;
+
+            // If main subscription result is Base64 encoded, decode it first
+            if (result.IsNotEmpty() && Utils.IsBase64String(result))
+            {
+                result = Utils.Base64Decode(result);
+            }
+
+            // Process additional URL list
+            var lstUrl = _item.MoreUrl.TrimEx().Split(",") ?? [];
+            foreach (var it in lstUrl)
+            {
+                var url2 = Utils.GetPunycode(it);
+                if (url2.IsNullOrEmpty())
+                {
+                    continue;
+                }
+
+                var additionalResult = await DownloadSubscriptionContent(url2);
+
+                if (additionalResult.IsNotEmpty())
+                {
+                    // Process additional subscription results, add to main result
+                    if (Utils.IsBase64String(additionalResult))
+                    {
+                        result += Environment.NewLine + Utils.Base64Decode(additionalResult);
+                    }
+                    else
+                    {
+                        result += Environment.NewLine + additionalResult;
+                    }
+                }
+            }
+
+            return result;
+        }
     }
 }
