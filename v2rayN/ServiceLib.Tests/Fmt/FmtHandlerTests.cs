@@ -73,6 +73,60 @@ public class FmtHandlerTests
     }
 
     [Test]
+    public async Task GetShareUriAndResolveConfig_VlessXdriveGoogleDrive_ShouldRoundTrip()
+    {
+        var source = CreateVlessProfile();
+        source.Network = nameof(ETransport.xdrive);
+        source.StreamSecurity = Global.StreamSecurity;
+        source.Sni = "drive.google.com";
+        source.Alpn = "h2,http/1.1";
+        source.SetProtocolExtra(source.GetProtocolExtra() with
+        {
+            VlessEncryption = Global.None,
+        });
+        source.SetTransportExtra(new TransportExtraItem
+        {
+            XdriveService = "google-drive",
+            XdriveRemoteFolder = "/v2ray-folder",
+        });
+
+        var resolved = await ExportThenImport(source);
+
+        await resolved.Network.Should().BeEqualTo(nameof(ETransport.xdrive));
+        await resolved.GetTransportExtra().XdriveService.Should().BeEqualTo("google-drive");
+        await resolved.GetTransportExtra().XdriveRemoteFolder.Should().BeEqualTo("/v2ray-folder");
+        await resolved.GetProtocolExtra().VlessEncryption.Should().BeEqualTo(Global.None);
+        await resolved.Sni.Should().BeEqualTo("drive.google.com");
+        await resolved.Alpn.Should().BeEqualTo("h2,http/1.1");
+    }
+
+    [Test]
+    public async Task GetShareUriAndResolveConfig_VlessXdriveS3_ShouldRoundTrip()
+    {
+        var source = CreateVlessProfile();
+        source.Network = nameof(ETransport.xdrive);
+        source.SetTransportExtra(new TransportExtraItem
+        {
+            XdriveService = "s3",
+            XdriveRemoteFolder = "/backup",
+            XdriveSecrets = "test-secret",
+            XdriveS3Endpoint = "s3.us-east-1.amazonaws.com",
+            XdriveS3Region = "us-east-1",
+            XdriveS3Bucket = "v2ray-bucket",
+            XdriveS3PathStyle = true,
+        });
+
+        var resolved = await ExportThenImport(source);
+
+        await resolved.Network.Should().BeEqualTo(nameof(ETransport.xdrive));
+        await resolved.GetTransportExtra().XdriveService.Should().BeEqualTo("s3");
+        await resolved.GetTransportExtra().XdriveS3Endpoint.Should().BeEqualTo("s3.us-east-1.amazonaws.com");
+        await resolved.GetTransportExtra().XdriveS3Region.Should().BeEqualTo("us-east-1");
+        await resolved.GetTransportExtra().XdriveS3Bucket.Should().BeEqualTo("v2ray-bucket");
+        await resolved.GetTransportExtra().XdriveS3PathStyle.Should().BeEqualTo(true);
+    }
+
+    [Test]
     public async Task GetShareUriAndResolveConfig_Shadowsocks_ShouldRoundTripBasicFields()
     {
         var source = CreateShadowsocksProfile();

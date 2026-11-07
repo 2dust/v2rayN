@@ -1915,4 +1915,37 @@
   <data name="LvPreResolve" xml:space="preserve">
     <value>预解析节点域名</value>
   </data>
+  <data name="XdriveService" xml:space="preserve">
+    <value>XDRIVE 服务</value>
+  </data>
+  <data name="XdriveRemoteFolder" xml:space="preserve">
+    <value>远端目录</value>
+  </data>
+  <data name="XdriveSecrets" xml:space="preserve">
+    <value>认证密钥 (以逗号分隔)</value>
+  </data>
+  <data name="XdriveS3Endpoint" xml:space="preserve">
+    <value>S3 终端节点</value>
+  </data>
+  <data name="XdriveS3Region" xml:space="preserve">
+    <value>S3 区域</value>
+  </data>
+  <data name="XdriveS3Bucket" xml:space="preserve">
+    <value>S3 存储桶</value>
+  </data>
+  <data name="XdriveS3PathStyle" xml:space="preserve">
+    <value>S3 强制路径样式 (PathStyle)</value>
+  </data>
+  <data name="XdriveExtra" xml:space="preserve">
+    <value>XDRIVE 额外配置</value>
+  </data>
+  <data name="XdriveExtraTip" xml:space="preserve">
+    <value>原始 JSON，格式： { XdriveObject }</value>
+  </data>
+  <data name="TransportHeaderType6" xml:space="preserve">
+    <value>XDRIVE 服务</value>
+  </data>
+  <data name="TransportPathTip6" xml:space="preserve">
+    <value>XDRIVE 远端目录</value>
+  </data>
 </root>

@@ -166,6 +166,45 @@ public class BaseFmt
                     }
                 }
                 break;
+
+            case nameof(ETransport.xdrive):
+                if (transport.XdriveService.IsNotEmpty())
+                {
+                    dicQuery.Add("service", UrlEncodeSafe(transport.XdriveService));
+                }
+                if (transport.XdriveRemoteFolder.IsNotEmpty())
+                {
+                    dicQuery.Add("remoteFolder", UrlEncodeSafe(transport.XdriveRemoteFolder));
+                }
+                if (transport.XdriveSecrets.IsNotEmpty())
+                {
+                    dicQuery.Add("secrets", UrlEncodeSafe(transport.XdriveSecrets));
+                }
+                if (transport.XdriveS3Endpoint.IsNotEmpty())
+                {
+                    dicQuery.Add("endpoint", UrlEncodeSafe(transport.XdriveS3Endpoint));
+                }
+                if (transport.XdriveS3Region.IsNotEmpty())
+                {
+                    dicQuery.Add("region", UrlEncodeSafe(transport.XdriveS3Region));
+                }
+                if (transport.XdriveS3Bucket.IsNotEmpty())
+                {
+                    dicQuery.Add("bucket", UrlEncodeSafe(transport.XdriveS3Bucket));
+                }
+                if (transport.XdriveS3PathStyle != null)
+                {
+                    dicQuery.Add("pathStyle", transport.XdriveS3PathStyle.Value.ToString().ToLower());
+                }
+                if (transport.XdriveExtra.IsNotEmpty())
+                {
+                    var node = JsonUtils.ParseJson(transport.XdriveExtra);
+                    var extra = node != null
+                        ? JsonUtils.Serialize(node, indented: false, nullValue: true)
+                        : transport.XdriveExtra;
+                    dicQuery.Add("extra", UrlEncodeSafe(extra));
+                }
+                break;
         }
         return 0;
     }
@@ -282,6 +321,35 @@ public class BaseFmt
                     GrpcAuthority = GetQueryDecoded(query, "authority"),
                     GrpcServiceName = GetQueryDecoded(query, "serviceName"),
                     GrpcMode = GetQueryDecoded(query, "mode", Global.GrpcGunMode),
+                };
+                break;
+
+            case nameof(ETransport.xdrive):
+                var xdriveExtra = GetQueryDecoded(query, "extra");
+                if (xdriveExtra.IsNotEmpty())
+                {
+                    var node = JsonUtils.ParseJson(xdriveExtra);
+                    if (node != null)
+                    {
+                        xdriveExtra = JsonUtils.Serialize(node, indented: true, nullValue: true);
+                    }
+                }
+
+                var pathStyleStr = GetQueryValue(query, "pathStyle");
+                bool? pathStyle = bool.TryParse(pathStyleStr, out var ps)
+                    ? ps
+                    : (pathStyleStr == "1" ? true : (pathStyleStr == "0" ? false : null));
+
+                transport = transport with
+                {
+                    XdriveService = GetQueryDecoded(query, "service"),
+                    XdriveRemoteFolder = GetQueryDecoded(query, "remoteFolder"),
+                    XdriveSecrets = GetQueryDecoded(query, "secrets"),
+                    XdriveS3Endpoint = GetQueryDecoded(query, "endpoint"),
+                    XdriveS3Region = GetQueryDecoded(query, "region"),
+                    XdriveS3Bucket = GetQueryDecoded(query, "bucket"),
+                    XdriveS3PathStyle = pathStyle,
+                    XdriveExtra = xdriveExtra,
                 };
                 break;
 

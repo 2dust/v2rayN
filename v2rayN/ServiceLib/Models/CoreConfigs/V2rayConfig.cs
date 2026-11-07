@@ -320,6 +320,7 @@ public class StreamSettings4Ray
 
     public HysteriaSettings4Ray? hysteriaSettings { get; set; }
     public MasqueSettings4Ray? masqueSettings { get; set; }
+    public XdriveSettings4Ray? xdriveSettings { get; set; }
 
     public JsonObject? finalmask { get; set; }
 
@@ -459,6 +460,28 @@ public class MasqueWarpSettings4Ray
     public string? privateKey { get; set; }
     public string? publicKey { get; set; }
     public List<string>? address { get; set; }
+}
+
+public class XdriveSettings4Ray
+{
+    public string? service { get; set; }
+    public string? remoteFolder { get; set; }
+    public List<string>? secrets { get; set; }
+    public S3Settings4Ray? s3 { get; set; }
+    public int? segmentBytes { get; set; }
+    public int? flushIntervalMs { get; set; }
+    public int? pollIntervalMs { get; set; }
+    public int? maxPollIntervalMs { get; set; }
+    public int? eagerWindowMs { get; set; }
+    public int? concurrency { get; set; }
+}
+
+public class S3Settings4Ray
+{
+    public string? endpoint { get; set; }
+    public string? region { get; set; }
+    public string? bucket { get; set; }
+    public bool? pathStyle { get; set; }
 }
 
 public class UdpHop4Ray

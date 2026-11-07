@@ -10,5 +10,6 @@ public enum ETransport
     h2,
     http,
     quic,
-    grpc
+    grpc,
+    xdrive
 }
