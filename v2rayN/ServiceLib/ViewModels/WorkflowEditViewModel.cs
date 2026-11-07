@@ -104,7 +104,7 @@ public partial class WorkflowEditViewModel : MyReactiveObject, ICloseable
             new() { Action = EWorkflowAction.TestServers, Parameter = nameof(ESpeedActionType.Realping) },
             new() { Action = EWorkflowAction.RemoveInvalidServers },
             new() { Action = EWorkflowAction.SortServers, Parameter = nameof(EServerColName.SpeedVal), BoolParameter = false },
-            new() { Action = EWorkflowAction.ActivateServer, Parameter = nameof(EServerSelectType.First) },
+            new() { Action = EWorkflowAction.ActivateServer },
             new() { Action = EWorkflowAction.SystemProxy, Parameter = nameof(ESysProxyType.ForcedChange) },
         ];
     }

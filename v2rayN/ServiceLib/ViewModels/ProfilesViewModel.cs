@@ -734,13 +734,13 @@ public partial class ProfilesViewModel : MyReactiveObject
     }
 
     /// <summary>
-    /// Activate the first or last server of a group, using the persisted sort order (the
-    /// order the server list displays). <see cref="EServerSelectType.First"/> therefore
-    /// picks the topmost row, so a sort step run beforehand decides which server wins.
-    /// With a null <paramref name="subId"/> the candidate is drawn from every group.
+    /// Activate the lowest-latency server of a group, or of every group when
+    /// <paramref name="subId"/> is null. Latency lives on <see cref="ProfileExItem"/> and is only
+    /// meaningful once a test has run, so servers that were never tested (0) or whose last test
+    /// failed (-1) are skipped rather than mistaken for the fastest.
     /// Completes only after the core reload triggered by the activation has finished.
     /// </summary>
-    public async Task SetDefaultServerForGroupAsync(string? subId, EServerSelectType selectType)
+    public async Task SetLowestLatencyServerAsync(string? subId)
     {
         var lstModel = await AppManager.Instance.ProfileModels(subId ?? string.Empty, string.Empty);
         if (lstModel is not { Count: > 0 })
@@ -748,15 +748,11 @@ public partial class ProfilesViewModel : MyReactiveObject
             return;
         }
 
-        // Sort lives on ProfileExItem, not on ProfileItem, so ProfileModels cannot order by it.
-        // GetSort scans the whole bag per call, so build the lookup once instead of per row.
-        var sorts = (await ProfileExManager.Instance.GetProfileExs())
-            .GroupBy(t => t.IndexId)
-            .ToDictionary(g => g.Key, g => g.First().Sort);
-        var ordered = selectType == EServerSelectType.Last
-            ? lstModel.OrderByDescending(t => sorts.GetValueOrDefault(t.IndexId))
-            : lstModel.OrderBy(t => sorts.GetValueOrDefault(t.IndexId));
-        var target = ordered.FirstOrDefault();
+        var ids = lstModel.Select(t => t.IndexId).ToHashSet();
+        var target = (await ProfileExManager.Instance.GetProfileExs())
+            .Where(t => ids.Contains(t.IndexId) && t.Delay > 0)
+            .OrderBy(t => t.Delay)
+            .FirstOrDefault();
         if (target is null)
         {
             return;

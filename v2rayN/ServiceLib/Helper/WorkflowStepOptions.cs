@@ -24,8 +24,6 @@ public static class WorkflowStepOptions
 
     private static readonly List<string> _proxyTypes = Utils.GetEnumNames<ESysProxyType>();
 
-    private static readonly List<string> _selectTypes = Utils.GetEnumNames<EServerSelectType>();
-
     public static IReadOnlyList<string> ParametersFor(EWorkflowAction action)
     {
         return action switch
@@ -33,7 +31,6 @@ public static class WorkflowStepOptions
             EWorkflowAction.SortServers => _sortColumns,
             EWorkflowAction.TestServers => _testTypes,
             EWorkflowAction.SystemProxy => _proxyTypes,
-            EWorkflowAction.ActivateServer => _selectTypes,
             _ => _none,
         };
     }
@@ -50,7 +47,6 @@ public static class WorkflowStepOptions
             EWorkflowAction.SortServers => nameof(EServerColName.DelayVal),
             EWorkflowAction.TestServers => nameof(ESpeedActionType.Realping),
             EWorkflowAction.SystemProxy => nameof(ESysProxyType.ForcedClear),
-            EWorkflowAction.ActivateServer => nameof(EServerSelectType.First),
             _ => null,
         };
     }

@@ -42,9 +42,9 @@ public sealed class WorkflowRuntimeService(
         return count;
     }
 
-    public async Task ActivateServer(string? subId, EServerSelectType selectType)
+    public async Task ActivateServer(string? subId)
     {
-        await profiles.SetDefaultServerForGroupAsync(subId, selectType);
+        await profiles.SetLowestLatencyServerAsync(subId);
     }
 
     public async Task SetSystemProxy(ESysProxyType type)

@@ -28,11 +28,11 @@ public interface IWorkflowRuntime
     Task<int> RemoveInvalidServers(string? subId);
 
     /// <summary>
-    /// Activate a server of a group, or of every group when <paramref name="subId"/> is null.
-    /// <paramref name="selectType"/> chooses the topmost or bottom row of the group's persisted
-    /// sort order.
+    /// Activate the lowest-latency server of a group, or of every group when
+    /// <paramref name="subId"/> is null. Servers that were never tested, or whose last test
+    /// failed, are not candidates.
     /// </summary>
-    Task ActivateServer(string? subId, EServerSelectType selectType);
+    Task ActivateServer(string? subId);
 
     /// <summary>Set the system proxy mode.</summary>
     Task SetSystemProxy(ESysProxyType type);

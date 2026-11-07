@@ -70,9 +70,8 @@ public class WorkflowHandlerTests
         await WorkflowStepOptions.ParametersFor(EWorkflowAction.SystemProxy)
             .Should().Contain(nameof(ESysProxyType.ForcedChange));
 
-        // Which server a group activates is a fixed choice, not free text.
-        await WorkflowStepOptions.ParametersFor(EWorkflowAction.ActivateServer)
-            .Should().Contain(nameof(EServerSelectType.Last));
+        // Activation picks the fastest measured server, so it takes no fixed choice.
+        await WorkflowStepOptions.ParametersFor(EWorkflowAction.ActivateServer).Should().BeEmpty();
     }
 
     [Test]
@@ -153,7 +152,7 @@ public class WorkflowHandlerTests
             new() { Action = EWorkflowAction.SortServers, Parameter = nameof(EServerColName.SpeedVal), BoolParameter = false },
             new() { Action = EWorkflowAction.TestServers, Parameter = nameof(ESpeedActionType.Speedtest) },
             new() { Action = EWorkflowAction.RemoveInvalidServers, Enabled = false },
-            new() { Action = EWorkflowAction.ActivateServer, Parameter = nameof(EServerSelectType.First) },
+            new() { Action = EWorkflowAction.ActivateServer },
             new() { Action = EWorkflowAction.SystemProxy, Parameter = nameof(ESysProxyType.ForcedChange) },
         ]);
 
@@ -166,7 +165,7 @@ public class WorkflowHandlerTests
             "dedup:",
             "sort::SpeedVal:False",
             "test::Speedtest",
-            "activate::First",
+            "activate:",
             "sysproxy:ForcedChange",
         ]);
     }
@@ -206,7 +205,7 @@ public class WorkflowHandlerTests
             $"sort::{nameof(EServerColName.DelayVal)}:False",
             $"test::{nameof(ESpeedActionType.Realping)}",
             $"sysproxy:{nameof(ESysProxyType.ForcedClear)}",
-            $"activate::{nameof(EServerSelectType.First)}",
+            "activate:",
         ]);
     }
 
@@ -287,9 +286,9 @@ public class WorkflowHandlerTests
             return Task.FromResult(0);
         }
 
-        public Task ActivateServer(string? subId, EServerSelectType selectType)
+        public Task ActivateServer(string? subId)
         {
-            Calls.Add($"activate:{subId}:{selectType}");
+            Calls.Add($"activate:{subId}");
             return Task.CompletedTask;
         }
 
