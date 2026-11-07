@@ -147,7 +147,7 @@ jobs:
       uses: actions/upload-artifact@v7
       with: { name: release-rpm, path: "dist/rpm/**/*.rpm", if-no-files-found: error }
 
-  debian-x86:
+  deb-x86:
     name: build and release deb x86
     if: (github.event_name == 'workflow_dispatch' && inputs.release_tag != '') || (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
     runs-on: ubuntu-26.04
@@ -264,7 +264,7 @@ jobs:
 
   release-deb-x86:
     name: sign and upload deb x86
-    needs: debian-x86
+    needs: deb-x86
     uses: ./.github/workflows/upload-sign.yml
     with: { release_tag: "${{ inputs.release_tag || github.ref_name }}", artifact_name: release-deb-x86, file_pattern: "*.deb" }
     secrets: { GPG_PRIVATE_KEY: "${{ secrets.GPG_PRIVATE_KEY }}" }
