@@ -68,30 +68,63 @@ public class HttpClientHelper
         return handler;
     }
 
+    public static SocketsHttpHandler CreateSocketsHttpHandler(bool useProxy, CookieContainer cookieContainer)
+    {
+        var handler = CreateSocketsHttpHandler(useProxy);
+        handler.UseCookies = true;
+        handler.CookieContainer = cookieContainer;
+        return handler;
+    }
+
     public static SocketsHttpHandler CreateProxySocketsHttpHandler(IWebProxy proxy)
     {
-        return new SocketsHttpHandler
+        var handler = new SocketsHttpHandler
         {
             UseCookies = false,
             Proxy = proxy,
             ConnectTimeout = Global.ProxyDownloadConnect,
         };
+        var certificateChainPolicy = CertPemManager.Instance.BuildCertificateChainPolicy();
+        if (certificateChainPolicy != null)
+        {
+            handler.SslOptions.CertificateChainPolicy = certificateChainPolicy;
+            handler.SslOptions.RemoteCertificateValidationCallback = null;
+        }
+        return handler;
     }
 
     public static SocketsHttpHandler CreateProxySocketsHttpHandler(int port)
     {
-        return new SocketsHttpHandler
-        {
-            UseCookies = false,
-            Proxy = new WebProxy($"socks5://{Global.Loopback}:{port}"),
-            ConnectTimeout = Global.ProxyDownloadConnect,
-        };
+        return CreateProxySocketsHttpHandler(new WebProxy($"socks5://{Global.Loopback}:{port}"));
+    }
+
+    public static SocketsHttpHandler CreateProxySocketsHttpHandler(IWebProxy proxy, CookieContainer cookieContainer)
+    {
+        var handler = CreateProxySocketsHttpHandler(proxy);
+        handler.UseCookies = true;
+        handler.CookieContainer = cookieContainer;
+        return handler;
+    }
+
+    public static SocketsHttpHandler CreateProxySocketsHttpHandler(int port, CookieContainer cookieContainer)
+    {
+        var handler = CreateProxySocketsHttpHandler(port);
+        handler.UseCookies = true;
+        handler.CookieContainer = cookieContainer;
+        return handler;
     }
 
     public HttpMessageHandler CreateFallbackHandler(bool preferProxy)
     {
         var primaryHandler = preferProxy ? ProxyHandler : DirectHandler;
         var fallbackHandler = preferProxy ? DirectHandler : ProxyHandler;
+        return new DualHandlerFallbackHandler(primaryHandler, fallbackHandler);
+    }
+
+    public HttpMessageHandler CreateFallbackHandler(bool preferProxy, CookieContainer cookieContainer)
+    {
+        var primaryHandler = preferProxy ? CreateSocketsHttpHandler(true, cookieContainer) : CreateSocketsHttpHandler(false, cookieContainer);
+        var fallbackHandler = preferProxy ? CreateSocketsHttpHandler(false, cookieContainer) : CreateSocketsHttpHandler(true, cookieContainer);
         return new DualHandlerFallbackHandler(primaryHandler, fallbackHandler);
     }
 

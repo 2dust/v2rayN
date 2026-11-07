@@ -22,7 +22,7 @@ public static class ConnectionHandler
     {
         using var downloadHandle = new DownloadService
         {
-            Handler = HttpClientHelper.Instance.ProxyHandler,
+            Handler = HttpClientHelper.CreateSocketsHttpHandler(true, new()),
             DisposeHandler = true,
         };
         var ipInfo = await GetIPInfo(downloadHandle);

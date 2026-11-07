@@ -23,7 +23,7 @@ public class DownloadServiceHeadersTests
             """;
         await HttpRequestHeadersHelper.TryParse(json, out var headers).Should().BeTrue();
         IWebProxy? proxy = useProxy ? new WebProxy(server.Url) : null;
-        var handler = proxy is null ? HttpClientHelper.Instance.DirectHandler : HttpClientHelper.CreateProxySocketsHttpHandler(proxy);
+        var handler = proxy is null ? HttpClientHelper.Instance.DirectHandler : HttpClientHelper.CreateProxySocketsHttpHandler(proxy, new());
         var headersHandler = HttpRequestHeadersHelper.CreateHandler(handler, "CustomSubscriptionClient/1.0", "*/*", headers);
         using var service = new DownloadService
         {
@@ -58,7 +58,7 @@ public class DownloadServiceHeadersTests
     {
         await CertPemManager.Instance.Init(new Config { GuiItem = new GUIItem() });
         await using var server = new SubscriptionHttpServer(failFirstRequest);
-        using var handler = HttpRequestHeadersHelper.CreateHandler(HttpClientHelper.Instance.DirectHandler, "ExistingClient/1.0", "*/*", null);
+        using var handler = HttpRequestHeadersHelper.CreateHandler(HttpClientHelper.CreateSocketsHttpHandler(false, new()), "ExistingClient/1.0", "*/*", null);
         var service = new DownloadService { Handler = handler };
         var helper = new DownloaderHelper { Handler = handler };
         var uri = new UriBuilder(server.Url) { UserName = "user", Password = "password" }.Uri;
@@ -79,7 +79,7 @@ public class DownloadServiceHeadersTests
     {
         await CertPemManager.Instance.Init(new Config { GuiItem = new GUIItem() });
         await using var server = new SubscriptionHttpServer();
-        var handler = HttpRequestHeadersHelper.CreateHandler(HttpClientHelper.Instance.DirectHandler, "TestClient/1.0", "*/*", new Dictionary<string, string> { ["X-hwid"] = "first-device" });
+        var handler = HttpRequestHeadersHelper.CreateHandler(HttpClientHelper.CreateSocketsHttpHandler(false, new()), "TestClient/1.0", "*/*", new Dictionary<string, string> { ["X-hwid"] = "first-device" });
         using var subscription = new DownloadService
         {
             Handler = handler,

@@ -31,17 +31,18 @@ public class DownloadService : IDisposable
     public static async Task<DownloadService> CreateDownloadServiceWithCheck(bool preferProxy = true)
     {
         var webProxy = await CheckProxy(preferProxy);
+        var cookieContainer = new CookieContainer();
         if (webProxy is not null)
         {
             return new DownloadService
             {
-                Handler = HttpClientHelper.Instance.ProxyHandler,
+                Handler = HttpClientHelper.CreateProxySocketsHttpHandler(webProxy, cookieContainer),
                 DisposeHandler = true,
             };
         }
         return new DownloadService
         {
-            Handler = HttpClientHelper.Instance.DirectHandler,
+            Handler = HttpClientHelper.CreateSocketsHttpHandler(false, cookieContainer),
             DisposeHandler = true,
         };
     }
@@ -50,7 +51,7 @@ public class DownloadService : IDisposable
     {
         return new DownloadService
         {
-            Handler = HttpClientHelper.Instance.CreateFallbackHandler(preferProxy),
+            Handler = HttpClientHelper.Instance.CreateFallbackHandler(preferProxy, new()),
             DisposeHandler = true,
         };
     }

@@ -494,7 +494,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         var responseTime = -1;
         try
         {
-            using var handler = HttpClientHelper.CreateProxySocketsHttpHandler(it.Port);
+            using var handler = HttpClientHelper.CreateProxySocketsHttpHandler(it.Port, new());
             handler.ConnectTimeout = Global.LocalFetch;
             using var client = new HttpClient(handler, false);
             responseTime = await ConnectionHandler.GetRealPingTime(client, ct);
@@ -537,7 +537,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     {
         await UpdateFunc(it.IndexId, "", ResUI.Speedtesting);
 
-        var handler = HttpClientHelper.CreateProxySocketsHttpHandler(it.Port);
+        var handler = HttpClientHelper.CreateProxySocketsHttpHandler(it.Port, new());
         var url = _config.SpeedTestItem.SpeedTestUrl;
         var timeout = _config.SpeedTestItem.SpeedTestTimeout;
         using var timeoutCts = new CancellationTokenSource(TimeSpan.FromSeconds(timeout));

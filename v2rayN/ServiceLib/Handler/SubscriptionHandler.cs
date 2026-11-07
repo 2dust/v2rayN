@@ -161,7 +161,7 @@ public class SubscriptionHandler(
             //        directDownloadService,
             //    proxyDownloadService,
             //    ];
-            var handler = HttpClientHelper.Instance.CreateFallbackHandler(_handler._blProxy);
+            var handler = HttpClientHelper.Instance.CreateFallbackHandler(_handler._blProxy, new());
             var headersHandler = HttpRequestHeadersHelper.CreateHandler(handler, userAgent, "*/*", requestHeaders);
             return
             [

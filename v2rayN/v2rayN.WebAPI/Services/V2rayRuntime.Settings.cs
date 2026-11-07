@@ -1023,8 +1023,8 @@ public sealed partial class V2rayRuntime
             var stager = new RegionalPresetStager(async (url, webProxy, token) =>
             {
                 var handler = webProxy is null
-                    ? HttpClientHelper.Instance.DirectHandler
-                    : HttpClientHelper.CreateProxySocketsHttpHandler(webProxy);
+                    ? HttpClientHelper.CreateSocketsHttpHandler(false, new())
+                    : HttpClientHelper.CreateProxySocketsHttpHandler(webProxy, new());
                 using var download = new DownloadService
                 {
                     Handler = handler,
