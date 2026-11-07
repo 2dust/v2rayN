@@ -97,6 +97,7 @@ public class UIItem
     public List<ColumnItem> MainColumnItem { get; set; }
     public List<WindowSizeItem> WindowSizeItem { get; set; }
     public bool HideColumnIpInfo { get; set; }
+    public int? FrozenColumnCount { get; set; }
 }
 
 public class ConstItem

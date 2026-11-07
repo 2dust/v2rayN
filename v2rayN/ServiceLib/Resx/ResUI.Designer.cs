@@ -1042,6 +1042,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Currently frozen first {0} column(s) 的本地化字符串。
+        /// </summary>
+        public static string menuCurrentlyFrozenColumns {
+            get {
+                return ResourceManager.GetString("menuCurrentlyFrozenColumns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Latency Test 的本地化字符串。
         /// </summary>
         public static string menuDelaytest {
@@ -1186,6 +1195,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Freeze up to this column 的本地化字符串。
+        /// </summary>
+        public static string menuFreezeToThisColumn {
+            get {
+                return ResourceManager.GetString("menuFreezeToThisColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Full Config Template Setting 的本地化字符串。
         /// </summary>
         public static string menuFullConfigTemplate {
@@ -1227,6 +1245,15 @@ namespace ServiceLib.Resx {
         public static string menuHelp {
             get {
                 return ResourceManager.GetString("menuHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Hide this column 的本地化字符串。
+        /// </summary>
+        public static string menuHideThisColumn {
+            get {
+                return ResourceManager.GetString("menuHideThisColumn", resourceCulture);
             }
         }
         
@@ -1992,6 +2019,15 @@ namespace ServiceLib.Resx {
         public static string menuUdpTestServer {
             get {
                 return ResourceManager.GetString("menuUdpTestServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Unfreeze all columns 的本地化字符串。
+        /// </summary>
+        public static string menuUnfreezeAllColumns {
+            get {
+                return ResourceManager.GetString("menuUnfreezeAllColumns", resourceCulture);
             }
         }
         
@@ -4913,7 +4949,7 @@ namespace ServiceLib.Resx {
                 return ResourceManager.GetString("TbSettingsTunAutoRoute", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   查找类似 DNS mode 的本地化字符串。
         /// </summary>

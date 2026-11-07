@@ -1,5 +1,6 @@
 using Avalonia.Controls.DataGridDragDrop;
 using DialogHostAvalonia;
+using Avalonia.VisualTree;
 using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Views;
@@ -23,6 +24,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         lstProfiles.SelectionChanged += lstProfiles_SelectionChanged;
         lstProfiles.DoubleTapped += LstProfiles_DoubleTapped;
         lstProfiles.Sorting += LstProfiles_Sorting;
+        SetupColumnHeaderContextMenu();
 
         this.WhenActivated(disposables =>
         {
@@ -401,6 +403,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
                     }
                 }
             }
+            lstProfiles.FrozenColumnCount = _config.UiItem.FrozenColumnCount ?? 0;
         }
         catch (Exception ex)
         {
@@ -427,6 +430,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
     {
         try
         {
+            _config.UiItem.FrozenColumnCount = lstProfiles.FrozenColumnCount;
             List<ColumnItem> lvColumnItem = [];
             foreach (var item2 in lstProfiles.Columns)
             {
@@ -447,6 +451,88 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         {
             Logging.SaveLog(_tag, ex);
         }
+    }
+
+    private void SetupColumnHeaderContextMenu()
+    {
+        lstProfiles.AddHandler(PointerPressedEvent, (sender, e) =>
+        {
+            if (e.GetCurrentPoint(lstProfiles).Properties.IsRightButtonPressed)
+            {
+                var header = (e.Source as Visual)?.FindAncestorOfType<DataGridColumnHeader>();
+                if (header?.OwningColumn != null)
+                {
+                    e.Handled = true;
+                    ShowColumnHeaderContextMenu(header, header.OwningColumn);
+                }
+            }
+        }, RoutingStrategies.Tunnel);
+    }
+
+    private void ShowColumnHeaderContextMenu(DataGridColumnHeader header, DataGridColumn column)
+    {
+        var menu = new ContextMenu();
+        var colTitle = column.Header?.ToString() ?? string.Empty;
+
+        var visibleColumns = lstProfiles.Columns
+            .Where(c => c.IsVisible)
+            .OrderBy(c => c.DisplayIndex < 0 ? int.MaxValue : c.DisplayIndex)
+            
+            .ToList();
+        var targetIndex = visibleColumns.IndexOf(column);
+        var targetCount = targetIndex >= 0 ? targetIndex + 1 : 0;
+
+        var hideColumn = new MenuItem
+        {
+            Header = ResUI.menuHideThisColumn,
+            IsEnabled = column.IsVisible,
+        };
+        hideColumn.Click += (s, ev) =>
+        {
+            column.IsVisible = false;
+        };
+
+        var freezeToHereStr = ResUI.menuFreezeToThisColumn;
+        if (!string.IsNullOrEmpty(colTitle))
+        {
+            freezeToHereStr += $" ({colTitle})";
+        }
+        var freezeToHere = new MenuItem
+        {
+            Header = freezeToHereStr,
+            IsEnabled = targetCount > 0,
+        };
+        freezeToHere.Click += (s, ev) =>
+        {
+            lstProfiles.FrozenColumnCount = targetCount;
+        };
+
+        var unfreezeAll = new MenuItem
+        {
+            Header = ResUI.menuUnfreezeAllColumns,
+            IsEnabled = lstProfiles.FrozenColumnCount > 0,
+        };
+        unfreezeAll.Click += (s, ev) =>
+        {
+            lstProfiles.FrozenColumnCount = 0;
+        };
+
+        var statusItemStr = string.Format(ResUI.menuCurrentlyFrozenColumns, lstProfiles.FrozenColumnCount);
+        var statusItem = new MenuItem
+        {
+            Header = statusItemStr,
+            IsEnabled = false,
+        };
+
+        menu.Items.Add(hideColumn);
+        menu.Items.Add(new Separator());
+        menu.Items.Add(freezeToHere);
+        menu.Items.Add(unfreezeAll);
+        menu.Items.Add(new Separator());
+        menu.Items.Add(statusItem);
+
+        header.ContextMenu = menu;
+        menu.Open(header);
     }
 
     #endregion UI
