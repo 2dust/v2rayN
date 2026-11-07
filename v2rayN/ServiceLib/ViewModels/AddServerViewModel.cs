@@ -617,9 +617,9 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
             case "Google Drive":
                 XdriveService = "google-drive";
                 SelectedSource.StreamSecurity = Global.StreamSecurity;
-                if (SelectedSource.Sni.IsNullOrEmpty()) SelectedSource.Sni = "google.com";
+                if (SelectedSource.Sni.IsNullOrEmpty()) SelectedSource.Sni = "www.google.com";
                 if (SelectedSource.Alpn.IsNullOrEmpty()) SelectedSource.Alpn = "h2";
-                if (SelectedSource.Address.IsNullOrEmpty()) SelectedSource.Address = "google.com";
+                if (SelectedSource.Address.IsNullOrEmpty()) SelectedSource.Address = "www.google.com";
                 if (SelectedSource.Port <= 0) SelectedSource.Port = 443;
                 break;
             case "AWS S3 (Global)":

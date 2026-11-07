@@ -568,6 +568,16 @@ public partial class CoreConfigV2rayService
                         }
                     }
 
+                    if (string.Equals(transport.XdriveService, "google-drive", StringComparison.OrdinalIgnoreCase))
+                    {
+                        xdriveSettings.segmentBytes ??= 524288;
+                        xdriveSettings.flushIntervalMs ??= 10;
+                        xdriveSettings.pollIntervalMs ??= 50;
+                        xdriveSettings.maxPollIntervalMs ??= 200;
+                        xdriveSettings.eagerWindowMs ??= 10000;
+                        xdriveSettings.concurrency ??= 64;
+                    }
+
                     streamSettings.xdriveSettings = xdriveSettings;
                     FillOutboundMux(outbound, true, true);
                     break;
