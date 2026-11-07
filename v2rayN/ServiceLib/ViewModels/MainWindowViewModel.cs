@@ -306,9 +306,13 @@ public partial class MainWindowViewModel : MyReactiveObject
                 .SubscribeAsync(async _ => await Reload());
         }
 
-        // Let the profiles view model await a reload, e.g. from a workflow step that must not
-        // continue until the new server is actually live.
-        ProfilesViewModel.ReloadAsync = Reload;
+        // A workflow step can await the reload before running the next step, so the new server
+        // is actually live by the time it proceeds.
+        ProfilesViewModel.ReloadInteraction.RegisterHandler(async interaction =>
+        {
+            await Reload();
+            interaction.SetOutput(RxVoid.Default);
+        });
 
         StatusBarViewModel.AddServerViaScanRequested
             .AsObservable()
