@@ -20,6 +20,8 @@ SKIASHARP_BASE="${SKIASHARP_BASE:-https://github.com/autorepobot/SkiaSharp-ppc64
 SkiaSharp_VERSION="${SkiaSharp_VERSION:-3.119.4}"
 HarfBuzzSharp_VERSION="${HarfBuzzSharp_VERSION:-8.3.1.5}"
 
+DOTNET_SDK_VERSION="${DOTNET_SDK_VERSION:-10.0.114}"
+
 DOTNET_RISCV_VERSION="${DOTNET_RISCV_VERSION:-10.0.114}"
 DOTNET_RISCV_BASE="${DOTNET_RISCV_BASE:-https://github.com/autorepobot/dotnet-riscv/releases/download}"
 DOTNET_RISCV_FILE="dotnet-sdk-${DOTNET_RISCV_VERSION}-linux-riscv64.tar.gz"
@@ -138,7 +140,7 @@ install_dependencies() {
         wget -q https://dot.net/v1/dotnet-install.sh
         chmod +x dotnet-install.sh
         ./dotnet-install.sh \
-          --channel 10.0.1xx \
+          --version "$DOTNET_SDK_VERSION" \
           --install-dir "$HOME/.dotnet"
 
         export PATH="$HOME/.dotnet:$PATH"
