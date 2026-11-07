@@ -102,7 +102,6 @@
                             <PathIcon Data="{StaticResource SemiIconPlus}" />
                         </Button.Content>
                     </Button>
-
                     <TextBox
                         x:Name="txtServerFilter"
                         Width="200"

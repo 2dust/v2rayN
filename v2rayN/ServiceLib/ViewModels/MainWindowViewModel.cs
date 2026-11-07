@@ -48,6 +48,7 @@ public partial class MainWindowViewModel : MyReactiveObject
     public ReactiveCommand<RxVoid, RxVoid> SubUpdateViaProxyCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> SubGroupUpdateCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> SubGroupUpdateViaProxyCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> WorkflowCmd { get; }
 
     //Setting
     public ReactiveCommand<RxVoid, RxVoid> OptionSettingCmd { get; }
@@ -197,6 +198,11 @@ public partial class MainWindowViewModel : MyReactiveObject
             await UpdateSubscriptionProcess(_config.SubIndexId, true);
         });
 
+        WorkflowCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await WorkflowAsync();
+        });
+
         //Setting
         OptionSettingCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -269,6 +275,16 @@ public partial class MainWindowViewModel : MyReactiveObject
             .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(bl => BlNewUpdate = bl);
 
+        AppEvents.ServerStateChanged
+            .AsObservable()
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
+            .SubscribeAsync(async _ => await RefreshServersDispatcherAsync());
+
+        AppEvents.WorkflowRequested
+            .AsObservable()
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
+            .SubscribeAsync(async _ => await WorkflowAsync());
+
         #endregion AppEvents
 
         ProfilesViewModel.RefreshServersRequested
@@ -289,6 +305,14 @@ public partial class MainWindowViewModel : MyReactiveObject
                 .ObserveOn(RxSchedulers.MainThreadScheduler)
                 .SubscribeAsync(async _ => await Reload());
         }
+
+        // A workflow step can await the reload before running the next step, so the new server
+        // is actually live by the time it proceeds.
+        ProfilesViewModel.ReloadInteraction.RegisterHandler(async interaction =>
+        {
+            await Reload();
+            interaction.SetOutput(RxVoid.Default);
+        });
 
         StatusBarViewModel.AddServerViaScanRequested
             .AsObservable()
@@ -573,12 +597,30 @@ public partial class MainWindowViewModel : MyReactiveObject
         if (await AppManager.Instance.WindowDialog.ShowDialogAsync(subSettingViewModel) == true)
         {
             await RefreshSubscriptions();
+            await ProfilesViewModel.RefreshServers();
         }
     }
 
     public async Task UpdateSubscriptionProcess(string subId, bool blProxy)
     {
         await Task.Run(async () => await SubscriptionHandler.UpdateProcess(_config, subId, blProxy, UpdateTaskHandler));
+    }
+
+    private async Task WorkflowAsync()
+    {
+        RefreshWorkflowRunner();
+        var workflowViewModel = new WorkflowViewModel();
+        await AppManager.Instance.WindowDialog.ShowDialogAsync(workflowViewModel);
+    }
+
+    /// <summary>
+    /// Make the workflow runtime available to the workflow manager window. Uses the
+    /// already built profile view model and the main window update pipeline.
+    /// </summary>
+    private void RefreshWorkflowRunner()
+    {
+        WorkflowRunnerManager.Instance.Register(new WorkflowRuntimeService(
+            ProfilesViewModel, UpdateSubscriptionProcess, StatusBarViewModel.SetListenerType));
     }
 
     #endregion Subscription

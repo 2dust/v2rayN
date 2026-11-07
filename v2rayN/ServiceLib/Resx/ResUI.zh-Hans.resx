@@ -1918,4 +1918,7 @@
   <data name="LvPreResolve" xml:space="preserve">
     <value>预解析节点域名</value>
   </data>
+  <data name="menuWorkflowSetting" xml:space="preserve">
+    <value>工作流</value>
+  </data>
 </root>
