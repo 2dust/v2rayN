@@ -43,6 +43,11 @@ public static class NetworkUtils
         "虚拟", "回环", "环回"
     ];
 
+    public static bool IsAuto(string? bindInterface)
+    {
+        return bindInterface?.TrimEx().Equals(Global.Auto, StringComparison.OrdinalIgnoreCase) ?? false;
+    }
+
     public static List<string> GetBindInterfaceNames()
     {
         return GetLocalNetworkInterfaceNames().Prepend(Global.Auto).AppendEmpty();
@@ -56,7 +61,7 @@ public static class NetworkUtils
             return null;
         }
 
-        if (trimmed.Equals(Global.Auto, StringComparison.OrdinalIgnoreCase))
+        if (IsAuto(trimmed))
         {
             return GetDefaultPhysicalInterfaceName();
         }
@@ -68,24 +73,32 @@ public static class NetworkUtils
     {
         try
         {
-            var upPhysicalNics = NetworkInterface.GetAllNetworkInterfaces()
-                .Where(IsAllowedPhysicalInterface)
-                .ToList();
-
-            var gatewayNics = upPhysicalNics.Where(HasIPv4Gateway).ToList();
-            var candidates = gatewayNics.Count > 0 ? gatewayNics : upPhysicalNics;
-
-            var bestNic = candidates.FirstOrDefault(ni =>
-                ni.NetworkInterfaceType is NetworkInterfaceType.Ethernet or NetworkInterfaceType.GigabitEthernet)
-                ?? candidates.FirstOrDefault(ni => ni.NetworkInterfaceType == NetworkInterfaceType.Wireless80211)
-                ?? candidates.FirstOrDefault();
-
-            return bestNic?.Name;
+            var candidates = NetworkInterface.GetAllNetworkInterfaces()
+                .Select(ToCandidate);
+            return SelectDefaultInterface(candidates);
         }
-        catch
+        catch (Exception ex)
         {
+            Logging.SaveLog("GetDefaultPhysicalInterfaceName", ex);
             return null;
         }
+    }
+
+    public static string? SelectDefaultInterface(IEnumerable<NetworkInterfaceCandidate> candidates)
+    {
+        var upPhysicalNics = candidates
+            .Where(IsAllowedPhysicalCandidate)
+            .ToList();
+
+        var gatewayNics = upPhysicalNics.Where(c => c.HasIPv4Gateway).ToList();
+        var candidateList = gatewayNics.Count > 0 ? gatewayNics : upPhysicalNics;
+
+        var bestNic = candidateList.FirstOrDefault(c =>
+            c.InterfaceType is NetworkInterfaceType.Ethernet or NetworkInterfaceType.GigabitEthernet)
+            ?? candidateList.FirstOrDefault(c => c.InterfaceType == NetworkInterfaceType.Wireless80211)
+            ?? candidateList.FirstOrDefault();
+
+        return bestNic?.Name;
     }
 
     public static List<string> GetLocalNetworkInterfaceNames()
@@ -93,17 +106,50 @@ public static class NetworkUtils
         try
         {
             return NetworkInterface.GetAllNetworkInterfaces()
-                .Where(IsAllowedPhysicalInterface)
+                .Select(ToCandidate)
+                .Where(IsAllowedPhysicalCandidate)
                 .Select(x => x.Name)
                 .Where(x => !string.IsNullOrWhiteSpace(x))
                 .Distinct(StringComparer.OrdinalIgnoreCase)
                 .OrderBy(x => x)
                 .ToList();
         }
-        catch
+        catch (Exception ex)
         {
+            Logging.SaveLog("GetLocalNetworkInterfaceNames", ex);
             return [];
         }
+    }
+
+    private static NetworkInterfaceCandidate ToCandidate(NetworkInterface ni)
+    {
+        return new NetworkInterfaceCandidate(
+            ni.Name,
+            ni.Description,
+            ni.NetworkInterfaceType,
+            ni.OperationalStatus,
+            HasIPv4Gateway(ni));
+    }
+
+    public static bool IsAllowedPhysicalCandidate(NetworkInterfaceCandidate c)
+    {
+        if (c.OperationalStatus != OperationalStatus.Up)
+        {
+            return false;
+        }
+
+        var interfaceText = $"{c.Name} {c.Description}";
+        if (_virtualNameBlacklistKeywords.Any(keyword => interfaceText.Contains(keyword, StringComparison.OrdinalIgnoreCase)))
+        {
+            return false;
+        }
+
+        if (_allowedPhysicalInterfaceTypes.Contains(c.InterfaceType))
+        {
+            return true;
+        }
+
+        return _allowedPhysicalNameKeywords.Any(keyword => interfaceText.Contains(keyword, StringComparison.OrdinalIgnoreCase));
     }
 
     private static bool HasIPv4Gateway(NetworkInterface ni)
@@ -120,25 +166,11 @@ public static class NetworkUtils
             return false;
         }
     }
-
-    private static bool IsAllowedPhysicalInterface(NetworkInterface ni)
-    {
-        if (ni.OperationalStatus != OperationalStatus.Up)
-        {
-            return false;
-        }
-
-        var interfaceText = $"{ni.Name} {ni.Description}";
-        if (_virtualNameBlacklistKeywords.Any(keyword => interfaceText.Contains(keyword, StringComparison.OrdinalIgnoreCase)))
-        {
-            return false;
-        }
-
-        if (_allowedPhysicalInterfaceTypes.Contains(ni.NetworkInterfaceType))
-        {
-            return true;
-        }
-
-        return _allowedPhysicalNameKeywords.Any(keyword => interfaceText.Contains(keyword, StringComparison.OrdinalIgnoreCase));
-    }
 }
+
+public record NetworkInterfaceCandidate(
+    string Name,
+    string Description,
+    NetworkInterfaceType InterfaceType,
+    OperationalStatus OperationalStatus,
+    bool HasIPv4Gateway);

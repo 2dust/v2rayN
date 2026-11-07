@@ -30,6 +30,12 @@ public record CoreConfigContext
     // tunnel; only a positive detection of the host having no global IPv6 address turns it off.
     public bool HasGlobalIPv6Address { get; init; } = true;
 
+    /// <summary>
+    ///     Resolved network interface name to bind for outbound/TUN connections (resolved from BindInterface).
+    ///     Computed once during context building to guarantee single-source-of-truth.
+    /// </summary>
+    public string? ResolvedBindInterface { get; init; }
+
     // Generation Context
     public Dictionary<object, string> CustomOutboundMap { get; init; } = new();
 }

@@ -104,6 +104,30 @@ public class CoreConfigContextBuilderTests
         await result.Success.Should().BeTrue();
         await result.ValidatorResult.Warnings.Any(w => w.Contains(ResUI.TbSettingsBindInterface)).Should().BeFalse();
         await result.Context.AppConfig.CoreBasicItem.BindInterface.Should().BeEqualTo(Global.Auto);
+        await result.Context.ResolvedBindInterface.Should().BeEqualTo(NetworkUtils.GetDefaultPhysicalInterfaceName());
+    }
+
+    [Test]
+    public async Task Build_BindInterfaceAuto_WithWhitespace_ShouldTreatAsAutoWithoutWarning()
+    {
+        SQLiteHelper.Instance.CreateTable<ProfileItem>();
+        SQLiteHelper.Instance.CreateTable<FullConfigTemplateItem>();
+        SQLiteHelper.Instance.CreateTable<RoutingItem>();
+        SQLiteHelper.Instance.CreateTable<DNSItem>();
+
+        var config = CoreConfigTestFactory.CreateConfig();
+        config.TunModeItem.EnableTun = true;
+        config.CoreBasicItem.BindInterface = $"  {Global.Auto}  ";
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var node = CoreConfigTestFactory.CreateVmessNode(ECoreType.Xray);
+        await UpsertProfilesAsync(node);
+
+        var result = await CoreConfigContextBuilder.Build(config, node);
+
+        await result.Success.Should().BeTrue();
+        await result.ValidatorResult.Warnings.Any(w => w.Contains(ResUI.TbSettingsBindInterface)).Should().BeFalse();
+        await result.Context.ResolvedBindInterface.Should().BeEqualTo(NetworkUtils.GetDefaultPhysicalInterfaceName());
     }
 
     private static string NewId(string prefix)
