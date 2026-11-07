@@ -1,6 +1,6 @@
 using Avalonia.Controls.DataGridDragDrop;
-using DialogHostAvalonia;
 using Avalonia.VisualTree;
+using DialogHostAvalonia;
 using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Views;
@@ -18,7 +18,6 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         _config = AppManager.Instance.Config;
 
         menuSelectAll.Click += menuSelectAll_Click;
-        btnAutofitColumnWidth.Click += BtnAutofitColumnWidth_Click;
         txtServerFilter.KeyDown += TxtServerFilter_KeyDown;
         lstProfiles.KeyDown += LstProfiles_KeyDown;
         lstProfiles.SelectionChanged += lstProfiles_SelectionChanged;
@@ -317,11 +316,6 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         }
     }
 
-    private void BtnAutofitColumnWidth_Click(object? sender, RoutedEventArgs e)
-    {
-        AutofitColumnWidth();
-    }
-
     private void AutofitColumnWidth()
     {
         try
@@ -482,6 +476,15 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         var targetIndex = visibleColumns.IndexOf(column);
         var targetCount = targetIndex >= 0 ? targetIndex + 1 : 0;
 
+        var autofitColumnWidthColumn = new MenuItem
+        {
+            Header = ResUI.menuProfileAutofitColumnWidth,
+        };
+        autofitColumnWidthColumn.Click += (s, ev) =>
+        {
+            AutofitColumnWidth();
+        };
+
         var hideColumn = new MenuItem
         {
             Header = ResUI.menuHideThisColumn,
@@ -491,6 +494,26 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         {
             column.IsVisible = false;
         };
+
+        var columnChooser = new MenuItem
+        {
+            Header = ResUI.menuColumns,
+        };
+        var dgColumnLst = lstProfiles.Columns.OrderBy(c => c.DisplayIndex < 0 ? int.MaxValue : c.DisplayIndex).ToList();
+        foreach (var col in dgColumnLst)
+        {
+            var columnItem = new MenuItem
+            {
+                Header = col.Header,
+                IsChecked = col.IsVisible,
+                IsEnabled = col.CanUserHide,
+                Padding = new Thickness(6, 2),
+                StaysOpenOnClick = true,
+                ToggleType = MenuItemToggleType.CheckBox,
+            };
+            columnItem.Click += (_, _) => col.IsVisible = columnItem.IsChecked;
+            columnChooser.Items.Add(columnItem);
+        }
 
         var freezeToHereStr = ResUI.menuFreezeToThisColumn;
         if (!string.IsNullOrEmpty(colTitle))
@@ -524,7 +547,10 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
             IsEnabled = false,
         };
 
+        menu.Items.Add(autofitColumnWidthColumn);
+        menu.Items.Add(new Separator());
         menu.Items.Add(hideColumn);
+        menu.Items.Add(columnChooser);
         menu.Items.Add(new Separator());
         menu.Items.Add(freezeToHere);
         menu.Items.Add(unfreezeAll);

@@ -16,48 +16,6 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <conv:DelayColorConverter x:Key="DelayColorConverter" />
-
-        <ControlTheme x:Key="{x:Type DataGridColumnChooser}" TargetType="DataGridColumnChooser">
-            <Setter Property="ItemTemplate">
-                <Setter.Value>
-                    <DataTemplate x:DataType="DataGridColumnChooserItem">
-                        <CheckBox
-                            Margin="0,2"
-                            Content="{Binding Header}"
-                            IsChecked="{Binding IsVisible, Mode=TwoWay}"
-                            IsEnabled="{Binding CanUserHide}" />
-                    </DataTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="ItemsPanel">
-                <Setter.Value>
-                    <ItemsPanelTemplate>
-                        <StackPanel Spacing="4" />
-                    </ItemsPanelTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <Button Classes="IconButton Success" ToolTip.Tip="{TemplateBinding ToolTip.Tip}">
-                            <Button.Flyout>
-                                <Flyout Placement="BottomEdgeAlignedLeft">
-                                    <Border
-                                        MaxWidth="260"
-                                        MaxHeight="360"
-                                        Padding="8">
-                                        <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                            <ItemsPresenter />
-                                        </ScrollViewer>
-                                    </Border>
-                                </Flyout>
-                            </Button.Flyout>
-                            <ContentPresenter Content="{TemplateBinding Header}" ContentTemplate="{TemplateBinding HeaderTemplate}" />
-                        </Button>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </ControlTheme>
     </UserControl.Resources>
     <Grid>
         <DockPanel>
@@ -110,25 +68,6 @@
                         VerticalContentAlignment="Center"
                         PlaceholderText="{x:Static resx:ResUI.MsgServerTitle}"
                         ToolTip.Tip="{x:Static resx:ResUI.MsgServerTitle}" />
-
-                    <Button
-                        x:Name="btnAutofitColumnWidth"
-                        Margin="{StaticResource MarginLr4}"
-                        Classes="IconButton Success"
-                        ToolTip.Tip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
-                        <Button.Content>
-                            <PathIcon Data="{StaticResource SemiIconExpand}" />
-                        </Button.Content>
-                    </Button>
-
-                    <DataGridColumnChooser
-                        Margin="{StaticResource MarginLr4}"
-                        DataGrid="{Binding ElementName=lstProfiles}"
-                        ToolTip.Tip="{x:Static resx:ResUI.menuColumns}">
-                        <DataGridColumnChooser.Header>
-                            <PathIcon Data="{StaticResource SemiIconSetting}" />
-                        </DataGridColumnChooser.Header>
-                    </DataGridColumnChooser>
 
                     <Button
                         x:Name="btnFastRealPing"
