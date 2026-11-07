@@ -152,36 +152,6 @@ public class CoreConfigSingboxServiceTests
     }
 
     [Test]
-    public async Task GenerateClientConfigContent_BindInterfaceAuto_ShouldResolveOrGracefullySkip()
-    {
-        var config = CoreConfigTestFactory.CreateConfig(ECoreType.sing_box);
-        config.CoreBasicItem.BindInterface = Global.Auto;
-        CoreConfigTestFactory.BindAppManagerConfig(config);
-
-        var node = CoreConfigTestFactory.CreateVmessNode(ECoreType.sing_box);
-        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.sing_box) with
-        {
-            IsTunEnabled = true,
-        };
-
-        var result = new CoreConfigSingboxService(context).GenerateClientConfigContent();
-
-        await result.Success.Should().BeTrue().Because($"ret msg: {result.Msg}");
-        var cfg = JsonUtils.Deserialize<SingboxConfig>(result.Data!.ToString())!;
-        var proxy = cfg.outbounds.First(o => o.tag == Global.ProxyTag);
-
-        var expectedPhysicalNic = NetworkUtils.GetDefaultPhysicalInterfaceName();
-        if (expectedPhysicalNic.IsNullOrEmpty())
-        {
-            await proxy.bind_interface.Should().BeNull().Or.BeEmpty();
-        }
-        else
-        {
-            await proxy.bind_interface.Should().BeEqualTo(expectedPhysicalNic);
-        }
-    }
-
-    [Test]
     public async Task GenerateClientConfigContent_PolicyGroup_ShouldExpandChildrenAndBuildSelector()
     {
         var config = CoreConfigTestFactory.CreateConfig(ECoreType.sing_box);

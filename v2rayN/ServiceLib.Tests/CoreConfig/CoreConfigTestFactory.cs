@@ -223,7 +223,6 @@ internal static class CoreConfigTestFactory
             IsTunEnabled = config.TunModeItem.EnableTun,
             ProtectDomainList = [],
             HasGlobalIPv6Address = hasGlobalIPv6Address,
-            ResolvedBindInterface = NetworkUtils.GetRealBindInterfaceName(config.CoreBasicItem.BindInterface),
         };
     }
 

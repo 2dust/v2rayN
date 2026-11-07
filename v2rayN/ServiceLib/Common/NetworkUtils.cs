@@ -1,7 +1,3 @@
-using System.Net;
-using System.Net.NetworkInformation;
-using System.Net.Sockets;
-
 namespace ServiceLib.Common;
 
 public static class NetworkUtils
@@ -39,18 +35,21 @@ public static class NetworkUtils
         "hyper-v", "vmware", "virtualbox", "vbox", "docker", "veth", "virbr", "cni",
         "flannel", "cali", "kube", "wintun", "wireguard", "zerotier", "tailscale", "utun",
 
+        // Windows NDIS filter sub-layers & pseudo-interfaces
+        "wan miniport", "lightweight filter", "filter driver", "packet scheduler", "npcap", "kernel debug",
+
         // Chinese
         "虚拟", "回环", "环回"
     ];
 
-    public static bool IsAuto(string? bindInterface)
+    public static bool IsAutoBindInterface(string? bindInterface)
     {
-        return bindInterface?.TrimEx().Equals(Global.Auto, StringComparison.OrdinalIgnoreCase) ?? false;
+        return string.Equals(bindInterface?.TrimEx(), Global.BindInterfaceAuto, StringComparison.OrdinalIgnoreCase);
     }
 
     public static List<string> GetBindInterfaceNames()
     {
-        return GetLocalNetworkInterfaceNames().Prepend(Global.Auto).AppendEmpty();
+        return GetLocalNetworkInterfaceNames().Prepend(Global.BindInterfaceAuto).AppendEmpty();
     }
 
     public static string? GetRealBindInterfaceName(string? bindInterface)
@@ -61,21 +60,36 @@ public static class NetworkUtils
             return null;
         }
 
-        if (IsAuto(trimmed))
-        {
-            return GetDefaultPhysicalInterfaceName();
-        }
-
-        return trimmed;
+        return IsAutoBindInterface(trimmed) ? GetDefaultPhysicalInterfaceName() : trimmed;
     }
 
+    /// <summary>
+    /// Resolves a default physical outbound interface using a heuristic (active IP-enabled physical NICs
+    /// with an IPv4 gateway, preferring Ethernet over Wi-Fi). This does not inspect OS routing metrics;
+    /// in multi-NIC environments with custom routing tables, specify the target interface name manually.
+    /// </summary>
     public static string? GetDefaultPhysicalInterfaceName()
     {
         try
         {
-            var candidates = NetworkInterface.GetAllNetworkInterfaces()
-                .Select(ToCandidate);
-            return SelectDefaultInterface(candidates);
+            var upPhysicalNics = NetworkInterface.GetAllNetworkInterfaces()
+                .Where(IsAllowedPhysicalInterface)
+                .ToList();
+
+            if (upPhysicalNics.Count == 0)
+            {
+                return null;
+            }
+
+            var gatewayNics = upPhysicalNics.Where(HasIPv4Gateway).ToList();
+            var candidates = gatewayNics.Count > 0 ? gatewayNics : upPhysicalNics;
+
+            var bestNic = candidates.FirstOrDefault(ni =>
+                    ni.NetworkInterfaceType is NetworkInterfaceType.Ethernet or NetworkInterfaceType.GigabitEthernet)
+                ?? candidates.FirstOrDefault(ni => ni.NetworkInterfaceType == NetworkInterfaceType.Wireless80211)
+                ?? candidates.FirstOrDefault();
+
+            return bestNic?.Name;
         }
         catch (Exception ex)
         {
@@ -84,30 +98,12 @@ public static class NetworkUtils
         }
     }
 
-    public static string? SelectDefaultInterface(IEnumerable<NetworkInterfaceCandidate> candidates)
-    {
-        var upPhysicalNics = candidates
-            .Where(IsAllowedPhysicalCandidate)
-            .ToList();
-
-        var gatewayNics = upPhysicalNics.Where(c => c.HasIPv4Gateway).ToList();
-        var candidateList = gatewayNics.Count > 0 ? gatewayNics : upPhysicalNics;
-
-        var bestNic = candidateList.FirstOrDefault(c =>
-            c.InterfaceType is NetworkInterfaceType.Ethernet or NetworkInterfaceType.GigabitEthernet)
-            ?? candidateList.FirstOrDefault(c => c.InterfaceType == NetworkInterfaceType.Wireless80211)
-            ?? candidateList.FirstOrDefault();
-
-        return bestNic?.Name;
-    }
-
     public static List<string> GetLocalNetworkInterfaceNames()
     {
         try
         {
             return NetworkInterface.GetAllNetworkInterfaces()
-                .Select(ToCandidate)
-                .Where(IsAllowedPhysicalCandidate)
+                .Where(IsAllowedPhysicalInterface)
                 .Select(x => x.Name)
                 .Where(x => !string.IsNullOrWhiteSpace(x))
                 .Distinct(StringComparer.OrdinalIgnoreCase)
@@ -121,35 +117,37 @@ public static class NetworkUtils
         }
     }
 
-    private static NetworkInterfaceCandidate ToCandidate(NetworkInterface ni)
+    private static bool IsAllowedPhysicalInterface(NetworkInterface ni)
     {
-        return new NetworkInterfaceCandidate(
-            ni.Name,
-            ni.Description,
-            ni.NetworkInterfaceType,
-            ni.OperationalStatus,
-            HasIPv4Gateway(ni));
-    }
-
-    public static bool IsAllowedPhysicalCandidate(NetworkInterfaceCandidate c)
-    {
-        if (c.OperationalStatus != OperationalStatus.Up)
+        if (ni.OperationalStatus != OperationalStatus.Up || !SupportsIP(ni))
         {
             return false;
         }
 
-        var interfaceText = $"{c.Name} {c.Description}";
+        var interfaceText = $"{ni.Name} {ni.Description}";
         if (_virtualNameBlacklistKeywords.Any(keyword => interfaceText.Contains(keyword, StringComparison.OrdinalIgnoreCase)))
         {
             return false;
         }
 
-        if (_allowedPhysicalInterfaceTypes.Contains(c.InterfaceType))
+        if (_allowedPhysicalInterfaceTypes.Contains(ni.NetworkInterfaceType))
         {
             return true;
         }
 
         return _allowedPhysicalNameKeywords.Any(keyword => interfaceText.Contains(keyword, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private static bool SupportsIP(NetworkInterface ni)
+    {
+        try
+        {
+            return ni.Supports(NetworkInterfaceComponent.IPv4) || ni.Supports(NetworkInterfaceComponent.IPv6);
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     private static bool HasIPv4Gateway(NetworkInterface ni)
@@ -167,10 +165,3 @@ public static class NetworkUtils
         }
     }
 }
-
-public record NetworkInterfaceCandidate(
-    string Name,
-    string Description,
-    NetworkInterfaceType InterfaceType,
-    OperationalStatus OperationalStatus,
-    bool HasIPv4Gateway);

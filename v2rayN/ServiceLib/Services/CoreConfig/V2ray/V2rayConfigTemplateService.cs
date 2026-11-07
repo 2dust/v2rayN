@@ -224,7 +224,7 @@ public partial class CoreConfigV2rayService
 
     private void ApplyOutboundBindInterface()
     {
-        var bindInterface = context.ResolvedBindInterface;
+        var bindInterface = NetworkUtils.GetRealBindInterfaceName(_config.CoreBasicItem.BindInterface);
         if (bindInterface.IsNullOrEmpty())
         {
             return;

@@ -121,34 +121,35 @@ public class CoreConfigContextBuilder
             && !Utils.IsLocalIP(context.AppConfig.CoreBasicItem.SendThrough))
         {
             validatorResult.Warnings.Add(string.Format(ResUI.MsgInvalidProperty, ResUI.TbSettingsSendThrough));
-            var appConfig = JsonUtils.DeepCopy(config);
+            var appConfig = JsonUtils.DeepCopy(context.AppConfig);
             appConfig.CoreBasicItem.SendThrough = string.Empty;
             context = context with { AppConfig = appConfig };
         }
-        string? resolvedBindInterface = null;
         var rawBindInterface = context.AppConfig.CoreBasicItem.BindInterface?.TrimEx();
         if (!rawBindInterface.IsNullOrEmpty())
         {
-            var isAuto = NetworkUtils.IsAuto(rawBindInterface);
+            var isAuto = NetworkUtils.IsAutoBindInterface(rawBindInterface);
             if ((!isAuto && !Utils.ContainsInterfaceName(rawBindInterface))
                 || !(context.IsTunEnabled || context.IsWindows))
             {
                 validatorResult.Warnings.Add(string.Format(ResUI.MsgInvalidProperty, ResUI.TbSettingsBindInterface));
-                var appConfig = JsonUtils.DeepCopy(config);
+                var appConfig = JsonUtils.DeepCopy(context.AppConfig);
                 appConfig.CoreBasicItem.BindInterface = string.Empty;
                 context = context with { AppConfig = appConfig };
             }
-            else
+            else if (isAuto)
             {
-                resolvedBindInterface = NetworkUtils.GetRealBindInterfaceName(rawBindInterface);
-                if (isAuto && resolvedBindInterface.IsNullOrEmpty())
+                var resolved = NetworkUtils.GetDefaultPhysicalInterfaceName();
+                if (resolved.IsNullOrEmpty())
                 {
-                    Logging.SaveLog("CoreConfigContextBuilder: Failed to resolve default network interface for AUTO bindInterface.");
-                    validatorResult.Warnings.Add(string.Format(ResUI.MsgInvalidProperty, ResUI.TbSettingsBindInterface));
+                    Logging.SaveLog("CoreConfigContextBuilder: Failed to resolve default physical network interface for AUTO bindInterface.");
+                    validatorResult.Warnings.Add(string.Format(ResUI.MsgInvalidProperty, $"{ResUI.TbSettingsBindInterface} ({Global.BindInterfaceAuto})"));
                 }
+                var appConfig = JsonUtils.DeepCopy(context.AppConfig);
+                appConfig.CoreBasicItem.BindInterface = resolved ?? string.Empty;
+                context = context with { AppConfig = appConfig };
             }
         }
-        context = context with { ResolvedBindInterface = resolvedBindInterface };
 
         return new CoreConfigContextBuilderResult(context, validatorResult);
     }
