@@ -115,7 +115,7 @@ public class SubscriptionParityTests
     }
 
     [Test]
-    public async Task MoreUrlDownloadsMainAndEveryAdditionalUrlAndMergesTheirContent()
+    public async Task MoreUrlDownloadsMainAndEveryAdditionalUrlAndKeepsTheirContentSeparate()
     {
         await ServiceLib.Manager.CertPemManager.Instance.Init(
             new ServiceLib.Models.Configs.Config { GuiItem = new ServiceLib.Models.Configs.GUIItem() });
@@ -143,14 +143,12 @@ public class SubscriptionParityTests
 
             var download = typeof(SubscriptionHandler).GetMethod("DownloadAllSubscriptions", BindingFlags.NonPublic | BindingFlags.Static)
                 ?? throw new MissingMethodException(typeof(SubscriptionHandler).FullName, "DownloadAllSubscriptions");
-            var task = (Task<string>?)download.Invoke(null, [new ServiceLib.Models.Configs.Config(), subscription, false, new DownloadService()])
+            var task = (Task<IReadOnlyList<string>>?)download.Invoke(null, [new ServiceLib.Models.Configs.Config(), subscription, false, new DownloadService()])
                 ?? throw new InvalidOperationException("The ServiceLib subscription download task was not created.");
-            var merged = await task;
+            var sources = await task;
 
             await visited.ToArray().SequenceEqual(new[] { "/main", "/a", "/b" }).Should().BeTrue();
-            await merged.Contains("main-node.example").Should().BeTrue();
-            await merged.Contains("additional-a.example").Should().BeTrue();
-            await merged.Contains("additional-b.example").Should().BeTrue();
+            await sources.SequenceEqual(new[] { "main-node.example", "additional-a.example", "additional-b.example" }).Should().BeTrue();
         }
         finally
         {
@@ -203,12 +201,12 @@ public class SubscriptionParityTests
             config.ConstItem.SubConvertUrl = $"{address.TrimEnd('/')}/convert?url={{0}}";
             var download = typeof(SubscriptionHandler).GetMethod("DownloadAllSubscriptions", BindingFlags.NonPublic | BindingFlags.Static)
                 ?? throw new MissingMethodException(typeof(SubscriptionHandler).FullName, "DownloadAllSubscriptions");
-            var task = (Task<string>?)download.Invoke(null, [config, subscription, false, new DownloadService()])
+            var task = (Task<IReadOnlyList<string>>?)download.Invoke(null, [config, subscription, false, new DownloadService()])
                 ?? throw new InvalidOperationException("The ServiceLib subscription download task was not created.");
 
-            var merged = await task;
+            var sources = await task;
             await visited.ToArray().SequenceEqual(new[] { "/convert" }).Should().BeTrue();
-            await merged.Should().BeEqualTo("converted-node");
+            await sources.SequenceEqual(new[] { "converted-node" }).Should().BeTrue();
         }
         finally
         {
