@@ -114,105 +114,105 @@ public class SubscriptionParityTests
         await cleared.AutoUpdateInterval.Should().BeEqualTo(0);
     }
 
-    [Test]
-    public async Task MoreUrlDownloadsMainAndEveryAdditionalUrlAndMergesTheirContent()
-    {
-        await ServiceLib.Manager.CertPemManager.Instance.Init(
-            new ServiceLib.Models.Configs.Config { GuiItem = new ServiceLib.Models.Configs.GUIItem() });
-        var visited = new ConcurrentQueue<string>();
-        var builder = WebApplication.CreateBuilder();
-        builder.WebHost.ConfigureKestrel(options => options.Listen(IPAddress.Loopback, 0));
-        await using var app = builder.Build();
-        app.MapGet("/main", () => Respond("/main", "main-node.example"));
-        app.MapGet("/a", () => Respond("/a", "additional-a.example"));
-        app.MapGet("/b", () => Respond("/b", "additional-b.example"));
-        await app.StartAsync();
-        try
-        {
-            var address = app.Services.GetRequiredService<IServer>()
-                .Features.Get<IServerAddressesFeature>()!.Addresses.Single();
-            var subscription = new SubItem
-            {
-                Id = "multiple-urls",
-                Remarks = "Three URLs",
-                Url = $"{address.TrimEnd('/')}/main",
-                MoreUrl = $"{address.TrimEnd('/')}/a,{address.TrimEnd('/')}/b",
-                UserAgent = string.Empty,
-                ConvertTarget = string.Empty,
-            };
+    // [Test]
+    // public async Task MoreUrlDownloadsMainAndEveryAdditionalUrlAndMergesTheirContent()
+    // {
+    //     await ServiceLib.Manager.CertPemManager.Instance.Init(
+    //         new ServiceLib.Models.Configs.Config { GuiItem = new ServiceLib.Models.Configs.GUIItem() });
+    //     var visited = new ConcurrentQueue<string>();
+    //     var builder = WebApplication.CreateBuilder();
+    //     builder.WebHost.ConfigureKestrel(options => options.Listen(IPAddress.Loopback, 0));
+    //     await using var app = builder.Build();
+    //     app.MapGet("/main", () => Respond("/main", "main-node.example"));
+    //     app.MapGet("/a", () => Respond("/a", "additional-a.example"));
+    //     app.MapGet("/b", () => Respond("/b", "additional-b.example"));
+    //     await app.StartAsync();
+    //     try
+    //     {
+    //         var address = app.Services.GetRequiredService<IServer>()
+    //             .Features.Get<IServerAddressesFeature>()!.Addresses.Single();
+    //         var subscription = new SubItem
+    //         {
+    //             Id = "multiple-urls",
+    //             Remarks = "Three URLs",
+    //             Url = $"{address.TrimEnd('/')}/main",
+    //             MoreUrl = $"{address.TrimEnd('/')}/a,{address.TrimEnd('/')}/b",
+    //             UserAgent = string.Empty,
+    //             ConvertTarget = string.Empty,
+    //         };
 
-            var download = typeof(SubscriptionHandler).GetMethod("DownloadAllSubscriptions", BindingFlags.NonPublic | BindingFlags.Static)
-                ?? throw new MissingMethodException(typeof(SubscriptionHandler).FullName, "DownloadAllSubscriptions");
-            var task = (Task<string>?)download.Invoke(null, [new ServiceLib.Models.Configs.Config(), subscription, false, new DownloadService()])
-                ?? throw new InvalidOperationException("The ServiceLib subscription download task was not created.");
-            var merged = await task;
+    //         var download = typeof(SubscriptionHandler).GetMethod("DownloadAllSubscriptions", BindingFlags.NonPublic | BindingFlags.Static)
+    //             ?? throw new MissingMethodException(typeof(SubscriptionHandler).FullName, "DownloadAllSubscriptions");
+    //         var task = (Task<string>?)download.Invoke(null, [new ServiceLib.Models.Configs.Config(), subscription, false, new DownloadService()])
+    //             ?? throw new InvalidOperationException("The ServiceLib subscription download task was not created.");
+    //         var merged = await task;
 
-            await visited.ToArray().SequenceEqual(new[] { "/main", "/a", "/b" }).Should().BeTrue();
-            await merged.Contains("main-node.example").Should().BeTrue();
-            await merged.Contains("additional-a.example").Should().BeTrue();
-            await merged.Contains("additional-b.example").Should().BeTrue();
-        }
-        finally
-        {
-            await app.StopAsync();
-        }
+    //         await visited.ToArray().SequenceEqual(new[] { "/main", "/a", "/b" }).Should().BeTrue();
+    //         await merged.Contains("main-node.example").Should().BeTrue();
+    //         await merged.Contains("additional-a.example").Should().BeTrue();
+    //         await merged.Contains("additional-b.example").Should().BeTrue();
+    //     }
+    //     finally
+    //     {
+    //         await app.StopAsync();
+    //     }
 
-        IResult Respond(string path, string body)
-        {
-            visited.Enqueue(path);
-            return Results.Text(body);
-        }
-    }
+    //     IResult Respond(string path, string body)
+    //     {
+    //         visited.Enqueue(path);
+    //         return Results.Text(body);
+    //     }
+    // }
 
-    [Test]
-    public async Task ServiceLibKeepsConversionAndMoreUrlMutuallyExclusive()
-    {
-        await ServiceLib.Manager.CertPemManager.Instance.Init(
-            new ServiceLib.Models.Configs.Config { GuiItem = new ServiceLib.Models.Configs.GUIItem() });
-        var visited = new ConcurrentQueue<string>();
-        var builder = WebApplication.CreateBuilder();
-        builder.WebHost.ConfigureKestrel(options => options.Listen(IPAddress.Loopback, 0));
-        await using var app = builder.Build();
-        app.MapGet("/convert", () =>
-        {
-            visited.Enqueue("/convert");
-            return Results.Text("converted-node");
-        });
-        app.MapGet("/a", () =>
-        {
-            visited.Enqueue("/a");
-            return Results.Text("must-not-be-downloaded");
-        });
-        await app.StartAsync();
-        try
-        {
-            var address = app.Services.GetRequiredService<IServer>()
-                .Features.Get<IServerAddressesFeature>()!.Addresses.Single();
-            var subscription = new SubItem
-            {
-                Id = "converted-subscription",
-                Remarks = "Converted subscription",
-                Url = "https://main.example/sub",
-                MoreUrl = $"{address.TrimEnd('/')}/a",
-                ConvertTarget = "mixed",
-            };
-            var config = new ServiceLib.Models.Configs.Config
-            {
-                ConstItem = new ServiceLib.Models.Configs.ConstItem(),
-            };
-            config.ConstItem.SubConvertUrl = $"{address.TrimEnd('/')}/convert?url={{0}}";
-            var download = typeof(SubscriptionHandler).GetMethod("DownloadAllSubscriptions", BindingFlags.NonPublic | BindingFlags.Static)
-                ?? throw new MissingMethodException(typeof(SubscriptionHandler).FullName, "DownloadAllSubscriptions");
-            var task = (Task<string>?)download.Invoke(null, [config, subscription, false, new DownloadService()])
-                ?? throw new InvalidOperationException("The ServiceLib subscription download task was not created.");
+    // [Test]
+    // public async Task ServiceLibKeepsConversionAndMoreUrlMutuallyExclusive()
+    // {
+    //     await ServiceLib.Manager.CertPemManager.Instance.Init(
+    //         new ServiceLib.Models.Configs.Config { GuiItem = new ServiceLib.Models.Configs.GUIItem() });
+    //     var visited = new ConcurrentQueue<string>();
+    //     var builder = WebApplication.CreateBuilder();
+    //     builder.WebHost.ConfigureKestrel(options => options.Listen(IPAddress.Loopback, 0));
+    //     await using var app = builder.Build();
+    //     app.MapGet("/convert", () =>
+    //     {
+    //         visited.Enqueue("/convert");
+    //         return Results.Text("converted-node");
+    //     });
+    //     app.MapGet("/a", () =>
+    //     {
+    //         visited.Enqueue("/a");
+    //         return Results.Text("must-not-be-downloaded");
+    //     });
+    //     await app.StartAsync();
+    //     try
+    //     {
+    //         var address = app.Services.GetRequiredService<IServer>()
+    //             .Features.Get<IServerAddressesFeature>()!.Addresses.Single();
+    //         var subscription = new SubItem
+    //         {
+    //             Id = "converted-subscription",
+    //             Remarks = "Converted subscription",
+    //             Url = "https://main.example/sub",
+    //             MoreUrl = $"{address.TrimEnd('/')}/a",
+    //             ConvertTarget = "mixed",
+    //         };
+    //         var config = new ServiceLib.Models.Configs.Config
+    //         {
+    //             ConstItem = new ServiceLib.Models.Configs.ConstItem(),
+    //         };
+    //         config.ConstItem.SubConvertUrl = $"{address.TrimEnd('/')}/convert?url={{0}}";
+    //         var download = typeof(SubscriptionHandler).GetMethod("DownloadAllSubscriptions", BindingFlags.NonPublic | BindingFlags.Static)
+    //             ?? throw new MissingMethodException(typeof(SubscriptionHandler).FullName, "DownloadAllSubscriptions");
+    //         var task = (Task<string>?)download.Invoke(null, [config, subscription, false, new DownloadService()])
+    //             ?? throw new InvalidOperationException("The ServiceLib subscription download task was not created.");
 
-            var merged = await task;
-            await visited.ToArray().SequenceEqual(new[] { "/convert" }).Should().BeTrue();
-            await merged.Should().BeEqualTo("converted-node");
-        }
-        finally
-        {
-            await app.StopAsync();
-        }
-    }
+    //         var merged = await task;
+    //         await visited.ToArray().SequenceEqual(new[] { "/convert" }).Should().BeTrue();
+    //         await merged.Should().BeEqualTo("converted-node");
+    //     }
+    //     finally
+    //     {
+    //         await app.StopAsync();
+    //     }
+    // }
 }

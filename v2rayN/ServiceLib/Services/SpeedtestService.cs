@@ -435,8 +435,6 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         ConcurrentDictionary<string, byte> completedIds, int concurrencyCount, bool blSpeedTest,
         CancellationToken ct = default)
     {
-        var downloadHandle = new DownloadService();
-
         var parallelOptions = new ParallelOptions
         {
             MaxDegreeOfParallelism = concurrencyCount,
@@ -464,7 +462,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 {
                     if (delay > 0)
                     {
-                        await DoSpeedTest(downloadHandle, it, completedIds, innerCt);
+                        await DoSpeedTest(it, completedIds, innerCt);
                     }
                     else
                     {
@@ -493,40 +491,64 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     private async Task<int> DoRealPing(ServerTestItem it,
         ConcurrentDictionary<string, byte> completedIds, CancellationToken ct = default)
     {
-        var webProxy = new WebProxy($"socks5://{Global.Loopback}:{it.Port}");
-        var responseTime = await ConnectionHandler.GetRealPingTime(webProxy, ct);
-
-        ProfileExManager.Instance.SetTestDelay(it.IndexId, responseTime);
-        await UpdateFunc(it.IndexId, responseTime.ToString());
-
-        if (!_config.UiItem.HideColumnIpInfo && responseTime > 0)
+        var responseTime = -1;
+        try
         {
-            var ipInfo = await ConnectionHandler.GetIPInfo(webProxy, ct);
-            var ipStr = ipInfo?.ToString() ?? Global.None;
-            ProfileExManager.Instance.SetTestIpInfo(it.IndexId, ipStr);
-            await UpdateIpInfoFunc(it.IndexId, ipStr);
-        }
-        else
-        {
-            await UpdateIpInfoFunc(it.IndexId, ResUI.SpeedtestingSkip);
-        }
+            using var handler = HttpClientHelper.CreateProxySocketsHttpHandler(it.Port, new());
+            handler.ConnectTimeout = Global.LocalFetch;
+            using var client = new HttpClient(handler, false);
+            responseTime = await ConnectionHandler.GetRealPingTime(client, ct);
 
-        completedIds.TryAdd(it.IndexId, 0);
+            ProfileExManager.Instance.SetTestDelay(it.IndexId, responseTime);
+            await UpdateFunc(it.IndexId, responseTime.ToString());
+
+            if (!_config.UiItem.HideColumnIpInfo && responseTime > 0)
+            {
+                using var downloadHandle = new DownloadService
+                {
+                    Handler = handler,
+                    DisposeHandler = false,
+                };
+                var ipInfo = await ConnectionHandler.GetIPInfo(downloadHandle, ct);
+                var ipStr = ipInfo?.ToString() ?? Global.None;
+                ProfileExManager.Instance.SetTestIpInfo(it.IndexId, ipStr);
+                await UpdateIpInfoFunc(it.IndexId, ipStr);
+            }
+            else
+            {
+                await UpdateIpInfoFunc(it.IndexId, ResUI.SpeedtestingSkip);
+            }
+
+            completedIds.TryAdd(it.IndexId, 0);
+        }
+        catch (OperationCanceledException) when (ct.IsCancellationRequested)
+        {
+            throw;
+        }
+        catch
+        {
+            // Ignore
+        }
         return responseTime;
     }
 
-    private async Task DoSpeedTest(DownloadService downloadHandle, ServerTestItem it,
+    private async Task DoSpeedTest(ServerTestItem it,
         ConcurrentDictionary<string, byte> completedIds, CancellationToken ct = default)
     {
         await UpdateFunc(it.IndexId, "", ResUI.Speedtesting);
 
-        var webProxy = new WebProxy($"socks5://{Global.Loopback}:{it.Port}");
+        var handler = HttpClientHelper.CreateProxySocketsHttpHandler(it.Port, new());
         var url = _config.SpeedTestItem.SpeedTestUrl;
         var timeout = _config.SpeedTestItem.SpeedTestTimeout;
         using var timeoutCts = new CancellationTokenSource(TimeSpan.FromSeconds(timeout));
         using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct, timeoutCts.Token);
         var linkedCt = linkedCts.Token;
-        await downloadHandle.DownloadDataAsync(url, webProxy, async (success, msg) =>
+        using var downloadHandle = new DownloadService
+        {
+            Handler = handler,
+            DisposeHandler = true,
+        };
+        await downloadHandle.DownloadDataAsync(url, async (success, msg) =>
         {
             decimal.TryParse(msg, out var dec);
             if (dec > 0)

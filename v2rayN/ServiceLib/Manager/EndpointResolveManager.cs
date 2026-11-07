@@ -38,7 +38,7 @@ public class EndpointResolveManager
             case "doh" or "https":
                 {
                     var uri = new Uri($"https://{domain}:{(port != 0 ? port : 443)}{path}");
-                    var httpClient = new HttpClient();
+                    var httpClient = new HttpClient(HttpClientHelper.Instance.CreateFallbackHandler(false));
                     return new DohDnsResolver(httpClient, uri);
                 }
 
