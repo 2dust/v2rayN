@@ -121,18 +121,34 @@ public class CoreConfigContextBuilder
             && !Utils.IsLocalIP(context.AppConfig.CoreBasicItem.SendThrough))
         {
             validatorResult.Warnings.Add(string.Format(ResUI.MsgInvalidProperty, ResUI.TbSettingsSendThrough));
-            var appConfig = JsonUtils.DeepCopy(config);
+            var appConfig = JsonUtils.DeepCopy(context.AppConfig);
             appConfig.CoreBasicItem.SendThrough = string.Empty;
             context = context with { AppConfig = appConfig };
         }
-        if (!context.AppConfig.CoreBasicItem.BindInterface.IsNullOrEmpty()
-            && (!Utils.ContainsInterfaceName(context.AppConfig.CoreBasicItem.BindInterface)
-            || !(context.IsTunEnabled || context.IsWindows)))
+        var rawBindInterface = context.AppConfig.CoreBasicItem.BindInterface?.TrimEx();
+        if (!rawBindInterface.IsNullOrEmpty())
         {
-            validatorResult.Warnings.Add(string.Format(ResUI.MsgInvalidProperty, ResUI.TbSettingsBindInterface));
-            var appConfig = JsonUtils.DeepCopy(config);
-            appConfig.CoreBasicItem.BindInterface = string.Empty;
-            context = context with { AppConfig = appConfig };
+            var isAuto = NetworkUtils.IsAutoBindInterface(rawBindInterface);
+            if ((!isAuto && !Utils.ContainsInterfaceName(rawBindInterface))
+                || !(context.IsTunEnabled || context.IsWindows))
+            {
+                validatorResult.Warnings.Add(string.Format(ResUI.MsgInvalidProperty, ResUI.TbSettingsBindInterface));
+                var appConfig = JsonUtils.DeepCopy(context.AppConfig);
+                appConfig.CoreBasicItem.BindInterface = string.Empty;
+                context = context with { AppConfig = appConfig };
+            }
+            else if (isAuto)
+            {
+                var resolved = NetworkUtils.GetDefaultPhysicalInterfaceName();
+                if (resolved.IsNullOrEmpty())
+                {
+                    Logging.SaveLog("CoreConfigContextBuilder: Failed to resolve default physical network interface for AUTO bindInterface.");
+                    validatorResult.Warnings.Add(string.Format(ResUI.MsgInvalidProperty, $"{ResUI.TbSettingsBindInterface} ({Global.BindInterfaceAuto})"));
+                }
+                var appConfig = JsonUtils.DeepCopy(context.AppConfig);
+                appConfig.CoreBasicItem.BindInterface = resolved ?? string.Empty;
+                context = context with { AppConfig = appConfig };
+            }
         }
 
         return new CoreConfigContextBuilderResult(context, validatorResult);
