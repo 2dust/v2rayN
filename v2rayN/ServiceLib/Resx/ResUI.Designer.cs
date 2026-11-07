@@ -997,15 +997,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Columns 的本地化字符串。
-        /// </summary>
-        public static string menuColumns {
-            get {
-                return ResourceManager.GetString("menuColumns", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Close Connection 的本地化字符串。
         /// </summary>
         public static string menuConnectionClose {
@@ -1830,6 +1821,15 @@ namespace ServiceLib.Resx {
         public static string menuShareServer {
             get {
                 return ResourceManager.GetString("menuShareServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Show columns 的本地化字符串。
+        /// </summary>
+        public static string menuShowColumns {
+            get {
+                return ResourceManager.GetString("menuShowColumns", resourceCulture);
             }
         }
         

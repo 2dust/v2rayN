@@ -495,9 +495,9 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
             column.IsVisible = false;
         };
 
-        var columnChooser = new MenuItem
+        var showColumns = new MenuItem
         {
-            Header = ResUI.menuColumns,
+            Header = ResUI.menuShowColumns,
         };
         var dgColumnLst = lstProfiles.Columns.OrderBy(c => c.DisplayIndex < 0 ? int.MaxValue : c.DisplayIndex).ToList();
         foreach (var col in dgColumnLst)
@@ -512,7 +512,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
                 ToggleType = MenuItemToggleType.CheckBox,
             };
             columnItem.Click += (_, _) => col.IsVisible = columnItem.IsChecked;
-            columnChooser.Items.Add(columnItem);
+            showColumns.Items.Add(columnItem);
         }
 
         var freezeToHereStr = ResUI.menuFreezeToThisColumn;
@@ -550,7 +550,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         menu.Items.Add(autofitColumnWidthColumn);
         menu.Items.Add(new Separator());
         menu.Items.Add(hideColumn);
-        menu.Items.Add(columnChooser);
+        menu.Items.Add(showColumns);
         menu.Items.Add(new Separator());
         menu.Items.Add(freezeToHere);
         menu.Items.Add(unfreezeAll);

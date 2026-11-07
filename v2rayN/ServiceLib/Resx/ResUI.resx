@@ -1917,8 +1917,8 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="FillCorrectFakeIPv6Range" xml:space="preserve">
     <value>Enter a valid IPv6 CIDR range with at least two addresses, for example fc00::/18.</value>
   </data>
-  <data name="menuColumns" xml:space="preserve">
-    <value>Columns</value>
+  <data name="menuShowColumns" xml:space="preserve">
+    <value>Show columns</value>
   </data>
   <data name="TbWarp" xml:space="preserve">
     <value>Warp</value>

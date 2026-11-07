@@ -1909,8 +1909,8 @@
   <data name="FillCorrectFakeIPv6Range" xml:space="preserve">
     <value>请输入至少包含两个地址的有效 IPv6 网段，例如 fc00::/18。</value>
   </data>
-  <data name="menuColumns" xml:space="preserve">
-    <value>列</value>
+  <data name="menuShowColumns" xml:space="preserve">
+    <value>显示列</value>
   </data>
   <data name="TbWarp" xml:space="preserve">
     <value>Warp</value>
