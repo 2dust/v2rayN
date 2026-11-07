@@ -13,11 +13,11 @@ public partial class ProfilesViewModel : MyReactiveObject
     public EventChannel<RxVoid> ReloadRequested { get; } = new();
 
     /// <summary>
-    /// Awaitable version of <see cref="ReloadRequested"/>, set by the main view model. The
-    /// channel only signals; workflows need to know when the reload actually finished before
-    /// running the next step. Null when no owner is wired (design mode, tests).
+    /// Awaitable reload, handled by the main view model. <see cref="ReloadRequested"/> only
+    /// signals, so a workflow step that must not continue until the new server is actually
+    /// live awaits this instead.
     /// </summary>
-    public Func<Task>? ReloadAsync { get; set; }
+    public Interaction<RxVoid, RxVoid> ReloadInteraction { get; } = new();
 
     public EventChannel<RxVoid> RefreshServersRequested { get; } = new();
 
@@ -596,11 +596,11 @@ public partial class ProfilesViewModel : MyReactiveObject
         if (await ConfigHandler.SetDefaultServerIndex(_config, indexId) == 0)
         {
             await RefreshServers();
-            // Workflows need the reload to be finished before the next step runs; the
-            // interactive command keeps firing the request and returning.
-            if (waitForReload && ReloadAsync is not null)
+            // A workflow step must not continue until the reload has finished, so it awaits the
+            // interaction; the interactive command only signals and returns.
+            if (waitForReload)
             {
-                await ReloadAsync();
+                await ReloadInteraction.HandleSafe(RxVoid.Default);
             }
             else
             {
