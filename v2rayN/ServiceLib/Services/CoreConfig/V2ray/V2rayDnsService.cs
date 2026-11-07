@@ -441,29 +441,84 @@ public partial class CoreConfigV2rayService
         }
     }
 
+    /// <summary>
+    ///     Applies only the outbound-related DNS preferences to a speedtest config:
+    ///     the outbound domain resolution strategy and the outbound domain resolution
+    ///     address used to resolve the protected (node) domains. The user's full custom
+    ///     DNS is intentionally not injected here so that speedtest stays lightweight.
+    /// </summary>
+    private void GenOutboundDnsProtect()
+    {
+        try
+        {
+            var item = context.RawDnsItem;
+            // Only apply outbound DNS preferences when custom DNS is enabled,
+            // mirroring GenDns()/GenDnsCustom(). When custom DNS is disabled these
+            // fields are ignored, matching normal-mode behavior.
+            if (item is not { Enabled: true })
+            {
+                return;
+            }
+
+            ApplyOutboundFreedomStrategy(item?.DomainStrategy4Freedom);
+            ApplyOutboundDnsAddress(item);
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+    }
+
+    private void ApplyOutboundFreedomStrategy(string? domainStrategy4Freedom)
+    {
+        //Outbound Freedom domainStrategy
+        if (domainStrategy4Freedom.IsNotEmpty())
+        {
+            var outbound = _coreConfig.outbounds.FirstOrDefault(t => t is { protocol: "freedom", tag: Global.DirectTag });
+            if (outbound != null)
+            {
+                outbound.streamSettings ??= new();
+                outbound.streamSettings.sockopt ??= new();
+                outbound.streamSettings.sockopt.domainStrategy = domainStrategy4Freedom;
+            }
+        }
+    }
+
+    private void ApplyOutboundDnsAddress(DNSItem? dnsItem)
+    {
+        if (context.ProtectDomainList.Count <= 0)
+        {
+            return;
+        }
+
+        var dnsServer = new DnsServer4Ray()
+        {
+            address = string.IsNullOrEmpty(dnsItem?.DomainDNSAddress) ? Global.DomainPureIPDNSAddress.FirstOrDefault() : dnsItem?.DomainDNSAddress,
+            skipFallback = true,
+            domains = context.ProtectDomainList.ToList(),
+        };
+
+        _coreConfig.dns ??= new JsonObject { ["servers"] = new JsonArray() };
+        if (_coreConfig.dns["servers"] is not JsonArray servers)
+        {
+            servers = new JsonArray();
+            _coreConfig.dns["servers"] = servers;
+        }
+        servers.Add(JsonUtils.SerializeToNode(dnsServer));
+    }
+
     private void GenDnsCustom()
     {
         try
         {
             var item = context.RawDnsItem;
             var customDNS = context.IsTunEnabled ? item?.TunDNS : item?.NormalDNS;
-            var domainStrategy4Freedom = item?.DomainStrategy4Freedom;
             if (customDNS.IsNullOrEmpty())
             {
                 customDNS = EmbedUtils.GetEmbedText(Global.DNSV2rayNormalFileName);
             }
 
-            //Outbound Freedom domainStrategy
-            if (domainStrategy4Freedom.IsNotEmpty())
-            {
-                var outbound = _coreConfig.outbounds.FirstOrDefault(t => t is { protocol: "freedom", tag: Global.DirectTag });
-                if (outbound != null)
-                {
-                    outbound.streamSettings ??= new();
-                    outbound.streamSettings.sockopt ??= new();
-                    outbound.streamSettings.sockopt.domainStrategy = domainStrategy4Freedom;
-                }
-            }
+            ApplyOutboundFreedomStrategy(item?.DomainStrategy4Freedom);
 
             var node = JsonUtils.ParseJson(customDNS);
             if (node is not JsonObject obj)
