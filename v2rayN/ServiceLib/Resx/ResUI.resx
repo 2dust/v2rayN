@@ -1923,4 +1923,37 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="LvPreResolve" xml:space="preserve">
     <value>Pre-resolve server domains</value>
   </data>
+  <data name="XdriveService" xml:space="preserve">
+    <value>XDRIVE service</value>
+  </data>
+  <data name="XdriveRemoteFolder" xml:space="preserve">
+    <value>Remote folder</value>
+  </data>
+  <data name="XdriveSecrets" xml:space="preserve">
+    <value>Secrets (comma separated)</value>
+  </data>
+  <data name="XdriveS3Endpoint" xml:space="preserve">
+    <value>S3 Endpoint</value>
+  </data>
+  <data name="XdriveS3Region" xml:space="preserve">
+    <value>S3 Region</value>
+  </data>
+  <data name="XdriveS3Bucket" xml:space="preserve">
+    <value>S3 Bucket</value>
+  </data>
+  <data name="XdriveS3PathStyle" xml:space="preserve">
+    <value>S3 Force Path Style</value>
+  </data>
+  <data name="XdriveExtra" xml:space="preserve">
+    <value>XDRIVE Extra</value>
+  </data>
+  <data name="XdriveExtraTip" xml:space="preserve">
+    <value>Raw JSON, format: { XdriveObject }</value>
+  </data>
+  <data name="TransportHeaderType6" xml:space="preserve">
+    <value>XDRIVE service</value>
+  </data>
+  <data name="TransportPathTip6" xml:space="preserve">
+    <value>XDRIVE remote folder</value>
+  </data>
 </root>

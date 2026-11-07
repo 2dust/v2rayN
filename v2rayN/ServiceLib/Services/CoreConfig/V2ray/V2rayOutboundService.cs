@@ -507,6 +507,71 @@ public partial class CoreConfigV2rayService
                     streamSettings.grpcSettings = grpcSettings;
                     break;
 
+                case nameof(ETransport.xdrive):
+                    streamSettings.network = nameof(ETransport.xdrive);
+                    var xdriveSettings = new XdriveSettings4Ray
+                    {
+                        service = transport.XdriveService,
+                        remoteFolder = transport.XdriveRemoteFolder,
+                        secrets = transport.XdriveSecrets.IsNotEmpty() ? Utils.String2List(transport.XdriveSecrets) : null,
+                    };
+
+                    if (string.Equals(transport.XdriveService, "s3", StringComparison.OrdinalIgnoreCase)
+                        || transport.XdriveS3Endpoint.IsNotEmpty()
+                        || transport.XdriveS3Bucket.IsNotEmpty())
+                    {
+                        xdriveSettings.s3 = new S3Settings4Ray
+                        {
+                            endpoint = transport.XdriveS3Endpoint,
+                            region = transport.XdriveS3Region,
+                            bucket = transport.XdriveS3Bucket,
+                            pathStyle = transport.XdriveS3PathStyle,
+                        };
+                    }
+
+                    if (transport.XdriveExtra.IsNotEmpty())
+                    {
+                        try
+                        {
+                            var extraNode = JsonUtils.ParseJson(transport.XdriveExtra);
+                            if (extraNode is JsonObject extraObj)
+                            {
+                                if (int.TryParse(extraObj["segmentBytes"]?.ToString(), out var segmentBytes))
+                                {
+                                    xdriveSettings.segmentBytes = segmentBytes;
+                                }
+                                if (int.TryParse(extraObj["flushIntervalMs"]?.ToString(), out var flushIntervalMs))
+                                {
+                                    xdriveSettings.flushIntervalMs = flushIntervalMs;
+                                }
+                                if (int.TryParse(extraObj["pollIntervalMs"]?.ToString(), out var pollIntervalMs))
+                                {
+                                    xdriveSettings.pollIntervalMs = pollIntervalMs;
+                                }
+                                if (int.TryParse(extraObj["maxPollIntervalMs"]?.ToString(), out var maxPollIntervalMs))
+                                {
+                                    xdriveSettings.maxPollIntervalMs = maxPollIntervalMs;
+                                }
+                                if (int.TryParse(extraObj["eagerWindowMs"]?.ToString(), out var eagerWindowMs))
+                                {
+                                    xdriveSettings.eagerWindowMs = eagerWindowMs;
+                                }
+                                if (int.TryParse(extraObj["concurrency"]?.ToString(), out var concurrency))
+                                {
+                                    xdriveSettings.concurrency = concurrency;
+                                }
+                            }
+                        }
+                        catch
+                        {
+                            // ignore extra json parse errors
+                        }
+                    }
+
+                    streamSettings.xdriveSettings = xdriveSettings;
+                    FillOutboundMux(outbound, true, true);
+                    break;
+
                 case "hysteria":
                     var ports = protocolExtra?.Ports;
                     int? upMbps = protocolExtra?.UpMbps is { } su and >= 0
