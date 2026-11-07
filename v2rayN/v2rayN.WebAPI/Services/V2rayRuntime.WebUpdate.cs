@@ -179,7 +179,7 @@ public sealed partial class V2rayRuntime
         try
         {
             var repository = WebBuildIdentity.Current.Repository;
-            var downloader = await DownloadService.CreateDownloadServiceWithCheck(useProxy);
+            using var downloader = await DownloadService.CreateDownloadServiceWithCheck(useProxy);
             var releaseJson = await downloader.TryDownloadString(
                 WebReleaseChannel.BuildReleaseIndexUrl(repository),
                 cancellationToken);
@@ -306,7 +306,7 @@ public sealed partial class V2rayRuntime
         try
         {
             PublishWebUpdateProgress("downloading", false, false, null, check.Manifest.Version, batch);
-            var downloader = await DownloadService.CreateDownloadServiceWithCheck(useProxy);
+            using var downloader = await DownloadService.CreateDownloadServiceWithCheck(useProxy);
             var downloadFailure = new TaskCompletionSource<Exception>(TaskCreationOptions.RunContinuationsAsynchronously);
             downloader.Error += (_, args) => downloadFailure.TrySetResult(args.GetException());
             downloader.UpdateCompleted += (_, progress) =>

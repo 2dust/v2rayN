@@ -25,9 +25,10 @@ public class DownloadServiceHeadersTests
         IWebProxy? proxy = useProxy ? new WebProxy(server.Url) : null;
         var handler = proxy is null ? HttpClientHelper.Instance.DirectHandler : HttpClientHelper.CreateProxySocketsHttpHandler(proxy);
         var headersHandler = HttpRequestHeadersHelper.CreateHandler(handler, "CustomSubscriptionClient/1.0", "*/*", headers);
-        var service = new DownloadService
+        using var service = new DownloadService
         {
-            GetHandlerFunc = () => headersHandler,
+            Handler = headersHandler,
+            DisposeHandler = true,
         };
         var uri = new UriBuilder(useProxy ? "http://subscription.invalid/sub" : server.Url)
         {
@@ -57,9 +58,9 @@ public class DownloadServiceHeadersTests
     {
         await CertPemManager.Instance.Init(new Config { GuiItem = new GUIItem() });
         await using var server = new SubscriptionHttpServer(failFirstRequest);
-        var handler = HttpRequestHeadersHelper.CreateHandler(HttpClientHelper.Instance.DirectHandler, "ExistingClient/1.0", "*/*", null);
-        var service = new DownloadService { GetHandlerFunc = () => handler };
-        var helper = new DownloaderHelper { GetHandlerFunc = () => handler };
+        using var handler = HttpRequestHeadersHelper.CreateHandler(HttpClientHelper.Instance.DirectHandler, "ExistingClient/1.0", "*/*", null);
+        var service = new DownloadService { Handler = handler };
+        var helper = new DownloaderHelper { Handler = handler };
         var uri = new UriBuilder(server.Url) { UserName = "user", Password = "password" }.Uri;
 
         await (await service.TryDownloadString(uri.AbsoluteUri).WaitAsync(TimeSpan.FromSeconds(20))).Should().BeEqualTo(SubscriptionHttpServer.Body);
@@ -79,9 +80,10 @@ public class DownloadServiceHeadersTests
         await CertPemManager.Instance.Init(new Config { GuiItem = new GUIItem() });
         await using var server = new SubscriptionHttpServer();
         var handler = HttpRequestHeadersHelper.CreateHandler(HttpClientHelper.Instance.DirectHandler, "TestClient/1.0", "*/*", new Dictionary<string, string> { ["X-hwid"] = "first-device" });
-        var subscription = new DownloadService
+        using var subscription = new DownloadService
         {
-            GetHandlerFunc = () => handler,
+            Handler = handler,
+            DisposeHandler = true,
         };
         var ordinaryDownload = new DownloadService();
 

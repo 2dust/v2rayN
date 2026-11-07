@@ -20,7 +20,12 @@ public static class ConnectionHandler
     /// </summary>
     private static async Task<string?> GetIPInfo()
     {
-        var ipInfo = await GetIPInfo(HttpClientHelper.Instance.ProxyHandler);
+        using var downloadHandle = new DownloadService
+        {
+            Handler = HttpClientHelper.Instance.ProxyHandler,
+            DisposeHandler = true,
+        };
+        var ipInfo = await GetIPInfo(downloadHandle);
         return ipInfo?.ToString() ?? Global.None;
     }
 
@@ -103,19 +108,6 @@ public static class ConnectionHandler
             // Ignore
         }
         return responseTime;
-    }
-
-    /// <summary>
-    /// Gets IP and country information through specified proxy.
-    /// </summary>
-    public static async Task<IpInfoResult?> GetIPInfo(SocketsHttpHandler? handler, CancellationToken cancellationToken = default)
-    {
-        var downloadHandle = new DownloadService();
-        if (handler != null)
-        {
-            downloadHandle.GetHandlerFunc = () => handler;
-        }
-        return await GetIPInfo(downloadHandle, cancellationToken);
     }
 
     public static async Task<IpInfoResult?> GetIPInfo(DownloadService downloadHandle, CancellationToken cancellationToken = default)

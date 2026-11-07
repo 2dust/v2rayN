@@ -12,9 +12,9 @@ public class HttpClientHelper
 
     public static HttpClientHelper Instance => _instance.Value;
 
-    public SocketsHttpHandler DirectHandler => _directHandlerLazy.Value;
+    public HttpMessageHandler DirectHandler => new SharedHandlerAdapter(_directHandlerLazy.Value);
 
-    public SocketsHttpHandler ProxyHandler
+    public HttpMessageHandler ProxyHandler
     {
         get
         {
@@ -26,11 +26,11 @@ public class HttpClientHelper
                 _proxyUri = proxyUri;
                 field = CreateProxySocketsHttpHandler(port);
             }
-            return field;
+            return new SharedHandlerAdapter(field);
         }
     } = null!;
 
-    public SocketsHttpHandler GetHandler(bool useProxy)
+    public HttpMessageHandler GetHandler(bool useProxy)
     {
         return useProxy ? ProxyHandler : DirectHandler;
     }
@@ -38,7 +38,7 @@ public class HttpClientHelper
     public HttpClient GetHttpClient(bool useProxy)
     {
         var handler = GetHandler(useProxy);
-        var client = new HttpClient(handler, false);
+        var client = new HttpClient(handler);
         return client;
     }
 
@@ -100,7 +100,7 @@ public class HttpClientHelper
         HttpMessageHandler fallbackHandler)
         : DelegatingHandler(primaryHandler)
     {
-        private readonly HttpMessageInvoker _fallbackInvoker = new(fallbackHandler, disposeHandler: false);
+        private readonly HttpMessageInvoker _fallbackInvoker = new(fallbackHandler);
 
         protected override async Task<HttpResponseMessage> SendAsync(
             HttpRequestMessage request, CancellationToken cancellationToken)
@@ -172,6 +172,37 @@ public class HttpClientHelper
             {
                 _fallbackInvoker.Dispose();
             }
+            base.Dispose(disposing);
+        }
+    }
+
+    public class SharedHandlerAdapter(HttpMessageHandler sharedHandler) : HttpMessageHandler
+    {
+        private readonly HttpMessageInvoker _invoker = new(
+            sharedHandler,
+            disposeHandler: false);
+
+        protected override HttpResponseMessage Send(
+            HttpRequestMessage request,
+            CancellationToken cancellationToken)
+        {
+            return _invoker.Send(request, cancellationToken);
+        }
+
+        protected override Task<HttpResponseMessage> SendAsync(
+            HttpRequestMessage request,
+            CancellationToken cancellationToken)
+        {
+            return _invoker.SendAsync(request, cancellationToken);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _invoker.Dispose();
+            }
+
             base.Dispose(disposing);
         }
     }

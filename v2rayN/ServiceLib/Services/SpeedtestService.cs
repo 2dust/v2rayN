@@ -504,7 +504,12 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
 
             if (!_config.UiItem.HideColumnIpInfo && responseTime > 0)
             {
-                var ipInfo = await ConnectionHandler.GetIPInfo(handler, ct);
+                using var downloadHandle = new DownloadService
+                {
+                    Handler = handler,
+                    DisposeHandler = false,
+                };
+                var ipInfo = await ConnectionHandler.GetIPInfo(downloadHandle, ct);
                 var ipStr = ipInfo?.ToString() ?? Global.None;
                 ProfileExManager.Instance.SetTestIpInfo(it.IndexId, ipStr);
                 await UpdateIpInfoFunc(it.IndexId, ipStr);
@@ -538,9 +543,11 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         using var timeoutCts = new CancellationTokenSource(TimeSpan.FromSeconds(timeout));
         using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct, timeoutCts.Token);
         var linkedCt = linkedCts.Token;
-        using var downloadHandle = new DownloadService();
-        downloadHandle.GetHandlerFunc = () => handler;
-        downloadHandle.DisposeHandler = true;
+        using var downloadHandle = new DownloadService
+        {
+            Handler = handler,
+            DisposeHandler = true,
+        };
         await downloadHandle.DownloadDataAsync(url, async (success, msg) =>
         {
             decimal.TryParse(msg, out var dec);

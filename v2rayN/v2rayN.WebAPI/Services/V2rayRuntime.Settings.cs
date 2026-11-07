@@ -854,7 +854,7 @@ public sealed partial class V2rayRuntime
             return OperationView.Fail("routing_url_invalid", "routing.urlInvalid");
         }
 
-        var download = await DownloadService.CreateDownloadServiceWithCheck();
+        using var download = await DownloadService.CreateDownloadServiceWithCheck();
         var content = await download.TryDownloadString(uri.AbsoluteUri, cancellationToken);
         if (string.IsNullOrWhiteSpace(content))
         {
@@ -1022,8 +1022,14 @@ public sealed partial class V2rayRuntime
             // TODO
             var stager = new RegionalPresetStager(async (url, webProxy, token) =>
             {
-                var download = new DownloadService();
-                download.GetHandlerFunc = () => HttpClientHelper.CreateProxySocketsHttpHandler(webProxy);
+                var handler = webProxy is null
+                    ? HttpClientHelper.Instance.DirectHandler
+                    : HttpClientHelper.CreateProxySocketsHttpHandler(webProxy);
+                using var download = new DownloadService
+                {
+                    Handler = handler,
+                    DisposeHandler = true,
+                };
                 return await download.TryDownloadString(url, token);
             });
 

@@ -7,9 +7,9 @@ public class DownloadService : IDisposable
 {
     private static readonly string _tag = "DownloadService";
 
-    public Func<HttpMessageHandler> GetHandlerFunc { get; set; } = () => HttpClientHelper.Instance.DirectHandler;
+    public HttpMessageHandler Handler { get; init; } = HttpClientHelper.Instance.DirectHandler;
 
-    public bool DisposeHandler { get; set; } = false;
+    public bool DisposeHandler { get; init; } = false;
 
     public DownloaderHelper DownloaderHelper
     {
@@ -17,7 +17,7 @@ public class DownloadService : IDisposable
         {
             field ??= new DownloaderHelper
             {
-                GetHandlerFunc = () => GetHandlerFunc(),
+                Handler = Handler,
                 DisposeHandler = false,
             };
             return field;
@@ -35,12 +35,14 @@ public class DownloadService : IDisposable
         {
             return new DownloadService
             {
-                GetHandlerFunc = () => HttpClientHelper.Instance.ProxyHandler,
+                Handler = HttpClientHelper.Instance.ProxyHandler,
+                DisposeHandler = true,
             };
         }
         return new DownloadService
         {
-            GetHandlerFunc = () => HttpClientHelper.Instance.DirectHandler,
+            Handler = HttpClientHelper.Instance.DirectHandler,
+            DisposeHandler = true,
         };
     }
 
@@ -48,7 +50,7 @@ public class DownloadService : IDisposable
     {
         return new DownloadService
         {
-            GetHandlerFunc = () => HttpClientHelper.Instance.CreateFallbackHandler(preferProxy),
+            Handler = HttpClientHelper.Instance.CreateFallbackHandler(preferProxy),
             DisposeHandler = true,
         };
     }
@@ -203,7 +205,7 @@ public class DownloadService : IDisposable
     /// </summary>
     public async Task<string?> UrlRedirectAsync(string url, CancellationToken cancellationToken = default)
     {
-        using var client = new HttpClient(GetHandlerFunc.Invoke(), false);
+        using var client = new HttpClient(GetHandler(), false);
 
         var response = await client.GetAsync(url, cancellationToken);
         if (response.StatusCode == HttpStatusCode.Redirect && response.Headers.Location is not null)
@@ -276,7 +278,7 @@ public class DownloadService : IDisposable
     {
         try
         {
-            using var client = new HttpClient(GetHandlerFunc.Invoke(), false);
+            using var client = new HttpClient(GetHandler(), false);
             client.Timeout = Timeout.InfiniteTimeSpan;
 
             var uri = new Uri(url);
@@ -420,14 +422,18 @@ public class DownloadService : IDisposable
         return false;
     }
 
+    private HttpMessageHandler GetHandler()
+    {
+        return Handler;
+    }
+
     public void Dispose()
     {
         if (!DisposeHandler)
         {
             return;
         }
-        var handler = GetHandlerFunc.Invoke();
-        if (handler is IDisposable disposableHandler)
+        if (Handler is IDisposable disposableHandler)
         {
             disposableHandler.Dispose();
         }

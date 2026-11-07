@@ -167,7 +167,7 @@ public class SubscriptionHandler(
             [
                 new DownloadService
                 {
-                    GetHandlerFunc = () => headersHandler,
+                    Handler = headersHandler,
                     DisposeHandler = true,
                 },
             ];

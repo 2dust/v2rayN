@@ -141,7 +141,8 @@ public sealed partial class V2rayRuntime
         await using var operation = await _operations.EnterExclusiveAsync(
             cancellationToken,
             allowReadOnlyObservations: true);
-        await new UpdateService(await DownloadService.CreateDownloadServiceWithCheck(), Config, (success, message) =>
+        using var downloadService = await DownloadService.CreateDownloadServiceWithCheck(Config.CheckUpdateItem.UpdateViaProxy);
+        await new UpdateService(downloadService, Config, (success, message) =>
         {
             AddLog("update", message);
             _events.Publish("geo-update-progress", new
@@ -162,8 +163,8 @@ public sealed partial class V2rayRuntime
     private async Task RunScheduledCoreUpdateCheckAsync(CancellationToken cancellationToken)
     {
         await using var operation = await _operations.EnterOperationAsync(cancellationToken);
-        var updateService = new UpdateService(await DownloadService.CreateDownloadServiceWithCheck(Config.CheckUpdateItem
-            .UpdateViaProxy), Config, (_, _) => Task.CompletedTask);
+        using var downloadService = await DownloadService.CreateDownloadServiceWithCheck(Config.CheckUpdateItem.UpdateViaProxy);
+        var updateService = new UpdateService(downloadService, Config, (_, _) => Task.CompletedTask);
         var messages = await updateService.CheckHasUpdateOnlyAll(operation.Token);
         foreach (var message in messages)
         {

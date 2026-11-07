@@ -294,7 +294,7 @@ public partial class RoutingRuleSettingViewModel : MyReactiveObject, ICloseable
             return;
         }
 
-        var downloadHandle = await DownloadService.CreateDownloadServiceWithCheck();
+        using var downloadHandle = await DownloadService.CreateDownloadServiceWithCheck();
         var result = await downloadHandle.TryDownloadString(url);
         var ret = await AddBatchRoutingRulesAsync(SelectedRouting, result);
         if (ret == 0)

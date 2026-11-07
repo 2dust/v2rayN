@@ -5,9 +5,9 @@ namespace ServiceLib.Helper;
 
 public class DownloaderHelper : IDisposable
 {
-    public Func<HttpMessageHandler> GetHandlerFunc { get; set; } = () => HttpClientHelper.Instance.DirectHandler;
+    public HttpMessageHandler Handler { get; init; } = HttpClientHelper.Instance.DirectHandler;
 
-    public bool DisposeHandler { get; set; } = false;
+    public bool DisposeHandler { get; init; } = false;
 
     public async Task<string?> DownloadStringAsync(string url,
         CancellationToken cancellationToken = default)
@@ -32,7 +32,7 @@ public class DownloaderHelper : IDisposable
         {
             MaxTryAgainOnFailure = 2,
             RequestConfiguration = requestConfiguration,
-            CustomHttpMessageHandlerFactory = GetHandlerFunc,
+            CustomHttpMessageHandlerFactory = GetHandler,
         };
 
         await using var downloader = new DownloadService(downloadOpt);
@@ -61,7 +61,7 @@ public class DownloaderHelper : IDisposable
         var downloadOpt = new DownloadConfiguration
         {
             MaxTryAgainOnFailure = 2,
-            CustomHttpMessageHandlerFactory = GetSocketsHttpHandler,
+            CustomHttpMessageHandlerFactory = GetHandler,
         };
 
         var lastUpdateTime = DateTime.Now;
@@ -135,7 +135,7 @@ public class DownloaderHelper : IDisposable
             MinimumChunkSize = 2 * 1024 * 1024, // 2 MB
             MinimumSizeOfChunking = 4 * 1024 * 1024, // 4 MB
 
-            CustomHttpMessageHandlerFactory = GetSocketsHttpHandler,
+            CustomHttpMessageHandlerFactory = GetHandler,
         };
 
         await using var downloader = new DownloadService(downloadOpt);
@@ -200,7 +200,7 @@ public class DownloaderHelper : IDisposable
                 var request = requests[index];
                 var downloadOpt = new DownloadConfiguration
                 {
-                    CustomHttpMessageHandlerFactory = GetSocketsHttpHandler,
+                    CustomHttpMessageHandlerFactory = GetHandler,
                 };
                 await using var downloader = new DownloadService(downloadOpt);
                 downloader.DownloadStarted += (sender, value) =>
@@ -239,10 +239,9 @@ public class DownloaderHelper : IDisposable
             });
     }
 
-    private HttpMessageHandler GetSocketsHttpHandler()
+    private HttpMessageHandler GetHandler()
     {
-        var handler = GetHandlerFunc.Invoke();
-        return handler;
+        return Handler;
     }
 
     public void Dispose()
@@ -251,8 +250,7 @@ public class DownloaderHelper : IDisposable
         {
             return;
         }
-        var handler = GetHandlerFunc.Invoke();
-        if (handler is IDisposable disposableHandler)
+        if (Handler is IDisposable disposableHandler)
         {
             disposableHandler.Dispose();
         }

@@ -163,7 +163,8 @@ public partial class CheckUpdateViewModel : MyReactiveObject
                 continue;
             }
 
-            var updateService = new UpdateService(await DownloadService.CreateDownloadServiceWithCheck(EnableUpdateViaProxy), _config, async (success, msg) => await Task.CompletedTask);
+            using var downloadService = await DownloadService.CreateDownloadServiceWithCheck(EnableUpdateViaProxy);
+            var updateService = new UpdateService(downloadService, _config, async (success, msg) => await Task.CompletedTask);
             var result = await updateService.CheckHasUpdateOnly(item.CoreType.Value, item.IsCheckPreRelease);
             if (result.Success && result.Version != null)
             {
@@ -245,7 +246,8 @@ public partial class CheckUpdateViewModel : MyReactiveObject
                 UpdatedPlusPlus(null, "");
             }
         }
-        await new UpdateService(await DownloadService.CreateDownloadServiceWithCheck(EnableUpdateViaProxy), _config, _updateUI).UpdateGeoFileAll()
+        using var downloadService = await DownloadService.CreateDownloadServiceWithCheck(EnableUpdateViaProxy);
+        await new UpdateService(downloadService, _config, _updateUI).UpdateGeoFileAll()
             .ContinueWith(t => UpdatedPlusPlus(null, ""));
     }
 
@@ -260,7 +262,8 @@ public partial class CheckUpdateViewModel : MyReactiveObject
                 UpdatedPlusPlus(_v2rayN, msg);
             }
         }
-        await new UpdateService(await DownloadService.CreateDownloadServiceWithCheck(EnableUpdateViaProxy), _config, _updateUI).CheckUpdateGuiN(preRelease)
+        using var downloadService = await DownloadService.CreateDownloadServiceWithCheck(EnableUpdateViaProxy);
+        await new UpdateService(downloadService, _config, _updateUI).CheckUpdateGuiN(preRelease)
             .ContinueWith(t => UpdatedPlusPlus(_v2rayN, ""));
     }
 
@@ -278,7 +281,8 @@ public partial class CheckUpdateViewModel : MyReactiveObject
 
         if (model.CoreType.HasValue)
         {
-            await new UpdateService(await DownloadService.CreateDownloadServiceWithCheck(EnableUpdateViaProxy), _config, _updateUI).CheckUpdateCore(model.CoreType.Value, preRelease)
+            using var downloadService = await DownloadService.CreateDownloadServiceWithCheck(EnableUpdateViaProxy);
+            await new UpdateService(downloadService, _config, _updateUI).CheckUpdateCore(model.CoreType.Value, preRelease)
                 .ContinueWith(t => UpdatedPlusPlus(model.CoreType, ""));
         }
     }
