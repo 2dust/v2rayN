@@ -640,7 +640,6 @@ populate_assets_zip_mode() {
   fi
 
   rm -f "$outroot/v2rayn.zip" 2>/dev/null || true
-  # 仅清理未支持的 mihomo，保留 xray 目录
   find "$outroot" -type d -name "mihomo" -prune -exec rm -rf {} + 2>/dev/null || true
 
   nested_dir="$(find "$outroot" -maxdepth 1 -type d -name 'v2rayN-linux-*' | head -n1 || true)"
