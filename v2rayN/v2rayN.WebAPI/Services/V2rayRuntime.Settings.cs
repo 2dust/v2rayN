@@ -854,7 +854,7 @@ public sealed partial class V2rayRuntime
             return OperationView.Fail("routing_url_invalid", "routing.urlInvalid");
         }
 
-        var download = await DownloadService.CreateDownloadService();
+        var download = await DownloadService.CreateDownloadServiceWithCheck();
         var content = await download.TryDownloadString(uri.AbsoluteUri, cancellationToken);
         if (string.IsNullOrWhiteSpace(content))
         {

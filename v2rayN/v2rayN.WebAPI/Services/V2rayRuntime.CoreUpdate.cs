@@ -596,7 +596,7 @@ public sealed partial class V2rayRuntime
         bool? useProxy,
         CancellationToken cancellationToken)
     {
-        var updateService = new UpdateService(await DownloadService.CreateDownloadService(useProxy ??
+        var updateService = new UpdateService(await DownloadService.CreateDownloadServiceWithCheck(useProxy ??
             Config.CheckUpdateItem.UpdateViaProxy), Config, (_, _) => Task.CompletedTask);
         var result = await updateService.CheckHasUpdateOnly(
             coreType,
@@ -692,7 +692,7 @@ public sealed partial class V2rayRuntime
         try
         {
             PublishCoreUpdateProgress(coreType, "downloading", isComplete: false, success: false, IsCoreTypeRunning(coreType), check.Version?.ToString(), check.Url, batch);
-            var download = await DownloadService.CreateDownloadService(useProxy);
+            var download = await DownloadService.CreateDownloadServiceWithCheck(useProxy);
             var downloadFailure = new TaskCompletionSource<Exception>(TaskCreationOptions.RunContinuationsAsynchronously);
             download.Error += (_, args) => downloadFailure.TrySetResult(args.GetException());
             download.UpdateCompleted += (_, progress) =>
@@ -1165,7 +1165,7 @@ public sealed partial class V2rayRuntime
         await _geoUpdateGate.RunAsync(async () =>
         {
             var completion = new GeoFilesUpdateCompletion();
-            var updater = new UpdateService(await DownloadService.CreateDownloadService(useProxy), Config, (success, message) =>
+            var updater = new UpdateService(await DownloadService.CreateDownloadServiceWithCheck(useProxy), Config, (success, message) =>
             {
                 AddLog("update", message);
                 completion.Report(success, message, IsGeoDownloadProgressMessage(message));

@@ -792,7 +792,7 @@ public partial class MainWindowViewModel : MyReactiveObject
         });
 
         await ConfigHandler.SaveConfig(_config);
-        await new UpdateService(await DownloadService.CreateDownloadService(), _config, UpdateTaskHandler).UpdateGeoFileAll();
+        await new UpdateService(await DownloadService.CreateDownloadServiceWithCheck(), _config, UpdateTaskHandler).UpdateGeoFileAll();
         await Reload();
     }
 

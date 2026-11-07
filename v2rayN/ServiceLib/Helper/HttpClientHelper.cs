@@ -87,4 +87,92 @@ public class HttpClientHelper
             ConnectTimeout = Global.ProxyDownloadConnect,
         };
     }
+
+    public HttpMessageHandler CreateFallbackHandler(bool preferProxy)
+    {
+        var primaryHandler = preferProxy ? ProxyHandler : DirectHandler;
+        var fallbackHandler = preferProxy ? DirectHandler : ProxyHandler;
+        return new DualHandlerFallbackHandler(primaryHandler, fallbackHandler);
+    }
+
+    private class DualHandlerFallbackHandler(
+        HttpMessageHandler primaryHandler,
+        HttpMessageHandler fallbackHandler)
+        : DelegatingHandler(primaryHandler)
+    {
+        private readonly HttpMessageInvoker _fallbackInvoker = new(fallbackHandler, disposeHandler: false);
+
+        protected override async Task<HttpResponseMessage> SendAsync(
+            HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            var contentBytes = await BufferContentAsync(request, cancellationToken);
+
+            try
+            {
+                var response = await base.SendAsync(request, cancellationToken);
+
+                if (IsRetriableStatusCode(response.StatusCode))
+                {
+                    response.Dispose();
+                    ResetRequestContent(request, contentBytes);
+                    return await _fallbackInvoker.SendAsync(request, cancellationToken);
+                }
+
+                return response;
+            }
+            catch (Exception ex) when (IsNetworkOrTimeoutException(ex) && !cancellationToken.IsCancellationRequested)
+            {
+                ResetRequestContent(request, contentBytes);
+                return await _fallbackInvoker.SendAsync(request, cancellationToken);
+            }
+        }
+
+        private static async Task<byte[]?> BufferContentAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            if (request.Content == null)
+            {
+                return null;
+            }
+            return await request.Content.ReadAsByteArrayAsync(cancellationToken);
+        }
+
+        private static void ResetRequestContent(HttpRequestMessage request, byte[]? contentBytes)
+        {
+            if (contentBytes == null)
+            {
+                return;
+            }
+
+            var newContent = new ByteArrayContent(contentBytes);
+
+            if (request.Content != null)
+            {
+                foreach (var header in request.Content.Headers)
+                {
+                    newContent.Headers.TryAddWithoutValidation(header.Key, header.Value);
+                }
+            }
+
+            request.Content = newContent;
+        }
+
+        private static bool IsNetworkOrTimeoutException(Exception ex)
+        {
+            return ex is HttpRequestException or TaskCanceledException;
+        }
+
+        private static bool IsRetriableStatusCode(HttpStatusCode statusCode) =>
+            statusCode is HttpStatusCode.BadGateway          // 502
+                or HttpStatusCode.ServiceUnavailable   // 503
+                or HttpStatusCode.GatewayTimeout;      // 504
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _fallbackInvoker.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+    }
 }

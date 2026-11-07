@@ -2644,7 +2644,7 @@ public static class ConfigHandler
     /// <returns>0 if successful</returns>
     public static async Task<int> InitExternalRouting(Config config, bool blImportAdvancedRules = false)
     {
-        var downloadHandle = await DownloadService.CreateDownloadService();
+        var downloadHandle = await DownloadService.CreateDownloadServiceWithCheck();
         var templateContent = await downloadHandle.TryDownloadString(config.ConstItem.RouteRulesTemplateSourceUrl);
         if (templateContent.IsNullOrEmpty())
         {
@@ -2872,7 +2872,7 @@ public static class ConfigHandler
     {
         var currentItem = await AppManager.Instance.GetDNSItem(type);
 
-        var downloadHandle = await DownloadService.CreateDownloadService();
+        var downloadHandle = await DownloadService.CreateDownloadServiceWithCheck();
         var templateContent = await downloadHandle.TryDownloadString(url);
         if (templateContent.IsNullOrEmpty())
         {
@@ -2924,7 +2924,7 @@ public static class ConfigHandler
 
     public static async Task<SimpleDNSItem?> GetExternalSimpleDNSItem(string url)
     {
-        var downloadHandle = await DownloadService.CreateDownloadService();
+        var downloadHandle = await DownloadService.CreateDownloadServiceWithCheck();
         var templateContent = await downloadHandle.TryDownloadString(url);
         if (templateContent.IsNullOrEmpty())
         {

@@ -25,7 +25,7 @@ public class DownloadService
 
     public event ErrorEventHandler? Error;
 
-    public static async Task<DownloadService> CreateDownloadService(bool preferProxy = true)
+    public static async Task<DownloadService> CreateDownloadServiceWithCheck(bool preferProxy = true)
     {
         var webProxy = await CheckProxy(preferProxy);
         if (webProxy is not null)
@@ -38,6 +38,15 @@ public class DownloadService
         return new DownloadService
         {
             GetHandlerFunc = () => HttpClientHelper.Instance.DirectHandler,
+        };
+    }
+
+    public static DownloadService CreateDownloadServiceWithFallback(bool preferProxy = true)
+    {
+        var handler = HttpClientHelper.Instance.CreateFallbackHandler(preferProxy);
+        return new DownloadService
+        {
+            GetHandlerFunc = () => handler,
         };
     }
 
