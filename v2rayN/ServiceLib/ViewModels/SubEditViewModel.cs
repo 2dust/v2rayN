@@ -1,3 +1,5 @@
+using ServiceLib.Models.Editors;
+
 namespace ServiceLib.ViewModels;
 
 public partial class SubEditViewModel : MyReactiveObject, ICloseable
@@ -5,7 +7,7 @@ public partial class SubEditViewModel : MyReactiveObject, ICloseable
     public event EventHandler? RequestClose;
 
     [Reactive]
-    public partial SubItem SelectedSource { get; set; }
+    public partial SubscriptionEditorModel SelectedSource { get; set; }
 
     [Reactive]
     public partial string CustomCoreType { get; set; }
@@ -45,10 +47,10 @@ public partial class SubEditViewModel : MyReactiveObject, ICloseable
             await SaveSubAsync();
         });
 
-        SelectedSource = subItem.Id.IsNullOrEmpty() ? subItem : JsonUtils.DeepCopy(subItem);
-        CustomCoreType = SelectedSource.CustomCoreType?.ToString() ?? string.Empty;
-        PrevProfile = SelectedSource.PrevProfile;
-        NextProfile = SelectedSource.NextProfile;
+        SelectedSource = SubscriptionEditorModel.FromEntity(subItem);
+        CustomCoreType = subItem.CustomCoreType?.ToString() ?? string.Empty;
+        PrevProfile = subItem.PrevProfile;
+        NextProfile = subItem.NextProfile;
     }
 
     private async Task SaveSubAsync()
@@ -83,12 +85,14 @@ public partial class SubEditViewModel : MyReactiveObject, ICloseable
             return;
         }
 
-        SelectedSource.CustomCoreType = Enum.TryParse<ECoreType>(CustomCoreType, out var coreType) ? coreType : null;
-        SelectedSource.PrevProfile = PrevProfile;
-        SelectedSource.NextProfile = NextProfile;
+        var item = SelectedSource.ToEntity();
+        item.CustomCoreType = Enum.TryParse<ECoreType>(CustomCoreType, out var coreType) ? coreType : null;
+        item.PrevProfile = PrevProfile;
+        item.NextProfile = NextProfile;
 
-        if (await ConfigHandler.AddSubItem(_config, SelectedSource) == 0)
+        if (await ConfigHandler.AddSubItem(_config, item) == 0)
         {
+            SelectedSource = SubscriptionEditorModel.FromEntity(item);
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
             RequestClose?.Invoke(this, EventArgs.Empty);
         }

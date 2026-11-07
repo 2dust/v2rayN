@@ -1,3 +1,5 @@
+using ServiceLib.Models.Editors;
+
 namespace ServiceLib.ViewModels;
 
 public partial class AddGroupServerViewModel : MyReactiveObject, ICloseable
@@ -5,7 +7,7 @@ public partial class AddGroupServerViewModel : MyReactiveObject, ICloseable
     public event EventHandler? RequestClose;
 
     [Reactive]
-    public partial ProfileItem SelectedSource { get; set; }
+    public partial ProfileEditorModel SelectedSource { get; set; }
 
     [Reactive]
     public partial ProfileItem SelectedChild { get; set; }
@@ -78,15 +80,15 @@ public partial class AddGroupServerViewModel : MyReactiveObject, ICloseable
             await SaveServerAsync();
         });
 
-        SelectedSource = profileItem.IndexId.IsNullOrEmpty() ? profileItem : JsonUtils.DeepCopy(profileItem);
-        CoreType = (SelectedSource?.CoreType ?? ECoreType.Xray).ToString();
+        SelectedSource = ProfileEditorModel.FromEntity(profileItem);
+        CoreType = (profileItem.CoreType ?? ECoreType.Xray).ToString();
 
         _ = Init();
     }
 
     public async Task Init()
     {
-        var protocolExtra = SelectedSource.GetProtocolExtra();
+        var protocolExtra = SelectedSource.ToEntity().GetProtocolExtra();
         PolicyGroupType = (protocolExtra?.MultipleLoad ?? EMultipleLoad.LeastPing) switch
         {
             EMultipleLoad.LeastPing => ResUI.TbLeastPing,
@@ -196,9 +198,9 @@ public partial class AddGroupServerViewModel : MyReactiveObject, ICloseable
         await Task.CompletedTask;
     }
 
-    private ProtocolExtraItem GetUpdatedProtocolExtra()
+    private ProtocolExtraItem GetUpdatedProtocolExtra(ProfileItem item)
     {
-        return SelectedSource.GetProtocolExtra() with
+        return item.GetProtocolExtra() with
         {
             ChildItems =
             Utils.List2String(ChildItemsObs.Where(s => !s.IndexId.IsNullOrEmpty()).Select(s => s.IndexId).ToList()),
@@ -218,7 +220,7 @@ public partial class AddGroupServerViewModel : MyReactiveObject, ICloseable
 
     public async Task UpdatePreviewList()
     {
-        AllProfilePreviewItemsObs.ReplaceRange(await GroupProfileManager.GetChildProfileItemsByProtocolExtra(GetUpdatedProtocolExtra()));
+        AllProfilePreviewItemsObs.ReplaceRange(await GroupProfileManager.GetChildProfileItemsByProtocolExtra(GetUpdatedProtocolExtra(SelectedSource.ToEntity())));
     }
 
     private async Task SaveServerAsync()
@@ -234,19 +236,21 @@ public partial class AddGroupServerViewModel : MyReactiveObject, ICloseable
             NoticeManager.Instance.Enqueue(ResUI.PleaseAddAtLeastOneServer);
             return;
         }
-        SelectedSource.CoreType = CoreType.IsNullOrEmpty() ? ECoreType.Xray : Enum.Parse<ECoreType>(CoreType);
-        if (SelectedSource.CoreType is not (ECoreType.Xray or ECoreType.sing_box) ||
-            SelectedSource.ConfigType is not (EConfigType.ProxyChain or EConfigType.PolicyGroup))
+        var item = SelectedSource.ToEntity();
+        item.CoreType = CoreType.IsNullOrEmpty() ? ECoreType.Xray : Enum.Parse<ECoreType>(CoreType);
+        if (item.CoreType is not (ECoreType.Xray or ECoreType.sing_box) ||
+            item.ConfigType is not (EConfigType.ProxyChain or EConfigType.PolicyGroup))
         {
             return;
         }
 
-        var protocolExtra = GetUpdatedProtocolExtra();
+        var protocolExtra = GetUpdatedProtocolExtra(item);
 
-        SelectedSource.SetProtocolExtra(protocolExtra);
+        item.SetProtocolExtra(protocolExtra);
 
-        if (await ConfigHandler.AddServerCommon(_config, SelectedSource) == 0)
+        if (await ConfigHandler.AddServerCommon(_config, item) == 0)
         {
+            SelectedSource = ProfileEditorModel.FromEntity(item);
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
             RequestClose?.Invoke(this, EventArgs.Empty);
         }

@@ -465,16 +465,28 @@ public partial class MainWindowViewModel : MyReactiveObject
         {
             var addServer2ViewModel = new AddServer2ViewModel(item);
             ret = await AppManager.Instance.WindowDialog.ShowDialogAsync(addServer2ViewModel);
+            if (ret == true)
+            {
+                item = addServer2ViewModel.SelectedSource.ToEntity();
+            }
         }
         else if (eConfigType.IsGroupType())
         {
             var addGroupServerViewModel = new AddGroupServerViewModel(item);
             ret = await AppManager.Instance.WindowDialog.ShowDialogAsync(addGroupServerViewModel);
+            if (ret == true)
+            {
+                item = addGroupServerViewModel.SelectedSource.ToEntity();
+            }
         }
         else
         {
             var addServerViewModel = new AddServerViewModel(item);
             ret = await AppManager.Instance.WindowDialog.ShowDialogAsync(addServerViewModel);
+            if (ret == true)
+            {
+                item = addServerViewModel.SelectedSource.ToEntity();
+            }
         }
         if (ret == true)
         {

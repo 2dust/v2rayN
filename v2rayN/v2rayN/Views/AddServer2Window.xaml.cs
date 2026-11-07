@@ -14,7 +14,7 @@ public partial class AddServer2Window
         {
             this.WhenAnyValue(v => v.ViewModel.SelectedSource)
                 .KeepNotNull()
-                .Subscribe(InitializeData)
+                .Subscribe(editor => InitializeData(editor.ToEntity()))
                 .DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.SelectedSource.Remarks, v => v.txtRemarks.Text).DisposeWith(disposables);
