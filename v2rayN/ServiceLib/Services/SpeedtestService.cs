@@ -532,14 +532,15 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
     {
         await UpdateFunc(it.IndexId, "", ResUI.Speedtesting);
 
-        using var handler = HttpClientHelper.CreateProxySocketsHttpHandler(it.Port);
+        var handler = HttpClientHelper.CreateProxySocketsHttpHandler(it.Port);
         var url = _config.SpeedTestItem.SpeedTestUrl;
         var timeout = _config.SpeedTestItem.SpeedTestTimeout;
         using var timeoutCts = new CancellationTokenSource(TimeSpan.FromSeconds(timeout));
         using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct, timeoutCts.Token);
         var linkedCt = linkedCts.Token;
-        // TODO: life cycle
-        var downloadHandle = new DownloadService { GetHandlerFunc = () => handler };
+        using var downloadHandle = new DownloadService();
+        downloadHandle.GetHandlerFunc = () => handler;
+        downloadHandle.DisposeHandler = true;
         await downloadHandle.DownloadDataAsync(url, async (success, msg) =>
         {
             decimal.TryParse(msg, out var dec);

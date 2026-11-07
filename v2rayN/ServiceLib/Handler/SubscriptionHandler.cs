@@ -36,7 +36,7 @@ public class SubscriptionHandler(
                     continue;
                 }
 
-                var processor = new SubscriptionHandlerProcessor(this, item);
+                using var processor = new SubscriptionHandlerProcessor(this, item);
                 await updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgStartGettingSubscriptions}");
 
                 // Get all subscription content (main subscription + additional subscriptions)
@@ -119,7 +119,7 @@ public class SubscriptionHandler(
         return ret > 0;
     }
 
-    private class SubscriptionHandlerProcessor
+    private class SubscriptionHandlerProcessor : IDisposable
     {
         private readonly DownloadService[] _downloadServices;
         private readonly SubscriptionHandler _handler;
@@ -168,6 +168,7 @@ public class SubscriptionHandler(
                 new DownloadService
                 {
                     GetHandlerFunc = () => headersHandler,
+                    DisposeHandler = true,
                 },
             ];
         }
@@ -273,6 +274,14 @@ public class SubscriptionHandler(
             }
 
             return result;
+        }
+
+        public void Dispose()
+        {
+            foreach (var downloadService in _downloadServices)
+            {
+                downloadService.Dispose();
+            }
         }
     }
 }

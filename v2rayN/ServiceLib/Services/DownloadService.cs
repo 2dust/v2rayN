@@ -3,11 +3,13 @@ namespace ServiceLib.Services;
 /// <summary>
 ///     Download
 /// </summary>
-public class DownloadService
+public class DownloadService : IDisposable
 {
     private static readonly string _tag = "DownloadService";
 
     public Func<HttpMessageHandler> GetHandlerFunc { get; set; } = () => HttpClientHelper.Instance.DirectHandler;
+
+    public bool DisposeHandler { get; set; } = false;
 
     public DownloaderHelper DownloaderHelper
     {
@@ -16,6 +18,7 @@ public class DownloadService
             field ??= new DownloaderHelper
             {
                 GetHandlerFunc = () => GetHandlerFunc(),
+                DisposeHandler = false,
             };
             return field;
         }
@@ -46,6 +49,7 @@ public class DownloadService
         return new DownloadService
         {
             GetHandlerFunc = () => HttpClientHelper.Instance.CreateFallbackHandler(preferProxy),
+            DisposeHandler = true,
         };
     }
 
@@ -414,5 +418,18 @@ public class DownloadService
             }
         }
         return false;
+    }
+
+    public void Dispose()
+    {
+        if (!DisposeHandler)
+        {
+            return;
+        }
+        var handler = GetHandlerFunc.Invoke();
+        if (handler is IDisposable disposableHandler)
+        {
+            disposableHandler.Dispose();
+        }
     }
 }

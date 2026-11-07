@@ -3,9 +3,11 @@ using DownloadService = Downloader.DownloadService;
 
 namespace ServiceLib.Helper;
 
-public class DownloaderHelper
+public class DownloaderHelper : IDisposable
 {
     public Func<HttpMessageHandler> GetHandlerFunc { get; set; } = () => HttpClientHelper.Instance.DirectHandler;
+
+    public bool DisposeHandler { get; set; } = false;
 
     public async Task<string?> DownloadStringAsync(string url,
         CancellationToken cancellationToken = default)
@@ -241,5 +243,18 @@ public class DownloaderHelper
     {
         var handler = GetHandlerFunc.Invoke();
         return handler;
+    }
+
+    public void Dispose()
+    {
+        if (!DisposeHandler)
+        {
+            return;
+        }
+        var handler = GetHandlerFunc.Invoke();
+        if (handler is IDisposable disposableHandler)
+        {
+            disposableHandler.Dispose();
+        }
     }
 }
