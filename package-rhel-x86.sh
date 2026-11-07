@@ -19,6 +19,7 @@ SKIASHARP_BASE="${SKIASHARP_BASE:-https://github.com/autorepobot/SkiaSharp-ppc64
 SkiaSharp_VERSION="${SkiaSharp_VERSION:-3.119.4}"
 HarfBuzzSharp_VERSION="${HarfBuzzSharp_VERSION:-8.3.1.5}"
 
+DOTNET_SDK_VERSION="${DOTNET_SDK_VERSION:-10.0.114}"
 DOTNET_X86_VERSION="${DOTNET_X86_VERSION:-10.0.114}"
 
 OS_ID=""
@@ -126,7 +127,7 @@ install_dependencies() {
       x86_64|aarch64)
         wget -q https://dot.net/v1/dotnet-install.sh
         chmod +x dotnet-install.sh
-        ./dotnet-install.sh --channel 10.0.1xx --install-dir "$HOME/.dotnet"
+        ./dotnet-install.sh --version "$DOTNET_SDK_VERSION" --install-dir "$HOME/.dotnet"
 
         export PATH="$HOME/.dotnet:$PATH"
         export DOTNET_ROOT="$HOME/.dotnet"
