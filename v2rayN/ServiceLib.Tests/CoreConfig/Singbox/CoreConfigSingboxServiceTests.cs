@@ -47,6 +47,72 @@ public class CoreConfigSingboxServiceTests
     }
 
     [Test]
+    [Arguments(null)]
+    [Arguments("Default")]
+    public async Task GenerateClientConfigContent_TunDnsModeDefault_ShouldNotIncludeDnsMode(string? dnsMode)
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.sing_box);
+        config.TunModeItem.EnableTun = true;
+        config.TunModeItem.DnsMode = dnsMode;
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+        var node = CoreConfigTestFactory.CreateSocksNode(ECoreType.sing_box);
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.sing_box) with
+        {
+            IsTunEnabled = true,
+        };
+
+        var result = new CoreConfigSingboxService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue().Because($"ret msg: {result.Msg}");
+        await result.Data!.ToString().Should().NotContain("\"dns_mode\"");
+    }
+
+    [Test]
+    public async Task GenerateClientConfigContent_TunDnsModeDisabled_ShouldIncludeDnsMode()
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.sing_box);
+        config.TunModeItem.EnableTun = true;
+        config.TunModeItem.DnsMode = "disabled";
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+        var node = CoreConfigTestFactory.CreateSocksNode(ECoreType.sing_box);
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.sing_box) with
+        {
+            IsTunEnabled = true,
+        };
+
+        var result = new CoreConfigSingboxService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue().Because($"ret msg: {result.Msg}");
+        var cfg = JsonUtils.Deserialize<SingboxConfig>(result.Data!.ToString())!;
+        var tun = cfg.inbounds.First(i => i.type == "tun");
+        await tun.dns_mode.Should().BeEqualTo("disabled");
+    }
+
+    [Test]
+    [Arguments(true)]
+    [Arguments(false)]
+    public async Task GenerateClientConfigContent_TunDnsModeDisabled_ShouldNotIncludeGlobalDnsHijackRule(bool sniffingEnabled)
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.sing_box);
+        config.TunModeItem.EnableTun = true;
+        config.TunModeItem.DnsMode = "disabled";
+        config.Inbound.First().SniffingEnabled = sniffingEnabled;
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+        var node = CoreConfigTestFactory.CreateSocksNode(ECoreType.sing_box);
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.sing_box) with
+        {
+            IsTunEnabled = true,
+        };
+
+        var result = new CoreConfigSingboxService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue().Because($"ret msg: {result.Msg}");
+        var cfg = JsonUtils.Deserialize<SingboxConfig>(result.Data!.ToString())!;
+        await cfg.route.rules.Any(
+            r => r.action == "hijack-dns" && r.process_path == null).Should().BeFalse();
+    }
+
+    [Test]
     public async Task GenerateClientConfigContent_TunEnabled_ShouldKeepEmbeddedTunRules()
     {
         // The embedded tun rules reject local-network noise (NetBIOS/mDNS, multicast).
