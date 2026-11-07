@@ -11,16 +11,19 @@ public static class NetworkUtils
         NetworkInterfaceType.FastEthernetT,
     ];
 
-    private static readonly string[] _allowedPhysicalNameKeywords =
+    private static readonly string[] _allowedPhysicalNamePrefixes =
     [
-        // Windows / Generic
-        "ethernet", "wlan", "wi-fi", "wifi",
-
         // Linux
         "eth", "enp", "ens", "eno", "enx", "wlp", "wlan",
 
         // macOS
-        "en0", "en1", "en2", "airport",
+        "en0", "en1", "en2",
+    ];
+
+    private static readonly string[] _allowedPhysicalNameKeywords =
+    [
+        // Windows / macOS / Generic
+        "ethernet", "wlan", "wi-fi", "wifi", "airport",
 
         // Chinese
         "以太网", "无线", "局域网"
@@ -31,9 +34,10 @@ public static class NetworkUtils
         // Generic
         "virtual", "loopback", "loop back",
 
-        // Common virtual adapters
+        // Common virtual / VPN / tunnel adapters
         "hyper-v", "vmware", "virtualbox", "vbox", "docker", "veth", "virbr", "cni",
         "flannel", "cali", "kube", "wintun", "wireguard", "zerotier", "tailscale", "utun",
+        "tap-windows", "tap adapter", "openvpn", "anyconnect", "vpn", "clash", "mihomo", "xray_tun",
 
         // Windows NDIS filter sub-layers & pseudo-interfaces
         "wan miniport", "lightweight filter", "filter driver", "packet scheduler", "npcap", "kernel debug",
@@ -131,6 +135,11 @@ public static class NetworkUtils
         }
 
         if (_allowedPhysicalInterfaceTypes.Contains(ni.NetworkInterfaceType))
+        {
+            return true;
+        }
+
+        if (_allowedPhysicalNamePrefixes.Any(prefix => ni.Name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)))
         {
             return true;
         }
