@@ -1,8 +1,9 @@
 namespace ServiceLib.Base;
 
 /// <summary>
-/// The operations a workflow can invoke at runtime. Implemented by the UI layer
-/// so that <see cref="Handler.WorkflowHandler"/> stays free of view models.
+/// The operations a workflow can invoke at runtime. Implemented headlessly in
+/// <see cref="Services.WorkflowRuntimeService"/> so that <see cref="Handler.WorkflowHandler"/>
+/// stays free of view models and a workflow can run with no window open.
 /// </summary>
 public interface IWorkflowRuntime
 {

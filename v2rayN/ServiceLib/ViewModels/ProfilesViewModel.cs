@@ -12,13 +12,6 @@ public partial class ProfilesViewModel : MyReactiveObject
 
     public EventChannel<RxVoid> ReloadRequested { get; } = new();
 
-    /// <summary>
-    /// Awaitable reload, handled by the main view model. <see cref="ReloadRequested"/> only
-    /// signals, so a workflow step that must not continue until the new server is actually
-    /// live awaits this instead.
-    /// </summary>
-    public Interaction<RxVoid, RxVoid> ReloadInteraction { get; } = new();
-
     public EventChannel<RxVoid> RefreshServersRequested { get; } = new();
 
     #region private prop
@@ -576,7 +569,7 @@ public partial class ProfilesViewModel : MyReactiveObject
         await SetDefaultServer(SelectedProfile.IndexId);
     }
 
-    public async Task SetDefaultServer(string? indexId, bool waitForReload = false)
+    public async Task SetDefaultServer(string? indexId)
     {
         if (indexId.IsNullOrEmpty())
         {
@@ -596,16 +589,7 @@ public partial class ProfilesViewModel : MyReactiveObject
         if (await ConfigHandler.SetDefaultServerIndex(_config, indexId) == 0)
         {
             await RefreshServers();
-            // A workflow step must not continue until the reload has finished, so it awaits the
-            // interaction; the interactive command only signals and returns.
-            if (waitForReload)
-            {
-                await ReloadInteraction.HandleSafe(RxVoid.Default);
-            }
-            else
-            {
-                Reload();
-            }
+            Reload();
         }
     }
 
@@ -674,106 +658,6 @@ public partial class ProfilesViewModel : MyReactiveObject
         await RefreshServers();
         NoticeManager.Instance.Enqueue(string.Format(ResUI.RemoveInvalidServerResultTip, count));
     }
-
-    #region Workflow helpers
-
-    /// <summary>Run a test over a whole group. Completes once the test run finished.</summary>
-    public async Task TestServersAsync(string? subId, ESpeedActionType actionType)
-    {
-        // SpeedtestService has no FastRealping case, so a step that selects it would
-        // finish without testing anything. Realping is the behavior the interactive
-        // command uses for it, so normalize here to keep the two in step.
-        if (actionType == ESpeedActionType.FastRealping)
-        {
-            actionType = ESpeedActionType.Realping;
-        }
-
-        var lstSelected = await GetProfilesForGroup(subId);
-        if (lstSelected.Count == 0)
-        {
-            return;
-        }
-        _speedtestService ??= new SpeedtestService(_config, async result =>
-        {
-            RxSchedulers.MainThreadScheduler.Schedule(() => _ = SetSpeedTestResult(result));
-            await Task.CompletedTask;
-        });
-        await _speedtestService.RunLoop(actionType, lstSelected);
-        await RefreshServers();
-    }
-
-    /// <summary>Sort a whole group by a column and persist the new order.</summary>
-    public async Task SortServersAsync(string? subId, string colName, bool asc)
-    {
-        if (await ConfigHandler.SortServers(_config, subId, colName, asc) == 0)
-        {
-            await RefreshServers();
-        }
-    }
-
-    /// <summary>
-    /// Remove duplicates inside a group, or in every group when <paramref name="subId"/> is null.
-    /// Returns the number of removed servers and reports the before/after counts for the notice.
-    /// </summary>
-    public async Task<(int Removed, int Old, int New)> DedupServersAsync(string? subId)
-    {
-        var tuple = await ConfigHandler.DedupServerList(_config, subId);
-        if (tuple.Item1 > 0)
-        {
-            await RefreshServers();
-        }
-        return (tuple.Item1 - tuple.Item2, tuple.Item1, tuple.Item2);
-    }
-
-    /// <summary>Remove servers with an invalid test result and return how many were removed.</summary>
-    public async Task<int> RemoveInvalidServersAsync(string? subId)
-    {
-        var count = await ConfigHandler.RemoveInvalidServerResult(_config, subId);
-        await RefreshServers();
-        return count;
-    }
-
-    /// <summary>
-    /// Activate the lowest-latency server of a group, or of every group when
-    /// <paramref name="subId"/> is null. Latency lives on <see cref="ProfileExItem"/> and is only
-    /// meaningful once a test has run, so servers that were never tested (0) or whose last test
-    /// failed (-1) are skipped rather than mistaken for the fastest.
-    /// Completes only after the core reload triggered by the activation has finished.
-    /// </summary>
-    public async Task SetLowestLatencyServerAsync(string? subId)
-    {
-        var lstModel = await AppManager.Instance.ProfileModels(subId ?? string.Empty, string.Empty);
-        if (lstModel is not { Count: > 0 })
-        {
-            return;
-        }
-
-        var ids = lstModel.Select(t => t.IndexId).ToHashSet();
-        var target = (await ProfileExManager.Instance.GetProfileExs())
-            .Where(t => ids.Contains(t.IndexId) && t.Delay > 0)
-            .OrderBy(t => t.Delay)
-            .FirstOrDefault();
-        if (target is null)
-        {
-            return;
-        }
-        // Wait for the reload the activation triggers, so the next workflow step sees the
-        // new server instead of the old core still running.
-        await SetDefaultServer(target.IndexId, true);
-    }
-
-    private async Task<List<ProfileItem>> GetProfilesForGroup(string? subId)
-    {
-        var lstModel = await AppManager.Instance.ProfileModels(subId ?? string.Empty, string.Empty);
-        if (lstModel is not { Count: > 0 })
-        {
-            return [];
-        }
-        var ids = lstModel.Select(t => t.IndexId).ToList();
-        return await AppManager.Instance.GetProfileItemsByIndexIds(ids) ?? [];
-    }
-
-    #endregion Workflow helpers
 
     //move server
     private async Task MoveToGroup()

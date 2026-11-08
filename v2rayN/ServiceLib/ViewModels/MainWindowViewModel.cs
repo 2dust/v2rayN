@@ -306,14 +306,6 @@ public partial class MainWindowViewModel : MyReactiveObject
                 .SubscribeAsync(async _ => await Reload());
         }
 
-        // A workflow step can await the reload before running the next step, so the new server
-        // is actually live by the time it proceeds.
-        ProfilesViewModel.ReloadInteraction.RegisterHandler(async interaction =>
-        {
-            await Reload();
-            interaction.SetOutput(RxVoid.Default);
-        });
-
         StatusBarViewModel.AddServerViaScanRequested
             .AsObservable()
             .ObserveOn(RxSchedulers.MainThreadScheduler)
@@ -618,13 +610,12 @@ public partial class MainWindowViewModel : MyReactiveObject
     }
 
     /// <summary>
-    /// Make the workflow runtime available to the workflow manager window. Uses the
-    /// already built profile view model and the main window update pipeline.
+    /// Make the workflow runtime available to the workflow manager window. The runtime is
+    /// headless, so it only needs the configuration.
     /// </summary>
     private void RefreshWorkflowRunner()
     {
-        WorkflowRunnerManager.Instance.Register(new WorkflowRuntimeService(
-            ProfilesViewModel, UpdateSubscriptionProcess, StatusBarViewModel.SetListenerType));
+        WorkflowRunnerManager.Instance.Register(new WorkflowRuntimeService(_config));
     }
 
     #endregion Subscription
@@ -738,24 +729,14 @@ public partial class MainWindowViewModel : MyReactiveObject
                     TabMainSelectedIndex = 0;
                 }
             });
-            var profileItem = await ConfigHandler.GetDefaultServer(_config);
-            if (profileItem == null)
-            {
-                NoticeManager.Instance.Enqueue(ResUI.CheckServerSettings);
-                return;
-            }
-            var allResult = await CoreConfigContextBuilder.BuildAll(_config, profileItem);
-            if (NoticeManager.Instance.NotifyValidatorResult(allResult.CombinedValidatorResult) && !allResult.Success)
+            // The build/load/proxy sequence lives in CoreManager so the workflow activation
+            // step can reuse it without going through this window.
+            var profileItem = await CoreManager.Instance.ReloadCore();
+            if (profileItem is null)
             {
                 return;
             }
-
-            await Task.Run(async () =>
-            {
-                await LoadCore(allResult.MainResult.Context, allResult.PreSocksResult?.Context);
-                await SysProxyHandler.UpdateSysProxy(_config, false);
-                await Task.Delay(1000);
-            });
+            await Task.Delay(1000);
             RxSchedulers.MainThreadScheduler.Schedule(async () =>
             {
                 var result = await StatusBarViewModel.TestServerAvailability();
@@ -817,11 +798,6 @@ public partial class MainWindowViewModel : MyReactiveObject
     private void SetReloadEnabled(bool enabled)
     {
         RxSchedulers.MainThreadScheduler.Schedule(() => BlReloadEnabled = enabled);
-    }
-
-    private async Task LoadCore(CoreConfigContext? mainContext, CoreConfigContext? preContext)
-    {
-        await CoreManager.Instance.LoadCore(mainContext, preContext);
     }
 
     #endregion core job

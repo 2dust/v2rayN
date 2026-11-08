@@ -209,6 +209,12 @@ public partial class StatusBarViewModel : MyReactiveObject
             .ObserveOn(RxSchedulers.MainThreadScheduler)
             .SubscribeAsync(async result => await SetListenerType(result));
 
+        // The proxy was changed elsewhere (a workflow step); reflect it without re-applying.
+        AppEvents.SysProxyChanged
+            .AsObservable()
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
+            .SubscribeAsync(async result => await ApplySystemProxyState(result, true));
+
         #endregion AppEvents
 
         _ = Init();
@@ -373,15 +379,22 @@ public partial class StatusBarViewModel : MyReactiveObject
         _config.SystemProxyItem.SysProxyType = type;
         await ChangeSystemProxyAsync(type, true);
         NoticeManager.Instance.SendMessageEx($"{ResUI.TipChangeSystemProxy} - {_config.SystemProxyItem.SysProxyType}");
-
-        SystemProxySelected = (int)_config.SystemProxyItem.SysProxyType;
         await ConfigHandler.SaveConfig(_config);
     }
 
     public async Task ChangeSystemProxyAsync(ESysProxyType type, bool blChange)
     {
         await SysProxyHandler.UpdateSysProxy(_config, false);
+        await ApplySystemProxyState(type, blChange);
+    }
 
+    /// <summary>
+    /// Reflect a proxy mode in the status bar without touching the OS proxy. Used after the
+    /// proxy was already applied elsewhere, e.g. by a workflow step.
+    /// </summary>
+    public async Task ApplySystemProxyState(ESysProxyType type, bool blChange)
+    {
+        SystemProxySelected = (int)type;
         BlSystemProxyClear = type == ESysProxyType.ForcedClear;
         BlSystemProxySet = type == ESysProxyType.ForcedChange;
         BlSystemProxyNothing = type == ESysProxyType.Unchanged;

@@ -15,6 +15,9 @@ public static class AppEvents
 
     public static readonly EventChannel<ESysProxyType> SysProxyChangeRequested = new();
 
+    /// <summary>Raised after the system proxy mode changed outside the status bar.</summary>
+    public static readonly EventChannel<ESysProxyType> SysProxyChanged = new();
+
     /// <summary>Raised after servers are added, removed or reordered outside the profile view.</summary>
     public static readonly EventChannel<RxVoid> ServerStateChanged = new();
 
