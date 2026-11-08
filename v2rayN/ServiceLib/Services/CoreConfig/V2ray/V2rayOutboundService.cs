@@ -394,17 +394,6 @@ public partial class CoreConfigV2rayService
                     };
 
                     var kcpFinalmask = new Finalmask4Ray();
-                    if (Global.KcpHeaderMaskMap.TryGetValue(headerType, out var header))
-                    {
-                        kcpFinalmask.udp =
-                        [
-                            new Mask4Ray
-                            {
-                                type = "mkcp-legacy",
-                                settings = new MaskSettings4Ray { header = header },
-                            }
-                        ];
-                    }
                     kcpFinalmask.udp ??= [];
                     if (kcpSeed.IsNullOrEmpty())
                     {
@@ -421,7 +410,17 @@ public partial class CoreConfigV2rayService
                             settings = new MaskSettings4Ray { value = kcpSeed },
                         });
                     }
-                    kcpFinalmask.udp?.Reverse();
+                    if (Global.KcpHeaderMaskMap.TryGetValue(headerType, out var header))
+                    {
+                        kcpFinalmask.udp =
+                        [
+                            new Mask4Ray
+                            {
+                                type = "mkcp-legacy",
+                                settings = new MaskSettings4Ray { header = header },
+                            },
+                        ];
+                    }
                     streamSettings.kcpSettings = kcpSettings;
                     streamSettings.finalmask = (JsonObject)JsonUtils.SerializeToNode(kcpFinalmask);
                     break;
@@ -522,16 +521,6 @@ public partial class CoreConfigV2rayService
                             : Global.Hysteria2DefaultHopInt).ToString();
                     var hy2Finalmask = new Finalmask4Ray();
                     var quicParams = new QuicParams4Ray();
-                    if (!ports.IsNullOrEmpty() &&
-                        (ports.Contains(':') || ports.Contains('-') || ports.Contains(',')))
-                    {
-                        var udpHop = new UdpHop4Ray
-                        {
-                            ports = ports.Replace(':', '-'),
-                            interval = hopInterval,
-                        };
-                        quicParams.udpHop = udpHop;
-                    }
                     if (upMbps > 0 || downMbps > 0)
                     {
                         quicParams.congestion = "brutal";
@@ -544,15 +533,6 @@ public partial class CoreConfigV2rayService
                     }
                     hy2Finalmask.quicParams = quicParams;
                     hy2Finalmask.udp ??= [];
-                    if (HyRealm.TryParse(protocolExtra.Hy2RealmUrl, out var realm)
-                        && realm is not null)
-                    {
-                        hy2Finalmask.udp.Add(new Mask4Ray
-                        {
-                            type = "realm",
-                            settings = new MaskSettings4Ray { url = realm.ToUriForFinalmask(), stunServers = realm.StunList },
-                        });
-                    }
                     if (!protocolExtra.SalamanderPass.IsNullOrEmpty())
                     {
                         var isGecko = !protocolExtra.GeckoMinPacketSize.IsNullOrEmpty() || !protocolExtra.GeckoMaxPacketSize.IsNullOrEmpty();
@@ -570,12 +550,35 @@ public partial class CoreConfigV2rayService
                             settings = salamanderSettings,
                         });
                     }
+                    if (HyRealm.TryParse(protocolExtra.Hy2RealmUrl, out var realm)
+                        && realm is not null)
+                    {
+                        hy2Finalmask.udp.Add(new Mask4Ray
+                        {
+                            type = "realm",
+                            settings = new MaskSettings4Ray { url = realm.ToUriForFinalmask(), stunServers = realm.StunList },
+                        });
+                    }
+                    else if (!ports.IsNullOrEmpty()
+                             && (ports.Contains(':') || ports.Contains('-') || ports.Contains(',')))
+                    {
+                        var udpHopFinalmask = new Mask4Ray
+                        {
+                            type = "udphop",
+                            settings = new MaskSettings4Ray
+                            {
+                                mode = "intervallocal,intervalremote",
+                                interval = hopInterval,
+                                remotePorts = ports.Replace(':', '-'),
+                            },
+                        };
+                        hy2Finalmask.udp.Add(udpHopFinalmask);
+                    }
                     streamSettings.hysteriaSettings = new()
                     {
                         version = 2,
                         auth = _node.Password,
                     };
-                    hy2Finalmask.udp?.Reverse();
                     streamSettings.finalmask = (JsonObject)JsonUtils.SerializeToNode(hy2Finalmask);
                     break;
 

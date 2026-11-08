@@ -319,6 +319,7 @@ public class StreamSettings4Ray
     public GrpcSettings4Ray? grpcSettings { get; set; }
 
     public HysteriaSettings4Ray? hysteriaSettings { get; set; }
+
     public MasqueSettings4Ray? masqueSettings { get; set; }
 
     public JsonObject? finalmask { get; set; }
@@ -461,12 +462,6 @@ public class MasqueWarpSettings4Ray
     public List<string>? address { get; set; }
 }
 
-public class UdpHop4Ray
-{
-    public string? ports { get; set; }
-    public string? interval { get; set; }
-}
-
 public class Finalmask4Ray
 {
     public List<Mask4Ray>? tcp { get; set; }
@@ -490,6 +485,12 @@ public class MaskSettings4Ray
     public string? url { get; set; }
     public List<string>? stunServers { get; set; }
     public string? packetSize { get; set; }
+
+    // udphop
+    public string? mode { get; set; }
+    public string? interval { get; set; }
+    // public List<string>? remoteIPs { get; set; }
+    public string? remotePorts { get; set; }
 
     // fragment
     public string? packets { get; set; }
@@ -517,7 +518,6 @@ public class QuicParams4Ray
     public string? congestion { get; set; }
     public string? brutalUp { get; set; }
     public string? brutalDown { get; set; }
-    public UdpHop4Ray? udpHop { get; set; }
 }
 
 public class AccountsItem4Ray
