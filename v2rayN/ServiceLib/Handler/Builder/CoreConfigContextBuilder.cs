@@ -125,30 +125,25 @@ public class CoreConfigContextBuilder
             appConfig.CoreBasicItem.SendThrough = string.Empty;
             context = context with { AppConfig = appConfig };
         }
-        var rawBindInterface = context.AppConfig.CoreBasicItem.BindInterface?.TrimEx();
-        if (!rawBindInterface.IsNullOrEmpty())
+        var bindInterface = context.AppConfig.CoreBasicItem.BindInterface?.TrimEx();
+        if (bindInterface.IsNotEmpty())
         {
-            var isAuto = NetworkUtils.IsAutoBindInterface(rawBindInterface);
-            if ((!isAuto && !Utils.ContainsInterfaceName(rawBindInterface))
+            if (NetworkUtils.IsAutoBindInterface(bindInterface))
+            {
+                bindInterface = NetworkUtils.GetDefaultPhysicalInterfaceName()?.TrimEx();
+            }
+
+            if (bindInterface.IsNullOrEmpty()
+                || !Utils.ContainsInterfaceName(bindInterface)
                 || !(context.IsTunEnabled || context.IsWindows))
             {
                 validatorResult.Warnings.Add(string.Format(ResUI.MsgInvalidProperty, ResUI.TbSettingsBindInterface));
-                var appConfig = JsonUtils.DeepCopy(context.AppConfig);
-                appConfig.CoreBasicItem.BindInterface = string.Empty;
-                context = context with { AppConfig = appConfig };
+                bindInterface = string.Empty;
             }
-            else if (isAuto)
-            {
-                var resolved = NetworkUtils.GetDefaultPhysicalInterfaceName();
-                if (resolved.IsNullOrEmpty())
-                {
-                    Logging.SaveLog("CoreConfigContextBuilder: Failed to resolve default physical network interface for AUTO bindInterface.");
-                    validatorResult.Warnings.Add(string.Format(ResUI.MsgInvalidProperty, $"{ResUI.TbSettingsBindInterface} ({Global.BindInterfaceAuto})"));
-                }
-                var appConfig = JsonUtils.DeepCopy(context.AppConfig);
-                appConfig.CoreBasicItem.BindInterface = resolved ?? string.Empty;
-                context = context with { AppConfig = appConfig };
-            }
+
+            var appConfig = JsonUtils.DeepCopy(context.AppConfig);
+            appConfig.CoreBasicItem.BindInterface = bindInterface;
+            context = context with { AppConfig = appConfig };
         }
 
         return new CoreConfigContextBuilderResult(context, validatorResult);
