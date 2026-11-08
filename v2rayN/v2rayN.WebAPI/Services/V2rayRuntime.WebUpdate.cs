@@ -179,11 +179,9 @@ public sealed partial class V2rayRuntime
         try
         {
             var repository = WebBuildIdentity.Current.Repository;
-            var downloader = new DownloadService();
+            using var downloader = await DownloadService.CreateDownloadServiceWithCheck(useProxy);
             var releaseJson = await downloader.TryDownloadString(
                 WebReleaseChannel.BuildReleaseIndexUrl(repository),
-                useProxy,
-                $"v2rayN.WebAPI/{WebBuildIdentity.Current.Version}",
                 cancellationToken);
             if (string.IsNullOrWhiteSpace(releaseJson) || releaseJson.Length > 8 * 1024 * 1024)
                 return WebUpdateReleaseCheck.Failed("The GitHub Web release index could not be downloaded or exceeded its size limit.");
@@ -199,8 +197,6 @@ public sealed partial class V2rayRuntime
 
             var manifestJson = await downloader.TryDownloadString(
                 selected.ManifestUrl,
-                useProxy,
-                $"v2rayN.WebAPI/{WebBuildIdentity.Current.Version}",
                 cancellationToken);
             if (string.IsNullOrWhiteSpace(manifestJson) || manifestJson.Length > 1024 * 1024)
                 return WebUpdateReleaseCheck.Failed("The Web release manifest could not be downloaded or exceeded its size limit.");
@@ -310,7 +306,7 @@ public sealed partial class V2rayRuntime
         try
         {
             PublishWebUpdateProgress("downloading", false, false, null, check.Manifest.Version, batch);
-            var downloader = new DownloadService();
+            using var downloader = await DownloadService.CreateDownloadServiceWithCheck(useProxy);
             var downloadFailure = new TaskCompletionSource<Exception>(TaskCreationOptions.RunContinuationsAsynchronously);
             downloader.Error += (_, args) => downloadFailure.TrySetResult(args.GetException());
             downloader.UpdateCompleted += (_, progress) =>
@@ -320,7 +316,7 @@ public sealed partial class V2rayRuntime
                 FileUrl = check.Package.Url,
                 FilePath = archivePath,
                 DisplayFileName = Path.GetFileName(archivePath),
-            }, useProxy, cancellationToken);
+            }, cancellationToken);
             if (downloadFailure.Task.IsCompletedSuccessfully)
                 throw new IOException("The v2rayN.WebAPI package download failed.", await downloadFailure.Task);
             if (!File.Exists(archivePath)) throw new IOException("The v2rayN.WebAPI package download did not produce an archive.");

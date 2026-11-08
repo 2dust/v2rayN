@@ -1,18 +1,17 @@
 namespace ServiceLib.Services;
 
-public partial class UpdateService(Config config, Func<bool, string, Task> updateFunc)
+public partial class UpdateService(DownloadService downloadService, Config config, Func<bool, string, Task> updateFunc)
 {
     private readonly Config? _config = config;
     private readonly Func<bool, string, Task>? _updateFunc = updateFunc;
     private static readonly string _tag = "UpdateService";
 
-    public async Task CheckUpdateGuiN(bool preRelease, bool blProxy = true, CancellationToken cancellationToken = default)
+    public async Task CheckUpdateGuiN(bool preRelease, CancellationToken cancellationToken = default)
     {
         var url = string.Empty;
         var fileName = string.Empty;
 
-        DownloadService downloadHandle = new();
-        downloadHandle.UpdateCompleted += (sender2, args) =>
+        downloadService.UpdateCompleted += (sender2, args) =>
         {
             if (args.Success)
             {
@@ -24,13 +23,13 @@ public partial class UpdateService(Config config, Func<bool, string, Task> updat
                 _ = UpdateFunc(false, args.Msg);
             }
         };
-        downloadHandle.Error += (sender2, args) =>
+        downloadService.Error += (sender2, args) =>
         {
             _ = UpdateFunc(false, args.GetException().Message);
         };
 
         await UpdateFunc(false, string.Format(ResUI.MsgStartUpdating, ECoreType.v2rayN));
-        var result = await CheckUpdateAsync(downloadHandle, ECoreType.v2rayN, preRelease, blProxy);
+        var result = await CheckUpdateAsync(ECoreType.v2rayN, preRelease, cancellationToken);
         if (result.Success)
         {
             await UpdateFunc(false, string.Format(ResUI.MsgParsingSuccessfully, ECoreType.v2rayN));
@@ -38,7 +37,7 @@ public partial class UpdateService(Config config, Func<bool, string, Task> updat
 
             url = result.Url!;
             fileName = Utils.GetTempPath(Utils.GetGuid());
-            await downloadHandle.DownloadFileAsync(new() { FileUrl = url, FilePath = fileName }, blProxy, cancellationToken);
+            await downloadService.DownloadFileAsync(new() { FileUrl = url, FilePath = fileName }, cancellationToken);
         }
         else
         {
@@ -46,13 +45,12 @@ public partial class UpdateService(Config config, Func<bool, string, Task> updat
         }
     }
 
-    public async Task CheckUpdateCore(ECoreType type, bool preRelease, bool blProxy = true, CancellationToken cancellationToken = default)
+    public async Task CheckUpdateCore(ECoreType type, bool preRelease, CancellationToken cancellationToken = default)
     {
         var url = string.Empty;
         var fileName = string.Empty;
 
-        DownloadService downloadHandle = new();
-        downloadHandle.UpdateCompleted += (sender2, args) =>
+        downloadService.UpdateCompleted += (sender2, args) =>
         {
             if (args.Success)
             {
@@ -73,13 +71,13 @@ public partial class UpdateService(Config config, Func<bool, string, Task> updat
                 _ = UpdateFunc(false, args.Msg);
             }
         };
-        downloadHandle.Error += (sender2, args) =>
+        downloadService.Error += (sender2, args) =>
         {
             _ = UpdateFunc(false, args.GetException().Message);
         };
 
         await UpdateFunc(false, string.Format(ResUI.MsgStartUpdating, type));
-        var result = await CheckUpdateAsync(downloadHandle, type, preRelease, blProxy);
+        var result = await CheckUpdateAsync(type, preRelease, cancellationToken);
         if (result.Success)
         {
             await UpdateFunc(false, string.Format(ResUI.MsgParsingSuccessfully, type));
@@ -88,7 +86,7 @@ public partial class UpdateService(Config config, Func<bool, string, Task> updat
             url = result.Url!;
             var ext = url.Contains(".tar.gz") ? ".tar.gz" : Path.GetExtension(url);
             fileName = Utils.GetTempPath(Utils.GetGuid() + ext);
-            await downloadHandle.DownloadFileAsync(new() { FileUrl = url, FilePath = fileName }, blProxy, cancellationToken);
+            await downloadService.DownloadFileAsync(new() { FileUrl = url, FilePath = fileName }, cancellationToken);
         }
         else
         {
@@ -99,19 +97,18 @@ public partial class UpdateService(Config config, Func<bool, string, Task> updat
         }
     }
 
-    public async Task<UpdateResult> CheckHasUpdateOnly(ECoreType type, bool preRelease, bool blProxy = true, CancellationToken cancellationToken = default)
+    public async Task<UpdateResult> CheckHasUpdateOnly(ECoreType type, bool preRelease, CancellationToken cancellationToken = default)
     {
         if (!CoreInfoManager.Instance.IsCheckUpdateSupported(type))
         {
             return new UpdateResult(false, ResUI.MsgNotSupport);
         }
 
-        var downloadHandle = new DownloadService();
         var checkPreRelease = CoreInfoManager.Instance.GetCheckPreRelease(type, preRelease);
-        return await CheckUpdateAsync(downloadHandle, type, checkPreRelease, blProxy, cancellationToken);
+        return await CheckUpdateAsync(type, checkPreRelease, cancellationToken);
     }
 
-    public async Task<List<string>> CheckHasUpdateOnlyAll(bool blProxy = true, CancellationToken cancellationToken = default)
+    public async Task<List<string>> CheckHasUpdateOnlyAll(CancellationToken cancellationToken = default)
     {
         var msgs = new List<string>();
         foreach (var type in CoreInfoManager.Instance.GetCheckUpdateCoreTypes())
@@ -122,7 +119,7 @@ public partial class UpdateService(Config config, Func<bool, string, Task> updat
             }
 
             var preRelease = _config.CheckUpdateItem.CheckPreReleaseCoreTypes?.Contains(type.ToString()) ?? false;
-            var result = await CheckHasUpdateOnly(type, preRelease, blProxy, cancellationToken);
+            var result = await CheckHasUpdateOnly(type, preRelease, cancellationToken);
             if (result.Success && result.Version != null)
             {
                 var msg = string.Format(ResUI.MsgCheckUpdateHasNewVersion, type, result.Version);
@@ -137,7 +134,7 @@ public partial class UpdateService(Config config, Func<bool, string, Task> updat
         return msgs;
     }
 
-    public async Task UpdateGeoFileAll(bool blProxy = true, CancellationToken cancellationToken = default)
+    public async Task UpdateGeoFileAll(CancellationToken cancellationToken = default)
     {
         var requests = new List<FileDownloadRequest>();
         requests.AddRange(GetGeoFilesRequest());
@@ -145,17 +142,17 @@ public partial class UpdateService(Config config, Func<bool, string, Task> updat
         requests.AddRange(await GetSrsFileAllRequest());
         // NOTE: srs files are more small, so we reverse the order to ensure a good download experience for the user.
         requests.Reverse();
-        await DownloadGeoFiles(requests, blProxy, cancellationToken);
+        await DownloadGeoFiles(requests, cancellationToken);
         await UpdateFunc(true, string.Format(ResUI.MsgDownloadGeoFileSuccessfully, "geo"));
     }
 
     #region CheckUpdate private
 
-    private async Task<UpdateResult> CheckUpdateAsync(DownloadService downloadHandle, ECoreType type, bool preRelease, bool blProxy, CancellationToken cancellationToken = default)
+    private async Task<UpdateResult> CheckUpdateAsync(ECoreType type, bool preRelease, CancellationToken cancellationToken = default)
     {
         try
         {
-            var result = await GetRemoteVersion(downloadHandle, type, preRelease, blProxy, cancellationToken);
+            var result = await GetRemoteVersion(type, preRelease, cancellationToken);
             if (!result.Success || result.Version is null)
             {
                 return result;
@@ -170,14 +167,14 @@ public partial class UpdateService(Config config, Func<bool, string, Task> updat
         }
     }
 
-    private async Task<UpdateResult> GetRemoteVersion(DownloadService downloadHandle, ECoreType type, bool preRelease, bool blProxy, CancellationToken cancellationToken = default)
+    private async Task<UpdateResult> GetRemoteVersion(ECoreType type, bool preRelease, CancellationToken cancellationToken = default)
     {
         var coreInfo = CoreInfoManager.Instance.GetCoreInfo(type);
         var tagName = string.Empty;
         if (preRelease || coreInfo?.LockedMaxVersion != null)
         {
             var url = coreInfo?.ReleaseApiUrl;
-            var result = await downloadHandle.TryDownloadString(url, blProxy, Global.AppName, cancellationToken);
+            var result = await downloadService.TryDownloadString(url, cancellationToken);
             if (result.IsNullOrEmpty())
             {
                 return new UpdateResult(false, "");
@@ -209,7 +206,7 @@ public partial class UpdateService(Config config, Func<bool, string, Task> updat
         else
         {
             var url = Path.Combine(coreInfo.Url, "latest");
-            var lastUrl = await downloadHandle.UrlRedirectAsync(url, blProxy, cancellationToken);
+            var lastUrl = await downloadService.UrlRedirectAsync(url, cancellationToken);
             if (lastUrl == null)
             {
                 return new UpdateResult(false, "");
@@ -535,7 +532,7 @@ public partial class UpdateService(Config config, Func<bool, string, Task> updat
         };
     }
 
-    private async Task DownloadGeoFiles(List<FileDownloadRequest> requests, bool blProxy, CancellationToken cancellationToken = default)
+    private async Task DownloadGeoFiles(List<FileDownloadRequest> requests, CancellationToken cancellationToken = default)
     {
         var tmpFilePathDict = new Dictionary<string, string>();
         var tmpFileRequests = new List<FileDownloadRequest>();
@@ -549,8 +546,7 @@ public partial class UpdateService(Config config, Func<bool, string, Task> updat
             });
         }
 
-        DownloadService downloadHandle = new();
-        downloadHandle.UpdateCompleted += (sender2, args) =>
+        downloadService.UpdateCompleted += (sender2, args) =>
         {
             if (args.Success)
             {
@@ -585,12 +581,12 @@ public partial class UpdateService(Config config, Func<bool, string, Task> updat
                 _ = UpdateFunc(false, args.Msg);
             }
         };
-        downloadHandle.Error += (sender2, args) =>
+        downloadService.Error += (sender2, args) =>
         {
             _ = UpdateFunc(false, args.GetException().Message);
         };
 
-        await downloadHandle.DownloadSmallFilesAsync(tmpFileRequests, blProxy, cancellationToken);
+        await downloadService.DownloadSmallFilesAsync(tmpFileRequests, cancellationToken);
     }
 
     #endregion Geo private

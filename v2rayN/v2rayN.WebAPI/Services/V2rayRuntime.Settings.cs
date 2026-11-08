@@ -854,8 +854,8 @@ public sealed partial class V2rayRuntime
             return OperationView.Fail("routing_url_invalid", "routing.urlInvalid");
         }
 
-        var download = new DownloadService();
-        var content = await download.TryDownloadString(uri.AbsoluteUri, true, string.Empty, cancellationToken);
+        using var download = await DownloadService.CreateDownloadServiceWithCheck();
+        var content = await download.TryDownloadString(uri.AbsoluteUri, cancellationToken);
         if (string.IsNullOrWhiteSpace(content))
         {
             return OperationView.Fail("routing_url_download_failed", "routing.urlImportFailedGeneric");
@@ -1019,10 +1019,18 @@ public sealed partial class V2rayRuntime
             var proxy = preset == EPresetType.Default
                 ? null
                 : await GetRegionalPresetProxyAsync(cancellationToken);
+            // TODO
             var stager = new RegionalPresetStager(async (url, webProxy, token) =>
             {
-                var download = new DownloadService();
-                return await download.TryDownloadString(url, webProxy, string.Empty, token);
+                var handler = webProxy is null
+                    ? HttpClientHelper.CreateSocketsHttpHandler(false, new())
+                    : HttpClientHelper.CreateProxySocketsHttpHandler(webProxy, new());
+                using var download = new DownloadService
+                {
+                    Handler = handler,
+                    DisposeHandler = true,
+                };
+                return await download.TryDownloadString(url, token);
             });
 
             return await RegionalPresetWorkflow.RunAsync(

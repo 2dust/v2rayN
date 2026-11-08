@@ -101,7 +101,7 @@ public class TaskManager
 
         foreach (var item in lstSubs)
         {
-            await SubscriptionHandler.UpdateProcess(_config, item.Id, true, async (success, msg) =>
+            var handler = new SubscriptionHandler(_config, true, async (success, msg) =>
             {
                 await _updateFunc?.Invoke(success, msg);
                 if (success)
@@ -109,6 +109,7 @@ public class TaskManager
                     Logging.SaveLog($"Update subscription end. {msg}");
                 }
             });
+            await handler.UpdateProcess(item.Id);
             item.UpdateTime = updateTime;
             await ConfigHandler.AddSubItem(_config, item);
             await Task.Delay(1000);
@@ -121,7 +122,8 @@ public class TaskManager
         {
             Logging.SaveLog("Execute update geo files");
 
-            await new UpdateService(_config, async (success, msg) =>
+            using var downloadService = await DownloadService.CreateDownloadServiceWithCheck(_config.CheckUpdateItem.UpdateViaProxy);
+            await new UpdateService(downloadService, _config, async (success, msg) =>
             {
                 await _updateFunc?.Invoke(false, msg);
             }).UpdateGeoFileAll();
@@ -132,9 +134,10 @@ public class TaskManager
     {
         Logging.SaveLog("Execute check update");
 
-        var updateService = new UpdateService(_config, async (success, msg) => await Task.CompletedTask);
+        using var downloadService = await DownloadService.CreateDownloadServiceWithCheck(_config.CheckUpdateItem.UpdateViaProxy);
+        var updateService = new UpdateService(downloadService, _config, async (success, msg) => await Task.CompletedTask);
 
-        var msgs = await updateService.CheckHasUpdateOnlyAll(_config.CheckUpdateItem.UpdateViaProxy);
+        var msgs = await updateService.CheckHasUpdateOnlyAll();
         foreach (var msg in msgs)
         {
             await _updateFunc?.Invoke(false, msg);
