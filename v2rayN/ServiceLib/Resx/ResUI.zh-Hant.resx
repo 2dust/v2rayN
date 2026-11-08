@@ -1909,14 +1909,26 @@
   <data name="menuAddMasqueServer" xml:space="preserve">
     <value>新增 [MASQUE] 節點</value>
   </data>
-  <data name="menuColumns" xml:space="preserve">
-    <value>欄位顯示</value>
+  <data name="menuShowColumns" xml:space="preserve">
+    <value>顯示欄位</value>
   </data>
   <data name="TbWarp" xml:space="preserve">
     <value>Warp</value>
   </data>
   <data name="LvPreResolve" xml:space="preserve">
     <value>預解析節點網域名稱</value>
+  </data>
+  <data name="menuFreezeToThisColumn" xml:space="preserve">
+    <value>凍結至此欄</value>
+  </data>
+  <data name="menuUnfreezeAllColumns" xml:space="preserve">
+    <value>取消所有凍結</value>
+  </data>
+  <data name="menuCurrentlyFrozenColumns" xml:space="preserve">
+    <value>當前已凍結前 {0} 欄</value>
+  </data>
+  <data name="menuHideThisColumn" xml:space="preserve">
+    <value>隱藏此欄</value>
   </data>
   <data name="TbFakeIPv6" xml:space="preserve">
     <value>IPv6 FakeIP</value>
