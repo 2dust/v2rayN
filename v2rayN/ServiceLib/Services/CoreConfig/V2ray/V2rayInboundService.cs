@@ -79,7 +79,7 @@ public partial class CoreConfigV2rayService
                     tunInbound.settings.gateway.Add(address6);
                 }
 
-                var bindInterface = _config.CoreBasicItem.BindInterface?.TrimEx();
+                var bindInterface = NetworkUtils.GetRealBindInterfaceName(_config.CoreBasicItem.BindInterface);
                 if (!bindInterface.IsNullOrEmpty())
                 {
                     tunInbound.settings.autoOutboundsInterface = bindInterface;

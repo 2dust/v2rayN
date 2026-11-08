@@ -60,7 +60,7 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
         cmbRoutingRulesSourceUrl.ItemsSource = Global.RoutingRulesSources;
         cmbIPAPIUrl.ItemsSource = Global.IPAPIUrls;
         cmbRootCertificateProvider.ItemsSource = Global.RootCertProviders;
-        cmbbindInterface.ItemsSource = NetworkUtils.GetLocalNetworkInterfaceNames().AppendEmpty();
+        cmbbindInterface.ItemsSource = NetworkUtils.GetBindInterfaceNames();
 
         cmbMainGirdOrientation.ItemsSource = Utils.GetEnumNames<EGirdOrientation>();
 

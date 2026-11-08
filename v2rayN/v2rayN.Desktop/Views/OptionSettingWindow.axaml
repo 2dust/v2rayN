@@ -444,7 +444,7 @@
                             x:Name="cmbbindInterface"
                             Grid.Row="22"
                             Grid.Column="1"
-                            Width="300"
+                            Width="200"
                             Margin="{StaticResource Margin4}"
                             IsEditable="True" />
                         <TextBlock

@@ -121,17 +121,28 @@ public class CoreConfigContextBuilder
             && !Utils.IsLocalIP(context.AppConfig.CoreBasicItem.SendThrough))
         {
             validatorResult.Warnings.Add(string.Format(ResUI.MsgInvalidProperty, ResUI.TbSettingsSendThrough));
-            var appConfig = JsonUtils.DeepCopy(config);
+            var appConfig = JsonUtils.DeepCopy(context.AppConfig);
             appConfig.CoreBasicItem.SendThrough = string.Empty;
             context = context with { AppConfig = appConfig };
         }
-        if (!context.AppConfig.CoreBasicItem.BindInterface.IsNullOrEmpty()
-            && (!Utils.ContainsInterfaceName(context.AppConfig.CoreBasicItem.BindInterface)
-            || !(context.IsTunEnabled || context.IsWindows)))
+        var bindInterface = context.AppConfig.CoreBasicItem.BindInterface?.TrimEx();
+        if (bindInterface.IsNotEmpty())
         {
-            validatorResult.Warnings.Add(string.Format(ResUI.MsgInvalidProperty, ResUI.TbSettingsBindInterface));
-            var appConfig = JsonUtils.DeepCopy(config);
-            appConfig.CoreBasicItem.BindInterface = string.Empty;
+            if (NetworkUtils.IsAutoBindInterface(bindInterface))
+            {
+                bindInterface = NetworkUtils.GetDefaultPhysicalInterfaceName()?.TrimEx();
+            }
+
+            if (bindInterface.IsNullOrEmpty()
+                || !Utils.ContainsInterfaceName(bindInterface)
+                || !(context.IsTunEnabled || context.IsWindows))
+            {
+                validatorResult.Warnings.Add(string.Format(ResUI.MsgInvalidProperty, ResUI.TbSettingsBindInterface));
+                bindInterface = string.Empty;
+            }
+
+            var appConfig = JsonUtils.DeepCopy(context.AppConfig);
+            appConfig.CoreBasicItem.BindInterface = bindInterface;
             context = context with { AppConfig = appConfig };
         }
 
