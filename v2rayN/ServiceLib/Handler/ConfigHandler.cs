@@ -102,6 +102,21 @@ public static class ConfigHandler
         config.UiItem ??= new();
         config.UiItem.MainColumnItem ??= [];
         config.UiItem.WindowSizeItem ??= [];
+        if (config.UiItem.FrozenColumnCount == null)
+        {
+            var lvColumnItem = config.UiItem.MainColumnItem.OrderBy(t => t.Index).ToList();
+            if (lvColumnItem.Count == 0
+                || (lvColumnItem.Count >= 2
+                    && lvColumnItem[0].Name.Equals("ConfigType")
+                    && lvColumnItem[1].Name.Equals("Remarks")))
+            {
+                config.UiItem.FrozenColumnCount = 2;
+            }
+            else
+            {
+                config.UiItem.FrozenColumnCount = 0;
+            }
+        }
 
         if (config.UiItem.CurrentLanguage.IsNullOrEmpty())
         {
