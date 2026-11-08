@@ -12,12 +12,17 @@ MIN_KERNEL="6.12"
 PKGROOT="v2rayN-publish"
 PROJECT_HINT="v2rayN.Desktop/v2rayN.Desktop.csproj"
 OUTPUT_DIR="${HOME}/debbuild"
-DOTNET_TFM="net10.0"
-DOTNET_LOONGARCH_VERSION="10.0.111"
-DOTNET_LOONGARCH_TAG="v10.0.111-loongarch64"
-DOTNET_LOONGARCH_BASE="https://github.com/loongson/dotnet/releases/download"
-DOTNET_LOONGARCH_FILE="dotnet-sdk-${DOTNET_LOONGARCH_VERSION}-linux-loongarch64.tar.gz"
-DOTNET_SDK_URL="${DOTNET_LOONGARCH_BASE}/${DOTNET_LOONGARCH_TAG}/${DOTNET_LOONGARCH_FILE}"
+
+NUGET_CACHE_DIR=""
+DOTNET_SDK_DIR=""
+
+DOTNET_NUPKG_BASE="${DOTNET_NUPKG_BASE:-https://github.com/autorepobot/dotnet-nupkg-prebuild/releases/download}"
+SKIASHARP_BASE="${SKIASHARP_BASE:-https://github.com/autorepobot/SkiaSharp-ppc64le/releases/download}"
+SkiaSharp_VERSION="${SkiaSharp_VERSION:-3.119.4}"
+HarfBuzzSharp_VERSION="${HarfBuzzSharp_VERSION:-8.3.1.5}"
+
+DOTNET_SDK_VERSION="${DOTNET_SDK_VERSION:-10.0.114}"
+DOTNET_X86_VERSION="${DOTNET_X86_VERSION:-10.0.114}"
 
 OS_ID=""
 OS_NAME=""
@@ -26,12 +31,23 @@ HOST_ARCH=""
 SCRIPT_DIR=""
 PROJECT=""
 VERSION=""
+BUILT_ALL=0
+
+X86_RID="linux-x86"
+X86_DEB_ARCH="i386"
 
 declare -a BUILT_DEBS=()
 
 die() {
   echo "$*" >&2
   exit 1
+}
+
+get_runtime_version() {
+  local sdk_ver="$1"
+  local prefix="${sdk_ver%.*}"
+  local patch="${sdk_ver##*.}"
+  echo "${prefix}.${patch#1}"
 }
 
 parse_args() {
@@ -84,8 +100,8 @@ This script only supports: Debian."
   esac
 
   case "$HOST_ARCH" in
-    loongarch64) ;;
-    *) die "Only supports loongarch64" ;;
+    x86_64|aarch64) ;;
+    *) die "This script cross-compiles linux-x86 from x86_64 or aarch64 only." ;;
   esac
 
   current_kernel="$(uname -r)"
@@ -93,11 +109,12 @@ This script only supports: Debian."
 
   [[ "$lowest" == "$MIN_KERNEL" ]] || die "Kernel $current_kernel is below $MIN_KERNEL"
   echo "[OK] Kernel $current_kernel verified."
+  echo "[OK] Host architecture: $HOST_ARCH"
+  echo "[OK] Target: $X86_RID (Debian $X86_DEB_ARCH)"
 }
 
 install_dependencies() {
   local install_ok=0
-  local tmp_dotnet=""
 
   mkdir -p "$OUTPUT_DIR"
 
@@ -105,26 +122,52 @@ install_dependencies() {
     sudo apt-get update
     sudo apt-get -y install \
       curl unzip tar jq rsync ca-certificates git dpkg-dev fakeroot file \
-      desktop-file-utils xdg-utils wget gcc make pkg-config \
-      libicu-dev libssl-dev libfontconfig1 libfreetype6 zlib1g
+      desktop-file-utils xdg-utils wget python3
 
-    mkdir -p "$HOME/.dotnet"
-    tmp_dotnet="$(mktemp -d)"
-    curl -fL "$DOTNET_SDK_URL" -o "$tmp_dotnet/$DOTNET_LOONGARCH_FILE"
-    tar -C "$HOME/.dotnet" -xzf "$tmp_dotnet/$DOTNET_LOONGARCH_FILE"
-    rm -rf "$tmp_dotnet"
+    sudo dpkg --add-architecture "$X86_DEB_ARCH" || true
+    sudo apt-get update
+    sudo apt-get -y install \
+      "libc6:${X86_DEB_ARCH}" \
+      "libgcc-s1:${X86_DEB_ARCH}" \
+      "libstdc++6:${X86_DEB_ARCH}" \
+      "zlib1g:${X86_DEB_ARCH}" \
+      "libfontconfig1:${X86_DEB_ARCH}" \
+      "libfreetype6:${X86_DEB_ARCH}"
+
+    wget -q https://dot.net/v1/dotnet-install.sh
+    chmod +x dotnet-install.sh
+    ./dotnet-install.sh --version "$DOTNET_SDK_VERSION" --install-dir "$HOME/.dotnet"
 
     export PATH="$HOME/.dotnet:$PATH"
     export DOTNET_ROOT="$HOME/.dotnet"
-    
+
     dotnet --info >/dev/null 2>&1 && install_ok=1
   fi
 
   if [[ "$install_ok" -ne 1 ]]; then
     echo "Could not auto-install dependencies for '$OS_ID'. Make sure these are available:"
-    echo "dotnet-loongarch SDK, curl, unzip, tar, rsync, git, gcc, make, dpkg-deb, fakeroot, libicu-dev, libssl-dev"
+    echo "dotnet-sdk 10.x, i386 runtime libraries (libc6, libgcc-s1, libstdc++6, zlib1g, libfontconfig1, libfreetype6)"
+    echo "curl, unzip, tar, rsync, git, dpkg-deb, desktop-file-utils, xdg-utils"
     exit 1
   fi
+}
+
+prepare_deb_target_arch() {
+  local target_arch="$X86_DEB_ARCH"
+
+  echo "[+] Prepare Debian multiarch environment for $X86_RID: $target_arch"
+
+  sudo dpkg --add-architecture "$target_arch" || true
+  sudo apt-get update
+  sudo apt-get -y install \
+    "libc6:${target_arch}" \
+    "libgcc-s1:${target_arch}" \
+    "libstdc++6:${target_arch}" \
+    "zlib1g:${target_arch}" \
+    "libfontconfig1:${target_arch}" \
+    "libfreetype6:${target_arch}"
+
+  echo "[OK] Debian target libraries prepared for $target_arch"
 }
 
 prepare_workspace() {
@@ -220,8 +263,6 @@ apply_channel_or_keep() {
     VERSION="${VERSION#v}"
     return 0
   fi
-  git remote add upstream https://github.com/2dust/v2rayN || true
-  git fetch upstream
 
   echo "[*] Resolving ${ch} tag from GitHub releases..."
 
@@ -261,13 +302,122 @@ resolve_version() {
   echo "[*] GUI version resolved as: ${VERSION}"
 }
 
+download_nuget_packages() {
+  NUGET_CACHE_DIR="$(mktemp -d)"
+
+  local x86_rt
+  x86_rt="$(get_runtime_version "$DOTNET_X86_VERSION")"
+
+  local urls=(
+    "${DOTNET_NUPKG_BASE}/${x86_rt}/Microsoft.AspNetCore.App.Runtime.linux-x86.${x86_rt}.nupkg"
+    "${DOTNET_NUPKG_BASE}/${x86_rt}/Microsoft.NETCore.App.Host.linux-x86.${x86_rt}.nupkg"
+    "${DOTNET_NUPKG_BASE}/${x86_rt}/Microsoft.NETCore.App.Runtime.linux-x86.${x86_rt}.nupkg"
+    "${SKIASHARP_BASE}/v${SkiaSharp_VERSION}/SkiaSharp.NativeAssets.Linux.${SkiaSharp_VERSION}.nupkg"
+    "${SKIASHARP_BASE}/v${SkiaSharp_VERSION}/HarfBuzzSharp.NativeAssets.Linux.${HarfBuzzSharp_VERSION}.nupkg"
+  )
+
+  echo "[+] Downloading prebuilt NuGet packages to: $NUGET_CACHE_DIR"
+  local u pkg_name
+  for u in "${urls[@]}"; do
+    pkg_name="${u##*/}"
+    echo "  -> $pkg_name"
+    curl -fL "$u" -o "$NUGET_CACHE_DIR/$pkg_name" || {
+      echo "[!] Failed to download $u" >&2
+      rm -rf "$NUGET_CACHE_DIR"
+      NUGET_CACHE_DIR=""
+      return 1
+    }
+  done
+
+  echo "[OK] Prebuilt NuGet packages ready in $NUGET_CACHE_DIR"
+}
+
+prepare_dotnet_sdk() {
+  echo "[+] Using host .NET SDK for cross-target $X86_RID"
+  dotnet --info
+  DOTNET_SDK_DIR="${DOTNET_ROOT:-$(dirname "$(command -v dotnet)")}"
+}
+
+patch_x86_sdk() {
+  local sdk_props=""
+  local sdk_version=""
+
+  sdk_version="$(dotnet --version)"
+  sdk_props="$DOTNET_ROOT/sdk/${sdk_version}/Microsoft.NETCoreSdk.BundledVersions.props"
+
+  [[ -f "$sdk_props" ]] || die "SDK props file not found: $sdk_props"
+
+  echo "[+] Patching SDK: $sdk_props"
+
+  python3 - "$sdk_props" <<'PY'
+import sys
+from pathlib import Path
+
+path = Path(sys.argv[1])
+text = path.read_text()
+old = text
+
+
+def add_attr_to_known_blocks(text, marker, attr):
+    start = 0
+    while True:
+        start = text.find(marker, start)
+        if start == -1:
+            break
+
+        end = text.find('/>', start)
+        if end == -1:
+            break
+
+        block = text[start:end]
+        attr_pos = block.find(attr)
+        if attr_pos != -1:
+            value_start = attr_pos + len(attr)
+            value_end = block.find('"', value_start)
+            if value_end != -1:
+                value = block[value_start:value_end]
+                values = value.split(';')
+                if 'linux-x86' not in values:
+                    value = value + ';linux-x86'
+                    block = block[:value_start] + value + block[value_end:]
+                    text = text[:start] + block + text[end:]
+                    end = start + len(block)
+        start = end + 2
+    return text
+
+for framework in ('Microsoft.NETCore.App', 'Microsoft.AspNetCore.App'):
+    text = add_attr_to_known_blocks(
+        text,
+        f'<KnownFrameworkReference Include="{framework}"',
+        'RuntimePackRuntimeIdentifiers="',
+    )
+
+text = add_attr_to_known_blocks(
+    text,
+    '<KnownAppHostPack',
+    'AppHostRuntimeIdentifiers="',
+)
+
+if text == old:
+    raise SystemExit('ERROR: No SDK RuntimePack/AppHost mapping was patched')
+
+path.write_text(text)
+PY
+
+  echo "===== Verify RuntimePackRuntimeIdentifiers ====="
+  grep -n 'RuntimePackRuntimeIdentifiers=' "$sdk_props" | grep 'linux-x86'
+
+  echo "===== Verify AppHostRuntimeIdentifiers ====="
+  grep -n 'AppHostRuntimeIdentifiers=' "$sdk_props" | grep 'linux-x86'
+}
+
 xray_url_for_rid() {
   local rid="$1"
   local ver="$2"
 
   case "$rid" in
-    linux-loongarch64) echo "https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-loong64.zip" ;;
-    *)                 return 1 ;;
+    linux-x86) echo "https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-32.zip" ;;
+    *)         return 1 ;;
   esac
 }
 
@@ -276,8 +426,8 @@ singbox_url_for_rid() {
   local ver="$2"
 
   case "$rid" in
-    linux-loongarch64) echo "https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-loong64.tar.gz" ;;
-    *)                 return 1 ;;
+    linux-x86) echo "https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-386.tar.gz" ;;
+    *)         return 1 ;;
   esac
 }
 
@@ -285,8 +435,8 @@ bundle_url_for_rid() {
   local rid="$1"
 
   case "$rid" in
-    linux-loongarch64) echo "https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-loong64.zip" ;;
-    *)                 return 1 ;;
+    linux-x86) echo "https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-86.zip" ;;
+    *)         return 1 ;;
   esac
 }
 
@@ -307,7 +457,7 @@ download_xray() {
   fi
 
   [[ -n "$ver" ]] || { echo "[xray] Failed to get version"; return 1; }
-  url="$(xray_url_for_rid "$rid" "$ver")" || { echo "[xray] Unsupported RID: $rid"; return 1; }
+  url="$(xray_url_for_rid "$rid" "$ver")" || { echo "[xray] Unsupported RID for upstream Xray: $rid (skipped)"; return 0; }
 
   echo "[+] Download xray: $url"
 
@@ -479,27 +629,38 @@ stage_runtime_assets() {
 }
 
 describe_target() {
-  local short="$1"
-
-  case "$short" in
-    loongarch64) printf '%s\n%s\n' "linux-loongarch64" "loong64" ;;
-    *)           echo "Unknown arch '$short' (use loongarch64)" >&2; return 1 ;;
-  esac
+  printf '%s\n%s\n' "$X86_RID" "$X86_DEB_ARCH"
 }
 
 publish_binary() {
   local rid="$1"
 
+  patch_x86_sdk
   dotnet clean "$PROJECT" -c Release
   rm -rf "$(dirname "$PROJECT")/bin/Release/net10.0" || true
-  dotnet restore "$PROJECT"
-  dotnet publish "$PROJECT" -c Release -r "$rid" -p:PublishSingleFile=false -p:SelfContained=true
+
+  dotnet restore "$PROJECT" \
+    -r "$rid" \
+    --source "$NUGET_CACHE_DIR" \
+    --source "https://api.nuget.org/v3/index.json" \
+    -p:SelfContained=true \
+    -p:EnableWindowsTargeting=true \
+    --force-evaluate
+
+  dotnet publish "$PROJECT" \
+    -c Release \
+    -r "$rid" \
+    --source "$NUGET_CACHE_DIR" \
+    --source "https://api.nuget.org/v3/index.json" \
+    -p:PublishSingleFile=false \
+    -p:SelfContained=true \
+    --no-restore
 }
 
 write_launcher_file() {
   local stage="$1"
 
-  install -m 755 /dev/stdin "$stage/usr/bin/v2rayn" <<'EOF'
+  install -m 755 /dev/stdin "$stage/usr/bin/v2rayn" <<'EOF_LAUNCHER'
 #!/usr/bin/env bash
 set -euo pipefail
 DIR="/opt/v2rayN"
@@ -518,13 +679,13 @@ done
 echo "v2rayN launcher: no executable found in $DIR" >&2
 ls -l "$DIR" >&2 || true
 exit 1
-EOF
+EOF_LAUNCHER
 }
 
 write_desktop_file() {
   local stage="$1"
 
-  install -m 644 /dev/stdin "$stage/usr/share/applications/v2rayn.desktop" <<'EOF'
+  install -m 644 /dev/stdin "$stage/usr/share/applications/v2rayn.desktop" <<'EOF_DESKTOP'
 [Desktop Entry]
 Type=Application
 Name=v2rayN
@@ -533,13 +694,13 @@ Exec=v2rayn
 Icon=v2rayn
 Terminal=false
 Categories=Network;
-EOF
+EOF_DESKTOP
 }
 
 write_maintainer_scripts() {
   local debian_dir="$1"
 
-  install -m 755 /dev/stdin "$debian_dir/postinst" <<'EOF'
+  install -m 755 /dev/stdin "$debian_dir/postinst" <<'EOF_POSTINST'
 #!/bin/sh
 set -e
 update-desktop-database /usr/share/applications >/dev/null 2>&1 || true
@@ -547,9 +708,9 @@ if command -v gtk-update-icon-cache >/dev/null 2>&1; then
   gtk-update-icon-cache -f /usr/share/icons/hicolor >/dev/null 2>&1 || true
 fi
 exit 0
-EOF
+EOF_POSTINST
 
-  install -m 755 /dev/stdin "$debian_dir/postrm" <<'EOF'
+  install -m 755 /dev/stdin "$debian_dir/postrm" <<'EOF_POSTRM'
 #!/bin/sh
 set -e
 update-desktop-database /usr/share/applications >/dev/null 2>&1 || true
@@ -557,7 +718,7 @@ if command -v gtk-update-icon-cache >/dev/null 2>&1; then
   gtk-update-icon-cache -f /usr/share/icons/hicolor >/dev/null 2>&1 || true
 fi
 exit 0
-EOF
+EOF_POSTRM
 }
 
 package_binary() {
@@ -599,10 +760,12 @@ package_binary() {
   write_desktop_file "$stage"
   write_maintainer_scripts "$debian_dir"
 
-  extra_depends="libc6 (>= 2.39), fontconfig (>= 2.15.0), desktop-file-utils (>= 0.26), xdg-utils (>= 1.1.3), coreutils (>= 9.4), bash (>= 5.2.21), libfreetype6 (>= 2.13)"
-  
+  prepare_deb_target_arch
+
+  extra_depends="libc6 (>= 2.36), fontconfig (>= 2.14.1), desktop-file-utils (>= 0.26), xdg-utils (>= 1.1.3), coreutils (>= 9.1), bash (>= 5.2.15), libfreetype6 (>= 2.12)"
+
   mkdir -p "$workdir/debian"
-  cat > "$workdir/debian/control" <<EOF
+  cat > "$workdir/debian/control" <<EOF_CONTROL
 Source: v2rayn
 Section: net
 Priority: optional
@@ -612,7 +775,7 @@ Standards-Version: 4.7.0
 Package: v2rayn
 Architecture: ${deb_arch}
 Description: v2rayN
-EOF
+EOF_CONTROL
 
   multiarch="$(dpkg-architecture -a"$deb_arch" -qDEB_HOST_MULTIARCH)"
   sys_libdir="/lib/$multiarch"
@@ -633,7 +796,7 @@ EOF
         -l"$sys_usrlibdir" \
         -T"$debian_dir/substvars" \
         "${ELF_FILES[@]}"
-    ) >/dev/null 2>&1 || true
+    ) || true
   fi
 
   shlibs_depends="$(sed -n 's/^shlibs:Depends=//p' "$debian_dir/substvars" | head -n1 || true)"
@@ -648,7 +811,7 @@ EOF
     final_depends="${extra_depends}"
   fi
 
-  cat > "$debian_dir/control" <<EOF
+  cat > "$debian_dir/control" <<EOF_CONTROL2
 Package: v2rayn
 Version: ${VERSION}
 Architecture: ${deb_arch}
@@ -660,7 +823,7 @@ Depends: ${final_depends}
 Description: v2rayN (Avalonia) GUI client for Linux
  Support vless / vmess / Trojan / http / socks / Anytls / Hysteria2 /
  Shadowsocks / tuic / WireGuard.
-EOF
+EOF_CONTROL2
 
   find "$stage/opt/v2rayN" -type d -exec chmod 0755 {} +
   find "$stage/opt/v2rayN" -type f -exec chmod 0644 {} +
@@ -674,21 +837,13 @@ EOF
   BUILT_DEBS+=("$deb_out")
 }
 
-select_targets() {
-  printf '%s\n' loongarch64
-}
-
 build_one_target() {
-  local short="$1"
-  local meta=()
-  local rid=""
-  local deb_arch=""
-
-  mapfile -t meta < <(describe_target "$short") || return 1
-  rid="${meta[0]}"
-  deb_arch="${meta[1]}"
+  local short="x86"
+  local rid="$X86_RID"
+  local deb_arch="$X86_DEB_ARCH"
 
   echo "[*] Building for target: $short  (RID=$rid, DEB arch=$deb_arch)"
+  prepare_dotnet_sdk
   publish_binary "$rid"
   package_binary "$short" "$rid" "$deb_arch"
 }
@@ -710,20 +865,17 @@ print_summary() {
 }
 
 main() {
-  local targets=()
-  local arch=""
-
   parse_args "$@"
   detect_environment
   install_dependencies
   prepare_workspace
   resolve_version
 
-  mapfile -t targets < <(select_targets)
+  download_nuget_packages || die "Failed to download prebuilt NuGet packages."
 
-  for arch in "${targets[@]}"; do
-    build_one_target "$arch"
-  done
+  build_one_target
+
+  rm -rf "${NUGET_CACHE_DIR:-}" || true
 
   print_summary
 }

@@ -46,7 +46,7 @@ jobs:
     secrets: inherit
 
   deb:
-    name: build and release deb x64 & arm64
+    name: build and release deb x64 & arm64 & riscv64 & ppc64le & loong64
     if: (github.event_name == 'workflow_dispatch' && inputs.release_tag != '') || (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
     runs-on: ubuntu-26.04
     container: debian:13
@@ -70,8 +70,13 @@ jobs:
       run: |
         mkdir -p "$GITHUB_WORKSPACE/dist/deb"
         rsync -av "$HOME/debbuild/" "$GITHUB_WORKSPACE/dist/deb/" || true
+
         find "$GITHUB_WORKSPACE/dist/deb" -name "v2rayn_*_amd64.deb" -exec mv {} "$GITHUB_WORKSPACE/dist/deb/v2rayN-linux-64.deb" \; || true
         find "$GITHUB_WORKSPACE/dist/deb" -name "v2rayn_*_arm64.deb" -exec mv {} "$GITHUB_WORKSPACE/dist/deb/v2rayN-linux-arm64.deb" \; || true
+        find "$GITHUB_WORKSPACE/dist/deb" -name "v2rayn_*_riscv64.deb" -exec mv {} "$GITHUB_WORKSPACE/dist/deb/v2rayN-linux-riscv64.deb" \; || true
+        find "$GITHUB_WORKSPACE/dist/deb" -name "v2rayn_*_ppc64el.deb" -exec mv {} "$GITHUB_WORKSPACE/dist/deb/v2rayN-linux-ppc64le.deb" \; || true
+        find "$GITHUB_WORKSPACE/dist/deb" -name "v2rayn_*_loong64.deb" -exec mv {} "$GITHUB_WORKSPACE/dist/deb/v2rayN-linux-loong64.deb" \; || true
+
         echo "==== Dist tree ===="
         ls -R "$GITHUB_WORKSPACE/dist/deb" || true
     - name: Upload DEB artifact
@@ -79,7 +84,7 @@ jobs:
       with: { name: release-deb, path: "dist/deb/**/*.deb", if-no-files-found: error }
 
   rpm:
-    name: build and release rpm x64 & arm64
+    name: build and release rpm x64 & arm64 & riscv64 & ppc64le & loong64
     if: (github.event_name == 'workflow_dispatch' && inputs.release_tag != '') || (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
     runs-on: ubuntu-26.04
     container: registry.access.redhat.com/ubi10/ubi
@@ -129,58 +134,23 @@ jobs:
       run: |
         mkdir -p "$GITHUB_WORKSPACE/dist/rpm"
         rsync -av "$HOME/rpmbuild/RPMS/" "$GITHUB_WORKSPACE/dist/rpm/" || true
-        find "$GITHUB_WORKSPACE/dist/rpm" -name "v2rayN-*-1*.x86_64.rpm"  -exec mv {} "$GITHUB_WORKSPACE/dist/rpm/v2rayN-linux-rhel-64.rpm" \;  || true
+
+        find "$GITHUB_WORKSPACE/dist/rpm" -name "v2rayN-*-1*.x86_64.rpm" -exec mv {} "$GITHUB_WORKSPACE/dist/rpm/v2rayN-linux-rhel-64.rpm" \; || true
         find "$GITHUB_WORKSPACE/dist/rpm" -name "v2rayN-*-1*.aarch64.rpm" -exec mv {} "$GITHUB_WORKSPACE/dist/rpm/v2rayN-linux-rhel-arm64.rpm" \; || true
+        find "$GITHUB_WORKSPACE/dist/rpm" -name "v2rayN-*-1*.riscv64.rpm" -exec mv {} "$GITHUB_WORKSPACE/dist/rpm/v2rayN-linux-rhel-riscv64.rpm" \; || true
+        find "$GITHUB_WORKSPACE/dist/rpm" -name "v2rayN-*-1*.ppc64le.rpm" -exec mv {} "$GITHUB_WORKSPACE/dist/rpm/v2rayN-linux-rhel-ppc64le.rpm" \; || true
+        find "$GITHUB_WORKSPACE/dist/rpm" -name "v2rayN-*-1*.loongarch64.rpm" -exec mv {} "$GITHUB_WORKSPACE/dist/rpm/v2rayN-linux-rhel-loong64.rpm" \; || true
+
         echo "==== Dist tree ===="
         ls -R "$GITHUB_WORKSPACE/dist/rpm" || true
     - name: Upload RPM artifact
       uses: actions/upload-artifact@v7
       with: { name: release-rpm, path: "dist/rpm/**/*.rpm", if-no-files-found: error }
 
-  rpm-riscv64:
-    name: build and release rpm riscv64
+  deb-x86:
+    name: build and release deb x86
     if: (github.event_name == 'workflow_dispatch' && inputs.release_tag != '') || (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
-    runs-on: ubuntu-24.04-riscv
-    container: rockylinux/rockylinux:10
-    env: { RELEASE_TAG: "${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}" }
-    steps:
-    - name: Prepare tools (Red Hat)
-      shell: bash
-      run: |
-        set -euo pipefail
-        dnf -y makecache
-        dnf -y install sudo git rpm-build rpmdevtools dnf-plugins-core rsync findutils tar gzip unzip which jq
-    - name: Checkout repo (for scripts)
-      shell: bash
-      env: { GITHUB_TOKEN: "${{ github.token }}" }
-      run: |
-        set -euo pipefail
-        rm -rf ./*
-        git init .
-        git config --global --add safe.directory "$PWD"
-        git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-        git fetch --depth=1 origin "${GITHUB_SHA}"
-        git checkout FETCH_HEAD
-        git submodule update --init --recursive
-    - name: Ensure script permissions
-      run: chmod 755 package-rhel-riscv.sh
-    - name: Package RPM (RHEL-family)
-      run: ./package-rhel-riscv.sh "${RELEASE_TAG}"
-    - name: Collect RPMs into workspace
-      run: |
-        mkdir -p "$GITHUB_WORKSPACE/dist/rpm-riscv64"
-        rsync -av "$HOME/rpmbuild/RPMS/" "$GITHUB_WORKSPACE/dist/rpm-riscv64/" || true
-        find "$GITHUB_WORKSPACE/dist/rpm-riscv64" -name "*.riscv64.rpm" -exec mv {} "$GITHUB_WORKSPACE/dist/rpm-riscv64/v2rayN-linux-rhel-riscv64.rpm" \; || true
-        echo "==== Dist tree ===="
-        ls -R "$GITHUB_WORKSPACE/dist/rpm-riscv64" || true
-    - name: Upload RPM artifact
-      uses: actions/upload-artifact@v7
-      with: { name: release-rpm-riscv64, path: "dist/rpm-riscv64/**/*.rpm", if-no-files-found: error }
-
-  deb-riscv64:
-    name: build and release deb riscv64
-    if: (github.event_name == 'workflow_dispatch' && inputs.release_tag != '') || (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
-    runs-on: ubuntu-24.04-riscv
+    runs-on: ubuntu-26.04
     container: debian:13
     env: { RELEASE_TAG: "${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}" }
     steps:
@@ -190,162 +160,118 @@ jobs:
         set -euo pipefail
         export DEBIAN_FRONTEND=noninteractive
         apt-get update
-        apt-get install -y sudo git rsync findutils tar gzip unzip which curl jq wget file ca-certificates desktop-file-utils xdg-utils fakeroot dpkg-dev gcc make libc6-dev libgcc-s1 libstdc++6 zlib1g libatomic1
+        apt-get install -y sudo git rsync findutils tar gzip unzip which curl jq wget file ca-certificates desktop-file-utils xdg-utils fakeroot dpkg-dev libc6 libgcc-s1 libstdc++6 zlib1g libicu-dev libssl-dev
     - name: Checkout repo (for scripts)
-      shell: bash
-      env: { GITHUB_TOKEN: "${{ github.token }}" }
-      run: |
-        set -euo pipefail
-        rm -rf ./*
-        git init .
-        git config --global --add safe.directory "$PWD"
-        git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-        git fetch --depth=1 origin "${GITHUB_SHA}"
-        git checkout FETCH_HEAD
-        git submodule update --init --recursive
+      uses: actions/checkout@v7
+      with: { submodules: 'recursive', fetch-depth: '0' }
     - name: Ensure script permissions
-      run: chmod 755 package-debian-riscv.sh
-    - name: Package DEB (Debian-family)
-      run: ./package-debian-riscv.sh "${RELEASE_TAG}"
-    - name: Collect DEBs into workspace
+      run: chmod 755 package-debian-x86.sh
+    - name: Package DEB x86 (Debian-family)
+      run: ./package-debian-x86.sh "${RELEASE_TAG}"
+    - name: Collect x86 DEB into workspace
       run: |
-        mkdir -p "$GITHUB_WORKSPACE/dist/deb-riscv64"
-        rsync -av "$HOME/debbuild/" "$GITHUB_WORKSPACE/dist/deb-riscv64/" || true
-        find "$GITHUB_WORKSPACE/dist/deb-riscv64" -name "*.deb" -exec mv {} "$GITHUB_WORKSPACE/dist/deb-riscv64/v2rayN-linux-riscv64.deb" \; || true
-        echo "==== Dist tree ===="
-        ls -R "$GITHUB_WORKSPACE/dist/deb-riscv64" || true
-    - name: Upload DEB artifact
-      uses: actions/upload-artifact@v7
-      with: { name: release-deb-riscv64, path: "dist/deb-riscv64/**/*.deb", if-no-files-found: error }
+        mkdir -p "$GITHUB_WORKSPACE/dist/deb-x86"
+        rsync -av "$HOME/debbuild/" "$GITHUB_WORKSPACE/dist/deb-x86/" || true
 
-  deb-loong64:
-    name: build and release deb loong64
+        find "$GITHUB_WORKSPACE/dist/deb-x86" -name "v2rayn_*_i386.deb" \
+          -exec mv {} "$GITHUB_WORKSPACE/dist/deb-x86/v2rayN-linux-86.deb" \; || true
+
+        echo "==== Dist tree ===="
+        ls -R "$GITHUB_WORKSPACE/dist/deb-x86" || true
+    - name: Upload x86 DEB artifact
+      uses: actions/upload-artifact@v7
+      with: { name: release-deb-x86, path: "dist/deb-x86/**/*.deb", if-no-files-found: error }
+
+  rpm-x86:
+    name: build and release rpm x86
     if: (github.event_name == 'workflow_dispatch' && inputs.release_tag != '') || (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
     runs-on: ubuntu-26.04
-    env:
-      RELEASE_TAG: ${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}
-      DOCKER_IMAGE: ghcr.io/loong64/debian:trixie
-
+    container: registry.access.redhat.com/ubi10/ubi
+    env: { RELEASE_TAG: "${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}" }
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v7
-      with:
-        submodules: recursive
-        fetch-depth: 0
-    - name: Setup QEMU
-      uses: docker/setup-qemu-action@v4
-    - name: Package DEB (Debian-family)
+    - name: Prepare tools (Red Hat)
       shell: bash
-      timeout-minutes: 180
-      env: { RELEASE_TAG: "${{ env.RELEASE_TAG }}" }
       run: |
         set -euo pipefail
-        docker run --rm \
-          --privileged \
-          --platform linux/loong64 \
-          --env DEBIAN_FRONTEND=noninteractive \
-          --env DOTNET_EnableWriteXorExecute=0 \
-          --volume "${{ github.workspace }}:/root/v2rayN-src" \
-          --volume "$HOME/debbuild:/root/debbuild" \
-          --workdir /root/v2rayN-src \
-        "$DOCKER_IMAGE" bash -c "
-        apt-get update && \
-        apt-get install -y sudo git rsync findutils tar gzip unzip which curl jq wget file ca-certificates desktop-file-utils xdg-utils fakeroot dpkg-dev gcc make libc6-dev libgcc-s1 libstdc++6 zlib1g libatomic1 && \
-        git config --global --add safe.directory /root/v2rayN-src && \
-        ./package-debian-loong.sh ${RELEASE_TAG}"
-    - name: Collect DEBs into workspace
-      run: |
-        mkdir -p "$GITHUB_WORKSPACE/dist/deb-loong64"
-        rsync -av "$HOME/debbuild/" "$GITHUB_WORKSPACE/dist/deb-loong64/" || true
-        find "$GITHUB_WORKSPACE/dist/deb-loong64" -name "*.deb" -exec mv {} "$GITHUB_WORKSPACE/dist/deb-loong64/v2rayN-linux-loong64.deb" \; || true
-        echo "==== Dist tree ===="
-        ls -R "$GITHUB_WORKSPACE/dist/deb-loong64" || true
-    - name: Upload DEB artifact
-      uses: actions/upload-artifact@v7
-      with: { name: release-deb-loong64, path: "dist/deb-loong64/**/*.deb", if-no-files-found: error }
+        . /etc/os-release
+        EL_MAJOR="${VERSION_ID%%.*}"
+        echo "EL_MAJOR=${EL_MAJOR}"
+        dnf -y makecache || true
+        command -v curl >/dev/null || dnf -y install curl ca-certificates
+        ARCH="$(uname -m)"
+        case "$ARCH" in x86_64|aarch64) ;; *) echo "Unsupported arch: $ARCH"; exit 1 ;; esac
 
-  rpm-loong64:
-    name: build and release rpm loong64
-    if: (github.event_name == 'workflow_dispatch' && inputs.release_tag != '') || (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
-    runs-on: ubuntu-26.04
-    env:
-      RELEASE_TAG: ${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}
-      DOCKER_IMAGE: ghcr.io/fedora-remix-loongarch/mini-image:f43
-    steps:
-    - name: Checkout repo
+        install_epel_from_dir() {
+          local base="$1" rpm
+          echo "Try: $base"
+          rpm="$({ curl -fsSL "$base/Packages/" 2>/dev/null; curl -fsSL "$base/Packages/e/" 2>/dev/null | sed 's|href="|href="e/|'; } |
+            sed -n 's/.*href="\([^"]*epel-release-[^"]*\.noarch\.rpm\)".*/\1/p' | sort -V | tail -n1)" || true
+          [[ -n "$rpm" ]] || return 1
+          dnf -y install "$base/Packages/$rpm"
+        }
+
+        FEDORA="https://dl.fedoraproject.org/pub/epel/epel-release-latest-${EL_MAJOR}.noarch.rpm"
+        ROCKY="https://dl.rockylinux.org/pub/rocky/${EL_MAJOR}/extras/${ARCH}/os"
+        ALMA="https://repo.almalinux.org/almalinux/${EL_MAJOR}/extras/${ARCH}/os"
+
+        echo "Try Fedora: $FEDORA"
+        curl -fsSLI "$FEDORA" >/dev/null && dnf -y install "$FEDORA" ||
+          install_epel_from_dir "$ROCKY" ||
+          install_epel_from_dir "$ALMA" ||
+          { echo "EPEL bootstrap failed (Fedora/Rocky/Alma)"; exit 1; }
+
+        dnf -y install sudo git rpm-build rpmdevtools dnf-plugins-core rsync findutils tar gzip unzip which python3
+        dnf repolist | grep -i epel || true
+
+    - name: Checkout repo (for scripts)
       uses: actions/checkout@v7
-      with:
-        submodules: recursive
-        fetch-depth: 0
-    - name: Setup QEMU
-      uses: docker/setup-qemu-action@v4
-    - name: Build loong64 RPM
-      shell: bash
-      timeout-minutes: 180
-      env: { RELEASE_TAG: "${{ env.RELEASE_TAG }}" }
+      with: { submodules: 'recursive', fetch-depth: '0' }
+
+    - name: Ensure script permissions
+      run: chmod 755 package-rhel-x86.sh
+
+    - name: Package RPM x86 (RHEL-family)
+      run: ./package-rhel-x86.sh "${RELEASE_TAG}"
+
+    - name: Collect x86 RPM into workspace
       run: |
-        set -euo pipefail
-        docker run --rm \
-          --privileged \
-          --platform linux/loong64 \
-          --env DOTNET_EnableWriteXorExecute=0 \
-          --volume "${{ github.workspace }}:/root/v2rayN-src" \
-          --volume "$HOME/rpmbuild/RPMS:/root/rpmbuild/RPMS" \
-          --workdir /root/v2rayN-src \
-        "$DOCKER_IMAGE" bash -c "
-        dnf -y makecache && \
-        dnf -y install sudo git rpm-build rpmdevtools dnf-plugins-core rsync findutils tar gzip unzip which curl jq file ca-certificates fuse3 && \
-        git config --global --add safe.directory /root/v2rayN-src && \
-        ./package-rhel-loong.sh ${RELEASE_TAG}"
-    - name: Collect RPMs into workspace
-      run: |
-        mkdir -p "$GITHUB_WORKSPACE/dist/rpm-loong64"
-        rsync -av "$HOME/rpmbuild/RPMS/" "$GITHUB_WORKSPACE/dist/rpm-loong64/" || true
-        find "$GITHUB_WORKSPACE/dist/rpm-loong64" -name "*.loongarch64.rpm" -exec mv {} "$GITHUB_WORKSPACE/dist/rpm-loong64/v2rayN-linux-rhel-loong64.rpm" \; || true
+        mkdir -p "$GITHUB_WORKSPACE/dist/rpm-x86"
+        rsync -av "$HOME/rpmbuild/RPMS/" "$GITHUB_WORKSPACE/dist/rpm-x86/" || true
+
+        find "$GITHUB_WORKSPACE/dist/rpm-x86" -name "v2rayN-*-1*.i686.rpm" \
+          -exec mv {} "$GITHUB_WORKSPACE/dist/rpm-x86/v2rayN-linux-rhel-86.rpm" \; || true
+
         echo "==== Dist tree ===="
-        ls -R "$GITHUB_WORKSPACE/dist/rpm-loong64" || true
-    - name: Upload RPM artifact
+        ls -R "$GITHUB_WORKSPACE/dist/rpm-x86" || true
+
+    - name: Upload x86 RPM artifact
       uses: actions/upload-artifact@v7
-      with: { name: release-rpm-loong64, path: "dist/rpm-loong64/**/*.rpm", if-no-files-found: error }
+      with: { name: release-rpm-x86, path: "dist/rpm-x86/**/*.rpm", if-no-files-found: error }
 
   release-deb:
-    name: sign and upload deb x64 arm64
+    name: sign and upload deb x64 arm64 riscv64 ppc64le loong64
     needs: deb
     uses: ./.github/workflows/upload-sign.yml
-    with: { release_tag: "${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}", artifact_name: release-deb, file_pattern: "*.deb" }
+    with: { release_tag: "${{ inputs.release_tag || github.ref_name }}", artifact_name: release-deb, file_pattern: "*.deb" }
     secrets: { GPG_PRIVATE_KEY: "${{ secrets.GPG_PRIVATE_KEY }}" }
 
   release-rpm:
-    name: sign and upload rpm x64 arm64
+    name: sign and upload rpm x64 arm64 riscv64 ppc64le loong64
     needs: rpm
     uses: ./.github/workflows/upload-sign.yml
-    with: { release_tag: "${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}", artifact_name: release-rpm, file_pattern: "*.rpm" }
+    with: { release_tag: "${{ inputs.release_tag || github.ref_name }}", artifact_name: release-rpm, file_pattern: "*.rpm" }
     secrets: { GPG_PRIVATE_KEY: "${{ secrets.GPG_PRIVATE_KEY }}" }
 
-  release-rpm-riscv64:
-    name: sign and upload rpm riscv64
-    needs: rpm-riscv64
+  release-deb-x86:
+    name: sign and upload deb x86
+    needs: deb-x86
     uses: ./.github/workflows/upload-sign.yml
-    with: { release_tag: "${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}", artifact_name: release-rpm-riscv64, file_pattern: "*.rpm" }
+    with: { release_tag: "${{ inputs.release_tag || github.ref_name }}", artifact_name: release-deb-x86, file_pattern: "*.deb" }
     secrets: { GPG_PRIVATE_KEY: "${{ secrets.GPG_PRIVATE_KEY }}" }
 
-  release-deb-riscv64:
-    name: sign and upload deb riscv64
-    needs: deb-riscv64
+  release-rpm-x86:
+    name: sign and upload rpm x86
+    needs: rpm-x86
     uses: ./.github/workflows/upload-sign.yml
-    with: { release_tag: "${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}", artifact_name: release-deb-riscv64, file_pattern: "*.deb" }
-    secrets: { GPG_PRIVATE_KEY: "${{ secrets.GPG_PRIVATE_KEY }}" }
-
-  release-deb-loong64:
-    name: sign and upload deb loong64
-    needs: deb-loong64
-    uses: ./.github/workflows/upload-sign.yml
-    with: { release_tag: "${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}", artifact_name: release-deb-loong64, file_pattern: "*.deb" }
-    secrets: { GPG_PRIVATE_KEY: "${{ secrets.GPG_PRIVATE_KEY }}" }
-
-  release-rpm-loong64:
-    name: sign and upload rpm loong64
-    needs: rpm-loong64
-    uses: ./.github/workflows/upload-sign.yml
-    with: { release_tag: "${{ case(inputs.release_tag != '', inputs.release_tag, github.ref_name) }}", artifact_name: release-rpm-loong64, file_pattern: "*.rpm" }
+    with: { release_tag: "${{ inputs.release_tag || github.ref_name }}", artifact_name: release-rpm-x86, file_pattern: "*.rpm" }
     secrets: { GPG_PRIVATE_KEY: "${{ secrets.GPG_PRIVATE_KEY }}" }

@@ -14,6 +14,30 @@ PKGROOT="v2rayN-publish"
 PROJECT_HINT="v2rayN.Desktop/v2rayN.Desktop.csproj"
 RPM_TOPDIR="${HOME}/rpmbuild"
 
+NUGET_CACHE_DIR=""
+DOTNET_NUPKG_BASE="${DOTNET_NUPKG_BASE:-https://github.com/autorepobot/dotnet-nupkg-prebuild/releases/download}"
+SKIASHARP_BASE="${SKIASHARP_BASE:-https://github.com/autorepobot/SkiaSharp-ppc64le/releases/download}"
+SkiaSharp_VERSION="${SkiaSharp_VERSION:-3.119.4}"
+HarfBuzzSharp_VERSION="${HarfBuzzSharp_VERSION:-8.3.1.5}"
+
+DOTNET_SDK_VERSION="${DOTNET_SDK_VERSION:-10.0.114}"
+
+DOTNET_RISCV_VERSION="${DOTNET_RISCV_VERSION:-10.0.114}"
+DOTNET_RISCV_BASE="${DOTNET_RISCV_BASE:-https://github.com/autorepobot/dotnet-riscv/releases/download}"
+DOTNET_RISCV_FILE="dotnet-sdk-${DOTNET_RISCV_VERSION}-linux-riscv64.tar.gz"
+DOTNET_RISCV_SDK_URL="${DOTNET_RISCV_SDK_URL:-${DOTNET_RISCV_BASE}/${DOTNET_RISCV_VERSION}/${DOTNET_RISCV_FILE}}"
+
+DOTNET_PPC64LE_VERSION="${DOTNET_PPC64LE_VERSION:-10.0.114}"
+DOTNET_PPC64LE_BASE="${DOTNET_PPC64LE_BASE:-https://github.com/IBM/dotnet-s390x/releases/download}"
+DOTNET_PPC64LE_FILE="dotnet-sdk-${DOTNET_PPC64LE_VERSION}-linux-ppc64le.tar.gz"
+DOTNET_PPC64LE_SDK_URL="${DOTNET_PPC64LE_SDK_URL:-${DOTNET_PPC64LE_BASE}/v${DOTNET_PPC64LE_VERSION}/${DOTNET_PPC64LE_FILE}}"
+
+DOTNET_LOONGARCH_VERSION="${DOTNET_LOONGARCH_VERSION:-10.0.114}"
+DOTNET_LOONGARCH_TAG="${DOTNET_LOONGARCH_TAG:-v10.0.114-loongarch64}"
+DOTNET_LOONGARCH_BASE="${DOTNET_LOONGARCH_BASE:-https://github.com/loongson/dotnet/releases/download}"
+DOTNET_LOONGARCH_FILE="dotnet-sdk-${DOTNET_LOONGARCH_VERSION}-linux-loongarch64.tar.gz"
+DOTNET_LOONGARCH_SDK_URL="${DOTNET_LOONGARCH_SDK_URL:-${DOTNET_LOONGARCH_BASE}/${DOTNET_LOONGARCH_TAG}/${DOTNET_LOONGARCH_FILE}}"
+
 OS_ID=""
 OS_NAME=""
 OS_VERSION_ID=""
@@ -23,11 +47,21 @@ PROJECT=""
 VERSION=""
 BUILT_ALL=0
 
+RPM_STRIP=""
+RPM_OBJDUMP=""
+
 declare -a BUILT_RPMS=()
 
 die() {
   echo "$*" >&2
   exit 1
+}
+
+get_runtime_version() {
+  local sdk_ver="$1"
+  local prefix="${sdk_ver%.*}"
+  local patch="${sdk_ver##*.}"
+  echo "${prefix}.${patch#1}"
 }
 
 parse_args() {
@@ -81,8 +115,8 @@ This script only supports: RHEL / Rocky / AlmaLinux / Fedora / CentOS."
   esac
 
   case "$HOST_ARCH" in
-    x86_64|aarch64) ;;
-    *) die "Only supports aarch64 / x86_64" ;;
+    x86_64|aarch64|riscv64|ppc64le|loongarch64) ;;
+    *) die "Only supports x86_64 / aarch64 / riscv64 / ppc64le / loongarch64" ;;
   esac
 
   current_kernel="$(uname -r)"
@@ -96,8 +130,31 @@ install_dependencies() {
   local install_ok=0
 
   if command -v dnf >/dev/null 2>&1; then
-    sudo dnf -y install rpm-build rpmdevtools curl unzip tar jq rsync dotnet-sdk-10.0 \
+    sudo dnf -y install \
+      rpm-build rpmdevtools curl unzip tar jq rsync ca-certificates git \
+      desktop-file-utils wget libicu \
       && install_ok=1
+
+    case "$HOST_ARCH" in
+      x86_64|aarch64)
+        wget -q https://dot.net/v1/dotnet-install.sh
+        chmod +x dotnet-install.sh
+        ./dotnet-install.sh \
+          --version "$DOTNET_SDK_VERSION" \
+          --install-dir "$HOME/.dotnet"
+
+        export PATH="$HOME/.dotnet:$PATH"
+        export DOTNET_ROOT="$HOME/.dotnet"
+
+        dotnet --info >/dev/null 2>&1 && install_ok=1
+        ;;
+      riscv64|ppc64le|loongarch64)
+        install_ok=1
+        ;;
+      *)
+        die "Only supports x86_64 / aarch64 / riscv64 / ppc64le / loongarch64"
+        ;;
+    esac
   fi
 
   if [[ "$install_ok" -ne 1 ]]; then
@@ -105,6 +162,48 @@ install_dependencies() {
     echo "dotnet-sdk 10.x, curl, unzip, tar, rsync, rpm, rpmdevtools, rpm-build (on Red Hat branch)"
     exit 1
   fi
+}
+
+prepare_cross_rpm_tools() {
+  local target="$1"
+  local package=""
+  local strip_tool=""
+  local objdump_tool=""
+
+  case "$HOST_ARCH:$target" in
+    x86_64:ppc64le|aarch64:ppc64le)
+      package="gcc-powerpc64le-linux-gnu"
+      strip_tool="powerpc64le-linux-gnu-strip"
+      objdump_tool="powerpc64le-linux-gnu-objdump"
+      ;;
+    x86_64:riscv64|aarch64:riscv64)
+      package="gcc-riscv64-linux-gnu"
+      strip_tool="riscv64-linux-gnu-strip"
+      objdump_tool="riscv64-linux-gnu-objdump"
+      ;;
+    x86_64:loong64|aarch64:loong64)
+      package="gcc-loongarch64-linux-gnu"
+      strip_tool="loongarch64-linux-gnu-strip"
+      objdump_tool="loongarch64-linux-gnu-objdump"
+      ;;
+    *)
+      RPM_STRIP=""
+      RPM_OBJDUMP=""
+      return 0
+      ;;
+  esac
+
+  echo "[+] Install cross RPM tools for $target: $package"
+  sudo dnf -y install "$package"
+
+  command -v "$strip_tool" >/dev/null 2>&1 || die "Cross strip tool not found: $strip_tool"
+  command -v "$objdump_tool" >/dev/null 2>&1 || die "Cross objdump tool not found: $objdump_tool"
+
+  RPM_STRIP="$(command -v "$strip_tool")"
+  RPM_OBJDUMP="$(command -v "$objdump_tool")"
+
+  echo "[OK] RPM strip:   $RPM_STRIP"
+  echo "[OK] RPM objdump: $RPM_OBJDUMP"
 }
 
 prepare_workspace() {
@@ -239,14 +338,115 @@ resolve_version() {
   echo "[*] GUI version resolved as: ${VERSION}"
 }
 
+download_nuget_packages() {
+  NUGET_CACHE_DIR="$(mktemp -d)"
+
+  local riscv_rt ppc64le_rt loong_rt
+  riscv_rt="$(get_runtime_version "$DOTNET_RISCV_VERSION")"
+  ppc64le_rt="$(get_runtime_version "$DOTNET_PPC64LE_VERSION")"
+  loong_rt="$(get_runtime_version "$DOTNET_LOONGARCH_VERSION")"
+
+  local urls=(
+    "${DOTNET_NUPKG_BASE}/${loong_rt}/Microsoft.AspNetCore.App.Runtime.linux-loongarch64.${loong_rt}.nupkg"
+    "${DOTNET_NUPKG_BASE}/${ppc64le_rt}/Microsoft.AspNetCore.App.Runtime.linux-ppc64le.${ppc64le_rt}.nupkg"
+    "${DOTNET_NUPKG_BASE}/${riscv_rt}/Microsoft.AspNetCore.App.Runtime.linux-riscv64.${riscv_rt}.nupkg"
+    "${DOTNET_NUPKG_BASE}/${loong_rt}/Microsoft.NETCore.App.Host.linux-loongarch64.${loong_rt}.nupkg"
+    "${DOTNET_NUPKG_BASE}/${ppc64le_rt}/Microsoft.NETCore.App.Host.linux-ppc64le.${ppc64le_rt}.nupkg"
+    "${DOTNET_NUPKG_BASE}/${riscv_rt}/Microsoft.NETCore.App.Host.linux-riscv64.${riscv_rt}.nupkg"
+    "${DOTNET_NUPKG_BASE}/${loong_rt}/Microsoft.NETCore.App.Runtime.linux-loongarch64.${loong_rt}.nupkg"
+    "${DOTNET_NUPKG_BASE}/${ppc64le_rt}/Microsoft.NETCore.App.Runtime.linux-ppc64le.${ppc64le_rt}.nupkg"
+    "${DOTNET_NUPKG_BASE}/${riscv_rt}/Microsoft.NETCore.App.Runtime.linux-riscv64.${riscv_rt}.nupkg"
+    "${SKIASHARP_BASE}/v${SkiaSharp_VERSION}/SkiaSharp.NativeAssets.Linux.${SkiaSharp_VERSION}.nupkg"
+    "${SKIASHARP_BASE}/v${SkiaSharp_VERSION}/HarfBuzzSharp.NativeAssets.Linux.${HarfBuzzSharp_VERSION}.nupkg"
+  )
+
+  echo "[+] Downloading prebuilt NuGet packages to: $NUGET_CACHE_DIR"
+  local u pkg_name
+  for u in "${urls[@]}"; do
+    pkg_name="${u##*/}"
+    echo "  -> $pkg_name"
+    curl -fL "$u" -o "$NUGET_CACHE_DIR/$pkg_name" || {
+      echo "[!] Failed to download $u" >&2
+      rm -rf "$NUGET_CACHE_DIR"
+      NUGET_CACHE_DIR=""
+      return 1
+    }
+  done
+
+  echo "[OK] Prebuilt NuGet packages ready in $NUGET_CACHE_DIR"
+}
+
+prepare_dotnet_sdk() {
+  local short="$1"
+  local sdk_url=""
+  local sdk_file=""
+  local sdk_dir=""
+  local tmp=""
+
+  case "$HOST_ARCH:$short" in
+    x86_64:x64|aarch64:arm64)
+      return 0
+      ;;
+    riscv64:riscv64)
+      sdk_url="$DOTNET_RISCV_SDK_URL"
+      sdk_file="$DOTNET_RISCV_FILE"
+      ;;
+    ppc64le:ppc64le)
+      sdk_url="$DOTNET_PPC64LE_SDK_URL"
+      sdk_file="$DOTNET_PPC64LE_FILE"
+      ;;
+    loongarch64:loong64)
+      sdk_url="$DOTNET_LOONGARCH_SDK_URL"
+      sdk_file="$DOTNET_LOONGARCH_FILE"
+      ;;
+    *)
+      return 0
+      ;;
+  esac
+
+  sdk_dir="$(mktemp -d)"
+  tmp="$(mktemp -d)"
+
+  echo "[+] Download .NET SDK for $short: $sdk_url"
+
+  curl -fL "$sdk_url" -o "$tmp/$sdk_file" || {
+    rm -rf "$tmp" "$sdk_dir"
+    return 1
+  }
+
+  tar -C "$sdk_dir" -xzf "$tmp/$sdk_file" || {
+    rm -rf "$tmp" "$sdk_dir"
+    return 1
+  }
+
+  rm -rf "$tmp"
+
+  [[ -x "$sdk_dir/dotnet" ]] || {
+    rm -rf "$sdk_dir"
+    return 1
+  }
+
+  export DOTNET_ROOT="$sdk_dir"
+  export PATH="$DOTNET_ROOT:$PATH"
+  hash -r
+
+  echo "[OK] .NET SDK for $short extracted to: $sdk_dir"
+  dotnet --info
+
+  DOTNET_SDK_DIR="$sdk_dir"
+}
+
 xray_url_for_rid() {
   local rid="$1"
   local ver="$2"
 
   case "$rid" in
-    linux-x64)   echo "https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-64.zip" ;;
-    linux-arm64) echo "https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-arm64-v8a.zip" ;;
-    *)           return 1 ;;
+    linux-x64)         echo "https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-64.zip" ;;
+    linux-arm64)       echo "https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-arm64-v8a.zip" ;;
+    linux-riscv64)     echo "https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-riscv64.zip" ;;
+    linux-ppc64le)     echo "https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-ppc64le.zip" ;;
+    linux-loongarch64) echo "https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-loong64.zip" ;;
+    *)                 return 1 ;;
   esac
 }
 
@@ -255,9 +455,12 @@ singbox_url_for_rid() {
   local ver="$2"
 
   case "$rid" in
-    linux-x64)   echo "https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-amd64.tar.gz" ;;
-    linux-arm64) echo "https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-arm64.tar.gz" ;;
-    *)           return 1 ;;
+    linux-x64)         echo "https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-amd64.tar.gz" ;;
+    linux-arm64)       echo "https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-arm64.tar.gz" ;;
+    linux-riscv64)     echo "https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-riscv64.tar.gz" ;;
+    linux-ppc64le)     echo "https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-ppc64le.tar.gz" ;;
+    linux-loongarch64) echo "https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-loong64.tar.gz" ;;
+    *)                 return 1 ;;
   esac
 }
 
@@ -265,9 +468,12 @@ bundle_url_for_rid() {
   local rid="$1"
 
   case "$rid" in
-    linux-x64)   echo "https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-64.zip" ;;
-    linux-arm64) echo "https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-arm64.zip" ;;
-    *)           return 1 ;;
+    linux-x64)         echo "https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-64.zip" ;;
+    linux-arm64)       echo "https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-arm64.zip" ;;
+    linux-riscv64)     echo "https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-riscv64.zip" ;;
+    linux-ppc64le)     echo "https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-ppc64le.zip" ;;
+    linux-loongarch64) echo "https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-loong64.zip" ;;
+    *)                 return 1 ;;
   esac
 }
 
@@ -288,7 +494,7 @@ download_xray() {
   fi
 
   [[ -n "$ver" ]] || { echo "[xray] Failed to get version"; return 1; }
-  url="$(xray_url_for_rid "$rid" "$ver")" || { echo "[xray] Unsupported RID: $rid"; return 1; }
+  url="$(xray_url_for_rid "$rid" "$ver")" || { echo "[xray] Unsupported RID for upstream Xray: $rid (skipped)"; return 0; }
 
   echo "[+] Download xray: $url"
 
@@ -463,9 +669,12 @@ describe_target() {
   local short="$1"
 
   case "$short" in
-    x64)   printf '%s\n%s\n%s\n' "linux-x64" "x86_64" "x86_64" ;;
-    arm64) printf '%s\n%s\n%s\n' "linux-arm64" "aarch64" "aarch64" ;;
-    *)     echo "Unknown arch '$short' (use x64|arm64)" >&2; return 1 ;;
+    x64)     printf '%s\n%s\n%s\n' "linux-x64" "x86_64" "x86_64" ;;
+    arm64)   printf '%s\n%s\n%s\n' "linux-arm64" "aarch64" "aarch64" ;;
+    riscv64) printf '%s\n%s\n%s\n' "linux-riscv64" "riscv64" "riscv64" ;;
+    ppc64le) printf '%s\n%s\n%s\n' "linux-ppc64le" "ppc64le" "ppc64le" ;;
+    loong64) printf '%s\n%s\n%s\n' "linux-loongarch64" "loongarch64" "loongarch64" ;;
+    *)       echo "Unknown arch '$short' (use x64|arm64|riscv64|ppc64le|loong64)" >&2; return 1 ;;
   esac
 }
 
@@ -474,8 +683,18 @@ publish_binary() {
 
   dotnet clean "$PROJECT" -c Release
   rm -rf "$(dirname "$PROJECT")/bin/Release/net10.0" || true
-  dotnet restore "$PROJECT"
-  dotnet publish "$PROJECT" -c Release -r "$rid" -p:PublishSingleFile=false -p:SelfContained=true
+  dotnet restore "$PROJECT" \
+    -r "$rid" \
+    --source "$NUGET_CACHE_DIR" \
+    --source "https://api.nuget.org/v3/index.json"
+  dotnet publish "$PROJECT" \
+    -c Release \
+    -r "$rid" \
+    --source "$NUGET_CACHE_DIR" \
+    --source "https://api.nuget.org/v3/index.json" \
+    -p:PublishSingleFile=false \
+    -p:SelfContained=true \
+    --no-restore
 }
 
 write_spec_file() {
@@ -494,7 +713,7 @@ Summary:        v2rayN (Avalonia) GUI client for Linux
 License:        GPL-3.0-only
 URL:            https://github.com/2dust/v2rayN
 BugURL:         https://github.com/2dust/v2rayN/issues
-ExclusiveArch:  aarch64 x86_64
+ExclusiveArch:  aarch64 x86_64 riscv64 ppc64le loongarch64
 Source0:        __PKGROOT__.tar.gz
 
 Requires:       cairo, pango, openssl, mesa-libEGL, mesa-libGL
@@ -616,7 +835,15 @@ package_binary() {
   tar -C "$workdir" -czf "$sourcedir/$PKGROOT.tar.gz" "$PKGROOT"
 
   write_spec_file "$specfile"
-  rpmbuild -ba "$specfile" --target "$rpm_target"
+
+  if [[ -n "${RPM_STRIP:-}" ]]; then
+    rpmbuild -ba "$specfile" \
+      --target "$rpm_target" \
+      --define "__strip ${RPM_STRIP}" \
+      --define "__objdump ${RPM_OBJDUMP}"
+  else
+    rpmbuild -ba "$specfile" --target "$rpm_target"
+  fi
 
   echo "Build done for $short. RPM at:"
   for f in "${RPM_TOPDIR}/RPMS/${archdir}/v2rayN-${VERSION}-1"*.rpm; do
@@ -628,9 +855,12 @@ package_binary() {
 
 select_targets() {
   case "${ARCH_OVERRIDE:-}" in
-    all)           printf '%s\n' x64 arm64 ;;
-    x64|amd64)     printf '%s\n' x64 ;;
-    arm64|aarch64) printf '%s\n' arm64 ;;
+    all)                 printf '%s\n' x64 arm64 riscv64 ppc64le loong64 ;;
+    x64|amd64)           printf '%s\n' x64 ;;
+    arm64|aarch64)       printf '%s\n' arm64 ;;
+    riscv64)             printf '%s\n' riscv64 ;;
+    ppc64le|ppc64el)     printf '%s\n' ppc64le ;;
+    loong64|loongarch64) printf '%s\n' loong64 ;;
     "")
       case "$HOST_ARCH" in
         x86_64)  printf '%s\n' x64 ;;
@@ -639,7 +869,7 @@ select_targets() {
       esac
       ;;
     *)
-      echo "Unknown --arch '${ARCH_OVERRIDE}'. Use x64|arm64|all." >&2
+      echo "Unknown --arch '${ARCH_OVERRIDE}'. Use x64|arm64|riscv64|ppc64le|loong64|all." >&2
       return 1
       ;;
   esac
@@ -658,6 +888,8 @@ build_one_target() {
   archdir="${meta[2]}"
 
   echo "[*] Building for target: $short  (RID=$rid, RPM --target $rpm_target)"
+  prepare_cross_rpm_tools "$short"
+  prepare_dotnet_sdk "$short" || die "Failed to prepare .NET SDK for $short."
   publish_binary "$rid"
   package_binary "$short" "$rid" "$rpm_target" "$archdir"
 }
@@ -666,7 +898,7 @@ print_summary() {
   if [[ "$BUILT_ALL" -eq 1 ]]; then
     local rp=""
     echo ""
-    echo "================ Build Summary (both architectures) ================"
+    echo "================ Build Summary (all architectures) ================"
     if [[ "${#BUILT_RPMS[@]}" -gt 0 ]]; then
       for rp in "${BUILT_RPMS[@]}"; do
         echo "$rp"
@@ -688,12 +920,17 @@ main() {
   prepare_workspace
   resolve_version
 
+  download_nuget_packages || die "Failed to download prebuilt NuGet packages."
+
   mapfile -t targets < <(select_targets)
   [[ "${ARCH_OVERRIDE:-}" == "all" ]] && BUILT_ALL=1 || BUILT_ALL=0
 
   for arch in "${targets[@]}"; do
     build_one_target "$arch"
   done
+
+  rm -rf "${NUGET_CACHE_DIR:-}" || true
+  rm -rf "${DOTNET_SDK_DIR:-}" || true
 
   print_summary
 }

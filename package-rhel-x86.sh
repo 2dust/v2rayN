@@ -12,11 +12,15 @@ MIN_KERNEL="6.12"
 PKGROOT="v2rayN-publish"
 PROJECT_HINT="v2rayN.Desktop/v2rayN.Desktop.csproj"
 RPM_TOPDIR="${HOME}/rpmbuild"
-DOTNET_LOONGARCH_VERSION="10.0.111"
-DOTNET_LOONGARCH_TAG="v10.0.111-loongarch64"
-DOTNET_LOONGARCH_BASE="https://github.com/loongson/dotnet/releases/download"
-DOTNET_LOONGARCH_FILE="dotnet-sdk-${DOTNET_LOONGARCH_VERSION}-linux-loongarch64.tar.gz"
-DOTNET_SDK_URL="${DOTNET_LOONGARCH_BASE}/${DOTNET_LOONGARCH_TAG}/${DOTNET_LOONGARCH_FILE}"
+
+NUGET_CACHE_DIR=""
+DOTNET_NUPKG_BASE="${DOTNET_NUPKG_BASE:-https://github.com/autorepobot/dotnet-nupkg-prebuild/releases/download}"
+SKIASHARP_BASE="${SKIASHARP_BASE:-https://github.com/autorepobot/SkiaSharp-ppc64le/releases/download}"
+SkiaSharp_VERSION="${SkiaSharp_VERSION:-3.119.4}"
+HarfBuzzSharp_VERSION="${HarfBuzzSharp_VERSION:-8.3.1.5}"
+
+DOTNET_SDK_VERSION="${DOTNET_SDK_VERSION:-10.0.114}"
+DOTNET_X86_VERSION="${DOTNET_X86_VERSION:-10.0.114}"
 
 OS_ID=""
 OS_NAME=""
@@ -25,12 +29,26 @@ HOST_ARCH=""
 SCRIPT_DIR=""
 PROJECT=""
 VERSION=""
+BUILT_ALL=0
+
+X86_RID="linux-x86"
+X86_RPM_ARCH="i686"
+
+RPM_STRIP=""
+RPM_OBJDUMP=""
 
 declare -a BUILT_RPMS=()
 
 die() {
   echo "$*" >&2
   exit 1
+}
+
+get_runtime_version() {
+  local sdk_ver="$1"
+  local prefix="${sdk_ver%.*}"
+  local patch="${sdk_ver##*.}"
+  echo "${prefix}.${patch#1}"
 }
 
 parse_args() {
@@ -73,18 +91,18 @@ detect_environment() {
   HOST_ARCH="$(uname -m)"
 
   case "$OS_ID" in
-    rhel|rocky|almalinux|fedora|centos|anolis)
+    rhel|rocky|almalinux|fedora|centos)
       echo "Detected supported system: ${OS_NAME:-$OS_ID} ${OS_VERSION_ID:-}"
       ;;
     *)
       die "Unsupported system: ${OS_NAME:-unknown} (${OS_ID:-unknown}).
-This script only supports: RHEL / Rocky / AlmaLinux / Fedora / CentOS / Anolis OS."
+This script only supports: RHEL / Rocky / AlmaLinux / Fedora / CentOS."
       ;;
   esac
 
   case "$HOST_ARCH" in
-    loongarch64) ;;
-    *) die "Only supports loongarch64" ;;
+    x86_64|aarch64) ;;
+    *) die "This script cross-builds linux-x86/i686 from x86_64 or aarch64 only." ;;
   esac
 
   current_kernel="$(uname -r)"
@@ -92,35 +110,66 @@ This script only supports: RHEL / Rocky / AlmaLinux / Fedora / CentOS / Anolis O
 
   [[ "$lowest" == "$MIN_KERNEL" ]] || die "Kernel $current_kernel is below $MIN_KERNEL"
   echo "[OK] Kernel $current_kernel verified."
+  echo "[OK] Host architecture: $HOST_ARCH"
+  echo "[OK] Target: $X86_RID (RPM $X86_RPM_ARCH)"
 }
 
 install_dependencies() {
   local install_ok=0
-  local tmp_dotnet=""
 
   if command -v dnf >/dev/null 2>&1; then
-    sudo dnf -y --nogpgcheck install \
-      rpm-build rpmdevtools curl unzip tar jq rsync git python3 \
-      glibc-devel kernel-headers libatomic file ca-certificates libicu \
+    sudo dnf -y install \
+      rpm-build rpmdevtools curl unzip tar jq rsync \
+      python3 binutils wget libicu \
       && install_ok=1
 
-    mkdir -p "$HOME/.dotnet"
-    tmp_dotnet="$(mktemp -d)"
-    curl -fL "$DOTNET_SDK_URL" -o "$tmp_dotnet/$DOTNET_LOONGARCH_FILE"
-    tar -C "$HOME/.dotnet" -xzf "$tmp_dotnet/$DOTNET_LOONGARCH_FILE"
-    rm -rf "$tmp_dotnet"
+    case "$HOST_ARCH" in
+      x86_64|aarch64)
+        wget -q https://dot.net/v1/dotnet-install.sh
+        chmod +x dotnet-install.sh
+        ./dotnet-install.sh --version "$DOTNET_SDK_VERSION" --install-dir "$HOME/.dotnet"
 
-    export PATH="$HOME/.dotnet:$PATH"
-    export DOTNET_ROOT="$HOME/.dotnet"
-    
-    dotnet --info >/dev/null 2>&1 || install_ok=0
+        export PATH="$HOME/.dotnet:$PATH"
+        export DOTNET_ROOT="$HOME/.dotnet"
+
+        dotnet --info >/dev/null 2>&1 && install_ok=1
+        ;;
+      *)
+        die "This script cross-builds linux-x86/i686 from x86_64 or aarch64 only."
+        ;;
+    esac
   fi
 
   if [[ "$install_ok" -ne 1 ]]; then
     echo "Could not auto-install dependencies for '$OS_ID'. Make sure these are available:"
-    echo "dotnet-loongarch SDK, curl, unzip, tar, rsync, git, python3, rpm, rpmdevtools, rpm-build (on Red Hat branch)"
+    echo "dotnet 10.x, python3, rpm, rpmdevtools, rpm-build, binutils"
+    echo "curl, unzip, tar, rsync, jq, wget"
     exit 1
   fi
+}
+
+prepare_cross_rpm_tools() {
+  local target="$1"
+
+  case "$HOST_ARCH:$target" in
+    x86_64:i686|aarch64:i686)
+      echo "[+] Prepare host RPM binutils for $target"
+      ;;
+    *)
+      RPM_STRIP=""
+      RPM_OBJDUMP=""
+      return 0
+      ;;
+  esac
+
+  command -v strip >/dev/null 2>&1 || die "strip tool not found"
+  command -v objdump >/dev/null 2>&1 || die "objdump tool not found"
+
+  RPM_STRIP="$(command -v strip)"
+  RPM_OBJDUMP="$(command -v objdump)"
+
+  echo "[OK] RPM strip:   $RPM_STRIP"
+  echo "[OK] RPM objdump: $RPM_OBJDUMP"
 }
 
 prepare_workspace() {
@@ -216,8 +265,6 @@ apply_channel_or_keep() {
     VERSION="${VERSION#v}"
     return 0
   fi
-  git remote add upstream https://github.com/2dust/v2rayN || true
-  git fetch upstream
 
   echo "[*] Resolving ${ch} tag from GitHub releases..."
 
@@ -257,13 +304,156 @@ resolve_version() {
   echo "[*] GUI version resolved as: ${VERSION}"
 }
 
+download_nuget_packages() {
+  NUGET_CACHE_DIR="$(mktemp -d)"
+
+  local x86_rt
+  x86_rt="$(get_runtime_version "$DOTNET_X86_VERSION")"
+
+  local urls=(
+    "${DOTNET_NUPKG_BASE}/${x86_rt}/Microsoft.AspNetCore.App.Runtime.linux-x86.${x86_rt}.nupkg"
+    "${DOTNET_NUPKG_BASE}/${x86_rt}/Microsoft.NETCore.App.Host.linux-x86.${x86_rt}.nupkg"
+    "${DOTNET_NUPKG_BASE}/${x86_rt}/Microsoft.NETCore.App.Runtime.linux-x86.${x86_rt}.nupkg"
+    "${SKIASHARP_BASE}/v${SkiaSharp_VERSION}/SkiaSharp.NativeAssets.Linux.${SkiaSharp_VERSION}.nupkg"
+    "${SKIASHARP_BASE}/v${SkiaSharp_VERSION}/HarfBuzzSharp.NativeAssets.Linux.${HarfBuzzSharp_VERSION}.nupkg"
+  )
+
+  echo "[+] Downloading prebuilt NuGet packages to: $NUGET_CACHE_DIR"
+  local u pkg_name
+  for u in "${urls[@]}"; do
+    pkg_name="${u##*/}"
+    echo "  -> $pkg_name"
+    curl -fL "$u" -o "$NUGET_CACHE_DIR/$pkg_name" || {
+      echo "[!] Failed to download $u" >&2
+      rm -rf "$NUGET_CACHE_DIR"
+      NUGET_CACHE_DIR=""
+      return 1
+    }
+  done
+
+  echo "[OK] Prebuilt NuGet packages ready in $NUGET_CACHE_DIR"
+}
+
+prepare_dotnet_sdk() {
+  echo "[+] Using host .NET SDK for cross-target $X86_RID"
+
+  dotnet --info
+
+  if [[ -z "${DOTNET_ROOT:-}" ]]; then
+    local dotnet_bin=""
+    dotnet_bin="$(readlink -f "$(command -v dotnet)")"
+    DOTNET_ROOT="$(dirname "$dotnet_bin")"
+    export DOTNET_ROOT
+  fi
+
+  echo "[OK] DOTNET_ROOT: $DOTNET_ROOT"
+}
+
+patch_x86_sdk() {
+  local sdk_props=""
+  local sdk_version=""
+  local dotnet_root=""
+
+  sdk_version="$(dotnet --version)"
+
+  dotnet_root="${DOTNET_ROOT:-}"
+  if [[ -z "$dotnet_root" ]]; then
+    local dotnet_bin=""
+    dotnet_bin="$(readlink -f "$(command -v dotnet)")"
+    dotnet_root="$(dirname "$dotnet_bin")"
+  fi
+
+  sdk_props="$dotnet_root/sdk/${sdk_version}/Microsoft.NETCoreSdk.BundledVersions.props"
+
+  [[ -f "$sdk_props" ]] || die "SDK props file not found: $sdk_props"
+
+  echo "[+] Patching SDK: $sdk_props"
+
+  python3 - "$sdk_props" <<'PY'
+import sys
+from pathlib import Path
+
+path = Path(sys.argv[1])
+text = path.read_text()
+old = text
+
+
+def add_attr_to_known_blocks(text, marker, attr):
+    start = 0
+    while True:
+        start = text.find(marker, start)
+        if start == -1:
+            break
+
+        end = text.find('/>', start)
+        if end == -1:
+            break
+
+        block = text[start:end]
+        attr_pos = block.find(attr)
+
+        if attr_pos != -1:
+            value_start = attr_pos + len(attr)
+            value_end = block.find('"', value_start)
+
+            if value_end != -1:
+                value = block[value_start:value_end]
+                values = value.split(';')
+
+                if 'linux-x86' not in values:
+                    value = value + ';linux-x86'
+                    block = (
+                        block[:value_start]
+                        + value
+                        + block[value_end:]
+                    )
+                    text = text[:start] + block + text[end:]
+                    end = start + len(block)
+
+        start = end + 2
+
+    return text
+
+
+for framework in ('Microsoft.NETCore.App', 'Microsoft.AspNetCore.App'):
+    text = add_attr_to_known_blocks(
+        text,
+        f'<KnownFrameworkReference Include="{framework}"',
+        'RuntimePackRuntimeIdentifiers="',
+    )
+
+text = add_attr_to_known_blocks(
+    text,
+    '<KnownAppHostPack',
+    'AppHostRuntimeIdentifiers="',
+)
+
+if text == old:
+    raise SystemExit(
+        'ERROR: No SDK RuntimePack/AppHost mapping was patched'
+    )
+
+path.write_text(text)
+PY
+
+  echo "===== Verify RuntimePackRuntimeIdentifiers ====="
+  grep -n 'RuntimePackRuntimeIdentifiers=' "$sdk_props" | grep 'linux-x86'
+
+  echo "===== Verify AppHostRuntimeIdentifiers ====="
+  grep -n 'AppHostRuntimeIdentifiers=' "$sdk_props" | grep 'linux-x86'
+}
+
 xray_url_for_rid() {
   local rid="$1"
   local ver="$2"
 
   case "$rid" in
-    linux-loongarch64) echo "https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-loong64.zip" ;;
-    *)                 return 1 ;;
+    linux-x86)
+      echo "https://github.com/XTLS/Xray-core/releases/download/v${ver}/Xray-linux-32.zip"
+      ;;
+    *)
+      return 1
+      ;;
   esac
 }
 
@@ -272,8 +462,12 @@ singbox_url_for_rid() {
   local ver="$2"
 
   case "$rid" in
-    linux-loongarch64) echo "https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-loong64.tar.gz" ;;
-    *)                 return 1 ;;
+    linux-x86)
+      echo "https://github.com/SagerNet/sing-box/releases/download/v${ver}/sing-box-${ver}-linux-386.tar.gz"
+      ;;
+    *)
+      return 1
+      ;;
   esac
 }
 
@@ -281,8 +475,12 @@ bundle_url_for_rid() {
   local rid="$1"
 
   case "$rid" in
-    linux-loongarch64) echo "https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-loong64.zip" ;;
-    *)                 return 1 ;;
+    linux-x86)
+      echo "https://raw.githubusercontent.com/2dust/v2rayN-core-bin/refs/heads/master/v2rayN-linux-86.zip"
+      ;;
+    *)
+      return 1
+      ;;
   esac
 }
 
@@ -302,15 +500,34 @@ download_xray() {
       | head -n1)" || true
   fi
 
-  [[ -n "$ver" ]] || { echo "[xray] Failed to get version"; return 1; }
-  url="$(xray_url_for_rid "$rid" "$ver")" || { echo "[xray] Unsupported RID: $rid"; return 1; }
+  [[ -n "$ver" ]] || {
+    echo "[xray] Failed to get version"
+    return 1
+  }
+
+  url="$(xray_url_for_rid "$rid" "$ver")" || {
+    echo "[xray] Unsupported RID for upstream Xray: $rid (skipped)"
+    return 0
+  }
 
   echo "[+] Download xray: $url"
 
   tmp="$(mktemp -d)"
-  curl -fL "$url" -o "$tmp/xray.zip" || { rm -rf "$tmp"; return 1; }
-  unzip -q "$tmp/xray.zip" -d "$tmp" || { rm -rf "$tmp"; return 1; }
-  install -m 755 "$tmp/xray" "$outdir/xray" || { rm -rf "$tmp"; return 1; }
+  curl -fL "$url" -o "$tmp/xray.zip" || {
+    rm -rf "$tmp"
+    return 1
+  }
+
+  unzip -q "$tmp/xray.zip" -d "$tmp" || {
+    rm -rf "$tmp"
+    return 1
+  }
+
+  install -m 755 "$tmp/xray" "$outdir/xray" || {
+    rm -rf "$tmp"
+    return 1
+  }
+
   rm -rf "$tmp"
 }
 
@@ -332,19 +549,40 @@ download_singbox() {
       | head -n1)" || true
   fi
 
-  [[ -n "$ver" ]] || { echo "[sing-box] Failed to get version"; return 1; }
-  url="$(singbox_url_for_rid "$rid" "$ver")" || { echo "[sing-box] Unsupported RID: $rid"; return 1; }
+  [[ -n "$ver" ]] || {
+    echo "[sing-box] Failed to get version"
+    return 1
+  }
+
+  url="$(singbox_url_for_rid "$rid" "$ver")" || {
+    echo "[sing-box] Unsupported RID: $rid"
+    return 1
+  }
 
   echo "[+] Download sing-box: $url"
 
   tmp="$(mktemp -d)"
-  curl -fL "$url" -o "$tmp/singbox.tar.gz" || { rm -rf "$tmp"; return 1; }
-  tar -C "$tmp" -xzf "$tmp/singbox.tar.gz" || { rm -rf "$tmp"; return 1; }
+  curl -fL "$url" -o "$tmp/singbox.tar.gz" || {
+    rm -rf "$tmp"
+    return 1
+  }
+
+  tar -C "$tmp" -xzf "$tmp/singbox.tar.gz" || {
+    rm -rf "$tmp"
+    return 1
+  }
 
   bin="$(find "$tmp" -type f -name 'sing-box' | head -n1 || true)"
-  [[ -n "$bin" ]] || { echo "[!] sing-box unpack failed"; rm -rf "$tmp"; return 1; }
+  [[ -n "$bin" ]] || {
+    echo "[!] sing-box unpack failed"
+    rm -rf "$tmp"
+    return 1
+  }
 
-  install -m 755 "$bin" "$outdir/sing-box" || { rm -rf "$tmp"; return 1; }
+  install -m 755 "$bin" "$outdir/sing-box" || {
+    rm -rf "$tmp"
+    return 1
+  }
 
   cronet="$(find "$tmp" -type f -name 'libcronet*.so*' | head -n1 || true)"
   [[ -n "$cronet" ]] && install -m 644 "$cronet" "$outdir/libcronet.so" || true
@@ -381,20 +619,44 @@ download_geo_assets() {
   mkdir -p "$bin_dir" "$srss_dir"
 
   echo "[+] Download Xray Geo to ${bin_dir}"
-  curl -fsSL -o "$bin_dir/geosite.dat" "https://github.com/Loyalsoldier/V2ray-rules-dat/releases/latest/download/geosite.dat"
-  curl -fsSL -o "$bin_dir/geoip.dat" "https://github.com/Loyalsoldier/V2ray-rules-dat/releases/latest/download/geoip.dat"
-  curl -fsSL -o "$bin_dir/geoip-only-cn-private.dat" "https://raw.githubusercontent.com/Loyalsoldier/geoip/release/geoip-only-cn-private.dat"
-  curl -fsSL -o "$bin_dir/Country.mmdb" "https://raw.githubusercontent.com/Loyalsoldier/geoip/release/Country.mmdb"
+  curl -fsSL -o "$bin_dir/geosite.dat" \
+    "https://github.com/Loyalsoldier/V2ray-rules-dat/releases/latest/download/geosite.dat"
+  curl -fsSL -o "$bin_dir/geoip.dat" \
+    "https://github.com/Loyalsoldier/V2ray-rules-dat/releases/latest/download/geoip.dat"
+  curl -fsSL -o "$bin_dir/geoip-only-cn-private.dat" \
+    "https://raw.githubusercontent.com/Loyalsoldier/geoip/release/geoip-only-cn-private.dat"
+  curl -fsSL -o "$bin_dir/Country.mmdb" \
+    "https://raw.githubusercontent.com/Loyalsoldier/geoip/release/Country.mmdb"
 
   echo "[+] Download sing-box rule DB & rule-sets"
-  curl -fsSL -o "$bin_dir/geoip.metadb" "https://github.com/MetaCubeX/meta-rules-dat/releases/latest/download/geoip.metadb"
+  curl -fsSL -o "$bin_dir/geoip.metadb" \
+    "https://github.com/MetaCubeX/meta-rules-dat/releases/latest/download/geoip.metadb"
 
-  for f in geoip-private.srs geoip-cn.srs geoip-facebook.srs geoip-fastly.srs geoip-google.srs geoip-netflix.srs geoip-telegram.srs geoip-twitter.srs; do
-    curl -fsSL -o "$srss_dir/$f" "https://raw.githubusercontent.com/2dust/sing-box-rules/refs/heads/rule-set-geoip/$f"
+  for f in \
+    geoip-private.srs \
+    geoip-cn.srs \
+    geoip-facebook.srs \
+    geoip-fastly.srs \
+    geoip-google.srs \
+    geoip-netflix.srs \
+    geoip-telegram.srs \
+    geoip-twitter.srs
+  do
+    curl -fsSL -o "$srss_dir/$f" \
+      "https://raw.githubusercontent.com/2dust/sing-box-rules/refs/heads/rule-set-geoip/$f"
   done
 
-  for f in geosite-cn.srs geosite-gfw.srs geosite-google.srs geosite-greatfire.srs geosite-geolocation-cn.srs geosite-category-ads-all.srs geosite-private.srs; do
-    curl -fsSL -o "$srss_dir/$f" "https://raw.githubusercontent.com/2dust/sing-box-rules/refs/heads/rule-set-geosite/$f"
+  for f in \
+    geosite-cn.srs \
+    geosite-gfw.srs \
+    geosite-google.srs \
+    geosite-greatfire.srs \
+    geosite-geolocation-cn.srs \
+    geosite-category-ads-all.srs \
+    geosite-private.srs
+  do
+    curl -fsSL -o "$srss_dir/$f" \
+      "https://raw.githubusercontent.com/2dust/sing-box-rules/refs/heads/rule-set-geosite/$f"
   done
 
   unify_geo_layout "$outroot"
@@ -407,13 +669,26 @@ populate_assets_zip_mode() {
   local tmp=""
   local nested_dir=""
 
-  url="$(bundle_url_for_rid "$rid")" || { echo "[!] Bundle unsupported RID: $rid"; return 1; }
+  url="$(bundle_url_for_rid "$rid")" || {
+    echo "[!] Bundle unsupported RID: $rid"
+    return 1
+  }
 
   echo "[+] Try v2rayN bundle archive: $url"
 
   tmp="$(mktemp -d)"
-  curl -fL "$url" -o "$tmp/v2rayn.zip" || { echo "[!] Bundle download failed"; rm -rf "$tmp"; return 1; }
-  unzip -q "$tmp/v2rayn.zip" -d "$tmp" || { echo "[!] Bundle unzip failed"; rm -rf "$tmp"; return 1; }
+
+  curl -fL "$url" -o "$tmp/v2rayn.zip" || {
+    echo "[!] Bundle download failed"
+    rm -rf "$tmp"
+    return 1
+  }
+
+  unzip -q "$tmp/v2rayn.zip" -d "$tmp" || {
+    echo "[!] Bundle unzip failed"
+    rm -rf "$tmp"
+    return 1
+  }
 
   if [[ -d "$tmp/bin" ]]; then
     mkdir -p "$outroot/bin"
@@ -426,6 +701,7 @@ populate_assets_zip_mode() {
   find "$outroot" -type d -name "mihomo" -prune -exec rm -rf {} + 2>/dev/null || true
 
   nested_dir="$(find "$outroot" -maxdepth 1 -type d -name 'v2rayN-linux-*' | head -n1 || true)"
+
   if [[ -n "$nested_dir" && -d "$nested_dir/bin" ]]; then
     mkdir -p "$outroot/bin"
     rsync -a "$nested_dir/bin/" "$outroot/bin/"
@@ -445,14 +721,17 @@ populate_assets_netcore_mode() {
   mkdir -p "$outroot/bin/xray" "$outroot/bin/sing_box"
 
   if [[ "$WITH_CORE" == "xray" || "$WITH_CORE" == "both" ]]; then
-    download_xray "$outroot/bin/xray" "$rid" || echo "[!] xray download failed (skipped)"
+    download_xray "$outroot/bin/xray" "$rid" \
+      || echo "[!] xray download failed (skipped)"
   fi
 
   if [[ "$WITH_CORE" == "sing-box" || "$WITH_CORE" == "both" ]]; then
-    download_singbox "$outroot/bin/sing_box" "$rid" || echo "[!] sing-box download failed (skipped)"
+    download_singbox "$outroot/bin/sing_box" "$rid" \
+      || echo "[!] sing-box download failed (skipped)"
   fi
 
-  download_geo_assets "$outroot" || echo "[!] Geo rules download failed (skipped)"
+  download_geo_assets "$outroot" \
+    || echo "[!] Geo rules download failed (skipped)"
 }
 
 stage_runtime_assets() {
@@ -475,21 +754,36 @@ stage_runtime_assets() {
 }
 
 describe_target() {
-  local short="$1"
-
-  case "$short" in
-    loongarch64) printf '%s\n%s\n%s\n' "linux-loongarch64" "loongarch64" "loongarch64" ;;
-    *)           echo "Unknown arch '$short' (use loongarch64)" >&2; return 1 ;;
-  esac
+  printf '%s\n%s\n%s\n' \
+    "$X86_RID" \
+    "$X86_RPM_ARCH" \
+    "$X86_RPM_ARCH"
 }
 
 publish_binary() {
   local rid="$1"
 
+  patch_x86_sdk
+
   dotnet clean "$PROJECT" -c Release
   rm -rf "$(dirname "$PROJECT")/bin/Release/net10.0" || true
-  dotnet restore "$PROJECT"
-  dotnet publish "$PROJECT" -c Release -r "$rid" -p:PublishSingleFile=false -p:SelfContained=true
+
+  dotnet restore "$PROJECT" \
+    -r "$rid" \
+    --source "$NUGET_CACHE_DIR" \
+    --source "https://api.nuget.org/v3/index.json" \
+    -p:SelfContained=true \
+    -p:EnableWindowsTargeting=true \
+    --force-evaluate
+
+  dotnet publish "$PROJECT" \
+    -c Release \
+    -r "$rid" \
+    --source "$NUGET_CACHE_DIR" \
+    --source "https://api.nuget.org/v3/index.json" \
+    -p:PublishSingleFile=false \
+    -p:SelfContained=true \
+    --no-restore
 }
 
 write_spec_file() {
@@ -508,7 +802,7 @@ Summary:        v2rayN (Avalonia) GUI client for Linux
 License:        GPL-3.0-only
 URL:            https://github.com/2dust/v2rayN
 BugURL:         https://github.com/2dust/v2rayN/issues
-ExclusiveArch:  loongarch64
+ExclusiveArch:  i686
 Source0:        __PKGROOT__.tar.gz
 
 Requires:       cairo, pango, openssl, mesa-libEGL, mesa-libGL
@@ -523,7 +817,7 @@ Requires:       freetype >= 2.13
 %description
 v2rayN Linux for Red Hat Enterprise Linux
 Support vless / vmess / Trojan / http / socks / Anytls / Hysteria2 / Shadowsocks / tuic / WireGuard
-Support Red Hat Enterprise Linux / Fedora Linux / Rocky Linux / AlmaLinux / CentOS / Anolis OS
+Support Red Hat Enterprise Linux / Fedora Linux / Rocky Linux / AlmaLinux / CentOS
 For more information, Please visit our website
 https://github.com/2dust/v2rayN
 
@@ -606,7 +900,10 @@ package_binary() {
   local f=""
 
   pubdir="$(dirname "$PROJECT")/bin/Release/net10.0/${rid}/publish"
-  [[ -d "$pubdir" ]] || { echo "Publish directory not found: $pubdir"; return 1; }
+  [[ -d "$pubdir" ]] || {
+    echo "Publish directory not found: $pubdir"
+    return 1
+  }
 
   workdir="$(mktemp -d)"
   trap '[[ -n "${workdir:-}" ]] && rm -rf "$workdir"' RETURN
@@ -616,23 +913,41 @@ package_binary() {
 
   project_dir="$(cd "$(dirname "$PROJECT")" && pwd)"
   icon_candidate="$project_dir/v2rayN.png"
-  [[ -f "$icon_candidate" ]] || { echo "Required icon not found: $icon_candidate"; return 1; }
+
+  [[ -f "$icon_candidate" ]] || {
+    echo "Required icon not found: $icon_candidate"
+    return 1
+  }
+
   cp "$icon_candidate" "$workdir/$PKGROOT/v2rayn.png"
 
   stage_runtime_assets "$workdir/$PKGROOT" "$rid"
 
   rpmdev-setuptree
+
   sourcedir="${RPM_TOPDIR}/SOURCES"
   specdir="${RPM_TOPDIR}/SPECS"
   specfile="${specdir}/v2rayN.spec"
 
   mkdir -p "$sourcedir" "$specdir"
-  tar -C "$workdir" -czf "$sourcedir/$PKGROOT.tar.gz" "$PKGROOT"
+
+  tar -C "$workdir" \
+    -czf "$sourcedir/$PKGROOT.tar.gz" \
+    "$PKGROOT"
 
   write_spec_file "$specfile"
-  rpmbuild -ba "$specfile" --target "$rpm_target"
+
+  if [[ -n "${RPM_STRIP:-}" ]]; then
+    rpmbuild -ba "$specfile" \
+      --target "$rpm_target" \
+      --define "__strip ${RPM_STRIP}" \
+      --define "__objdump ${RPM_OBJDUMP}"
+  else
+    rpmbuild -ba "$specfile" --target "$rpm_target"
+  fi
 
   echo "Build done for $short. RPM at:"
+
   for f in "${RPM_TOPDIR}/RPMS/${archdir}/v2rayN-${VERSION}-1"*.rpm; do
     [[ -e "$f" ]] || continue
     echo "  $f"
@@ -640,23 +955,16 @@ package_binary() {
   done
 }
 
-select_targets() {
-  printf '%s\n' loongarch64
-}
-
 build_one_target() {
-  local short="$1"
-  local meta=()
-  local rid=""
-  local rpm_target=""
-  local archdir=""
-
-  mapfile -t meta < <(describe_target "$short") || return 1
-  rid="${meta[0]}"
-  rpm_target="${meta[1]}"
-  archdir="${meta[2]}"
+  local short="i686"
+  local rid="$X86_RID"
+  local rpm_target="$X86_RPM_ARCH"
+  local archdir="$X86_RPM_ARCH"
 
   echo "[*] Building for target: $short  (RID=$rid, RPM --target $rpm_target)"
+
+  prepare_cross_rpm_tools "$short"
+  prepare_dotnet_sdk
   publish_binary "$rid"
   package_binary "$short" "$rid" "$rpm_target" "$archdir"
 }
@@ -665,32 +973,31 @@ print_summary() {
   local rp=""
 
   echo ""
-  echo "================ Build Summary ================"
+  echo "================ Build Summary ================="
   if [[ "${#BUILT_RPMS[@]}" -gt 0 ]]; then
+    echo "Output directory: ${RPM_TOPDIR}"
     for rp in "${BUILT_RPMS[@]}"; do
       echo "$rp"
     done
   else
     echo "No RPMs detected in summary (check build logs above)."
   fi
-  echo "=============================================="
+  echo "==============================================="
 }
 
 main() {
-  local targets=()
-  local arch=""
-
   parse_args "$@"
   detect_environment
   install_dependencies
   prepare_workspace
   resolve_version
 
-  mapfile -t targets < <(select_targets)
+  download_nuget_packages || die \
+    "Failed to download prebuilt NuGet packages."
 
-  for arch in "${targets[@]}"; do
-    build_one_target "$arch"
-  done
+  build_one_target
+
+  rm -rf "${NUGET_CACHE_DIR:-}" || true
 
   print_summary
 }
