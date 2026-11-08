@@ -1909,7 +1909,7 @@
   <data name="menuAddMasqueServer" xml:space="preserve">
     <value>新增 [MASQUE] 節點</value>
   </data>
-  <data name="menuColumns" xml:space="preserve">
+  <data name="menuShowColumns" xml:space="preserve">
     <value>欄位顯示</value>
   </data>
   <data name="TbWarp" xml:space="preserve">
