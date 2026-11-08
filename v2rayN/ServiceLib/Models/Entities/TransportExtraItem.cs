@@ -16,4 +16,13 @@ public record TransportExtraItem
     public string? KcpHeaderType { get; init; }
     public string? KcpSeed { get; init; }
     public int? KcpMtu { get; init; }
+
+    public string? XdriveService { get; init; }
+    public string? XdriveRemoteFolder { get; init; }
+    public string? XdriveSecrets { get; init; }
+    public string? XdriveS3Endpoint { get; init; }
+    public string? XdriveS3Region { get; init; }
+    public string? XdriveS3Bucket { get; init; }
+    public bool? XdriveS3PathStyle { get; init; }
+    public string? XdriveExtra { get; init; }
 }

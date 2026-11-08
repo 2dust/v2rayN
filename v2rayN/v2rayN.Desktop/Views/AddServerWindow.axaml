@@ -1051,6 +1051,125 @@
                         </Grid>
 
                         <Grid
+                            x:Name="gridTransportXdrive"
+                            ColumnDefinitions="300,Auto"
+                            IsVisible="False"
+                            RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                Text="{x:Static resx:ResUI.XdriveProvider}" />
+                            <ComboBox
+                                x:Name="cmbProviderXdrive"
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Width="250"
+                                Margin="{StaticResource Margin4}" />
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                Text="{x:Static resx:ResUI.XdriveService}" />
+                            <ComboBox
+                                x:Name="cmbServiceXdrive"
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Width="200"
+                                Margin="{StaticResource Margin4}" />
+                            <TextBlock
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                Text="{x:Static resx:ResUI.XdriveRemoteFolder}" />
+                            <TextBox
+                                x:Name="txtRemoteFolderXdrive"
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                Width="400"
+                                Margin="{StaticResource Margin4}" />
+                            <TextBlock
+                                Grid.Row="3"
+                                Grid.Column="0"
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                Text="{x:Static resx:ResUI.XdriveSecrets}" />
+                            <TextBox
+                                x:Name="txtSecretsXdrive"
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                Width="400"
+                                Margin="{StaticResource Margin4}" />
+                            <TextBlock
+                                Grid.Row="4"
+                                Grid.Column="0"
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                Text="{x:Static resx:ResUI.XdriveS3Endpoint}" />
+                            <TextBox
+                                x:Name="txtEndpointXdrive"
+                                Grid.Row="4"
+                                Grid.Column="1"
+                                Width="400"
+                                Margin="{StaticResource Margin4}" />
+                            <TextBlock
+                                Grid.Row="5"
+                                Grid.Column="0"
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                Text="{x:Static resx:ResUI.XdriveS3Bucket}" />
+                            <TextBox
+                                x:Name="txtBucketXdrive"
+                                Grid.Row="5"
+                                Grid.Column="1"
+                                Width="400"
+                                Margin="{StaticResource Margin4}" />
+                            <TextBlock
+                                Grid.Row="6"
+                                Grid.Column="0"
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                Text="{x:Static resx:ResUI.XdriveS3Region}" />
+                            <TextBox
+                                x:Name="txtRegionXdrive"
+                                Grid.Row="6"
+                                Grid.Column="1"
+                                Width="400"
+                                Margin="{StaticResource Margin4}" />
+                            <TextBlock
+                                Grid.Row="7"
+                                Grid.Column="0"
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Center"
+                                Text="{x:Static resx:ResUI.XdriveS3PathStyle}" />
+                            <ToggleSwitch
+                                x:Name="togPathStyleXdrive"
+                                Grid.Row="7"
+                                Grid.Column="1"
+                                Margin="{StaticResource Margin4}"
+                                HorizontalAlignment="Left" />
+                            <TextBlock
+                                Grid.Row="8"
+                                Grid.Column="0"
+                                Margin="{StaticResource Margin4}"
+                                VerticalAlignment="Top"
+                                Text="{x:Static resx:ResUI.XdriveExtra}"
+                                TextWrapping="Wrap" />
+                            <Expander
+                                Grid.Row="8"
+                                Grid.Column="1"
+                                IsExpanded="False">
+                                <Expander.Header>
+                                    <TextBlock FontWeight="Normal" Text="{x:Static resx:ResUI.XdriveExtraTip}" />
+                                </Expander.Header>
+                                <views:JsonEditor x:Name="txtExtraXdrive" HorizontalAlignment="Stretch" />
+                            </Expander>
+                        </Grid>
+
+                        <Grid
                             x:Name="gridTransportKcp"
                             ColumnDefinitions="300,Auto"
                             IsVisible="False"

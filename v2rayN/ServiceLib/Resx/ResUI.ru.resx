@@ -1908,4 +1908,40 @@
   <data name="menuAddMasqueServer" xml:space="preserve">
     <value>Добавить сервер [MASQUE]</value>
   </data>
+  <data name="XdriveProvider" xml:space="preserve">
+    <value>Шаблон провайдера</value>
+  </data>
+  <data name="XdriveService" xml:space="preserve">
+    <value>Облачный сервис (service)</value>
+  </data>
+  <data name="XdriveRemoteFolder" xml:space="preserve">
+    <value>Удаленная папка (remoteFolder)</value>
+  </data>
+  <data name="XdriveSecrets" xml:space="preserve">
+    <value>Ключи доступа (AK,SK / OAuth)</value>
+  </data>
+  <data name="XdriveS3Endpoint" xml:space="preserve">
+    <value>Эндпоинт S3 (Endpoint)</value>
+  </data>
+  <data name="XdriveS3Region" xml:space="preserve">
+    <value>Регион S3 (Region)</value>
+  </data>
+  <data name="XdriveS3Bucket" xml:space="preserve">
+    <value>Бакет S3 (Bucket)</value>
+  </data>
+  <data name="XdriveS3PathStyle" xml:space="preserve">
+    <value>Режим адресации S3 (PathStyle)</value>
+  </data>
+  <data name="XdriveExtra" xml:space="preserve">
+    <value>Дополнительные параметры XDRIVE (Extra)</value>
+  </data>
+  <data name="XdriveExtraTip" xml:space="preserve">
+    <value>Сырой JSON, формат: { XdriveObject }</value>
+  </data>
+  <data name="TransportHeaderType6" xml:space="preserve">
+    <value>XDRIVE-сервис</value>
+  </data>
+  <data name="TransportPathTip6" xml:space="preserve">
+    <value>Удаленная папка XDRIVE</value>
+  </data>
 </root>

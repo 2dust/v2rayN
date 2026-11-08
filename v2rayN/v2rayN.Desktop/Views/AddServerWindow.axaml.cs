@@ -179,6 +179,19 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
             this.Bind(ViewModel, vm => vm.GrpcAuthority, v => v.txtRequestHostGrpc.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.GrpcServiceName, v => v.txtPathGrpc.Text).DisposeWith(disposables);
 
+            cmbProviderXdrive.ItemsSource = Global.XdriveProviders;
+            this.Bind(ViewModel, vm => vm.XdriveProvider, v => v.cmbProviderXdrive.SelectedValue).DisposeWith(disposables);
+
+            cmbServiceXdrive.ItemsSource = Global.XdriveServices;
+            this.Bind(ViewModel, vm => vm.XdriveService, v => v.cmbServiceXdrive.SelectedValue).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.XdriveRemoteFolder, v => v.txtRemoteFolderXdrive.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.XdriveSecrets, v => v.txtSecretsXdrive.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.XdriveS3Endpoint, v => v.txtEndpointXdrive.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.XdriveS3Bucket, v => v.txtBucketXdrive.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.XdriveS3Region, v => v.txtRegionXdrive.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.XdriveS3PathStyle, v => v.togPathStyleXdrive.IsChecked).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.XdriveExtra, v => v.txtExtraXdrive.Text).DisposeWith(disposables);
+
             this.Bind(ViewModel, vm => vm.SelectedSource.StreamSecurity, v => v.cmbStreamSecurity.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.Sni, v => v.txtSNI.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.AllowInsecure, v => v.togAllowInsecure.IsChecked).DisposeWith(disposables);
@@ -359,6 +372,7 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
         gridTransportHttpupgrade.IsVisible = false;
         gridTransportXhttp.IsVisible = false;
         gridTransportGrpc.IsVisible = false;
+        gridTransportXdrive.IsVisible = false;
 
         switch (network)
         {
@@ -384,6 +398,10 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
 
             case nameof(ETransport.grpc):
                 gridTransportGrpc.IsVisible = true;
+                break;
+
+            case nameof(ETransport.xdrive):
+                gridTransportXdrive.IsVisible = true;
                 break;
 
             default:

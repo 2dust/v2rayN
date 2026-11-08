@@ -1909,8 +1909,8 @@
   <data name="FillCorrectFakeIPv6Range" xml:space="preserve">
     <value>请输入至少包含两个地址的有效 IPv6 网段，例如 fc00::/18。</value>
   </data>
-  <data name="menuShowColumns" xml:space="preserve">
-    <value>显示列</value>
+  <data name="menuColumns" xml:space="preserve">
+    <value>列</value>
   </data>
   <data name="TbWarp" xml:space="preserve">
     <value>Warp</value>
@@ -1918,16 +1918,40 @@
   <data name="LvPreResolve" xml:space="preserve">
     <value>预解析节点域名</value>
   </data>
-  <data name="menuFreezeToThisColumn" xml:space="preserve">
-    <value>冻结至此列</value>
+  <data name="XdriveProvider" xml:space="preserve">
+    <value>预设服务商</value>
   </data>
-  <data name="menuUnfreezeAllColumns" xml:space="preserve">
-    <value>取消所有冻结</value>
+  <data name="XdriveService" xml:space="preserve">
+    <value>存储服务 (service)</value>
   </data>
-  <data name="menuCurrentlyFrozenColumns" xml:space="preserve">
-    <value>当前已冻结前 {0} 列</value>
+  <data name="XdriveRemoteFolder" xml:space="preserve">
+    <value>远程目录 (remoteFolder)</value>
   </data>
-  <data name="menuHideThisColumn" xml:space="preserve">
-    <value>隐藏此列</value>
+  <data name="XdriveSecrets" xml:space="preserve">
+    <value>访问凭证 Secrets (AK,SK / OAuth)</value>
+  </data>
+  <data name="XdriveS3Endpoint" xml:space="preserve">
+    <value>S3 终端节点</value>
+  </data>
+  <data name="XdriveS3Region" xml:space="preserve">
+    <value>S3 区域</value>
+  </data>
+  <data name="XdriveS3Bucket" xml:space="preserve">
+    <value>S3 存储桶</value>
+  </data>
+  <data name="XdriveS3PathStyle" xml:space="preserve">
+    <value>S3 强制路径样式 (PathStyle)</value>
+  </data>
+  <data name="XdriveExtra" xml:space="preserve">
+    <value>XDRIVE 额外配置</value>
+  </data>
+  <data name="XdriveExtraTip" xml:space="preserve">
+    <value>原始 JSON，格式： { XdriveObject }</value>
+  </data>
+  <data name="TransportHeaderType6" xml:space="preserve">
+    <value>XDRIVE 服务</value>
+  </data>
+  <data name="TransportPathTip6" xml:space="preserve">
+    <value>XDRIVE 远端目录</value>
   </data>
 </root>
