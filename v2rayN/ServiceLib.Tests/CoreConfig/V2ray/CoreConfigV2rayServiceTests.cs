@@ -824,4 +824,135 @@ public class CoreConfigV2rayServiceTests
         await proxyOutbound.Should().NotBeNull();
         await proxyOutbound!.protocol.Should().BeEqualTo("shadowsocks");
     }
+
+    [Test]
+    public async Task GenerateClientConfigContent_XdriveGoogleDrive_ShouldGenerateValidOutbound()
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var node = new ProfileItem
+        {
+            IndexId = "node-xdrive-gdrive",
+            ConfigType = EConfigType.VLESS,
+            CoreType = ECoreType.Xray,
+            Remarks = "xdrive-gdrive",
+            Address = "example.com",
+            Port = 443,
+            Password = Guid.NewGuid().ToString(),
+            Network = nameof(ETransport.xdrive),
+            MuxEnabled = false,
+        };
+        node.SetProtocolExtra(new ProtocolExtraItem { VlessEncryption = Global.None });
+        node.SetTransportExtra(new TransportExtraItem
+        {
+            XdriveService = "google-drive",
+            XdriveRemoteFolder = "folder-123",
+            XdriveSecrets = "id,secret,token",
+        });
+
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray);
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue();
+        var generatedConfig = JsonNode.Parse(result.Data!.ToString()!)!;
+        var proxy = generatedConfig["outbounds"]!.AsArray()
+            .First(outbound => outbound!["tag"]!.GetValue<string>() == Global.ProxyTag)!;
+
+        var streamSettings = proxy["streamSettings"]!;
+        await streamSettings["network"]!.GetValue<string>().Should().BeEqualTo("xdrive");
+
+        var xdriveSettings = streamSettings["xdriveSettings"]!;
+        await xdriveSettings["service"]!.GetValue<string>().Should().BeEqualTo("google-drive");
+        await xdriveSettings["remoteFolder"]!.GetValue<string>().Should().BeEqualTo("folder-123");
+
+        var secrets = xdriveSettings["secrets"]!.AsArray();
+        await secrets.Count.Should().BeEqualTo(3);
+        await secrets[0]!.GetValue<string>().Should().BeEqualTo("id");
+        await secrets[1]!.GetValue<string>().Should().BeEqualTo("secret");
+        await secrets[2]!.GetValue<string>().Should().BeEqualTo("token");
+
+        await proxy["mux"]!["enabled"]!.GetValue<bool>().Should().BeTrue();
+    }
+
+    [Test]
+    public async Task GenerateClientConfigContent_XdriveS3_ShouldGenerateValidOutbound()
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var node = new ProfileItem
+        {
+            IndexId = "node-xdrive-s3",
+            ConfigType = EConfigType.VLESS,
+            CoreType = ECoreType.Xray,
+            Remarks = "xdrive-s3",
+            Address = "example.com",
+            Port = 443,
+            Password = Guid.NewGuid().ToString(),
+            Network = nameof(ETransport.xdrive),
+        };
+        node.SetProtocolExtra(new ProtocolExtraItem { VlessEncryption = Global.None });
+        node.SetTransportExtra(new TransportExtraItem
+        {
+            XdriveService = "s3",
+            XdriveS3Endpoint = "https://s3.amazonaws.com",
+            XdriveS3Bucket = "mybucket",
+            XdriveS3PathStyle = false,
+        });
+
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray);
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue();
+        var generatedConfig = JsonNode.Parse(result.Data!.ToString()!)!;
+        var proxy = generatedConfig["outbounds"]!.AsArray()
+            .First(outbound => outbound!["tag"]!.GetValue<string>() == Global.ProxyTag)!;
+
+        var s3 = proxy["streamSettings"]!["xdriveSettings"]!["s3"]!;
+        await s3["endpoint"]!.GetValue<string>().Should().BeEqualTo("https://s3.amazonaws.com");
+        await s3["bucket"]!.GetValue<string>().Should().BeEqualTo("mybucket");
+        await s3["pathStyle"]!.GetValue<bool>().Should().BeFalse();
+    }
+
+    [Test]
+    public async Task GenerateClientConfigContent_XdriveExtra_ShouldPopulateParameters()
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var node = new ProfileItem
+        {
+            IndexId = "node-xdrive-extra",
+            ConfigType = EConfigType.VLESS,
+            CoreType = ECoreType.Xray,
+            Remarks = "xdrive-extra",
+            Address = "example.com",
+            Port = 443,
+            Password = Guid.NewGuid().ToString(),
+            Network = nameof(ETransport.xdrive),
+        };
+        node.SetProtocolExtra(new ProtocolExtraItem { VlessEncryption = Global.None });
+        node.SetTransportExtra(new TransportExtraItem
+        {
+            XdriveService = "onedrive",
+            XdriveExtra = """{"segmentBytes":1048576,"flushIntervalMs":500,"pollIntervalMs":200,"maxPollIntervalMs":2000,"eagerWindowMs":1000,"concurrency":4}""",
+        });
+
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray);
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue();
+        var generatedConfig = JsonNode.Parse(result.Data!.ToString()!)!;
+        var proxy = generatedConfig["outbounds"]!.AsArray()
+            .First(outbound => outbound!["tag"]!.GetValue<string>() == Global.ProxyTag)!;
+
+        var xdriveSettings = proxy["streamSettings"]!["xdriveSettings"]!;
+        await xdriveSettings["segmentBytes"]!.GetValue<int>().Should().BeEqualTo(1048576);
+        await xdriveSettings["flushIntervalMs"]!.GetValue<int>().Should().BeEqualTo(500);
+        await xdriveSettings["pollIntervalMs"]!.GetValue<int>().Should().BeEqualTo(200);
+        await xdriveSettings["maxPollIntervalMs"]!.GetValue<int>().Should().BeEqualTo(2000);
+        await xdriveSettings["eagerWindowMs"]!.GetValue<int>().Should().BeEqualTo(1000);
+        await xdriveSettings["concurrency"]!.GetValue<int>().Should().BeEqualTo(4);
+    }
 }

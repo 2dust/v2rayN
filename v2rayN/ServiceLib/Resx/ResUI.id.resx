@@ -1797,4 +1797,40 @@ Tindakan "Ambil sertifikat" mungkin gagal jika sertifikat self-signed digunakan 
   <data name="TbEnableFinalFragmentTip" xml:space="preserve">
     <value>Memecah bagian akhir paket menjadi fragmen yang lebih kecil. Hal ini dapat memengaruhi throughput dan latensi.</value>
   </data>
+  <data name="XdriveProvider" xml:space="preserve">
+    <value>Penyedia Preset</value>
+  </data>
+  <data name="XdriveService" xml:space="preserve">
+    <value>Layanan Penyimpanan (service)</value>
+  </data>
+  <data name="XdriveRemoteFolder" xml:space="preserve">
+    <value>Folder Jarak Jauh (remoteFolder)</value>
+  </data>
+  <data name="XdriveSecrets" xml:space="preserve">
+    <value>Kredensial Akses (AK,SK / OAuth)</value>
+  </data>
+  <data name="XdriveS3Endpoint" xml:space="preserve">
+    <value>Endpoint S3</value>
+  </data>
+  <data name="XdriveS3Region" xml:space="preserve">
+    <value>Wilayah S3 (Region)</value>
+  </data>
+  <data name="XdriveS3Bucket" xml:space="preserve">
+    <value>Bucket S3</value>
+  </data>
+  <data name="XdriveS3PathStyle" xml:space="preserve">
+    <value>Gaya Jalur S3 (PathStyle)</value>
+  </data>
+  <data name="XdriveExtra" xml:space="preserve">
+    <value>XDRIVE Ekstra</value>
+  </data>
+  <data name="XdriveExtraTip" xml:space="preserve">
+    <value>JSON mentah, format: { XdriveObject }</value>
+  </data>
+  <data name="TransportHeaderType6" xml:space="preserve">
+    <value>Layanan XDRIVE</value>
+  </data>
+  <data name="TransportPathTip6" xml:space="preserve">
+    <value>Folder jarak jauh XDRIVE</value>
+  </data>
 </root>

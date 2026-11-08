@@ -1776,4 +1776,40 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="menuNewUpdate" xml:space="preserve">
     <value>New Update</value>
   </data>
+  <data name="XdriveProvider" xml:space="preserve">
+    <value>ارائه‌دهنده پیش‌فرض</value>
+  </data>
+  <data name="XdriveService" xml:space="preserve">
+    <value>سرویس ذخیره‌سازی (service)</value>
+  </data>
+  <data name="XdriveRemoteFolder" xml:space="preserve">
+    <value>پوشه ریموت (remoteFolder)</value>
+  </data>
+  <data name="XdriveSecrets" xml:space="preserve">
+    <value>کلیدهای دسترسی (AK,SK / OAuth)</value>
+  </data>
+  <data name="XdriveS3Endpoint" xml:space="preserve">
+    <value>آدرس اندپوینت S3</value>
+  </data>
+  <data name="XdriveS3Region" xml:space="preserve">
+    <value>منطقه S3 (region)</value>
+  </data>
+  <data name="XdriveS3Bucket" xml:space="preserve">
+    <value>باکت S3 (bucket)</value>
+  </data>
+  <data name="XdriveS3PathStyle" xml:space="preserve">
+    <value>آدرس‌دهی مستقیم S3 (PathStyle)</value>
+  </data>
+  <data name="XdriveExtra" xml:space="preserve">
+    <value>تنظیمات پیشرفته XDRIVE</value>
+  </data>
+  <data name="XdriveExtraTip" xml:space="preserve">
+    <value>فرمت JSON خام: { XdriveObject }</value>
+  </data>
+  <data name="TransportHeaderType6" xml:space="preserve">
+    <value>سرویس XDRIVE</value>
+  </data>
+  <data name="TransportPathTip6" xml:space="preserve">
+    <value>پوشه ریموت XDRIVE</value>
+  </data>
 </root>

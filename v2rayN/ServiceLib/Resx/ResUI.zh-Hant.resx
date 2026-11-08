@@ -1927,4 +1927,40 @@
   <data name="FillCorrectFakeIPv6Range" xml:space="preserve">
     <value>請輸入至少包含兩個位址的有效 IPv6 網段，例如 fc00::/18。</value>
   </data>
+  <data name="XdriveProvider" xml:space="preserve">
+    <value>預設服務商</value>
+  </data>
+  <data name="XdriveService" xml:space="preserve">
+    <value>存儲服務 (service)</value>
+  </data>
+  <data name="XdriveRemoteFolder" xml:space="preserve">
+    <value>遠端目錄 (remoteFolder)</value>
+  </data>
+  <data name="XdriveSecrets" xml:space="preserve">
+    <value>存取憑證 Secrets (AK,SK / OAuth)</value>
+  </data>
+  <data name="XdriveS3Endpoint" xml:space="preserve">
+    <value>S3 終端節點</value>
+  </data>
+  <data name="XdriveS3Region" xml:space="preserve">
+    <value>S3 區域</value>
+  </data>
+  <data name="XdriveS3Bucket" xml:space="preserve">
+    <value>S3 儲存桶</value>
+  </data>
+  <data name="XdriveS3PathStyle" xml:space="preserve">
+    <value>S3 強制路徑樣式 (PathStyle)</value>
+  </data>
+  <data name="XdriveExtra" xml:space="preserve">
+    <value>XDRIVE 額外配置</value>
+  </data>
+  <data name="XdriveExtraTip" xml:space="preserve">
+    <value>原始 JSON，格式： { XdriveObject }</value>
+  </data>
+  <data name="TransportHeaderType6" xml:space="preserve">
+    <value>XDRIVE 服務</value>
+  </data>
+  <data name="TransportPathTip6" xml:space="preserve">
+    <value>XDRIVE 遠端目錄</value>
+  </data>
 </root>

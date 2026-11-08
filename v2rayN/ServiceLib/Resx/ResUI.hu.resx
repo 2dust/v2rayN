@@ -1773,4 +1773,40 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="menuNewUpdate" xml:space="preserve">
     <value>New Update</value>
   </data>
+  <data name="XdriveProvider" xml:space="preserve">
+    <value>Előre beállított szolgáltató</value>
+  </data>
+  <data name="XdriveService" xml:space="preserve">
+    <value>Tárhelyszolgáltatás (service)</value>
+  </data>
+  <data name="XdriveRemoteFolder" xml:space="preserve">
+    <value>Távoli mappa (remoteFolder)</value>
+  </data>
+  <data name="XdriveSecrets" xml:space="preserve">
+    <value>Hozzáférési kulcsok (AK,SK / OAuth)</value>
+  </data>
+  <data name="XdriveS3Endpoint" xml:space="preserve">
+    <value>S3 végpont (Endpoint)</value>
+  </data>
+  <data name="XdriveS3Region" xml:space="preserve">
+    <value>S3 régió (Region)</value>
+  </data>
+  <data name="XdriveS3Bucket" xml:space="preserve">
+    <value>S3 tárhely (Bucket)</value>
+  </data>
+  <data name="XdriveS3PathStyle" xml:space="preserve">
+    <value>S3 elérési út stílus (PathStyle)</value>
+  </data>
+  <data name="XdriveExtra" xml:space="preserve">
+    <value>XDRIVE Extra</value>
+  </data>
+  <data name="XdriveExtraTip" xml:space="preserve">
+    <value>Raw JSON, formátum: { XdriveObject }</value>
+  </data>
+  <data name="TransportHeaderType6" xml:space="preserve">
+    <value>XDRIVE szolgáltatás</value>
+  </data>
+  <data name="TransportPathTip6" xml:space="preserve">
+    <value>XDRIVE távoli mappa</value>
+  </data>
 </root>
