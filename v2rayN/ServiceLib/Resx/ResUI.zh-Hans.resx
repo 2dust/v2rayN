@@ -1909,14 +1909,26 @@
   <data name="FillCorrectFakeIPv6Range" xml:space="preserve">
     <value>请输入至少包含两个地址的有效 IPv6 网段，例如 fc00::/18。</value>
   </data>
-  <data name="menuColumns" xml:space="preserve">
-    <value>列</value>
+  <data name="menuShowColumns" xml:space="preserve">
+    <value>显示列</value>
   </data>
   <data name="TbWarp" xml:space="preserve">
     <value>Warp</value>
   </data>
   <data name="LvPreResolve" xml:space="preserve">
     <value>预解析节点域名</value>
+  </data>
+  <data name="menuFreezeToThisColumn" xml:space="preserve">
+    <value>冻结至此列</value>
+  </data>
+  <data name="menuUnfreezeAllColumns" xml:space="preserve">
+    <value>取消所有冻结</value>
+  </data>
+  <data name="menuCurrentlyFrozenColumns" xml:space="preserve">
+    <value>当前已冻结前 {0} 列</value>
+  </data>
+  <data name="menuHideThisColumn" xml:space="preserve">
+    <value>隐藏此列</value>
   </data>
   <data name="XdriveProvider" xml:space="preserve">
     <value>预设服务商</value>
