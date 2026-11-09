@@ -981,6 +981,9 @@
   <data name="SpeedtestingPressEscToExit" xml:space="preserve">
     <value>Press ESC to terminate the test</value>
   </data>
+  <data name="SpeedtestingRetry" xml:space="preserve">
+    <value>Retesting delay...</value>
+  </data>
   <data name="TipDisplayLog" xml:space="preserve">
     <value>Please turn off when there is an abnormal disconnection</value>
   </data>

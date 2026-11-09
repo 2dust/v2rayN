@@ -10,4 +10,5 @@ public class ServerTestItem
     public int QueueNum { get; set; }
     public ProfileItem Profile { get; set; }
     public ECoreType CoreType { get; set; }
+    public int Delay { get; set; }
 }

@@ -241,6 +241,21 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         }
     }
 
+    private static bool ShouldRetryRealPing(int delay)
+    {
+        return delay <= 0;
+    }
+
+    private static List<ServerTestItem> GetRetestItems(List<ServerTestItem> tested, bool coreStarted)
+    {
+        if (!coreStarted)
+        {
+            return [.. tested];
+        }
+
+        return tested.Where(it => it.AllowTest && ShouldRetryRealPing(it.Delay)).ToList();
+    }
+
     private async Task RunRealPingBatchAsync(List<ServerTestItem> lstSelected,
         ConcurrentDictionary<string, byte> completedIds, int pageSize = 0, CancellationToken ct = default)
     {
@@ -254,10 +269,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         foreach (var lst in lstTest)
         {
             var ret = await RunRealPingAsync(lst, completedIds, ct);
-            if (ret == false)
-            {
-                lstFailed.AddRange(lst);
-            }
+            lstFailed.AddRange(GetRetestItems(lst, ret));
             await Task.Delay(_delayInterval, ct);
         }
 
@@ -275,7 +287,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             }
             else
             {
-                await RunMixedTestAsync(lstSelected, completedIds, _config.SpeedTestItem.MixedConcurrencyCount, false, ct);
+                await RunMixedTestAsync(lstFailed, completedIds, _config.SpeedTestItem.MixedConcurrencyCount, false, ct);
             }
         }
     }
@@ -458,6 +470,26 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                 await Task.Delay(1000, innerCt);
 
                 var delay = await DoRealPing(it, completedIds, innerCt);
+                if (ShouldRetryRealPing(delay))
+                {
+                    await UpdateFunc(it.IndexId, "-1", ResUI.SpeedtestingRetry);
+                    if (processService != null)
+                    {
+                        await processService.StopAsync();
+                        processService = null;
+                    }
+
+                    processService = await CoreManager.Instance.LoadCoreConfigSpeedtest(it);
+                    if (processService != null)
+                    {
+                        await Task.Delay(1000, innerCt);
+                        delay = await DoRealPing(it, completedIds, innerCt);
+                    }
+                    else
+                    {
+                        Logging.SaveLog($"{_tag}: failed to start core for real ping retry");
+                    }
+                }
                 if (blSpeedTest)
                 {
                     if (delay > 0)
@@ -498,6 +530,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             handler.ConnectTimeout = Global.LocalFetch;
             using var client = new HttpClient(handler, false);
             responseTime = await ConnectionHandler.GetRealPingTime(client, ct);
+            it.Delay = responseTime;
 
             ProfileExManager.Instance.SetTestDelay(it.IndexId, responseTime);
             await UpdateFunc(it.IndexId, responseTime.ToString());

@@ -2680,6 +2680,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Retesting delay... 的本地化字符串。
+        /// </summary>
+        public static string SpeedtestingRetry {
+            get {
+                return ResourceManager.GetString("SpeedtestingRetry", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   查找类似 Skip test 的本地化字符串。
         /// </summary>
         public static string SpeedtestingSkip {

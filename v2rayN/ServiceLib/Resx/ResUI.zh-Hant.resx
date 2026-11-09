@@ -981,6 +981,9 @@
   <data name="SpeedtestingPressEscToExit" xml:space="preserve">
     <value>按 ECS 以終止測試</value>
   </data>
+  <data name="SpeedtestingRetry" xml:space="preserve">
+    <value>二次重測延遲中</value>
+  </data>
   <data name="TipDisplayLog" xml:space="preserve">
     <value>當有異常斷流時請關閉</value>
   </data>
