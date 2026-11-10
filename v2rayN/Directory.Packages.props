@@ -16,7 +16,7 @@
     <PackageVersion Include="Downloader" Version="6.0.1" />
     <PackageVersion Include="H.NotifyIcon.Wpf" Version="2.4.1" />
     <PackageVersion Include="MaterialDesignThemes" Version="5.4.0" />
-    <PackageVersion Include="QRCoder" Version="1.8.0" />
+    <PackageVersion Include="QRCoder" Version="1.8.1" />
     <PackageVersion Include="ReactiveUI" Version="26.0.1" />
     <PackageVersion Include="ReactiveUI.WPF" Version="26.0.1" />
     <PackageVersion Include="Semi.Avalonia" Version="12.1.0.1" />
