@@ -29,7 +29,7 @@
     <PackageVersion Include="TUnit.Assertions.Should" Version="1.72.16-beta" />
     <PackageVersion Include="WebDav.Client" Version="2.9.0" />
     <PackageVersion Include="YamlDotNet" Version="18.1.0" />
-    <PackageVersion Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.22" />
+    <PackageVersion Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.25" />
     <PackageVersion Include="SkiaSharp.NativeAssets.Linux" Version="3.119.4" />
     <PackageVersion Include="HarfBuzzSharp.NativeAssets.Linux" Version="8.3.1.5" />
   </ItemGroup>
