@@ -842,4 +842,38 @@ public class CoreConfigSingboxServiceTests
         await transport.early_data_header_name.Should().BeEqualTo("Sec-WebSocket-Protocol");
         await transport.path.Should().BeEqualTo(expectedPath);
     }
+
+    [Test]
+    public async Task GenerateClientSpeedtestConfig_ShouldInheritProxyDialStrategy()
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.sing_box);
+        config.SimpleDNSItem.Strategy4ProxyDial = "UseIPv6v4";
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var node = CoreConfigTestFactory.CreateSocksNode(ECoreType.sing_box);
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.sing_box);
+
+        var normal = new CoreConfigSingboxService(context).GenerateClientConfigContent();
+        await normal.Success.Should().BeTrue().Because($"ret msg: {normal.Msg}");
+        var normalCfg = JsonUtils.Deserialize<SingboxConfig>(normal.Data!.ToString())!;
+        await normalCfg.route.default_domain_resolver!.strategy.Should().BeEqualTo("prefer_ipv6");
+
+        var speedtest = new CoreConfigSingboxService(context).GenerateClientSpeedtestConfig(
+        [
+            new()
+            {
+                IndexId = node.IndexId,
+                Address = node.Address,
+                Port = node.Port,
+                ConfigType = node.ConfigType,
+                Profile = node,
+                CoreType = ECoreType.sing_box,
+            }
+        ]);
+
+        await speedtest.Success.Should().BeTrue().Because($"ret msg: {speedtest.Msg}");
+        var speedtestCfg = JsonUtils.Deserialize<SingboxConfig>(speedtest.Data!.ToString())!;
+        await speedtestCfg.route.default_domain_resolver.Should().NotBeNull();
+        await speedtestCfg.route.default_domain_resolver!.strategy.Should().BeEqualTo("prefer_ipv6");
+    }
 }

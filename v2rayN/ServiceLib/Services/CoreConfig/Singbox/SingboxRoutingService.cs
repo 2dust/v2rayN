@@ -10,13 +10,12 @@ public partial class CoreConfigSingboxService
             var simpleDnsItem = context.SimpleDnsItem;
 
             var defaultDomainResolverTag = Global.SingboxDirectDNSTag;
-            var dialDnsStrategy = Utils.DomainStrategy4Sbox(simpleDnsItem.Strategy4ProxyDial);
+            var dialDnsStrategy = GetDefaultDomainResolverStrategy();
 
             var rawDNSItem = context.RawDnsItem;
             if (rawDNSItem is { Enabled: true })
             {
                 defaultDomainResolverTag = Global.SingboxLocalDNSTag;
-                dialDnsStrategy = rawDNSItem.DomainStrategy4Freedom.IsNullOrEmpty() ? null : rawDNSItem.DomainStrategy4Freedom;
             }
             else if (!simpleDnsItem.Strategy4Freedom.IsNullOrEmpty())
             {
@@ -612,5 +611,16 @@ public partial class CoreConfigSingboxService
         FillRangeProxy(proxyOutbounds, _coreConfig, false);
 
         return tag;
+    }
+
+    private string? GetDefaultDomainResolverStrategy()
+    {
+        var rawDNSItem = context.RawDnsItem;
+        if (rawDNSItem is { Enabled: true })
+        {
+            return rawDNSItem.DomainStrategy4Freedom.IsNullOrEmpty() ? null : rawDNSItem.DomainStrategy4Freedom;
+        }
+
+        return Utils.DomainStrategy4Sbox(context.SimpleDnsItem.Strategy4ProxyDial);
     }
 }

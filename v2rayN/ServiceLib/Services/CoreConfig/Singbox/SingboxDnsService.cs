@@ -542,6 +542,7 @@ public partial class CoreConfigSingboxService
         _coreConfig.route.default_domain_resolver = new()
         {
             server = Global.SingboxDirectDNSTag,
+            strategy = GetDefaultDomainResolverStrategy(),
         };
     }
 
