@@ -9,3 +9,7 @@ updates:
     directory: "/v2rayN"
     schedule:
       interval: "daily"
+    ignore:
+      # 3.53.3.4+ ships Linux libe_sqlite3.so that needs glibc 2.38 (GLIBC_ABI_DT_RELR, strlcpy)
+      - dependency-name: "Repobot.SQLite.Unofficial"
+        versions: [">= 3.53.3.4"]

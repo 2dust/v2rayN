@@ -21,11 +21,12 @@ jobs:
     strategy:
       matrix:
         arch: [ x64, arm64 ]
+    # Linux: link Native AOT against the oldest supported glibc (Ubuntu 22.04)
     runs-on: |-
       ${{
         case(
           inputs.target == 'macos', 'macos-latest',
-          inputs.target == 'linux', 'ubuntu-24.04',
+          inputs.target == 'linux', 'ubuntu-22.04',
           inputs.target == 'windows', 'windows-latest',
           'ubuntu-latest'
         )
@@ -131,6 +132,20 @@ jobs:
         find ${{ env.OUTPUT }} -type f -name '*.dbg' -delete
         find ${{ env.OUTPUT }} -type f -name '*.sym' -delete
         find ${{ env.OUTPUT }} -name '*.dSYM' -exec rm -rf {} +
+
+    - name: Check glibc requirements
+      shell: bash
+      if: inputs.target == 'linux'
+      run: |
+        # RHEL 9 has glibc 2.34; fail if a published ELF needs anything newer
+        bad=0
+        while IFS= read -r -d '' f; do
+          if readelf -V "$f" 2>/dev/null | grep -E 'GLIBC_ABI_DT_RELR|GLIBC_2\.(3[5-9]|[4-9][0-9])' >/dev/null; then
+            echo "::error::$f needs glibc newer than 2.34"
+            bad=1
+          fi
+        done < <(find "${{ env.OUTPUT }}" -type f -print0)
+        exit $bad
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v7
