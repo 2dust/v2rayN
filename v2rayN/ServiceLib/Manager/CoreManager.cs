@@ -63,12 +63,13 @@ public class CoreManager
 
     /// <param name="mainContext">Resolved main context (with pre-socks ports already merged if applicable).</param>
     /// <param name="preContext">Optional pre-socks context passed to <see cref="CoreStartPreService"/>.</param>
-    public async Task LoadCore(CoreConfigContext? mainContext, CoreConfigContext? preContext, bool forceRestart = true)
+    /// <returns>True only when the existing running configuration was retained without restarting.</returns>
+    public async Task<bool> LoadCore(CoreConfigContext? mainContext, CoreConfigContext? preContext, bool forceRestart = true)
     {
         if (mainContext == null)
         {
             await UpdateFunc(false, ResUI.CheckServerSettings);
-            return;
+            return false;
         }
 
         var node = mainContext.Node;
@@ -79,7 +80,7 @@ public class CoreManager
         if (result.Success != true)
         {
             await UpdateFunc(true, result.Msg);
-            return;
+            return false;
         }
 
         string? mainContent = prepareInMemory ? result.Data?.ToString() : null;
@@ -90,7 +91,7 @@ public class CoreManager
             if (!preResult.Success)
             {
                 await UpdateFunc(true, preResult.Msg);
-                return;
+                return false;
             }
             preContent = preResult.Data?.ToString();
         }
@@ -108,7 +109,7 @@ public class CoreManager
             && CoreConfigComparison.AreEquivalent(mainContext, running.MainContent, mainContent!)
             && (preContext is null || CoreConfigComparison.AreEquivalent(preContext, running.PreContent!, preContent!)))
         {
-            return;
+            return true;
         }
 
         if (prepareInMemory)
@@ -147,6 +148,7 @@ public class CoreManager
         {
             await UpdateFunc(true, $"{node.GetSummary()}");
         }
+        return false;
     }
 
     public async Task<ProcessService?> LoadCoreConfigSpeedtest(List<ServerTestItem> selecteds)

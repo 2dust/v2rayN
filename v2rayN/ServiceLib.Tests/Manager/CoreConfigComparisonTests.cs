@@ -94,6 +94,14 @@ public class CoreConfigComparisonTests
     }
 
     [Test]
+    [Arguments("{\"outbounds\":[{\"password\":\"geoip:not-a-file\"}]}")]
+    [Arguments("{\"outbounds\":[{\"username\":\"geosite:not-a-file\"}]}")]
+    public async Task CredentialsAreNotMistakenForRoutingFileReferences(string content)
+    {
+        await CoreConfigComparison.AreEquivalent(Context(ECoreType.Xray), content, content).Should().BeTrue();
+    }
+
+    [Test]
     [Arguments("{\"password\":\"different\"}")]
     [Arguments("{\"password\":\"secret\",\"unknown-option\":true}")]
     public async Task ActualAndUnknownSettingsRemainPartOfTheComparison(string content)

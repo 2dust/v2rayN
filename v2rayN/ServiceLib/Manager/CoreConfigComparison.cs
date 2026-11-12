@@ -22,7 +22,8 @@ internal static class CoreConfigComparison
 
         try
         {
-            return JsonNode.Parse(content) is JsonObject root && !HasExternalInput(root);
+            return JsonNode.Parse(content) is JsonObject root
+                && !HasExternalInput(root["routing"]) && !HasExternalInput(root["route"]) && !HasExternalInput(root["dns"]);
         }
         catch (System.Text.Json.JsonException)
         {

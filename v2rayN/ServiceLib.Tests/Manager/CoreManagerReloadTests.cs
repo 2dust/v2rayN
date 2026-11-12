@@ -29,8 +29,9 @@ public class CoreManagerReloadTests
 
         // Subscription import may assign a new database ID to an unchanged server.
         fixture.Config.IndexId = "imported-profile";
-        await fixture.Manager.LoadCore(fixture.Context("imported-profile"), null, forceRestart: false);
+        var reused = await fixture.Manager.LoadCore(fixture.Context("imported-profile"), null, forceRestart: false);
 
+        await reused.Should().BeTrue();
         await fixture.Manager.StartedIds.Count.Should().BeEqualTo(1);
         await original.HasExited.Should().BeFalse();
         await original.StartTime.Should().BeEqualTo(originalStart);
