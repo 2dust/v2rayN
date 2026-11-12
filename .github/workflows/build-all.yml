@@ -107,7 +107,7 @@ jobs:
           curl -X POST \
             -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            https://api.github.com/repos/${{ github.repository }}/actions/workflows/build-windows-package-sig.yml/dispatches \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/build-windows-package.yml/dispatches \
             -d "{
               \"ref\": \"master\",
               \"inputs\": {
