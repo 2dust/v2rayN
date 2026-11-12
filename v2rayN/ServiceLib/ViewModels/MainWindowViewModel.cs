@@ -670,23 +670,14 @@ public partial class MainWindowViewModel : MyReactiveObject
     #region core job
 
     private readonly PendingCoreReload _pendingReload = new();
-    private readonly SemaphoreSlim _reloadSemaphore = new(1, 1);
-
-    public async Task Reload(bool forceRestart = true)
+    public Task Reload(bool forceRestart = true)
     {
-        //If there are unfinished reload job, marked with next job.
-        if (!await _reloadSemaphore.WaitAsync(0))
-        {
-            _pendingReload.Request(forceRestart);
-            return;
-        }
+        if (DesignMode || !_pendingReload.TryStart(forceRestart)) return Task.CompletedTask;
+        return ReloadCore(forceRestart);
+    }
 
-        if (DesignMode)
-        {
-            _reloadSemaphore.Release();
-            return;
-        }
-
+    private async Task ReloadCore(bool forceRestart)
+    {
         try
         {
             SetReloadEnabled(false);
@@ -753,9 +744,10 @@ public partial class MainWindowViewModel : MyReactiveObject
         finally
         {
             SetReloadEnabled(true);
-            _reloadSemaphore.Release();
-            //If there is a next reload job, execute it.
-            await _pendingReload.RunPendingAsync(Reload);
+            if (_pendingReload.Complete() is bool nextForce)
+            {
+                await ReloadCore(nextForce);
+            }
         }
     }
 

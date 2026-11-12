@@ -11,10 +11,12 @@ internal static class CoreConfigComparison
             || context.RunCoreType is not (ECoreType.Xray or ECoreType.sing_box)
             || context.Node.ConfigType is EConfigType.Custom or EConfigType.Outbound
             || context.Node.ConfigType.IsGroupType()
+            || HasOpaqueTransport(context.Node)
             || context.FullConfigTemplate is { Enabled: true }
             || context.RawDnsItem is { Enabled: true }
             || context.CustomOutboundContent.Count != 0
-            || context.AllProxiesMap.Values.Any(node => node.ConfigType is EConfigType.Custom or EConfigType.Outbound || node.ConfigType.IsGroupType())
+            || context.AllProxiesMap.Values.Any(node => node.ConfigType is EConfigType.Custom or EConfigType.Outbound
+                || node.ConfigType.IsGroupType() || HasOpaqueTransport(node))
             || context.RoutingItem?.CustomRulesetPath4Singbox.IsNotEmpty() == true)
         {
             return false;
@@ -30,6 +32,9 @@ internal static class CoreConfigComparison
             return false;
         }
     }
+
+    private static bool HasOpaqueTransport(ProfileItem node) => node.GetNetwork() == nameof(ETransport.xhttp)
+        && node.GetTransportExtra().XhttpExtra.IsNotEmpty();
 
     public static bool AreEquivalent(CoreConfigContext context, string previous, string current)
     {
@@ -109,8 +114,9 @@ internal static class CoreConfigComparison
             || item.Any(property => HasExternalInput(property.Value)),
         JsonArray items => items.Any(HasExternalInput),
         JsonValue item => item.TryGetValue<string>(out var value)
-            && (value.StartsWith("geoip:", StringComparison.OrdinalIgnoreCase)
-                || value.StartsWith("geosite:", StringComparison.OrdinalIgnoreCase)),
+            && (value.TrimStart('!').StartsWith("geoip:", StringComparison.OrdinalIgnoreCase)
+                || value.TrimStart('!').StartsWith("geosite:", StringComparison.OrdinalIgnoreCase)
+                || value.TrimStart('!').StartsWith("ext:", StringComparison.OrdinalIgnoreCase)),
         _ => false,
     };
 }

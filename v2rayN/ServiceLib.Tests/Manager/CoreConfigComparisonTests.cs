@@ -71,6 +71,8 @@ public class CoreConfigComparisonTests
     [Arguments("dns")]
     [Arguments("custom-outbound")]
     [Arguments("group")]
+    [Arguments("xhttp-extra")]
+    [Arguments("referenced-xhttp-extra")]
     public async Task UnsupportedInputsCannotProduceAReuseDecision(string input)
     {
         var context = Context(ECoreType.Xray);
@@ -80,6 +82,16 @@ public class CoreConfigComparisonTests
             case "dns": context.RawDnsItem!.Enabled = true; break;
             case "custom-outbound": context.CustomOutboundContent["external"] = "{}"; break;
             case "group": context.Node.ConfigType = EConfigType.PolicyGroup; break;
+            case "xhttp-extra":
+            case "referenced-xhttp-extra":
+                var node = input == "xhttp-extra" ? context.Node : CoreConfigTestFactory.CreateVmessNode(ECoreType.Xray, "referenced");
+                node.Network = nameof(ETransport.xhttp);
+                node.SetTransportExtra(node.GetTransportExtra() with
+                {
+                    XhttpExtra = """{"downloadSettings":{"tlsSettings":{"certificates":[{"certificateFile":"same-path.pem"}]}}}""",
+                });
+                context.AllProxiesMap[node.IndexId] = node;
+                break;
         }
         await CoreConfigComparison.AreEquivalent(context, "{}", "{}").Should().BeFalse();
     }
@@ -88,6 +100,9 @@ public class CoreConfigComparisonTests
     [Arguments("{\"route\":{\"rule_set\":[{\"type\":\"local\",\"path\":\"rules.srs\"}]}}")]
     [Arguments("{\"routing\":{\"rules\":[{\"domain\":[\"geosite:cn\"]}]}}")]
     [Arguments("{\"routing\":{\"rules\":[{\"ip\":[\"geoip:cn\"]}]}}")]
+    [Arguments("{\"routing\":{\"rules\":[{\"domain\":[\"ext:custom.dat:tag\"]}]}}")]
+    [Arguments("{\"dns\":{\"servers\":[{\"domains\":[\"ext:dns.dat:tag\"]}]}}")]
+    [Arguments("{\"routing\":{\"rules\":[{\"ip\":[\"!geoip:cn\"]}]}}")]
     public async Task UnresolvedFileInputsAreNotProvedEqualByTheirPaths(string content)
     {
         await CoreConfigComparison.AreEquivalent(Context(ECoreType.sing_box), content, content).Should().BeFalse();
@@ -96,6 +111,7 @@ public class CoreConfigComparisonTests
     [Test]
     [Arguments("{\"outbounds\":[{\"password\":\"geoip:not-a-file\"}]}")]
     [Arguments("{\"outbounds\":[{\"username\":\"geosite:not-a-file\"}]}")]
+    [Arguments("{\"outbounds\":[{\"password\":\"ext:not-a-file\"}]}")]
     public async Task CredentialsAreNotMistakenForRoutingFileReferences(string content)
     {
         await CoreConfigComparison.AreEquivalent(Context(ECoreType.Xray), content, content).Should().BeTrue();

@@ -51,15 +51,14 @@ public class SubscriptionReloadTests
     public async Task PendingReloadPreservesForcePriority(bool first, bool second, bool expectedForce)
     {
         var pending = new PendingCoreReload();
-        var modes = new List<bool>();
-        pending.Request(first);
-        pending.Request(second);
+        await pending.TryStart(false).Should().BeTrue();
+        await pending.TryStart(first).Should().BeFalse();
+        await pending.TryStart(second).Should().BeFalse();
 
-        await pending.RunPendingAsync(force => { modes.Add(force); return Task.CompletedTask; });
-        await pending.RunPendingAsync(_ => throw new InvalidOperationException("The drained request ran twice."));
-
-        await modes.Count.Should().BeEqualTo(1);
-        await modes.Single().Should().BeEqualTo(expectedForce);
+        var next = pending.Complete();
+        await next.HasValue.Should().BeTrue();
+        await next.Value.Should().BeEqualTo(expectedForce);
+        await pending.Complete().HasValue.Should().BeFalse();
     }
 
     [Test]
@@ -71,75 +70,96 @@ public class SubscriptionReloadTests
     {
         // Avoid the real constructor, which starts application initialization and creates UI VMs.
         var vm = (MainWindowViewModel)RuntimeHelpers.GetUninitializedObject(typeof(MainWindowViewModel));
-        using var busyGate = new SemaphoreSlim(0, 1);
         var pending = new PendingCoreReload();
-        typeof(MainWindowViewModel).GetField("_reloadSemaphore", BindingFlags.Instance | BindingFlags.NonPublic)!
-            .SetValue(vm, busyGate);
+        await pending.TryStart(false).Should().BeTrue();
         typeof(MainWindowViewModel).GetField("_pendingReload", BindingFlags.Instance | BindingFlags.NonPublic)!
             .SetValue(vm, pending);
-        var modes = new List<bool>();
 
         await vm.Reload(first);
         await vm.Reload(second);
-        await pending.RunPendingAsync(force => { modes.Add(force); return Task.CompletedTask; });
 
-        await modes.Count.Should().BeEqualTo(1);
-        await modes.Single().Should().BeEqualTo(expectedForce);
+        var next = pending.Complete();
+        await next.HasValue.Should().BeTrue();
+        await next.Value.Should().BeEqualTo(expectedForce);
+        await pending.Complete().HasValue.Should().BeFalse();
     }
 
     [Test]
     public async Task NoPendingRequestDoesNotReload()
     {
         var pending = new PendingCoreReload();
-        await pending.RunPendingAsync(_ => throw new InvalidOperationException("No reload was requested."));
+        await pending.TryStart(false).Should().BeTrue();
+        await pending.Complete().HasValue.Should().BeFalse();
+        await pending.TryStart(true).Should().BeTrue();
+        await pending.Complete().HasValue.Should().BeFalse();
     }
 
     [Test]
     public async Task ConcurrentSubscriptionRequestsRemainSoft()
     {
         var pending = new PendingCoreReload();
-        Parallel.For(0, 64, _ => pending.Request(false));
-        var modes = new List<bool>();
+        pending.TryStart(false);
+        Parallel.For(0, 64, _ => pending.TryStart(false));
 
-        await pending.RunPendingAsync(force => { modes.Add(force); return Task.CompletedTask; });
-
-        await modes.SequenceEqual(new[] { false }).Should().BeTrue();
+        await pending.Complete().Should().BeEqualTo((bool?)false);
+        await pending.Complete().HasValue.Should().BeFalse();
     }
 
     [Test]
     public async Task ConcurrentManualRequestCannotBeOverwrittenByASubscription()
     {
         var pending = new PendingCoreReload();
-        Parallel.For(0, 64, i => pending.Request(i == 0));
-        pending.Request(false);
-        var modes = new List<bool>();
+        pending.TryStart(false);
+        Parallel.For(0, 64, i => pending.TryStart(i == 0));
+        pending.TryStart(false);
 
-        await pending.RunPendingAsync(force => { modes.Add(force); return Task.CompletedTask; });
-
-        await modes.SequenceEqual(new[] { true }).Should().BeTrue();
+        await pending.Complete().Should().BeEqualTo((bool?)true);
+        await pending.Complete().HasValue.Should().BeFalse();
     }
 
     [Test]
-    public async Task ARequestArrivingDuringDrainIsNotClearedByTheEarlierRequest()
+    public async Task ARequestArrivingDuringHandoffIsNotClearedByTheEarlierRequest()
     {
         var pending = new PendingCoreReload();
-        var entered = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
-        var release = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
-        var modes = new List<bool>();
-        pending.Request(false);
-        var first = pending.RunPendingAsync(async force =>
+        pending.TryStart(false);
+        pending.TryStart(false);
+        await pending.Complete().Should().BeEqualTo((bool?)false);
+        // Ownership is retained for the pending soft reload until that reload completes.
+        await pending.TryStart(true).Should().BeFalse();
+        await pending.Complete().Should().BeEqualTo((bool?)true);
+        await pending.Complete().HasValue.Should().BeFalse();
+    }
+
+    [Test]
+    public async Task CompletingWhileACallerWaitsForTheStateLockDoesNotStrandTheCaller()
+    {
+        var pending = new PendingCoreReload();
+        pending.TryStart(false);
+        var sync = typeof(PendingCoreReload).GetField("_sync", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(pending)!;
+        using var entered = new ManualResetEventSlim();
+        bool? becameOwner = null;
+        Exception? failure = null;
+        var caller = new Thread(() =>
         {
-            modes.Add(force);
-            entered.SetResult();
-            await release.Task;
-        });
-        await entered.Task.WaitAsync(TimeSpan.FromSeconds(5));
-        pending.Request(true);
-        release.SetResult();
-        await first;
+            try { entered.Set(); becameOwner = pending.TryStart(true); }
+            catch (Exception exception) { failure = exception; }
+        }) { IsBackground = true };
+        bool? oldOwnerNext;
+        lock (sync)
+        {
+            caller.Start();
+            if (!entered.Wait(TimeSpan.FromSeconds(5))
+                || !SpinWait.SpinUntil(() => (caller.ThreadState & System.Threading.ThreadState.WaitSleepJoin) != 0, TimeSpan.FromSeconds(5)))
+            {
+                throw new TimeoutException("The owned caller did not reach the controlled state lock.");
+            }
+            oldOwnerNext = pending.Complete();
+        }
+        if (!caller.Join(TimeSpan.FromSeconds(5))) throw new TimeoutException("The owned caller did not finish.");
+        if (failure is not null) throw failure;
 
-        await pending.RunPendingAsync(force => { modes.Add(force); return Task.CompletedTask; });
-
-        await modes.SequenceEqual(new[] { false, true }).Should().BeTrue();
+        await oldOwnerNext.HasValue.Should().BeFalse();
+        await becameOwner.Should().BeEqualTo((bool?)true);
+        await pending.Complete().HasValue.Should().BeFalse();
     }
 }
