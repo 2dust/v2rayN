@@ -70,6 +70,16 @@
                         ToolTip.Tip="{x:Static resx:ResUI.MsgServerTitle}" />
 
                     <Button
+                       x:Name="btnAutofitColumnWidth"
+                       Margin="{StaticResource MarginLr4}"
+                       Classes="IconButton Success"
+                       ToolTip.Tip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
+                        <Button.Content>
+                            <PathIcon Data="{StaticResource SemiIconExpand}" />
+                        </Button.Content>
+                    </Button>
+
+                    <Button
                         x:Name="btnFastRealPing"
                         Margin="{StaticResource MarginLr4}"
                         Classes="IconButton Success"
