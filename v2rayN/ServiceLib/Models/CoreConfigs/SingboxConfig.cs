@@ -133,6 +133,7 @@ public class Outbound4Sbox : BaseServer4Sbox
     public int? alter_id { get; set; }
     public string? flow { get; set; }
     public string? hop_interval { get; set; }
+    public string? hop_interval_max { get; set; }
     public int? up_mbps { get; set; }
     public int? down_mbps { get; set; }
     public string? auth_str { get; set; }
