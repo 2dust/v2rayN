@@ -130,18 +130,68 @@ public class CoreManager
             return null;
         }
 
-        var fileName = string.Format(Global.CoreSpeedtestConfigFileName, Utils.GetGuid(false));
-        var configPath = Utils.GetBinConfigPath(fileName);
+        if (node.ConfigType == EConfigType.Custom)
+        {
+            var fileName = string.Format(Global.CoreSpeedtestConfigFileName, Utils.GetGuid(false));
+            var configPath = Utils.GetBinConfigPath(fileName);
+
+            var addressFileName = node.Address;
+            if (!File.Exists(addressFileName))
+            {
+                addressFileName = Utils.GetConfigPath(addressFileName);
+            }
+            if (!File.Exists(addressFileName))
+            {
+                return null;
+            }
+            File.Copy(addressFileName, configPath, true);
+            File.SetAttributes(configPath, FileAttributes.Normal);
+
+            var port = 0;
+            try
+            {
+                var json = await File.ReadAllTextAsync(configPath);
+                if (node.CoreType == ECoreType.sing_box)
+                {
+                    var cfg = JsonUtils.Deserialize<SingboxConfig>(json);
+                    port = cfg?.inbounds?.FirstOrDefault()?.listen_port ?? 0;
+                }
+                else
+                {
+                    var cfg = JsonUtils.Deserialize<V2rayConfig>(json);
+                    port = cfg?.inbounds?.FirstOrDefault()?.port ?? 0;
+                }
+            }
+            catch
+            {
+                // Ignore
+            }
+
+            if (port <= 0)
+            {
+                return null;
+            }
+
+            testItem.Port = port;
+            testItem.AllowTest = true;
+
+            var coreType = node.CoreType ?? ECoreType.Xray;
+            var coreInfo = CoreInfoManager.Instance.GetCoreInfo(coreType);
+            return await RunProcess(coreInfo, fileName, true, false);
+        }
+
+        var fileName2 = string.Format(Global.CoreSpeedtestConfigFileName, Utils.GetGuid(false));
+        var configPath2 = Utils.GetBinConfigPath(fileName2);
         var (context, _) = await CoreConfigContextBuilder.Build(_config, node);
-        var result = await CoreConfigHandler.GenerateClientSpeedtestConfig(_config, context, testItem, configPath);
+        var result = await CoreConfigHandler.GenerateClientSpeedtestConfig(_config, context, testItem, configPath2);
         if (result.Success != true)
         {
             return null;
         }
 
-        var coreType = context.RunCoreType;
-        var coreInfo = CoreInfoManager.Instance.GetCoreInfo(coreType);
-        return await RunProcess(coreInfo, fileName, true, false);
+        var coreType2 = context.RunCoreType;
+        var coreInfo2 = CoreInfoManager.Instance.GetCoreInfo(coreType2);
+        return await RunProcess(coreInfo2, fileName2, true, false);
     }
 
     public async Task CoreStop()
