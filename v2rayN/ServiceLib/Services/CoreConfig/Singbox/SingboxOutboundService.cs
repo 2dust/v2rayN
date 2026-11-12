@@ -280,7 +280,7 @@ public partial class CoreConfigSingboxService
                                 // may be a range like 5-10
                                 var parts = protocolExtra.HopInterval.Split('-');
                                 if (parts.Length == 2 && int.TryParse(parts[0], out var hiL) &&
-                                    int.TryParse(parts[0], out var hiH))
+                                    int.TryParse(parts[1], out var hiH))
                                 {
                                     var hi = (hiL + hiH) / 2;
                                     outbound.hop_interval = hi >= 5 ? $"{hi}s" : outbound.hop_interval;

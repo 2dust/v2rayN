@@ -716,6 +716,28 @@ public class CoreConfigSingboxServiceTests
     }
 
     [Test]
+    [Arguments("5-15", "10s")]
+    [Arguments("20-25", "22s")]
+    [Arguments("15", "15s")]
+    public async Task GenerateClientConfigContent_Hysteria2HopInterval_ShouldUseBothRangeBounds(string interval, string expected)
+    {
+        var node = Hysteria2Fmt.Resolve("hysteria2://password@example.com:443?mport=20000-50000", out _)!;
+        node.CoreType = ECoreType.sing_box;
+        node.SetProtocolExtra(node.GetProtocolExtra() with { HopInterval = interval });
+
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.sing_box);
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.sing_box);
+
+        var result = new CoreConfigSingboxService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue().Because($"ret msg: {result.Msg}");
+        var cfg = JsonUtils.Deserialize<SingboxConfig>(result.Data!.ToString())!;
+        var proxy = cfg.outbounds.First(o => o.tag == Global.ProxyTag);
+        await proxy.hop_interval.Should().BeEqualTo(expected);
+    }
+
+    [Test]
     public async Task GenerateClientConfigContent_Hysteria2Realm_ShouldEmitHttpsServerUrl()
     {
         var shareLink =
