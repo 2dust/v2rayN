@@ -1,0 +1,128 @@
+name: release Windows Package
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Existing Git tag to publish the installers to (leave blank to build only)'
+        required: false
+        type: string
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  build:
+    name: build Windows all architectures
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    timeout-minutes: 360
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Purge SDKs
+        shell: pwsh
+        run: |
+          echo "Before:"
+          dotnet --list-sdks
+
+          dotnet --list-sdks | % {
+            $_ -match '^\S+\s+\[(.+)\]$' > $null
+            $d = Join-Path $Matches[1] $_.Split()[0]
+            Write-Host "Removing $d"
+            if ($IsWindows) { rm $d -r -fo } else { sudo rm -rf "$d" }
+          }
+
+          echo "After:"
+          dotnet --list-sdks 2>$null; $LASTEXITCODE=0
+
+      - name: Setup .NET 10.0.1xx
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.1xx
+
+      - name: Build and package all Windows installers
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+          DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+          DOTNET_NOLOGO: '1'
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $options = @{
+            Arch = 'all'
+            Flavor = 'all'
+          }
+          if ($env:RELEASE_TAG) {
+            $version = $env:RELEASE_TAG -replace '^v', ''
+            if ($version -notmatch '^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$') {
+              throw 'release_tag must be a numeric version tag (for example v7.25.6).'
+            }
+            $options.Version = $version
+          }
+          $scriptPath = Join-Path $env:GITHUB_WORKSPACE 'package-windows.ps1'
+          if (-not (Test-Path -LiteralPath $scriptPath -PathType Leaf)) {
+            throw "Packaging script not found: $scriptPath"
+          }
+          & $scriptPath @options
+          if (-not $?) { throw 'v2rayN installer packaging failed.' }
+
+      - name: Verify all EXE installers
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $expected = foreach ($arch in @('86', '64', 'arm64')) {
+            foreach ($flavor in @('', '-desktop')) {
+              "v2rayN-windows-${arch}${flavor}.exe"
+            }
+          }
+          $all = @(Get-ChildItem -LiteralPath dist -File -Filter 'v2rayN-windows-*.exe')
+          if ($all.Count -ne 6) {
+            throw "Expected 6 installers, found $($all.Count)."
+          }
+          foreach ($pattern in $expected) {
+            $files = @(Get-ChildItem -LiteralPath dist -File -Filter $pattern)
+            if ($files.Count -ne 1) {
+              throw "Expected one installer for $pattern, found $($files.Count)."
+            }
+            if ($files[0].Length -le 0) {
+              throw "Empty installer: $($files[0].FullName)"
+            }
+            Get-FileHash -LiteralPath $files[0].FullName -Algorithm SHA256 | Format-List
+          }
+
+      - name: Upload all Windows installers
+        uses: actions/upload-artifact@v7
+        with:
+          name: release-windows-installers
+          path: dist/v2rayN-windows-*.exe
+          if-no-files-found: error
+          compression-level: 0
+
+  release:
+    name: sign and upload windows ${{ matrix.arch }} ${{ matrix.flavor }}
+    if: inputs.release_tag != ''
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [x86, x64, arm64]
+        flavor: [wpf, desktop]
+    uses: ./.github/workflows/upload-sign.yml
+    with:
+      release_tag: ${{ inputs.release_tag }}
+      artifact_name: release-windows-installers
+      file_pattern: "v2rayN-windows-${{ matrix.arch == 'x86' && '86' || matrix.arch == 'x64' && '64' || 'arm64' }}${{ matrix.flavor == 'desktop' && '-desktop' || '' }}.exe"
+    secrets:
+      GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
