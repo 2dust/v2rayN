@@ -287,10 +287,10 @@ $themeTemplate = @'
 <?xml version="1.0" encoding="utf-8"?>
 <Theme xmlns="http://wixtoolset.org/schemas/v4/thmutil">
   <Font Id="0" Height="-14" Weight="500" Foreground="292222" Background="ffffff">Segoe UI</Font>
-  <Font Id="1" Height="-28" Weight="650" Foreground="252020">Segoe UI</Font>
-  <Font Id="2" Height="-14" Weight="450" Foreground="777070">Segoe UI</Font>
-  <Font Id="3" Height="-15" Weight="600" Foreground="966863">Segoe UI</Font>
-  <Font Id="4" Height="-16" Weight="450" Foreground="363030">Segoe UI</Font>
+  <Font Id="1" Height="-28" Weight="650" Foreground="252020" Background="ffffff">Segoe UI</Font>
+  <Font Id="2" Height="-14" Weight="450" Foreground="777070" Background="ffffff">Segoe UI</Font>
+  <Font Id="3" Height="-15" Weight="600" Foreground="966863" Background="ffffff">Segoe UI</Font>
+  <Font Id="4" Height="-16" Weight="450" Foreground="363030" Background="ffffff">Segoe UI</Font>
   <Window Width="640" Height="430" HexStyle="100a0000" FontId="0" Caption="#(loc.Caption)">
     <ImageControl X="32" Y="27" Width="64" Height="64" ImageFile="logo.png" Visible="yes" />
     <Label X="112" Y="29" Width="-32" Height="44" FontId="1" DisablePrefix="yes">v2rayN</Label>
