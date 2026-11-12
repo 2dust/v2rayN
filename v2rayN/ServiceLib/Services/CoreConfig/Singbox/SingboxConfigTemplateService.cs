@@ -53,29 +53,55 @@ public partial class CoreConfigSingboxService
                 customOutboundContent = customOutboundContent.Replace("{{tag}}", outboundTag);
                 customOutboundContent = customOutboundContent.Replace("{{detour}}", outboundDetour);
                 customOutboundContent = customOutboundContent.Replace("{{interface}}", outboundBindInterface);
-                var customOutboundObj = JsonUtils.ParseJson(customOutboundContent) as JsonObject;
+                var customOutboundNode = JsonUtils.ParseJson(customOutboundContent);
+
+                JsonObject customOutboundObj = null!;
+                if (customOutboundNode is JsonArray jsonArray)
+                {
+                    if (jsonArray.Count == 0 || jsonArray[0] is not JsonObject firstObj)
+                    {
+                        continue;
+                    }
+                    customOutboundObj = firstObj;
+                }
+                else if (customOutboundNode is JsonObject jsonObject)
+                {
+                    customOutboundObj = jsonObject;
+                }
+                if (customOutboundObj == null)
+                {
+                    continue;
+                }
 
                 if (!containTagPlaceholder)
                 {
-                    customOutboundObj?["tag"] = outboundTag;
+                    customOutboundObj["tag"] = outboundTag;
                 }
                 if (!containDetourPlaceholder && !outboundDetour.IsNullOrEmpty())
                 {
-                    customOutboundObj?["detour"] = outboundDetour;
-                }
-                else if (outboundDetour.IsNullOrEmpty())
-                {
-                    customOutboundObj?.Remove("detour");
+                    customOutboundObj["detour"] = outboundDetour;
                 }
                 if (!containBindInterfacePlaceholder && !outboundBindInterface.IsNullOrEmpty())
                 {
-                    customOutboundObj?["bind_interface"] = outboundBindInterface;
+                    customOutboundObj["bind_interface"] = outboundBindInterface;
                 }
 
                 var index = jsonArrayOutbounds
                     .Select((node, idx) => new { node, idx })
                     .FirstOrDefault(x => x.node?["tag"]?.ToString() == outboundTag)?.idx ?? -1;
-                if (index != -1)
+                if (index == -1)
+                {
+                    continue;
+                }
+                if (customOutboundNode is JsonArray customOutboundArray)
+                {
+                    jsonArrayOutbounds.RemoveAt(index);
+                    foreach (var item in customOutboundArray)
+                    {
+                        jsonArrayOutbounds.Insert(index++, item?.DeepClone());
+                    }
+                }
+                else
                 {
                     jsonArrayOutbounds[index] = customOutboundObj;
                 }
