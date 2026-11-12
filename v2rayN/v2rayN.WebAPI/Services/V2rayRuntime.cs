@@ -626,7 +626,7 @@ public sealed partial class V2rayRuntime(
                     statistic?.TotalUp ?? 0,
                     statistic?.TotalDown ?? 0,
                     item.IndexId == Config.IndexId,
-                    !item.IsComplex() && item.Port > 0);
+                    item.ConfigType is EConfigType.Custom or EConfigType.Outbound || (!item.IsComplex() && item.Port > 0));
             })
             .OrderBy(item => item.Sort)
             .ToArray();
