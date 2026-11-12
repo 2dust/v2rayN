@@ -78,6 +78,10 @@ public static class CoreConfigHandler
                 return ret;
             }
 
+            // Inject statistics collection into custom configs so that real-time speed
+            // and traffic statistics can be shown for them as well.
+            await InjectCustomConfigStatisticsAsync(node, fileName);
+
             ret.Msg = string.Format(ResUI.SuccessfulConfiguration, "");
             ret.Success = true;
             return await Task.FromResult(ret);
@@ -87,6 +91,69 @@ public static class CoreConfigHandler
             Logging.SaveLog(_tag, ex);
             ret.Msg = ResUI.FailedGenDefaultConfiguration;
             return ret;
+        }
+    }
+
+    private static async Task InjectCustomConfigStatisticsAsync(ProfileItem node, string fileName)
+    {
+        try
+        {
+            var config = AppManager.Instance.Config;
+            if (!(config.GuiItem.EnableStatistics || config.GuiItem.DisplayRealTimeSpeed))
+            {
+                return;
+            }
+
+            var coreType = node.CoreType ?? ECoreType.Xray;
+            var json = await File.ReadAllTextAsync(fileName);
+            if (coreType == ECoreType.sing_box)
+            {
+                var cfgNode = JsonNode.Parse(json) as JsonObject;
+                if (cfgNode is null)
+                {
+                    return;
+                }
+                cfgNode["experimental"] ??= new JsonObject();
+                var experimental = cfgNode["experimental"] as JsonObject;
+                if (experimental is null)
+                {
+                    return;
+                }
+                if (experimental["clash_api"] is null)
+                {
+                    experimental["clash_api"] = new JsonObject
+                    {
+                        ["external_controller"] = $"{Global.Loopback}:{AppManager.Instance.StatePort2}"
+                    };
+                }
+                await File.WriteAllTextAsync(fileName, cfgNode.ToJsonString());
+            }
+            else
+            {
+                var cfgNode = JsonNode.Parse(json) as JsonObject;
+                if (cfgNode is null)
+                {
+                    return;
+                }
+                cfgNode["stats"] ??= new JsonObject();
+                cfgNode["metrics"] ??= new JsonObject
+                {
+                    ["listen"] = $"{Global.Loopback}:{AppManager.Instance.StatePort}"
+                };
+                cfgNode["policy"] ??= new JsonObject
+                {
+                    ["system"] = new JsonObject
+                    {
+                        ["statsOutboundUplink"] = true,
+                        ["statsOutboundDownlink"] = true
+                    }
+                };
+                await File.WriteAllTextAsync(fileName, cfgNode.ToJsonString());
+            }
+        }
+        catch
+        {
+            // Ignore injection failures; the original custom config is still used.
         }
     }
 
