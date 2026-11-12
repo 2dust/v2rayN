@@ -39,11 +39,29 @@ public partial class CoreConfigV2rayService
             customOutboundContent = customOutboundContent.Replace("{{tag}}", outboundTag);
             customOutboundContent = customOutboundContent.Replace("{{detour}}", outboundDetour);
             customOutboundContent = customOutboundContent.Replace("{{interface}}", outboundBindInterface);
-            var customOutboundObj = JsonUtils.ParseJson(customOutboundContent) as JsonObject;
+            var customOutboundNode = JsonUtils.ParseJson(customOutboundContent);
+
+            JsonObject customOutboundObj = null!;
+            if (customOutboundNode is JsonArray jsonArray)
+            {
+                if (jsonArray.Count == 0 || jsonArray[0] is not JsonObject firstObj)
+                {
+                    continue;
+                }
+                customOutboundObj = firstObj;
+            }
+            else if (customOutboundNode is JsonObject jsonObject)
+            {
+                customOutboundObj = jsonObject;
+            }
+            if (customOutboundObj == null)
+            {
+                continue;
+            }
 
             if (!containTagPlaceholder)
             {
-                customOutboundObj?["tag"] = outboundTag;
+                customOutboundObj["tag"] = outboundTag;
             }
             if (customOutboundObj is not null
                 && customOutboundObj["targetStrategy"] is null
@@ -53,7 +71,7 @@ public partial class CoreConfigV2rayService
             }
             if (!containDetourPlaceholder && !outboundDetour.IsNullOrEmpty())
             {
-                customOutboundObj!["streamSettings"] ??= new JsonObject();
+                customOutboundObj["streamSettings"] ??= new JsonObject();
                 customOutboundObj["streamSettings"]["sockopt"] ??= new JsonObject();
                 customOutboundObj["streamSettings"]["sockopt"]["dialerProxy"] = outboundDetour;
                 if (customOutboundObj["streamSettings"]?["xhttpSettings"]?["extra"]?["downloadSettings"] is JsonObject downloadSettings)
@@ -62,13 +80,9 @@ public partial class CoreConfigV2rayService
                     downloadSettings["sockopt"]["dialerProxy"] = outboundDetour;
                 }
             }
-            else if (outboundDetour.IsNullOrEmpty())
-            {
-                (customOutboundObj?["streamSettings"]?["sockopt"] as JsonObject)?.Remove("dialerProxy");
-            }
             if (!containBindInterfacePlaceholder && !outboundBindInterface.IsNullOrEmpty())
             {
-                customOutboundObj!["streamSettings"] ??= new JsonObject();
+                customOutboundObj["streamSettings"] ??= new JsonObject();
                 customOutboundObj["streamSettings"]["sockopt"] ??= new JsonObject();
                 customOutboundObj["streamSettings"]["sockopt"]["interface"] = outboundBindInterface;
                 if (customOutboundObj["streamSettings"]?["xhttpSettings"]?["extra"]?["downloadSettings"] is JsonObject downloadSettings)
@@ -81,7 +95,19 @@ public partial class CoreConfigV2rayService
             var index = coreConfigOutboundsNode
                 .Select((node, idx) => new { node, idx })
                 .FirstOrDefault(x => x.node?["tag"]?.ToString() == outboundTag)?.idx ?? -1;
-            if (index != -1)
+            if (index == -1)
+            {
+                continue;
+            }
+            if (customOutboundNode is JsonArray customOutboundArray)
+            {
+                coreConfigOutboundsNode.RemoveAt(index);
+                foreach (var item in customOutboundArray)
+                {
+                    coreConfigOutboundsNode.Insert(index++, item?.DeepClone());
+                }
+            }
+            else
             {
                 coreConfigOutboundsNode[index] = customOutboundObj;
             }
