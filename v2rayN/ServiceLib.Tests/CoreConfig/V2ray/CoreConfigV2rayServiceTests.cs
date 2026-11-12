@@ -3,6 +3,38 @@ namespace ServiceLib.Tests.CoreConfig.V2ray;
 public class CoreConfigV2rayServiceTests
 {
     [Test]
+    [Arguments("demo-seed", "srtp", 2)]
+    [Arguments(null, "srtp", 2)]
+    [Arguments("demo-seed", "none", 1)]
+    [Arguments(null, "none", 1)]
+    public async Task GenerateClientConfigContent_KcpHeader_ShouldPreserveInnerMask(string? seed, string header, int expectedCount)
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+        var node = CoreConfigTestFactory.CreateVmessNode(ECoreType.Xray);
+        node.Network = nameof(ETransport.kcp);
+        node.SetTransportExtra(new TransportExtraItem { KcpSeed = seed, KcpHeaderType = header });
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray);
+
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue();
+        var generatedConfig = JsonNode.Parse(result.Data!.ToString()!)!;
+        var proxy = generatedConfig["outbounds"]!.AsArray()
+            .First(outbound => outbound!["tag"]!.GetValue<string>() == Global.ProxyTag)!;
+        var masks = proxy["streamSettings"]!["finalmask"]!["udp"]!.AsArray();
+        await masks.Count.Should().BeEqualTo(expectedCount);
+        await masks[0]!["type"]!.GetValue<string>().Should().BeEqualTo("mkcp-legacy");
+        await (masks[0]!["settings"]?["value"]?.GetValue<string>()).Should().BeEqualTo(seed);
+        await (masks[0]!["settings"]?["header"]?.GetValue<string>()).Should().BeNull();
+        if (expectedCount == 2)
+        {
+            await masks[1]!["type"]!.GetValue<string>().Should().BeEqualTo("mkcp-legacy");
+            await masks[1]!["settings"]!["header"]!.GetValue<string>().Should().BeEqualTo(header);
+        }
+    }
+
+    [Test]
     [Arguments(null)]
     [Arguments("")]
     [Arguments("AGH+DQBdAAAgACBAi73MnT3WWXWj4M9MUiTygpjSPUfM/Rj3Iasve4uFQAAkAAEAAQABAAIAAQADAAIAAQACAAIAAgADAAMAAQADAAIAAwADAA5vdXRlci5lY2gudGVzdAAA")]

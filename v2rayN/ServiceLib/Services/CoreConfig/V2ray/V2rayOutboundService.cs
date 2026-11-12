@@ -412,14 +412,11 @@ public partial class CoreConfigV2rayService
                     }
                     if (Global.KcpHeaderMaskMap.TryGetValue(headerType, out var header))
                     {
-                        kcpFinalmask.udp =
-                        [
-                            new Mask4Ray
-                            {
-                                type = "mkcp-legacy",
-                                settings = new MaskSettings4Ray { header = header },
-                            },
-                        ];
+                        kcpFinalmask.udp.Add(new Mask4Ray
+                        {
+                            type = "mkcp-legacy",
+                            settings = new MaskSettings4Ray { header = header },
+                        });
                     }
                     streamSettings.kcpSettings = kcpSettings;
                     streamSettings.finalmask = (JsonObject)JsonUtils.SerializeToNode(kcpFinalmask);
