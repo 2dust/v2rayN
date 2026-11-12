@@ -14,6 +14,7 @@ public class CoreManager
 
     private ProcessService? _processService;
     private ProcessService? _processPreService;
+    private RunningConfiguration? _runningConfiguration;
     private bool _linuxSudo = false;
     private Func<bool, string, Task>? _updateFunc;
     private const string _tag = "CoreHandler";
@@ -62,7 +63,7 @@ public class CoreManager
 
     /// <param name="mainContext">Resolved main context (with pre-socks ports already merged if applicable).</param>
     /// <param name="preContext">Optional pre-socks context passed to <see cref="CoreStartPreService"/>.</param>
-    public async Task LoadCore(CoreConfigContext? mainContext, CoreConfigContext? preContext)
+    public async Task LoadCore(CoreConfigContext? mainContext, CoreConfigContext? preContext, bool forceRestart = true)
     {
         if (mainContext == null)
         {
@@ -72,11 +73,51 @@ public class CoreManager
 
         var node = mainContext.Node;
         var fileName = Utils.GetBinConfigPath(Global.CoreConfigFileName);
-        var result = await CoreConfigHandler.GenerateClientConfig(mainContext, fileName);
+        var prepareInMemory = mainContext.Node.ConfigType != EConfigType.Custom
+            && (preContext is null || preContext.Node.ConfigType != EConfigType.Custom);
+        var result = await CoreConfigHandler.GenerateClientConfig(mainContext, prepareInMemory ? null : fileName);
         if (result.Success != true)
         {
             await UpdateFunc(true, result.Msg);
             return;
+        }
+
+        string? mainContent = prepareInMemory ? result.Data?.ToString() : null;
+        string? preContent = null;
+        if (prepareInMemory && preContext is not null)
+        {
+            var preResult = await CoreConfigHandler.GenerateClientConfig(preContext, null);
+            if (!preResult.Success)
+            {
+                await UpdateFunc(true, preResult.Msg);
+                return;
+            }
+            preContent = preResult.Data?.ToString();
+        }
+
+        var mainLaunch = prepareInMemory ? GetLaunchSettings(mainContext, Global.CoreConfigFileName) : null;
+        var preLaunch = prepareInMemory && preContext is not null
+            ? GetLaunchSettings(preContext, Global.CorePreConfigFileName) : null;
+        var canRemember = mainLaunch is not null && CoreConfigComparison.IsSupported(mainContext, mainContent)
+            && (preContext is null || (preLaunch is not null && CoreConfigComparison.IsSupported(preContext, preContent)));
+        if (!forceRestart && canRemember && _runningConfiguration is { } running
+            && ReferenceEquals(running.MainProcess, _processService) && IsAlive(_processService)
+            && ReferenceEquals(running.PreProcess, _processPreService)
+            && (preContext is null || IsAlive(_processPreService))
+            && running.MainLaunch == mainLaunch && running.PreLaunch == preLaunch
+            && CoreConfigComparison.AreEquivalent(mainContext, running.MainContent, mainContent!)
+            && (preContext is null || CoreConfigComparison.AreEquivalent(preContext, running.PreContent!, preContent!)))
+        {
+            return;
+        }
+
+        if (prepareInMemory)
+        {
+            await File.WriteAllTextAsync(fileName, mainContent);
+            if (preContent is not null)
+            {
+                await File.WriteAllTextAsync(Utils.GetBinConfigPath(Global.CorePreConfigFileName), preContent);
+            }
         }
 
         await UpdateFunc(false, $"{node.GetSummary()}");
@@ -88,12 +129,17 @@ public class CoreManager
         if (Utils.IsWindows() && (mainContext?.IsTunEnabled == true || preContext?.IsTunEnabled == true))
         {
             await Task.Delay(100);
-            await WindowsUtils.RemoveTunDevice();
+            await RemoveTunDevice();
         }
 
         await CoreStart(mainContext);
         await WaitForProxyPort(preContext);
-        await CoreStartPreService(preContext);
+        await CoreStartPreService(preContext, preContent);
+
+        if (canRemember && IsAlive(_processService) && (preContext is null || IsAlive(_processPreService)))
+        {
+            _runningConfiguration = new(mainContent!, preContent, mainLaunch!, preLaunch, _processService!, _processPreService);
+        }
 
         AppManager.Instance.RunningCoreType = preContext?.RunCoreType ?? mainContext.RunCoreType;
 
@@ -146,6 +192,7 @@ public class CoreManager
 
     public async Task CoreStop()
     {
+        _runningConfiguration = null;
         try
         {
             if (_linuxSudo)
@@ -176,10 +223,40 @@ public class CoreManager
 
     #region Private
 
+    [SupportedOSPlatform("windows")]
+    protected virtual Task RemoveTunDevice() => WindowsUtils.RemoveTunDevice();
+
+    private sealed record LaunchSettings(ECoreType CoreType, string Executable, string Arguments,
+        string WorkingDirectory, string Environment, bool Tun, bool Sudo);
+
+    private sealed record RunningConfiguration(string MainContent, string? PreContent,
+        LaunchSettings MainLaunch, LaunchSettings? PreLaunch, ProcessService MainProcess, ProcessService? PreProcess);
+
+    private static bool IsAlive(ProcessService? process)
+    {
+        try { return process is { HasExited: false }; }
+        catch (InvalidOperationException) { return false; }
+        catch (System.ComponentModel.Win32Exception) { return false; }
+    }
+
+    private static LaunchSettings? GetLaunchSettings(CoreConfigContext context, string configFile)
+    {
+        var info = CoreInfoManager.Instance.GetCoreInfo(context.RunCoreType);
+        if (info is null) return null;
+        var executable = CoreInfoManager.Instance.GetCoreExecFile(info, out _);
+        if (executable.IsNullOrEmpty()) return null;
+        var argumentPath = info.AbsolutePath ? Utils.GetBinConfigPath(configFile).AppendQuotes() : configFile;
+        var environment = string.Join('\0', info.Environment.OrderBy(item => item.Key, StringComparer.Ordinal)
+            .Select(item => item.Key + "=" + string.Format(item.Value, argumentPath)));
+        return new(context.RunCoreType, executable, string.Format(info.Arguments, argumentPath),
+            Utils.GetBinConfigPath(), environment, context.IsTunEnabled,
+            ShouldRunAsSudo(context.IsTunEnabled, context.RunCoreType, Utils.IsNonWindows()));
+    }
+
     private async Task CoreStart(CoreConfigContext context)
     {
         var node = context.Node;
-        var coreType = AppManager.Instance.GetCoreType(node, node.ConfigType);
+        var coreType = context.RunCoreType;
         var coreInfo = CoreInfoManager.Instance.GetCoreInfo(coreType);
 
         var displayLog = node.ConfigType != EConfigType.Custom || node.DisplayLog;
@@ -191,13 +268,15 @@ public class CoreManager
         _processService = proc;
     }
 
-    private async Task CoreStartPreService(CoreConfigContext? preContext)
+    private async Task CoreStartPreService(CoreConfigContext? preContext, string? preparedContent = null)
     {
         if (_processService is { HasExited: false } && preContext != null)
         {
-            var preCoreType = preContext?.Node?.CoreType ?? ECoreType.sing_box;
+            var preCoreType = preContext.RunCoreType;
             var fileName = Utils.GetBinConfigPath(Global.CorePreConfigFileName);
-            var result = await CoreConfigHandler.GenerateClientConfig(preContext, fileName);
+            var result = preparedContent is null
+                ? await CoreConfigHandler.GenerateClientConfig(preContext, fileName)
+                : new RetResult(true);
             if (result.Success)
             {
                 var coreInfo = CoreInfoManager.Instance.GetCoreInfo(preCoreType);
@@ -302,7 +381,7 @@ public class CoreManager
             && isNonWindows;
     }
 
-    private async Task<ProcessService?> RunProcess(CoreInfo? coreInfo, string configPath, bool displayLog, bool mayNeedSudo, bool isTunLaunch = false)
+    protected virtual async Task<ProcessService?> RunProcess(CoreInfo? coreInfo, string configPath, bool displayLog, bool mayNeedSudo, bool isTunLaunch = false)
     {
         var fileName = CoreInfoManager.Instance.GetCoreExecFile(coreInfo, out var msg);
         if (fileName.IsNullOrEmpty())

@@ -4,6 +4,10 @@
 		<OutputType>Library</OutputType>
 	</PropertyGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="ServiceLib.Tests" />
+    </ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Include="Downloader" />
 		<PackageReference Include="IPNetwork2" />
