@@ -88,15 +88,20 @@ public class StatisticsXrayService
                 }
                 var state = JsonUtils.Deserialize<V2rayMetricsVarsLink>(value.ToString());
 
-                if (key.StartsWith(Global.ProxyTag))
-                {
-                    server.ProxyUp += state.uplink / linkBase;
-                    server.ProxyDown += state.downlink / linkBase;
-                }
-                else if (key == Global.DirectTag)
+                if (key == Global.DirectTag)
                 {
                     server.DirectUp = state.uplink / linkBase;
                     server.DirectDown = state.downlink / linkBase;
+                }
+                else if (key.Contains("dns", StringComparison.OrdinalIgnoreCase)
+                    || key.Contains("blackhole", StringComparison.OrdinalIgnoreCase))
+                {
+                    // Ignore auxiliary outbounds for statistics.
+                }
+                else
+                {
+                    server.ProxyUp += state.uplink / linkBase;
+                    server.ProxyDown += state.downlink / linkBase;
                 }
             }
 
