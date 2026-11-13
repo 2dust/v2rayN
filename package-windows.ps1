@@ -42,6 +42,14 @@ function Hash-Id([string]$Value) {
     } finally { $sha.Dispose() }
 }
 
+function Hash-Guid([string]$Value) {
+    $sha = [System.Security.Cryptography.SHA256]::Create()
+    try {
+        $bytes = $sha.ComputeHash([System.Text.Encoding]::UTF8.GetBytes($Value.ToLowerInvariant()))
+        return [guid]::new([byte[]]$bytes[0..15]).ToString('D').ToUpperInvariant()
+    } finally { $sha.Dispose() }
+}
+
 function Get-Machine([string]$File) {
     if (-not [System.IO.File]::Exists($File)) { throw "Missing executable: $File" }
     $stream = [System.IO.File]::OpenRead($File)
@@ -183,10 +191,8 @@ function Build-MsiFileGraph([string]$SourceRoot) {
     $sourcePrefix = $SourceRoot.TrimEnd([char]'\', [char]'/') + [System.IO.Path]::DirectorySeparatorChar
     foreach ($file in Get-ChildItem -LiteralPath $SourceRoot -File -Recurse | Sort-Object FullName) {
         $rel = $file.FullName.Substring($sourcePrefix.Length).Replace('/', '\')
-        $first = $rel.Split('\')[0]
-        if ($first -in @('guiConfigs','guiLogs','guiTemps')) { continue }
         $folder = [System.IO.Path]::GetDirectoryName($rel)
-        $fileRecords += [pscustomobject]@{ File = $file; Rel = $rel; Folder = $folder; Protected = ($first -eq 'bin') }
+        $fileRecords += [pscustomobject]@{ File = $file; Rel = $rel; Folder = $folder }
         if ($folder) {
             $segments = $folder.Split('\')
             $cur = ''
@@ -211,8 +217,8 @@ function Build-MsiFileGraph([string]$SourceRoot) {
     foreach ($item in $fileRecords) {
         $id = 'C_' + (Hash-Id $item.Rel)
         $dirId = if ($item.Folder) { 'D_' + (Hash-Id $item.Folder) } else { 'INSTALLFOLDER' }
-        $attributes = if ($item.Protected) { ' Permanent="yes" NeverOverwrite="yes"' } else { '' }
-        $components.Add(('      <Component Id="{0}" Directory="{1}" Guid="*"{2}><File Id="F_{3}" Source="{4}" KeyPath="yes" /></Component>' -f $id, $dirId, $attributes, (Hash-Id $item.Rel), (Escape-Xml $item.File.FullName)))
+        $guid = if ($item.Rel.StartsWith('bin\', [System.StringComparison]::OrdinalIgnoreCase)) { Hash-Guid "v2rayN-managed-bin/$($item.Rel)" } else { '*' }
+        $components.Add(('      <Component Id="{0}" Directory="{1}" Guid="{2}"><File Id="F_{3}" Source="{4}" KeyPath="yes" /></Component>' -f $id, $dirId, $guid, (Hash-Id $item.Rel), (Escape-Xml $item.File.FullName)))
     }
     return @{ Directories = ($dirRefs -join "`n"); Components = ($components -join "`n"); Count = $components.Count }
 }
@@ -564,7 +570,7 @@ try {
                 Assert-Machine $corePath $map.Machine
             }
             $graph = Build-MsiFileGraph $out
-            Write-Host "MSI files: $($graph.Count) (bin is permanent and never overwritten)"
+            Write-Host "MSI files: $($graph.Count) (all files are upgradeable)"
             $flavorLabel = if ($flavor -eq 'wpf') { 'WPF' } else { 'Desktop' }
             $folderName = if ($flavor -eq 'wpf') { 'v2rayN' } else { 'v2rayN Desktop' }
             $regKey = "Software\v2rayN\Installer\$flavor\$arch"
@@ -631,10 +637,14 @@ try {
       <RegistryValue Root="HKLM" Key="{{REGKEY}}" Name="TempsDir" Value="[INSTALLFOLDER]guiTemps" Type="string" />
       <RegistryValue Root="HKLM" Key="{{REGKEY}}" Name="DesktopEnabled" Value="[CREATE_DESKTOP_SHORTCUT]" Type="string" />
       <RegistryValue Root="HKLM" Key="{{REGKEY}}" Name="StartMenuEnabled" Value="[CREATE_STARTMENU_SHORTCUT]" Type="string" />
-      <util:RemoveFolderEx Id="CleanBin" Property="CLEAN_BIN" On="uninstall" Condition="REMOVE=&quot;ALL&quot; AND NOT UPGRADINGPRODUCTCODE" />
-      <util:RemoveFolderEx Id="CleanConfigs" Property="CLEAN_CONFIG" On="uninstall" Condition="REMOVE=&quot;ALL&quot; AND NOT UPGRADINGPRODUCTCODE" />
-      <util:RemoveFolderEx Id="CleanLogs" Property="CLEAN_LOGS" On="uninstall" Condition="REMOVE=&quot;ALL&quot; AND NOT UPGRADINGPRODUCTCODE" />
-      <util:RemoveFolderEx Id="CleanTemps" Property="CLEAN_TEMPS" On="uninstall" Condition="REMOVE=&quot;ALL&quot; AND NOT UPGRADINGPRODUCTCODE" />
+      <util:RemoveFolderEx Id="UpgradeCleanBin" Property="CLEAN_BIN" On="install" Condition="WIX_UPGRADE_DETECTED" />
+      <util:RemoveFolderEx Id="CleanBin" Property="CLEAN_BIN" On="uninstall" Condition="REMOVE=&quot;ALL&quot;" />
+      <util:RemoveFolderEx Id="UpgradeCleanConfigs" Property="CLEAN_CONFIG" On="install" Condition="WIX_UPGRADE_DETECTED" />
+      <util:RemoveFolderEx Id="CleanConfigs" Property="CLEAN_CONFIG" On="uninstall" Condition="REMOVE=&quot;ALL&quot;" />
+      <util:RemoveFolderEx Id="UpgradeCleanLogs" Property="CLEAN_LOGS" On="install" Condition="WIX_UPGRADE_DETECTED" />
+      <util:RemoveFolderEx Id="CleanLogs" Property="CLEAN_LOGS" On="uninstall" Condition="REMOVE=&quot;ALL&quot;" />
+      <util:RemoveFolderEx Id="UpgradeCleanTemps" Property="CLEAN_TEMPS" On="install" Condition="WIX_UPGRADE_DETECTED" />
+      <util:RemoveFolderEx Id="CleanTemps" Property="CLEAN_TEMPS" On="uninstall" Condition="REMOVE=&quot;ALL&quot;" />
       <RemoveFolder Id="RemoveAppFolder" On="uninstall" />
     </Component>
     <Component Id="DesktopLink" Directory="DesktopFolder" Guid="*">
