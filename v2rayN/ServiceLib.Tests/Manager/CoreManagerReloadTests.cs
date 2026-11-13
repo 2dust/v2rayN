@@ -236,6 +236,27 @@ public class CoreManagerReloadTests
         await actual!["log"]!["level"]!.GetValue<string>().Should().BeEqualTo("warn");
     }
 
+    [Test]
+    [Arguments(false)]
+    [Arguments(true)]
+    public async Task UnresolvedRoutingFileInputsStillRestartAnUnchangedCore(bool tun)
+    {
+        await using var fixture = await ReloadFixture.Create(ECoreType.Xray, tun);
+        var context = fixture.Context("profile");
+        context.RoutingItem!.RuleSet = """[{"domain":["geosite:cn"],"outboundTag":"direct"}]""";
+        await fixture.Manager.LoadCore(context, null);
+        using var original = Process.GetProcessById(fixture.Manager.StartedIds.Single());
+        var content = await File.ReadAllTextAsync(fixture.MainFile);
+        await content.Contains("geosite:cn", StringComparison.Ordinal).Should().BeTrue();
+
+        var reused = await fixture.Manager.LoadCore(context, null, forceRestart: false);
+
+        await reused.Should().BeFalse();
+        await fixture.Manager.StartedIds.Count.Should().BeEqualTo(2);
+        await original.HasExited.Should().BeTrue();
+        await fixture.Manager.TunRemovals.Should().BeEqualTo(OperatingSystem.IsWindows() && tun ? 2 : 0);
+    }
+
     private sealed class HarmlessCoreManager : CoreManager
     {
         public List<int> StartedIds { get; } = [];

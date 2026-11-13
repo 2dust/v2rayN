@@ -99,8 +99,9 @@ public class CoreManager
         var mainLaunch = prepareInMemory ? GetLaunchSettings(mainContext, Global.CoreConfigFileName) : null;
         var preLaunch = prepareInMemory && preContext is not null
             ? GetLaunchSettings(preContext, Global.CorePreConfigFileName) : null;
-        var canRemember = mainLaunch is not null && CoreConfigComparison.IsSupported(mainContext, mainContent)
-            && (preContext is null || (preLaunch is not null && CoreConfigComparison.IsSupported(preContext, preContent)));
+        // Remembering a launch does not prove reuse; AreEquivalent validates its generated JSON.
+        var canRemember = mainLaunch is not null && mainContent.IsNotEmpty() && CoreConfigComparison.IsContextEligible(mainContext)
+            && (preContext is null || (preLaunch is not null && preContent.IsNotEmpty() && CoreConfigComparison.IsContextEligible(preContext)));
         if (!forceRestart && canRemember && _runningConfiguration is { } running
             && ReferenceEquals(running.MainProcess, _processService) && IsAlive(_processService)
             && ReferenceEquals(running.PreProcess, _processPreService)

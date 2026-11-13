@@ -5,43 +5,28 @@ namespace ServiceLib.Manager;
 
 internal static class CoreConfigComparison
 {
-    public static bool IsSupported(CoreConfigContext context, string? content)
-    {
-        if (content.IsNullOrEmpty()
-            || context.RunCoreType is not (ECoreType.Xray or ECoreType.sing_box)
-            || context.Node.ConfigType is EConfigType.Custom or EConfigType.Outbound
-            || context.Node.ConfigType.IsGroupType()
-            || HasOpaqueTransport(context.Node)
-            || context.FullConfigTemplate is { Enabled: true }
-            || context.RawDnsItem is { Enabled: true }
-            || context.CustomOutboundContent.Count != 0
-            || context.AllProxiesMap.Values.Any(node => node.ConfigType is EConfigType.Custom or EConfigType.Outbound
-                || node.ConfigType.IsGroupType() || HasOpaqueTransport(node))
-            || context.RoutingItem?.CustomRulesetPath4Singbox.IsNotEmpty() == true)
-        {
-            return false;
-        }
-
-        try
-        {
-            return JsonNode.Parse(content) is JsonObject root
-                && !HasExternalInput(root["routing"]) && !HasExternalInput(root["route"]) && !HasExternalInput(root["dns"]);
-        }
-        catch (System.Text.Json.JsonException)
-        {
-            return false;
-        }
-    }
+    public static bool IsContextEligible(CoreConfigContext context) =>
+        context.RunCoreType is ECoreType.Xray or ECoreType.sing_box
+        && context.Node.ConfigType is not (EConfigType.Custom or EConfigType.Outbound)
+        && !context.Node.ConfigType.IsGroupType()
+        && !HasOpaqueTransport(context.Node)
+        && context.FullConfigTemplate is not { Enabled: true }
+        && context.RawDnsItem is not { Enabled: true }
+        && context.CustomOutboundContent.Count == 0
+        && !context.AllProxiesMap.Values.Any(node => node.ConfigType is EConfigType.Custom or EConfigType.Outbound
+            || node.ConfigType.IsGroupType() || HasOpaqueTransport(node))
+        && context.RoutingItem?.CustomRulesetPath4Singbox.IsNotEmpty() != true;
 
     private static bool HasOpaqueTransport(ProfileItem node) => node.GetNetwork() == nameof(ETransport.xhttp)
         && node.GetTransportExtra().XhttpExtra.IsNotEmpty();
 
-    public static bool AreEquivalent(CoreConfigContext context, string previous, string current)
+    public static bool AreEquivalent(CoreConfigContext context, string previous, string? current)
     {
-        if (!IsSupported(context, current)) return false;
+        if (current.IsNullOrEmpty() || !IsContextEligible(context)) return false;
         try
         {
-            if (JsonNode.Parse(previous) is not JsonObject before || JsonNode.Parse(current) is not JsonObject after)
+            if (JsonNode.Parse(previous) is not JsonObject before || JsonNode.Parse(current) is not JsonObject after
+                || HasExternalInput(after["routing"]) || HasExternalInput(after["route"]) || HasExternalInput(after["dns"]))
                 return false;
 
             // These copies are for comparison only. Launch the original prepared content.

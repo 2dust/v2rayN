@@ -131,6 +131,44 @@ public class CoreConfigComparisonTests
         await CoreConfigComparison.AreEquivalent(Context(ECoreType.Xray), "invalid", "{}").Should().BeFalse();
     }
 
+    [Test]
+    [Arguments((string?)null)]
+    [Arguments("")]
+    [Arguments(" ")]
+    [Arguments("invalid")]
+    [Arguments("null")]
+    [Arguments("[]")]
+    public async Task AnUnusableCurrentConfigurationCannotSuppressARestart(string? current)
+    {
+        await CoreConfigComparison.AreEquivalent(Context(ECoreType.Xray), "{}", current).Should().BeFalse();
+    }
+
+    [Test]
+    [Arguments(ECoreType.Xray,
+        """{"routing":{"rules":[{"domain":["ext:rules.dat:tag"]}]},"log":{"access":"/logs/Vaccess_2026-11-12.txt"}}""",
+        """{"routing":{"rules":[{"domain":["ext:rules.dat:tag"]}]},"log":{"access":"/logs/Vaccess_2026-11-13.txt"}}""")]
+    [Arguments(ECoreType.sing_box,
+        """{"route":{"rule_set":[{"type":"local","path":"rules.srs"}]},"log":{"output":"/logs/sbox_2026-11-12.txt"}}""",
+        """{"route":{"rule_set":[{"type":"local","path":"rules.srs"}]},"log":{"output":"/logs/sbox_2026-11-13.txt"}}""")]
+    public async Task GeneratedLogNormalizationCannotHideExternalInputs(ECoreType coreType, string previous, string current)
+    {
+        var context = Context(coreType);
+        context.AppConfig.CoreBasicItem.LogEnabled = true;
+
+        await CoreConfigComparison.AreEquivalent(context, previous, current).Should().BeFalse();
+    }
+
+    [Test]
+    public async Task RemovingAnExternalInputStillChangesTheConnection()
+    {
+        var context = Context(ECoreType.Xray);
+        context.AppConfig.CoreBasicItem.LogEnabled = true;
+        const string previous = """{"routing":{"rules":[{"domain":["geosite:cn"]}]},"log":{"access":"/logs/Vaccess_2026-11-12.txt"}}""";
+        const string current = """{"routing":{"rules":[{"domain":["example.com"]}]},"log":{"access":"/logs/Vaccess_2026-11-13.txt"}}""";
+
+        await CoreConfigComparison.AreEquivalent(context, previous, current).Should().BeFalse();
+    }
+
     private static CoreConfigContext Context(ECoreType coreType)
     {
         var config = CoreConfigTestFactory.CreateConfig(coreType);
