@@ -132,6 +132,14 @@ public class CoreManager
 
         if (node.ConfigType == EConfigType.Custom)
         {
+            // Custom configs are full core configs. Speed-test them one at a time by
+            // giving the first inbound a free port to avoid port conflicts, then run
+            // the config as-is on that port.
+            if (node.CoreType is not (ECoreType.Xray or ECoreType.sing_box))
+            {
+                return null;
+            }
+
             var fileName = string.Format(Global.CoreSpeedtestConfigFileName, Utils.GetGuid(false));
             var configPath = Utils.GetBinConfigPath(fileName);
 
@@ -147,19 +155,61 @@ public class CoreManager
             File.Copy(addressFileName, configPath, true);
             File.SetAttributes(configPath, FileAttributes.Normal);
 
-            var port = 0;
+            var freePort = Utils.GetFreePort(AppManager.Instance.GetLocalPort(EInboundProtocol.speedtest));
+
+            int port = 0;
             try
             {
                 var json = await File.ReadAllTextAsync(configPath);
                 if (node.CoreType == ECoreType.sing_box)
                 {
-                    var cfg = JsonUtils.Deserialize<SingboxConfig>(json);
-                    port = cfg?.inbounds?.FirstOrDefault()?.listen_port ?? 0;
+                    var nodeObj = JsonNode.Parse(json) as JsonObject;
+                    var inbounds = nodeObj?["inbounds"] as JsonArray;
+                    if (inbounds is { Count: > 0 } && inbounds[0] is JsonObject firstInbound)
+                    {
+                        firstInbound["listen_port"] = freePort;
+                        port = freePort;
+                    }
+                    else
+                    {
+                        // Add a mixed inbound if none exists.
+                        inbounds ??= new JsonArray();
+                        inbounds.Add(new JsonObject
+                        {
+                            ["type"] = "mixed",
+                            ["tag"] = "speedtest-in",
+                            ["listen"] = Global.Loopback,
+                            ["listen_port"] = freePort
+                        });
+                        nodeObj!["inbounds"] = inbounds;
+                        port = freePort;
+                    }
+                    await File.WriteAllTextAsync(configPath, nodeObj!.ToJsonString());
                 }
                 else
                 {
-                    var cfg = JsonUtils.Deserialize<V2rayConfig>(json);
-                    port = cfg?.inbounds?.FirstOrDefault()?.port ?? 0;
+                    var nodeObj = JsonNode.Parse(json) as JsonObject;
+                    var inbounds = nodeObj?["inbounds"] as JsonArray;
+                    if (inbounds is { Count: > 0 } && inbounds[0] is JsonObject firstInbound)
+                    {
+                        firstInbound["port"] = freePort;
+                        port = freePort;
+                    }
+                    else
+                    {
+                        inbounds ??= new JsonArray();
+                        inbounds.Add(new JsonObject
+                        {
+                            ["tag"] = "speedtest-in",
+                            ["listen"] = Global.Loopback,
+                            ["port"] = freePort,
+                            ["protocol"] = "mixed",
+                            ["settings"] = new JsonObject { ["udp"] = true, ["auth"] = "noauth" }
+                        });
+                        nodeObj!["inbounds"] = inbounds;
+                        port = freePort;
+                    }
+                    await File.WriteAllTextAsync(configPath, nodeObj!.ToJsonString());
                 }
             }
             catch
