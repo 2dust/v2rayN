@@ -16,8 +16,7 @@ public class ConfigHandlerCustomSubscriptionTests
     {
         var config = CoreConfigTestFactory.CreateConfig();
         CoreConfigTestFactory.BindAppManagerConfig(config);
-        SQLiteHelper.Instance.CreateTable<SubItem>();
-        SQLiteHelper.Instance.CreateTable<ProfileItem>();
+        TestDatabase.Initialize();
 
         var subId = $"sub-{Guid.NewGuid():N}";
         await SQLiteHelper.Instance.ReplaceAsync(new SubItem
@@ -50,8 +49,7 @@ public class ConfigHandlerCustomSubscriptionTests
     {
         var config = CoreConfigTestFactory.CreateConfig();
         CoreConfigTestFactory.BindAppManagerConfig(config);
-        SQLiteHelper.Instance.CreateTable<SubItem>();
-        SQLiteHelper.Instance.CreateTable<ProfileItem>();
+        TestDatabase.Initialize();
 
         var subId = $"sub-failed-{Guid.NewGuid():N}";
         await SQLiteHelper.Instance.ReplaceAsync(new SubItem
