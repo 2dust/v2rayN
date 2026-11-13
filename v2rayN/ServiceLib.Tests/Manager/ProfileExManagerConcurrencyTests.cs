@@ -93,6 +93,18 @@ public class ProfileExManagerConcurrencyTests
         }
     }
 
+    [Test]
+    public async Task SetSort_FromManyThreads_ShouldTrackMaxSort()
+    {
+        var manager = CreateManager();
+        await manager.GetMaxSort().Should().BeEqualTo(0);
+
+        Parallel.For(0, 1000, i => manager.SetSort($"sort{i % 100}", i));
+        manager.SetTestDelay("unsorted", 100);
+
+        await manager.GetMaxSort().Should().BeEqualTo(999);
+    }
+
     private static async Task RunConcurrentUpdates(int workers, int indexes, Action<int, int> update)
     {
         using var barrier = new Barrier(workers);
