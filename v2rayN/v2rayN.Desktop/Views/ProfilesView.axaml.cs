@@ -18,6 +18,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         _config = AppManager.Instance.Config;
 
         menuSelectAll.Click += menuSelectAll_Click;
+        btnAutofitColumnWidth.Click += BtnAutofitColumnWidth_Click;
         txtServerFilter.KeyDown += TxtServerFilter_KeyDown;
         lstProfiles.KeyDown += LstProfiles_KeyDown;
         lstProfiles.SelectionChanged += lstProfiles_SelectionChanged;
@@ -314,6 +315,12 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
                     break;
             }
         }
+    }
+
+
+    private void BtnAutofitColumnWidth_Click(object? sender, RoutedEventArgs e)
+    {
+        AutofitColumnWidth();
     }
 
     private void AutofitColumnWidth()
