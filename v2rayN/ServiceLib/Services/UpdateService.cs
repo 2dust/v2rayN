@@ -420,7 +420,7 @@ public partial class UpdateService(DownloadService downloadService, Config confi
         var geoSiteFiles = new List<string>();
 
         // Collect from routing rules
-        var routingItems = await AppManager.Instance.RoutingItems();
+        var routingItems = await ConfigDbQuery.RoutingItems();
         foreach (var routing in routingItems)
         {
             var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.RuleSet);
@@ -432,7 +432,7 @@ public partial class UpdateService(DownloadService downloadService, Config confi
         }
 
         // Collect from DNS configuration
-        var dnsItem = await AppManager.Instance.GetDNSItem(ECoreType.sing_box);
+        var dnsItem = await ConfigDbQuery.GetDNSItem(ECoreType.sing_box);
         if (dnsItem != null)
         {
             ExtractDnsRuleSets(dnsItem.NormalDNS, geoipFiles, geoSiteFiles);

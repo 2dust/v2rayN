@@ -9,8 +9,8 @@ public sealed partial class V2rayRuntime
 {
     public async Task<IReadOnlyList<ProfileGroupView>> GetProfileGroupsAsync()
     {
-        var subscriptions = await AppManager.Instance.SubItems() ?? [];
-        var profiles = await AppManager.Instance.ProfileItems(string.Empty) ?? [];
+        var subscriptions = await ConfigDbQuery.SubItems() ?? [];
+        var profiles = await ConfigDbQuery.ProfileItems(string.Empty) ?? [];
         var counts = profiles.GroupBy(item => item.Subid).ToDictionary(group => group.Key, group => group.Count());
         var groups = new List<ProfileGroupView>
         {
@@ -31,7 +31,7 @@ public sealed partial class V2rayRuntime
     public async Task<OperationView> SelectProfileGroupAsync(string? subscriptionId)
     {
         if (!string.IsNullOrWhiteSpace(subscriptionId)
-            && await AppManager.Instance.GetSubItem(subscriptionId) is null)
+            && await ConfigDbQuery.GetSubItem(subscriptionId) is null)
         {
             return OperationView.Fail("subscription_not_found", ApiMessageKeys.SubscriptionNotFound);
         }
@@ -53,7 +53,7 @@ public sealed partial class V2rayRuntime
         }
 
         var groupId = request.SubscriptionId ?? Config.SubIndexId ?? string.Empty;
-        if (!string.IsNullOrEmpty(groupId) && await AppManager.Instance.GetSubItem(groupId) is null)
+        if (!string.IsNullOrEmpty(groupId) && await ConfigDbQuery.GetSubItem(groupId) is null)
         {
             return OperationView.Fail("subscription_not_found", ApiMessageKeys.SubscriptionNotFound, new { imported = 0 });
         }
@@ -87,7 +87,7 @@ public sealed partial class V2rayRuntime
         var isNew = string.IsNullOrWhiteSpace(profileId);
         if (!isNew)
         {
-            var existing = await AppManager.Instance.GetProfileItem(profileId!);
+            var existing = await ConfigDbQuery.GetProfileItem(profileId!);
             if (existing is null)
             {
                 return OperationView.Fail("profile_not_found", ApiMessageKeys.ProfileNotFound);
@@ -106,7 +106,7 @@ public sealed partial class V2rayRuntime
             profile.Subid = Config.SubIndexId ?? string.Empty;
             profile.IsSub = false;
             if (!string.IsNullOrEmpty(profile.Subid)
-                && await AppManager.Instance.GetSubItem(profile.Subid) is null)
+                && await ConfigDbQuery.GetSubItem(profile.Subid) is null)
             {
                 AddLog("profile", $"Rejected profile creation for missing subscription group {profile.Subid}.");
                 return OperationView.Fail("subscription_not_found", ApiMessageKeys.SubscriptionNotFound,
@@ -126,11 +126,11 @@ public sealed partial class V2rayRuntime
                 return OperationView.Fail("profile_group_invalid", ApiMessageKeys.ProfileInvalid);
             }
             if (!string.IsNullOrWhiteSpace(protocolExtra.SubChildItems)
-                && await AppManager.Instance.GetSubItem(protocolExtra.SubChildItems) is null)
+                && await ConfigDbQuery.GetSubItem(protocolExtra.SubChildItems) is null)
             {
                 return OperationView.Fail("subscription_not_found", ApiMessageKeys.SubscriptionNotFound);
             }
-            var children = await AppManager.Instance.GetProfileItemsByIndexIds(childIds);
+            var children = await ConfigDbQuery.GetProfileItemsByIndexIds(childIds);
             if (children.Count != childIds.Distinct(StringComparer.Ordinal).Count()
                 || await GroupProfileManager.HasCycle(profile))
             {
@@ -243,7 +243,7 @@ public sealed partial class V2rayRuntime
             return OperationView.Fail("profile_selection_required", ApiMessageKeys.ProfileSelectRequired);
         }
 
-        var selected = await AppManager.Instance.GetProfileItemsByIndexIds(ids);
+        var selected = await ConfigDbQuery.GetProfileItemsByIndexIds(ids);
         if (selected.Count == 0)
         {
             return OperationView.Fail("profile_not_found", ApiMessageKeys.ProfileNotFound);
@@ -291,7 +291,7 @@ public sealed partial class V2rayRuntime
     public async Task<OperationView> CopyProfilesAsync(IEnumerable<string> profileIds)
     {
         var ids = profileIds.Where(id => !string.IsNullOrWhiteSpace(id)).Distinct(StringComparer.Ordinal).ToArray();
-        var items = await AppManager.Instance.GetProfileItemsOrderedByIndexIds(ids);
+        var items = await ConfigDbQuery.GetProfileItemsOrderedByIndexIds(ids);
         if (items.Count == 0)
         {
             return OperationView.Fail("profile_not_found", ApiMessageKeys.ProfileNotFound);
@@ -308,12 +308,12 @@ public sealed partial class V2rayRuntime
     public async Task<OperationView> MoveProfilesToGroupAsync(MoveProfilesRequest request)
     {
         if (!string.IsNullOrEmpty(request.SubscriptionId)
-            && await AppManager.Instance.GetSubItem(request.SubscriptionId) is null)
+            && await ConfigDbQuery.GetSubItem(request.SubscriptionId) is null)
         {
             return OperationView.Fail("subscription_not_found", ApiMessageKeys.SubscriptionNotFound);
         }
 
-        var items = await AppManager.Instance.GetProfileItemsByIndexIds(request.ProfileIds);
+        var items = await ConfigDbQuery.GetProfileItemsByIndexIds(request.ProfileIds);
         if (items.Count == 0)
         {
             return OperationView.Fail("profile_not_found", ApiMessageKeys.ProfileNotFound);
@@ -381,7 +381,7 @@ public sealed partial class V2rayRuntime
         SubItem? subscription = null;
         if (!string.IsNullOrEmpty(subscriptionId))
         {
-            subscription = await AppManager.Instance.GetSubItem(subscriptionId);
+            subscription = await ConfigDbQuery.GetSubItem(subscriptionId);
             if (subscription is null)
             {
                 return OperationView.Fail("subscription_not_found", ApiMessageKeys.SubscriptionNotFound);
@@ -402,7 +402,7 @@ public sealed partial class V2rayRuntime
 
     public async Task<IReadOnlyList<ProfileExportItem>> ExportProfileDataAsync(ProfileExportRequest request)
     {
-        var items = await AppManager.Instance.GetProfileItemsOrderedByIndexIds(request.ProfileIds);
+        var items = await ConfigDbQuery.GetProfileItemsOrderedByIndexIds(request.ProfileIds);
         var output = new List<ProfileExportItem>();
 
         if (request.IncludeShareUris)
@@ -445,7 +445,7 @@ public sealed partial class V2rayRuntime
 
     public async Task<string?> GetSubscriptionShareAsync(string id)
     {
-        return (await AppManager.Instance.GetSubItem(id))?.Url;
+        return (await ConfigDbQuery.GetSubItem(id))?.Url;
     }
 
     public async Task<OperationView> StartSpeedTestAsync(SpeedTestRequest request, CancellationToken cancellationToken)
@@ -453,8 +453,8 @@ public sealed partial class V2rayRuntime
         cancellationToken.ThrowIfCancellationRequested();
         var action = request.Action == ESpeedActionType.FastRealping ? ESpeedActionType.Realping : request.Action;
         var profiles = request.ProfileIds is { Length: > 0 }
-            ? await AppManager.Instance.GetProfileItemsOrderedByIndexIds(request.ProfileIds)
-            : await AppManager.Instance.ProfileItems(Config.SubIndexId ?? string.Empty) ?? [];
+            ? await ConfigDbQuery.GetProfileItemsOrderedByIndexIds(request.ProfileIds)
+            : await ConfigDbQuery.ProfileItems(Config.SubIndexId ?? string.Empty) ?? [];
         if (profiles.Count == 0)
         {
             return OperationView.Fail("speedtest_profile_selection_required", ApiMessageKeys.SpeedTestSelectRequired);

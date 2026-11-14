@@ -114,7 +114,7 @@ public sealed partial class V2rayRuntime
         IReadOnlyList<SubItem> subscriptions;
         await using (var operation = await _operations.EnterOperationAsync(cancellationToken))
         {
-            subscriptions = (await AppManager.Instance.SubItems() ?? [])
+            subscriptions = (await ConfigDbQuery.SubItems() ?? [])
                 .Where(item => item.AutoUpdateInterval > 0
                                && now - item.UpdateTime >= item.AutoUpdateInterval * 60L)
                 .ToArray();

@@ -89,7 +89,7 @@ public partial class AddServer2ViewModel : MyReactiveObject, ICloseable
             return;
         }
 
-        var item = await AppManager.Instance.GetProfileItem(SelectedSource.IndexId);
+        var item = await ConfigDbQuery.GetProfileItem(SelectedSource.IndexId);
         item ??= SelectedSource;
         item.Address = fileName;
         var result = item.ConfigType == EConfigType.Outbound ? await ConfigDbManager.AddCustomOutboundServer(_config, item, false) : await ConfigDbManager.AddCustomServer(_config, item, false);

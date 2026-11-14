@@ -13,7 +13,7 @@ public class SubscriptionHandler(
     public async Task UpdateProcess(string subId)
     {
         await updateFunc?.Invoke(false, ResUI.MsgUpdateSubscriptionStart);
-        var subItem = await AppManager.Instance.SubItems();
+        var subItem = await ConfigDbQuery.SubItems();
 
         if (subItem is not { Count: > 0 })
         {

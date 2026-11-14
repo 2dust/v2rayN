@@ -377,7 +377,7 @@ public partial class MainWindowViewModel : MyReactiveObject
             else
             {
                 // The activity config belongs to the current group.
-                var profile = await AppManager.Instance.GetProfileItem(_config.IndexId);
+                var profile = await ConfigDbQuery.GetProfileItem(_config.IndexId);
                 if (profile != null && profile.Subid == _config.SubIndexId)
                 {
                     await Reload();

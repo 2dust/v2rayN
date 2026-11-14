@@ -89,7 +89,7 @@ public class TaskManager
     private async Task UpdateTaskRunSubscription()
     {
         var updateTime = ((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds();
-        var lstSubs = (await AppManager.Instance.SubItems())?
+        var lstSubs = (await ConfigDbQuery.SubItems())?
             .Where(t => t.AutoUpdateInterval > 0)
             .Where(t => updateTime - t.UpdateTime >= t.AutoUpdateInterval * 60)
             .ToList();

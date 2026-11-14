@@ -287,7 +287,7 @@ public partial class StatusBarViewModel : MyReactiveObject
 
     private async Task RefreshServersMenu()
     {
-        var lstModel = await AppManager.Instance.ProfileModels(_config.SubIndexId, "");
+        var lstModel = await ConfigDbQuery.ProfileModels(_config.SubIndexId, "");
 
         if (lstModel?.Count > _config.GuiItem.TrayMenuServersLimit)
         {
@@ -393,7 +393,7 @@ public partial class StatusBarViewModel : MyReactiveObject
 
     public async Task RefreshRoutingsMenu()
     {
-        var routings = await AppManager.Instance.RoutingItems();
+        var routings = await ConfigDbQuery.RoutingItems();
 
         RoutingItems.ReplaceRange(routings);
 
@@ -407,7 +407,7 @@ public partial class StatusBarViewModel : MyReactiveObject
             return;
         }
 
-        var item = await AppManager.Instance.GetRoutingItem(SelectedRouting?.Id);
+        var item = await ConfigDbQuery.GetRoutingItem(SelectedRouting?.Id);
         if (item is null)
         {
             return;

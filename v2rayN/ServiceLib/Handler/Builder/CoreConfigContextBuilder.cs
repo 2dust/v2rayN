@@ -41,11 +41,11 @@ public class CoreConfigContextBuilder
             RunCoreType = runCoreType,
             AllProxiesMap = [],
             AppConfig = config,
-            FullConfigTemplate = await AppManager.Instance.GetFullConfigTemplateItem(coreType),
+            FullConfigTemplate = await ConfigDbQuery.GetFullConfigTemplateItem(coreType),
             IsTunEnabled = config.TunModeItem.EnableTun,
             SimpleDnsItem = config.SimpleDNSItem,
             ProtectDomainList = [],
-            RawDnsItem = await AppManager.Instance.GetDNSItem(coreType),
+            RawDnsItem = await ConfigDbQuery.GetDNSItem(coreType),
             RoutingItem = await ConfigDbManager.GetDefaultRouting(config),
             IsWindows = Utils.IsWindows(),
             IsMacOS = Utils.IsMacOS(),
@@ -73,7 +73,7 @@ public class CoreConfigContextBuilder
                     ruleItem.OutboundTag = Global.ProxyTag;
                     continue;
                 }
-                var ruleOutboundNode = await AppManager.Instance.GetProfileItemViaRemarks(ruleItem.OutboundTag);
+                var ruleOutboundNode = await ConfigDbQuery.GetProfileItemViaRemarks(ruleItem.OutboundTag);
                 if (ruleOutboundNode == null)
                 {
                     validatorResult.Warnings.Add(string.Format(ResUI.MsgRoutingRuleOutboundNodeNotFound,
@@ -277,7 +277,7 @@ public class CoreConfigContextBuilder
             return (null, result);
         }
 
-        var subItem = await AppManager.Instance.GetSubItem(node.Subid);
+        var subItem = await ConfigDbQuery.GetSubItem(node.Subid);
         if (subItem == null)
         {
             return (null, result);
@@ -288,7 +288,7 @@ public class CoreConfigContextBuilder
 
         if (!subItem.PrevProfile.IsNullOrEmpty())
         {
-            prevNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.PrevProfile);
+            prevNode = await ConfigDbQuery.GetProfileItemViaRemarks(subItem.PrevProfile);
             if (prevNode == null)
             {
                 result.Warnings.Add(string.Format(ResUI.MsgSubscriptionPrevProfileNotFound, subItem.PrevProfile));
@@ -296,7 +296,7 @@ public class CoreConfigContextBuilder
         }
         if (!subItem.NextProfile.IsNullOrEmpty())
         {
-            nextNode = await AppManager.Instance.GetProfileItemViaRemarks(subItem.NextProfile);
+            nextNode = await ConfigDbQuery.GetProfileItemViaRemarks(subItem.NextProfile);
             if (nextNode == null)
             {
                 result.Warnings.Add(string.Format(ResUI.MsgSubscriptionNextProfileNotFound, subItem.NextProfile));

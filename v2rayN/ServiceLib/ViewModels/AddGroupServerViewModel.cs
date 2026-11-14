@@ -97,14 +97,14 @@ public partial class AddGroupServerViewModel : MyReactiveObject, ICloseable
             _ => ResUI.TbLeastPing,
         };
 
-        var subs = await AppManager.Instance.SubItems();
+        var subs = await ConfigDbQuery.SubItems();
         subs.Add(new SubItem());
         SubItems.AddRange(subs);
         SelectedSubItem = SubItems.FirstOrDefault(s => s.Id == protocolExtra?.SubChildItems);
         Filter = protocolExtra?.Filter;
 
         var childIndexIds = Utils.String2List(protocolExtra?.ChildItems) ?? [];
-        var childItemList = await AppManager.Instance.GetProfileItemsOrderedByIndexIds(childIndexIds);
+        var childItemList = await ConfigDbQuery.GetProfileItemsOrderedByIndexIds(childIndexIds);
         ChildItemsObs.AddRange(childItemList);
     }
 

@@ -758,7 +758,7 @@ public sealed partial class V2rayRuntime
         {
             if (originalCoreWasRunning)
             {
-                runningProfile = await AppManager.Instance.GetProfileItem(CurrentCoreRuntime.ProfileId ?? string.Empty);
+                runningProfile = await ConfigDbQuery.GetProfileItem(CurrentCoreRuntime.ProfileId ?? string.Empty);
                 if (runningProfile is null)
                 {
                     return new CoreUpdateApplyResult(false, false, true, "The active profile could not be loaded; the running Core was left unchanged.");
@@ -1213,7 +1213,7 @@ public sealed partial class V2rayRuntime
         var geoipRules = new List<string>();
         var geositeRules = new List<string>();
 
-        var routingItems = await AppManager.Instance.RoutingItems();
+        var routingItems = await ConfigDbQuery.RoutingItems();
         foreach (var routing in routingItems ?? [])
         {
             var rules = JsonUtils.Deserialize<List<RulesItem>>(routing.RuleSet);
@@ -1224,7 +1224,7 @@ public sealed partial class V2rayRuntime
             }
         }
 
-        var dnsItem = await AppManager.Instance.GetDNSItem(ECoreType.sing_box);
+        var dnsItem = await ConfigDbQuery.GetDNSItem(ECoreType.sing_box);
         if (dnsItem is not null)
         {
             ExtractDnsRuleSets(dnsItem.NormalDNS, geoipRules, geositeRules);

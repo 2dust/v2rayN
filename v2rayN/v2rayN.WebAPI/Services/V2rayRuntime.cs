@@ -250,7 +250,7 @@ public sealed partial class V2rayRuntime(
         await ConfigDbManager.InitBuiltinDNS(Config);
         await BuiltinDnsProfileBootstrap.EnsureAsync(
             Config,
-            async () => await AppManager.Instance.DNSItems() ?? [],
+            async () => await ConfigDbQuery.DNSItems() ?? [],
             ConfigDbManager.SaveDNSItems);
         await ConfigDbManager.InitBuiltinFullConfigTemplate(Config);
         // Keep startup aligned with Desktop's StatusBarViewModel. In particular,
@@ -258,7 +258,7 @@ public sealed partial class V2rayRuntime(
         // run even when a restored Desktop database already has routing rows.
         await ConfigDbManager.InitBuiltinRouting(Config);
         _ = await ConfigDbManager.GetDefaultRouting(Config);
-        var restoredSubscriptions = await AppManager.Instance.SubItems() ?? [];
+        var restoredSubscriptions = await ConfigDbQuery.SubItems() ?? [];
         var normalizedSubIndexId = NormalizeSelectedSubscriptionId(
             Config.SubIndexId,
             restoredSubscriptions.Select(item => item.Id).ToArray());
@@ -303,7 +303,7 @@ public sealed partial class V2rayRuntime(
                     startupRuntimeIntent,
                     selectedProfileId,
                     defaultProfile?.IndexId,
-                    async (profileId, _) => await AppManager.Instance.GetProfileItem(profileId) is not null,
+                    async (profileId, _) => await ConfigDbQuery.GetProfileItem(profileId) is not null,
                     StartCoreAsync,
                     message => AddLog(restoreState is not null ? "restore" : "update", message),
                     cancellationToken);
@@ -425,7 +425,7 @@ public sealed partial class V2rayRuntime(
 
     public async Task<IReadOnlyList<SubscriptionView>> GetSubscriptionsAsync()
     {
-        var items = await AppManager.Instance.SubItems() ?? [];
+        var items = await ConfigDbQuery.SubItems() ?? [];
         return items.Select(ToSubscriptionView).ToArray();
     }
 
@@ -443,7 +443,7 @@ public sealed partial class V2rayRuntime(
             return new(false, "subscription_save_failed", ApiMessageKeys.SubscriptionSaveFailed, null);
         }
 
-        var saved = await AppManager.Instance.GetSubItem(item.Id);
+        var saved = await ConfigDbQuery.GetSubItem(item.Id);
         return saved is null
             ? new(false, "subscription_save_failed", ApiMessageKeys.SubscriptionSaveFailed, null)
             : new(true, "ok", ApiMessageKeys.SubscriptionAdded, ToSubscriptionView(saved));
@@ -458,7 +458,7 @@ public sealed partial class V2rayRuntime(
 
         return await _mutations.RunAsync(async () =>
         {
-            var existing = await AppManager.Instance.GetSubItem(id);
+            var existing = await ConfigDbQuery.GetSubItem(id);
             if (existing is null)
             {
                 return new SubscriptionMutationResult(false, "subscription_not_found", ApiMessageKeys.SubscriptionNotFound, null);
@@ -472,7 +472,7 @@ public sealed partial class V2rayRuntime(
                 return new SubscriptionMutationResult(false, "subscription_save_failed", ApiMessageKeys.SubscriptionSaveFailed, null);
             }
 
-            var saved = await AppManager.Instance.GetSubItem(id);
+            var saved = await ConfigDbQuery.GetSubItem(id);
             return saved is not null
                 ? new SubscriptionMutationResult(true, "ok", ApiMessageKeys.SubscriptionSaved, ToSubscriptionView(saved))
                 : new SubscriptionMutationResult(false, "subscription_save_failed", ApiMessageKeys.SubscriptionSaveFailed, null);
@@ -481,13 +481,13 @@ public sealed partial class V2rayRuntime(
 
     public async Task<OperationView> DeleteSubscriptionAsync(string id)
     {
-        var subscription = await AppManager.Instance.GetSubItem(id);
+        var subscription = await ConfigDbQuery.GetSubItem(id);
         if (subscription is null)
         {
             return OperationView.Fail("subscription_not_found", ApiMessageKeys.SubscriptionNotFound);
         }
 
-        var selectedProfile = await AppManager.Instance.GetProfileItem(Config.IndexId);
+        var selectedProfile = await ConfigDbQuery.GetProfileItem(Config.IndexId);
         var removesCurrentProfile = selectedProfile?.Subid == id;
         if (removesCurrentProfile)
         {
@@ -582,10 +582,10 @@ public sealed partial class V2rayRuntime(
     public async Task<IReadOnlyList<ProfileView>> GetProfilesAsync(string? subscriptionId, string? filter)
     {
         var groupId = subscriptionId ?? Config.SubIndexId ?? string.Empty;
-        var profiles = await AppManager.Instance.ProfileItems(groupId) ?? [];
-        var profileModels = await AppManager.Instance.ProfileModels(groupId, string.Empty) ?? [];
+        var profiles = await ConfigDbQuery.ProfileItems(groupId) ?? [];
+        var profileModels = await ConfigDbQuery.ProfileModels(groupId, string.Empty) ?? [];
         var modelMap = profileModels.ToDictionary(item => item.IndexId);
-        var subscriptions = (await AppManager.Instance.SubItems() ?? []).ToDictionary(item => item.Id, item => item.Remarks);
+        var subscriptions = (await ConfigDbQuery.SubItems() ?? []).ToDictionary(item => item.Id, item => item.Remarks);
         var extensions = await ProfileExManager.Instance.GetProfileExs();
         var extensionMap = extensions.ToDictionary(item => item.IndexId);
         var statistics = (Config.GuiItem.EnableStatistics ? StatisticsManager.Instance.ServerStat : null) ?? [];
@@ -630,13 +630,13 @@ public sealed partial class V2rayRuntime(
     }
 
     public async Task<ProfileItem?> GetProfileDetailsAsync(string profileId) =>
-        await AppManager.Instance.GetProfileItem(profileId);
+        await ConfigDbQuery.GetProfileItem(profileId);
 
     public async Task<StatusView> GetStatusAsync()
     {
-        var selectedProfile = await AppManager.Instance.GetProfileItem(Config.IndexId);
-        var profileItems = await AppManager.Instance.ProfileItems(string.Empty) ?? [];
-        var subscriptions = await AppManager.Instance.SubItems() ?? [];
+        var selectedProfile = await ConfigDbQuery.GetProfileItem(Config.IndexId);
+        var profileItems = await ConfigDbQuery.ProfileItems(string.Empty) ?? [];
+        var subscriptions = await ConfigDbQuery.SubItems() ?? [];
         var snapshot = CurrentCoreRuntime;
         var processIds = GetActiveCoreProcessIds();
         var listenerDefinitions = snapshot.ProxyPort.HasValue && snapshot.State != CoreRuntimeState.Stopped
@@ -674,7 +674,7 @@ public sealed partial class V2rayRuntime(
 
         var runningProfile = string.IsNullOrEmpty(snapshot.ProfileId)
             ? null
-            : await AppManager.Instance.GetProfileItem(snapshot.ProfileId);
+            : await ConfigDbQuery.GetProfileItem(snapshot.ProfileId);
         var configuredProxyPort = Config.Inbound.FirstOrDefault()?.LocalPort;
         return new StatusView(
             coreRunning,
@@ -715,7 +715,7 @@ public sealed partial class V2rayRuntime(
 
     public async Task<OperationView> SelectProfileAsync(string profileId, CancellationToken cancellationToken)
     {
-        var profile = await AppManager.Instance.GetProfileItem(profileId);
+        var profile = await ConfigDbQuery.GetProfileItem(profileId);
         if (profile is null)
         {
             return OperationView.Fail("profile_not_found", ApiMessageKeys.ProfileNotFound);
@@ -729,7 +729,7 @@ public sealed partial class V2rayRuntime(
         ProfileItem? profile = null;
         if (!string.IsNullOrWhiteSpace(profileId))
         {
-            profile = await AppManager.Instance.GetProfileItem(profileId);
+            profile = await ConfigDbQuery.GetProfileItem(profileId);
             if (profile is null)
             {
                 return OperationView.Fail("profile_not_found", ApiMessageKeys.ProfileNotFound);
@@ -1055,7 +1055,7 @@ public sealed partial class V2rayRuntime(
                 new { runtimeState = previous.State.ToString(), processIds = GetActiveCoreProcessIds() });
         }
 
-        var profile = await AppManager.Instance.GetProfileItem(previous.ProfileId);
+        var profile = await ConfigDbQuery.GetProfileItem(previous.ProfileId);
         if (profile is null)
         {
             return OperationView.Fail("profile_not_found", ApiMessageKeys.ProfileNotFound,
@@ -1105,7 +1105,7 @@ public sealed partial class V2rayRuntime(
 
     public async Task<OperationView> StartLatencyTestAsync(string profileId)
     {
-        var profile = await AppManager.Instance.GetProfileItem(profileId);
+        var profile = await ConfigDbQuery.GetProfileItem(profileId);
         if (profile is null || profile.IsComplex() || profile.Port <= 0)
         {
             return OperationView.Fail("speedtest_invalid_profile", ApiMessageKeys.SpeedTestInvalidProfile);
@@ -1174,7 +1174,7 @@ public sealed partial class V2rayRuntime(
         var updateTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         if (subscriptionId.Length > 0)
         {
-            var item = await AppManager.Instance.GetSubItem(subscriptionId);
+            var item = await ConfigDbQuery.GetSubItem(subscriptionId);
             if (item is not null)
             {
                 item.UpdateTime = updateTime;
@@ -1186,7 +1186,7 @@ public sealed partial class V2rayRuntime(
             return;
         }
 
-        foreach (var item in await AppManager.Instance.SubItems() ?? [])
+        foreach (var item in await ConfigDbQuery.SubItems() ?? [])
         {
             if (item.Enabled)
             {

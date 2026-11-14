@@ -87,7 +87,7 @@ public partial class RoutingSettingViewModel : MyReactiveObject
     {
         var models = new List<RoutingItemModel>();
 
-        var routings = await AppManager.Instance.RoutingItems();
+        var routings = await ConfigDbQuery.RoutingItems();
         foreach (var item in routings)
         {
             var it = new RoutingItemModel()
@@ -127,7 +127,7 @@ public partial class RoutingSettingViewModel : MyReactiveObject
         }
         else
         {
-            item = await AppManager.Instance.GetRoutingItem(SelectedSource?.Id);
+            item = await ConfigDbQuery.GetRoutingItem(SelectedSource?.Id);
             if (item is null)
             {
                 return;
@@ -154,7 +154,7 @@ public partial class RoutingSettingViewModel : MyReactiveObject
         }
         foreach (var it in SelectedSources ?? [SelectedSource])
         {
-            var item = await AppManager.Instance.GetRoutingItem(it?.Id);
+            var item = await ConfigDbQuery.GetRoutingItem(it?.Id);
             if (item != null)
             {
                 await ConfigDbManager.RemoveRoutingItem(item);
@@ -167,7 +167,7 @@ public partial class RoutingSettingViewModel : MyReactiveObject
 
     public async Task RoutingAdvancedSetDefault()
     {
-        var item = await AppManager.Instance.GetRoutingItem(SelectedSource?.Id);
+        var item = await ConfigDbQuery.GetRoutingItem(SelectedSource?.Id);
         if (item is null)
         {
             NoticeManager.Instance.Enqueue(ResUI.PleaseSelectRules);

@@ -29,7 +29,7 @@ public class SubscriptionCreationTests
 
             if (result.Data is not null)
             {
-                saved = await manager.GetSubItem(result.Data.Id);
+                saved = await ConfigDbQuery.GetSubItem(result.Data.Id);
             }
 
             await result.Success.Should().BeTrue();
@@ -48,7 +48,7 @@ public class SubscriptionCreationTests
             await updateResult.Success.Should().BeTrue();
             await updateResult.Data!.Url.Should().BeEqualTo(string.Empty);
 
-            saved = await manager.GetSubItem(result.Data.Id);
+            saved = await ConfigDbQuery.GetSubItem(result.Data.Id);
             await (saved is not null).Should().BeTrue();
             await saved!.Remarks.Should().BeEqualTo("自建（已编辑）");
             await saved.Url.Should().BeEqualTo(string.Empty);

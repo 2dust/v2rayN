@@ -134,7 +134,7 @@ public class CoreManager
 
     public async Task<ProcessService?> LoadCoreConfigSpeedtest(ServerTestItem testItem)
     {
-        var node = await AppManager.Instance.GetProfileItem(testItem.IndexId);
+        var node = await ConfigDbQuery.GetProfileItem(testItem.IndexId);
         if (node is null)
         {
             return null;

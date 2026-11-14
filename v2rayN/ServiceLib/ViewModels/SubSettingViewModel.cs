@@ -57,7 +57,7 @@ public partial class SubSettingViewModel : MyReactiveObject
 
     public async Task RefreshSubItems()
     {
-        SubItems.ReplaceRange(await AppManager.Instance.SubItems());
+        SubItems.ReplaceRange(await ConfigDbQuery.SubItems());
     }
 
     public async Task EditSubAsync(bool blNew)
@@ -69,7 +69,7 @@ public partial class SubSettingViewModel : MyReactiveObject
         }
         else
         {
-            item = await AppManager.Instance.GetSubItem(SelectedSource?.Id);
+            item = await ConfigDbQuery.GetSubItem(SelectedSource?.Id);
             if (item is null)
             {
                 return;
