@@ -3,7 +3,7 @@ using System.Net;
 using ServiceLib;
 using ServiceLib.Common;
 using ServiceLib.Enums;
-using ServiceLib.Handler;
+
 using ServiceLib.Models.Configs;
 using ServiceLib.Models.Dto;
 using ServiceLib.Models.Entities;
@@ -112,7 +112,7 @@ public class RegionalPresetStagingTests
         await applyCalled.Should().BeTrue();
         await capturedStage.Should().NotBeNull();
         await capturedStage!.DnsItems[0].NormalDNS.Should().BeEqualTo("existing-xray-data");
-        await capturedStage.SimpleDnsItem.RemoteDNS.Should().BeEqualTo(ConfigHandler.InitBuiltinSimpleDNS().RemoteDNS);
+        await capturedStage.SimpleDnsItem.RemoteDNS.Should().BeEqualTo(ConfigDbManager.InitBuiltinSimpleDNS().RemoteDNS);
         await capturedStage.Routing.IsBuiltinFallback.Should().BeTrue();
         await capturedStage.Routing.Items.Count.Should().BeEqualTo(3);
         await config.ConstItem.GeoSourceUrl.Should().BeEqualTo("original-geo-source");
@@ -566,7 +566,7 @@ public class RegionalPresetStagingTests
 
         var staged = await stager.StageAsync(EPresetType.Russia, CreateDnsRows(), [], null, CancellationToken.None);
 
-        var builtin = ConfigHandler.InitBuiltinSimpleDNS();
+        var builtin = ConfigDbManager.InitBuiltinSimpleDNS();
         await staged.SimpleDnsItem.RemoteDNS.Should().BeEqualTo(builtin.RemoteDNS);
         await staged.SimpleDnsItem.DirectDNS.Should().BeEqualTo(builtin.DirectDNS);
         await staged.DnsItems.All(item => item.Enabled).Should().BeTrue();
@@ -671,7 +671,7 @@ public class RegionalPresetStagingTests
         var staged = await stager.StageAsync(EPresetType.Russia, CreateDnsRows(), [], null, CancellationToken.None);
 
         await staged.DnsItems[0].NormalDNS.Should().BeEqualTo("existing-xray-data");
-        await staged.SimpleDnsItem.RemoteDNS.Should().BeEqualTo(ConfigHandler.InitBuiltinSimpleDNS().RemoteDNS);
+        await staged.SimpleDnsItem.RemoteDNS.Should().BeEqualTo(ConfigDbManager.InitBuiltinSimpleDNS().RemoteDNS);
         await staged.Routing.IsBuiltinFallback.Should().BeTrue();
         await staged.Routing.Items.Count.Should().BeEqualTo(3);
     }

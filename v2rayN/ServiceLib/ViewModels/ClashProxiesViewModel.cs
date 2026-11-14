@@ -7,7 +7,7 @@ public partial class ClashProxiesViewModel : MyReactiveObject
 
     public ClashProxiesViewModel()
     {
-        _config = AppManager.Instance.Config;
+        _config = ConfigTextManager.Instance.Config;
 
         ProxiesReloadCmd = ReactiveCommand.CreateFromTask(async () =>
         {

@@ -1,6 +1,7 @@
 using System.Drawing;
 using System.Windows.Media.Imaging;
 
+
 namespace v2rayN.Manager;
 
 public sealed class WindowsManager
@@ -54,7 +55,7 @@ public sealed class WindowsManager
     {
         try
         {
-            var item = await ConfigHandler.GetDefaultRouting(config);
+            var item = await ConfigDbManager.GetDefaultRouting(config);
             if (item == null || item.CustomIcon.IsNullOrEmpty() || !File.Exists(item.CustomIcon))
             {
                 return null;

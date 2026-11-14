@@ -1,6 +1,4 @@
 using ServiceLib.Common;
-using ServiceLib.Handler;
-using ServiceLib.Manager;
 using ServiceLib.Models.Entities;
 using ServiceLib.Services;
 using v2rayN.WebAPI.Contracts;
@@ -65,7 +63,7 @@ public sealed partial class V2rayRuntime
                     await using var operation = await _operations.EnterOperationAsync(token);
                     await _mutations.RunAsync(async () =>
                     {
-                        await EnsureConfigSaveSucceededAsync(() => ConfigHandler.SaveConfig(Config));
+                        await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
                         await ProfileExManager.Instance.SaveTo();
                     }, operation.Token);
                 }, cancellationToken);

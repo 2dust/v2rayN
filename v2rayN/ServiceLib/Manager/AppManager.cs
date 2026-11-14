@@ -9,7 +9,6 @@ public sealed class AppManager
     private int? _statePort;
     private int? _statePort2;
     public static AppManager Instance => _instance.Value;
-    public Config Config => _config;
     public IWindowDialog WindowDialog { get; set; } = null!;
 
     public int StatePort
@@ -68,7 +67,7 @@ public sealed class AppManager
         }
 
         Logging.Setup();
-        var config = ConfigHandler.LoadConfig();
+        var config = ConfigTextManager.Instance.Init();
         if (config == null)
         {
             return false;
@@ -129,7 +128,7 @@ public sealed class AppManager
             AppEvents.AppExitRequested.Publish();
             await Task.Delay(50); //Wait for AppExitRequested to be processed
 
-            await ConfigHandler.SaveConfig(_config);
+            await ConfigTextManager.Instance.SaveConfig();
             await ProfileExManager.Instance.SaveTo();
             await StatisticsManager.Instance.SaveTo();
             await CoreManager.Instance.CoreStop();

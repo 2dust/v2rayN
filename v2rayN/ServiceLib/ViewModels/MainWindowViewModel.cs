@@ -90,7 +90,7 @@ public partial class MainWindowViewModel : MyReactiveObject
 
     public MainWindowViewModel()
     {
-        _config = AppManager.Instance.Config;
+        _config = ConfigTextManager.Instance.Config;
         BlIsWindows = Utils.IsWindows();
         MainGirdOrientation = _config.UiItem.MainGirdOrientation;
 
@@ -331,8 +331,8 @@ public partial class MainWindowViewModel : MyReactiveObject
         }
 
         //await ConfigHandler.InitBuiltinRouting(_config);
-        await ConfigHandler.InitBuiltinDNS(_config);
-        await ConfigHandler.InitBuiltinFullConfigTemplate(_config);
+        await ConfigDbManager.InitBuiltinDNS(_config);
+        await ConfigDbManager.InitBuiltinFullConfigTemplate(_config);
         await ProfileExManager.Instance.Init();
         await CoreManager.Instance.Init(_config, UpdateHandler);
         await CertPemManager.Instance.Init(_config);
@@ -499,7 +499,7 @@ public partial class MainWindowViewModel : MyReactiveObject
             }
             stringData = result;
         }
-        var ret = await ConfigHandler.AddBatchServers(_config, stringData, _config.SubIndexId, false);
+        var ret = await ConfigDbManager.AddBatchServers(_config, stringData, _config.SubIndexId, false);
         if (ret > 0)
         {
             await RefreshSubscriptions();
@@ -549,7 +549,7 @@ public partial class MainWindowViewModel : MyReactiveObject
         }
         else
         {
-            var ret = await ConfigHandler.AddBatchServers(_config, result, _config.SubIndexId, false);
+            var ret = await ConfigDbManager.AddBatchServers(_config, result, _config.SubIndexId, false);
             if (ret > 0)
             {
                 await RefreshSubscriptions();
@@ -610,7 +610,7 @@ public partial class MainWindowViewModel : MyReactiveObject
         var ret = await AppManager.Instance.WindowDialog.ShowDialogAsync(routingSettingViewModel);
         if (ret == true)
         {
-            await ConfigHandler.InitBuiltinRouting(_config);
+            await ConfigDbManager.InitBuiltinRouting(_config);
             RxSchedulers.MainThreadScheduler.Schedule(async () =>
             {
                 await StatusBarViewModel.RefreshRoutingsMenu();
@@ -696,7 +696,7 @@ public partial class MainWindowViewModel : MyReactiveObject
                     TabMainSelectedIndex = 0;
                 }
             });
-            var profileItem = await ConfigHandler.GetDefaultServer(_config);
+            var profileItem = await ConfigDbManager.GetDefaultServer(_config);
             if (profileItem == null)
             {
                 NoticeManager.Instance.Enqueue(ResUI.CheckServerSettings);
@@ -788,14 +788,14 @@ public partial class MainWindowViewModel : MyReactiveObject
 
     public async Task ApplyRegionalPreset(EPresetType type)
     {
-        await ConfigHandler.ApplyRegionalPreset(_config, type);
-        await ConfigHandler.InitRouting(_config);
+        await ConfigDbManager.ApplyRegionalPreset(_config, type);
+        await ConfigDbManager.InitRouting(_config);
         RxSchedulers.MainThreadScheduler.Schedule(async () =>
         {
             await StatusBarViewModel.RefreshRoutingsMenu();
         });
 
-        await ConfigHandler.SaveConfig(_config);
+        await ConfigTextManager.Instance.SaveConfig();
         using var downloadService = await DownloadService.CreateDownloadServiceWithCheck();
         await new UpdateService(downloadService, _config, UpdateTaskHandler).UpdateGeoFileAll();
         await Reload();

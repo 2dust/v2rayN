@@ -3,12 +3,11 @@ using System.Text.Json;
 using SQLite;
 using ServiceLib;
 using ServiceLib.Common;
-using ServiceLib.Handler;
 using ServiceLib.Helper;
-using ServiceLib.Manager;
 using ServiceLib.Models.Configs;
 using v2rayN.WebAPI.Contracts;
 using v2rayN.WebAPI.Launcher;
+
 
 namespace v2rayN.WebAPI.Services;
 
@@ -42,7 +41,7 @@ public sealed partial class V2rayRuntime
                 Config.WebDavItem.Password = input.Password;
             }
             Config.WebDavItem.DirName = input.DirName?.Trim();
-            await EnsureConfigSaveSucceededAsync(() => ConfigHandler.SaveConfig(Config));
+            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
         });
         return OperationView.Ok(ApiMessageKeys.WebDavSettingsSaved);
     }
@@ -63,7 +62,7 @@ public sealed partial class V2rayRuntime
     {
         await _mutations.RunAsync(async () =>
         {
-            await EnsureConfigSaveSucceededAsync(() => ConfigHandler.SaveConfig(Config));
+            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
             await ProfileExManager.Instance.SaveTo();
             await StatisticsManager.Instance.SaveTo();
         });
@@ -217,7 +216,7 @@ public sealed partial class V2rayRuntime
                 await ProfileExManager.Instance.SaveTo();
                 await StatisticsManager.Instance.SaveTo();
                 StatisticsManager.Instance.Close();
-                await _mutations.RunAsync(() => EnsureConfigSaveSucceededAsync(() => ConfigHandler.SaveConfig(Config)), cancellationToken);
+                await _mutations.RunAsync(() => EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig()), cancellationToken);
                 await SQLiteHelper.Instance.DisposeDbConnectionAsync();
                 databaseClosed = true;
 

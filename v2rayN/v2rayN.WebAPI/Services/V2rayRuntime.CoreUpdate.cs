@@ -4,8 +4,8 @@ using System.Text.RegularExpressions;
 using ServiceLib;
 using ServiceLib.Common;
 using ServiceLib.Enums;
-using ServiceLib.Handler;
 using ServiceLib.Manager;
+
 using ServiceLib.Models.CoreConfigs;
 using ServiceLib.Models.Dto;
 using ServiceLib.Models.Entities;
@@ -120,7 +120,7 @@ public sealed partial class V2rayRuntime
                 .Distinct(StringComparer.Ordinal)
                 .ToList();
             Config.CheckUpdateItem.UpdateViaProxy = input.UseProxy;
-            await EnsureConfigSaveSucceededAsync(() => ConfigHandler.SaveConfig(Config));
+            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
         });
 
         return OperationView.Ok(ApiMessageKeys.CoreUpdateSettingsSaved);

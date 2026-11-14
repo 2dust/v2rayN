@@ -2,7 +2,7 @@ using System.Net;
 using ServiceLib;
 using ServiceLib.Common;
 using ServiceLib.Enums;
-using ServiceLib.Handler;
+
 using ServiceLib.Models.Configs;
 using ServiceLib.Models.Dto;
 using ServiceLib.Models.Entities;
@@ -49,7 +49,7 @@ internal sealed class RegionalPresetStager(
                 string.Empty,
                 string.Empty,
                 string.Empty,
-                ConfigHandler.InitBuiltinSimpleDNS(),
+                ConfigDbManager.InitBuiltinSimpleDNS(),
                 [CreateDefaultDns(ECoreType.Xray, "V2ray"), CreateDefaultDns(ECoreType.sing_box, "sing-box")],
                 new(null, []));
         }
@@ -143,7 +143,7 @@ internal sealed class RegionalPresetStager(
         var content = await TryDownloadAsync(url, proxy, cancellationToken);
         var template = content is null ? null : JsonUtils.Deserialize<SimpleDNSItem>(content);
         return template is null
-            ? (ConfigHandler.InitBuiltinSimpleDNS(), true)
+            ? (ConfigDbManager.InitBuiltinSimpleDNS(), true)
             : (template, false);
     }
 

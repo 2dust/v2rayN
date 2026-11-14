@@ -5,6 +5,7 @@ using ServiceLib.Handler;
 using ServiceLib.Handler.Builder;
 using ServiceLib.Handler.Fmt;
 using ServiceLib.Manager;
+
 using ServiceLib.Models.Dto;
 using ServiceLib.Models.Entities;
 using ServiceLib.Services;
@@ -46,7 +47,7 @@ public sealed partial class V2rayRuntime
         await _mutations.RunAsync(async () =>
         {
             Config.SubIndexId = subscriptionId ?? string.Empty;
-            await EnsureConfigSaveSucceededAsync(() => ConfigHandler.SaveConfig(Config));
+            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
         });
         _events.Publish("profiles-changed", new { subscriptionId = Config.SubIndexId });
         return OperationView.Ok(ApiMessageKeys.CommonCompleted, new { subscriptionId = Config.SubIndexId });
@@ -67,10 +68,10 @@ public sealed partial class V2rayRuntime
 
         var count = await _mutations.RunAsync(async () =>
         {
-            var imported = await ConfigHandler.AddBatchServers(Config, request.Content, groupId, request.IsSubscription);
+            var imported = await ConfigDbManager.AddBatchServers(Config, request.Content, groupId, request.IsSubscription);
             if (imported > 0)
             {
-                await EnsureConfigSaveSucceededAsync(() => ConfigHandler.SaveConfig(Config));
+                await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
             }
             return imported;
         });
@@ -167,13 +168,13 @@ public sealed partial class V2rayRuntime
         try
         {
             result = await _mutations.RunAsync(() => profile.ConfigType.IsGroupType()
-                ? ConfigHandler.AddServerCommon(Config, profile)
+                ? ConfigDbManager.AddServerCommon(Config, profile)
                 : profile.ConfigType switch
                 {
-                    EConfigType.Custom when isNew => ConfigHandler.AddCustomServer(Config, profile, blDelete: false),
-                    EConfigType.Outbound when isNew => ConfigHandler.AddCustomOutboundServer(Config, profile, blDelete: false, toFile: true),
-                    EConfigType.Custom or EConfigType.Outbound => ConfigHandler.EditCustomServer(Config, profile),
-                    _ => ConfigHandler.AddServer(Config, profile),
+                    EConfigType.Custom when isNew => ConfigDbManager.AddCustomServer(Config, profile, blDelete: false),
+                    EConfigType.Outbound when isNew => ConfigDbManager.AddCustomOutboundServer(Config, profile, blDelete: false, toFile: true),
+                    EConfigType.Custom or EConfigType.Outbound => ConfigDbManager.EditCustomServer(Config, profile),
+                    _ => ConfigDbManager.AddServer(Config, profile),
                 });
         }
         catch (Exception exception)
@@ -270,14 +271,14 @@ public sealed partial class V2rayRuntime
 
         await _mutations.RunAsync(async () =>
         {
-            if (await ConfigHandler.RemoveServers(Config, selected) != 0)
+            if (await ConfigDbManager.RemoveServers(Config, selected) != 0)
             {
                 throw new IOException("ServiceLib could not remove the selected profiles.");
             }
             if (removesCurrent)
             {
-                _ = await ConfigHandler.GetDefaultServer(Config);
-                await EnsureConfigSaveSucceededAsync(() => ConfigHandler.SaveConfig(Config));
+                _ = await ConfigDbManager.GetDefaultServer(Config);
+                await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
             }
         });
 
@@ -304,7 +305,7 @@ public sealed partial class V2rayRuntime
             return OperationView.Fail("profile_not_found", ApiMessageKeys.ProfileNotFound);
         }
 
-        if (await _mutations.RunAsync(() => ConfigHandler.CopyServer(Config, items)) != 0)
+        if (await _mutations.RunAsync(() => ConfigDbManager.CopyServer(Config, items)) != 0)
         {
             return OperationView.Fail("profile_copy_failed", ApiMessageKeys.CommonInvalidInput);
         }
@@ -326,7 +327,7 @@ public sealed partial class V2rayRuntime
             return OperationView.Fail("profile_not_found", ApiMessageKeys.ProfileNotFound);
         }
 
-        if (await _mutations.RunAsync(() => ConfigHandler.MoveToGroup(Config, items, request.SubscriptionId ?? string.Empty)) != 0)
+        if (await _mutations.RunAsync(() => ConfigDbManager.MoveToGroup(Config, items, request.SubscriptionId ?? string.Empty)) != 0)
         {
             return OperationView.Fail("profile_move_failed", ApiMessageKeys.CommonInvalidInput);
         }
@@ -345,7 +346,7 @@ public sealed partial class V2rayRuntime
             return OperationView.Fail("profile_not_in_group", ApiMessageKeys.ProfileNotInGroup);
         }
 
-        var result = await _mutations.RunAsync(() => ConfigHandler.MoveServer(Config, orderedIds, index, request.Direction, request.Position));
+        var result = await _mutations.RunAsync(() => ConfigDbManager.MoveServer(Config, orderedIds, index, request.Direction, request.Position));
         _events.Publish("profiles-changed", new { subscriptionId = groupId });
         return result == 0
             ? OperationView.Ok(ApiMessageKeys.ProfileOrderSaved)
@@ -360,7 +361,7 @@ public sealed partial class V2rayRuntime
             return OperationView.Fail("profile_sort_column_invalid", ApiMessageKeys.CommonInvalidInput);
         }
 
-        var result = await _mutations.RunAsync(() => ConfigHandler.SortServers(Config, groupId, request.Column, request.Ascending));
+        var result = await _mutations.RunAsync(() => ConfigDbManager.SortServers(Config, groupId, request.Column, request.Ascending));
         _events.Publish("profiles-changed", new { subscriptionId = groupId });
         return result == 0
             ? OperationView.Ok(ApiMessageKeys.ProfileOrderSaved)
@@ -369,14 +370,14 @@ public sealed partial class V2rayRuntime
 
     public async Task<OperationView> RemoveDuplicateProfilesAsync(string? subscriptionId)
     {
-        var result = await _mutations.RunAsync(() => ConfigHandler.DedupServerList(Config, subscriptionId ?? Config.SubIndexId ?? string.Empty));
+        var result = await _mutations.RunAsync(() => ConfigDbManager.DedupServerList(Config, subscriptionId ?? Config.SubIndexId ?? string.Empty));
         _events.Publish("profiles-changed", new { subscriptionId = subscriptionId ?? Config.SubIndexId });
         return OperationView.Ok(ApiMessageKeys.ProfileDeduplicated, new { removed = result.Item1 - result.Item2 });
     }
 
     public async Task<OperationView> RemoveInvalidProfilesAsync(string? subscriptionId)
     {
-        var count = await _mutations.RunAsync(() => ConfigHandler.RemoveInvalidServerResult(Config, subscriptionId ?? Config.SubIndexId ?? string.Empty));
+        var count = await _mutations.RunAsync(() => ConfigDbManager.RemoveInvalidServerResult(Config, subscriptionId ?? Config.SubIndexId ?? string.Empty));
         _events.Publish("profiles-changed", new { subscriptionId = subscriptionId ?? Config.SubIndexId });
         return count < 0
             ? OperationView.Ok(ApiMessageKeys.CommonCompleted, new { removed = 0 })
@@ -396,8 +397,8 @@ public sealed partial class V2rayRuntime
         }
 
         var result = await _mutations.RunAsync(() => byRegion
-            ? ConfigHandler.AddGroupRegionServer(Config, subscription)
-            : ConfigHandler.AddGroupAllServer(Config, subscription));
+            ? ConfigDbManager.AddGroupRegionServer(Config, subscription)
+            : ConfigDbManager.AddGroupAllServer(Config, subscription));
         if (!result.Success)
         {
             return OperationView.Fail("profile_group_empty", ApiMessageKeys.ProfileGrouped, result.Data);

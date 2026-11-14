@@ -2,7 +2,6 @@ using System.Reflection;
 using System.Text.Json.Nodes;
 using ServiceLib;
 using ServiceLib.Enums;
-using ServiceLib.Handler;
 using ServiceLib.Models;
 using ServiceLib.Models.Configs;
 using ServiceLib.Models.CoreConfigs;
@@ -229,7 +228,7 @@ public class SniffingSettingsIntegrationTests
         ],
         GlobalHotkeys = [],
         CoreTypeItem = [new CoreTypeItem { ConfigType = EConfigType.VMess, CoreType = ECoreType.Xray }],
-        SimpleDNSItem = ConfigHandler.InitBuiltinSimpleDNS(),
+        SimpleDNSItem = ConfigDbManager.InitBuiltinSimpleDNS(),
         HappyEyeballs4RayItem = new HappyEyeballs4RayItem(),
         IndexId = string.Empty,
         SubIndexId = string.Empty,

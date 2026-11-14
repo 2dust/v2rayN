@@ -43,7 +43,7 @@ public partial class AddGroupServerViewModel : MyReactiveObject, ICloseable
 
     public AddGroupServerViewModel(ProfileItem profileItem)
     {
-        _config = AppManager.Instance.Config;
+        _config = ConfigTextManager.Instance.Config;
 
         var canEditRemove = this.WhenAnyValue(
             x => x.SelectedChild,
@@ -245,7 +245,7 @@ public partial class AddGroupServerViewModel : MyReactiveObject, ICloseable
 
         SelectedSource.SetProtocolExtra(protocolExtra);
 
-        if (await ConfigHandler.AddServerCommon(_config, SelectedSource) == 0)
+        if (await ConfigDbManager.AddServerCommon(_config, SelectedSource) == 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
             RequestClose?.Invoke(this, EventArgs.Empty);

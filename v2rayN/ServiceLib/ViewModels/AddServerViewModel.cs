@@ -1,3 +1,5 @@
+
+
 namespace ServiceLib.ViewModels;
 
 public partial class AddServerViewModel : MyReactiveObject, ICloseable
@@ -317,7 +319,7 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
 
     public AddServerViewModel(ProfileItem profileItem)
     {
-        _config = AppManager.Instance.Config;
+        _config = ConfigTextManager.Instance.Config;
 
         FetchCertCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -592,7 +594,7 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
         });
         SelectedSource.SetTransportExtra(transport);
 
-        if (await ConfigHandler.AddServer(_config, SelectedSource) == 0)
+        if (await ConfigDbManager.AddServer(_config, SelectedSource) == 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
             RequestClose?.Invoke(this, EventArgs.Empty);

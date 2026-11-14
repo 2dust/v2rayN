@@ -9,7 +9,7 @@ public partial class ClashConnectionsView : ReactiveUserControl<ClashConnections
     {
         InitializeComponent();
 
-        _config = AppManager.Instance.Config;
+        _config = ConfigTextManager.Instance.Config;
 
         btnAutofitColumnWidth.Click += BtnAutofitColumnWidth_Click;
 
