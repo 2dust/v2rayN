@@ -15,9 +15,10 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
     {
         InitializeComponent();
 
-        _config = AppManager.Instance.Config;
+        _config = ConfigTextManager.Instance.Config;
 
         menuSelectAll.Click += menuSelectAll_Click;
+        btnAutofitColumnWidth.Click += BtnAutofitColumnWidth_Click;
         txtServerFilter.KeyDown += TxtServerFilter_KeyDown;
         lstProfiles.KeyDown += LstProfiles_KeyDown;
         lstProfiles.SelectionChanged += lstProfiles_SelectionChanged;
@@ -316,6 +317,12 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         }
     }
 
+
+    private void BtnAutofitColumnWidth_Click(object? sender, RoutedEventArgs e)
+    {
+        AutofitColumnWidth();
+    }
+
     private void AutofitColumnWidth()
     {
         try
@@ -471,7 +478,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         var visibleColumns = lstProfiles.Columns
             .Where(c => c.IsVisible)
             .OrderBy(c => c.DisplayIndex < 0 ? int.MaxValue : c.DisplayIndex)
-            
+
             .ToList();
         var targetIndex = visibleColumns.IndexOf(column);
         var targetCount = targetIndex >= 0 ? targetIndex + 1 : 0;

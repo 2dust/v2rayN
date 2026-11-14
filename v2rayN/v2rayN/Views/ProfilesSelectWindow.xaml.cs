@@ -39,7 +39,7 @@ public partial class ProfilesSelectWindow
             }).DisposeWith(disposables);
         });
 
-        WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
+        WindowsUtils.SetDarkBorder(this, ConfigTextManager.Instance.Config.UiItem.CurrentTheme);
     }
 
     private void AllowMultiSelect(bool allow)

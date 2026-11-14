@@ -69,7 +69,7 @@ internal class Program
 
         if (OperatingSystem.IsMacOS())
         {
-            var showInDock = Design.IsDesignMode || AppManager.Instance.Config.UiItem.MacOSShowInDock;
+            var showInDock = Design.IsDesignMode || ConfigTextManager.Instance.Config.UiItem.MacOSShowInDock;
             builder = builder.With(new MacOSPlatformOptions { ShowInDock = showInDock });
         }
 

@@ -1,3 +1,5 @@
+
+
 namespace ServiceLib.Manager;
 
 public class TaskManager
@@ -40,7 +42,7 @@ public class TaskManager
 
                 try
                 {
-                    await ConfigHandler.SaveConfig(_config);
+                    await ConfigTextManager.Instance.SaveConfig();
                     await ProfileExManager.Instance.SaveTo();
                 }
                 catch (Exception ex)
@@ -111,7 +113,7 @@ public class TaskManager
             });
             await handler.UpdateProcess(item.Id);
             item.UpdateTime = updateTime;
-            await ConfigHandler.AddSubItem(_config, item);
+            await ConfigDbManager.AddSubItem(_config, item);
             await Task.Delay(1000);
         }
     }

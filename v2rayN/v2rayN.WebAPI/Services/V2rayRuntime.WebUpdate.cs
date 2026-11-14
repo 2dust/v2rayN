@@ -1,10 +1,5 @@
 using System.Diagnostics;
-using System.Net;
-using System.Runtime.InteropServices;
 using System.Text.Json;
-using ServiceLib.Common;
-using ServiceLib.Manager;
-using ServiceLib.Models.Dto;
 using ServiceLib.Services;
 using v2rayN.WebAPI.Contracts;
 using v2rayN.WebAPI.Launcher;
@@ -78,7 +73,10 @@ public sealed partial class V2rayRuntime
                 ?? ApiMessageKeys.CoreUpdateUnsupported);
         }
         if (GetWebUpdateRuntimeInstallReason() is { } runtimeReason)
+        {
             return OperationView.Fail("web_update_runtime_unavailable", runtimeReason);
+        }
+
         if (Config.CheckUpdateItem.SelectedCoreTypes is { } selected
             && !selected.Contains(WebUpdateTarget, StringComparer.Ordinal))
         {
@@ -101,13 +99,25 @@ public sealed partial class V2rayRuntime
     internal CoreUpdateProgressView? GetWebUpdateProgress()
     {
         var inMemory = _updateProgress.GetValueOrDefault(WebUpdateTarget);
-        if (inMemory is { IsComplete: false } || inMemory?.Phase == "completed") return inMemory;
+        if (inMemory is { IsComplete: false } || inMemory?.Phase == "completed")
+        {
+            return inMemory;
+        }
+
         try
         {
             var path = Utils.GetTempPath(WebUpdateProgressFile);
-            if (!File.Exists(path)) return inMemory;
+            if (!File.Exists(path))
+            {
+                return inMemory;
+            }
+
             var persisted = JsonSerializer.Deserialize<WebUpdateProgressState>(File.ReadAllText(path), JsonOptions);
-            if (persisted is null) return inMemory;
+            if (persisted is null)
+            {
+                return inMemory;
+            }
+
             var progress = new CoreUpdateProgressView(
                 WebUpdateTarget,
                 persisted.Phase,
@@ -120,7 +130,11 @@ public sealed partial class V2rayRuntime
                 persisted.RollbackSucceeded);
             // In-flight persisted progress belongs to the detached helper. Caching
             // it as local progress would prevent subsequent reads of its result.
-            if (progress.IsComplete) _updateProgress[WebUpdateTarget] = progress;
+            if (progress.IsComplete)
+            {
+                _updateProgress[WebUpdateTarget] = progress;
+            }
+
             return progress;
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or JsonException)
@@ -167,7 +181,10 @@ public sealed partial class V2rayRuntime
         finally
         {
             CleanupWebUpdateStage(stage);
-            lock (_updateTaskGate) _webUpdateTask = null;
+            lock (_updateTaskGate)
+            {
+                _webUpdateTask = null;
+            }
         }
     }
 
@@ -184,25 +201,37 @@ public sealed partial class V2rayRuntime
                 WebReleaseChannel.BuildReleaseIndexUrl(repository),
                 cancellationToken);
             if (string.IsNullOrWhiteSpace(releaseJson) || releaseJson.Length > 8 * 1024 * 1024)
+            {
                 return WebUpdateReleaseCheck.Failed("The GitHub Web release index could not be downloaded or exceeded its size limit.");
+            }
 
             var candidates = ParseWebReleaseCandidates(releaseJson, allowPrerelease);
             if (candidates.Count == 0)
+            {
                 return WebUpdateReleaseCheck.Failed("No v2rayN releases with Web update packages were found for this channel.");
+            }
+
             candidates.Sort((left, right) => new ServiceLib.Models.Dto.SemanticVersion(right.Version)
                 .CompareTo(new ServiceLib.Models.Dto.SemanticVersion(left.Version)));
             var selected = candidates[0];
             if (!WebReleaseChannel.IsTrustedAssetUrl(selected.ManifestUrl, repository, selected.Tag, WebReleaseChannel.ManifestAssetName))
+            {
                 return WebUpdateReleaseCheck.Failed("The Web release manifest URL did not match the trusted release channel.");
+            }
 
             var manifestJson = await downloader.TryDownloadString(
                 selected.ManifestUrl,
                 cancellationToken);
             if (string.IsNullOrWhiteSpace(manifestJson) || manifestJson.Length > 1024 * 1024)
+            {
                 return WebUpdateReleaseCheck.Failed("The Web release manifest could not be downloaded or exceeded its size limit.");
+            }
+
             var manifest = WebUpdatePackageStager.ParseManifest(manifestJson);
             if (manifest.Version != selected.Version)
+            {
                 return WebUpdateReleaseCheck.Failed("The Web release manifest version does not match its release tag.");
+            }
 
             var currentRid = WebBuildIdentity.Current.Rid;
             var package = manifest.Packages.FirstOrDefault(item => item.Rid == currentRid);
@@ -252,16 +281,30 @@ public sealed partial class V2rayRuntime
     {
         using var document = JsonDocument.Parse(releaseJson);
         if (document.RootElement.ValueKind != JsonValueKind.Array)
+        {
             throw new InvalidDataException("The GitHub Web release index has an invalid format.");
+        }
 
         var candidates = new List<WebReleaseCandidate>();
         foreach (var release in document.RootElement.EnumerateArray())
         {
-            if (release.TryGetProperty("draft", out var draft) && draft.GetBoolean()) continue;
+            if (release.TryGetProperty("draft", out var draft) && draft.GetBoolean())
+            {
+                continue;
+            }
+
             var isPrerelease = release.TryGetProperty("prerelease", out var prerelease) && prerelease.GetBoolean();
-            if (!WebUpdatePackageStager.ShouldConsiderRelease(isPrerelease, allowPrerelease)) continue;
+            if (!WebUpdatePackageStager.ShouldConsiderRelease(isPrerelease, allowPrerelease))
+            {
+                continue;
+            }
+
             var tag = release.TryGetProperty("tag_name", out var tagElement) ? tagElement.GetString() : null;
-            if (!WebReleaseChannel.TryParseReleaseTag(tag, out var version)) continue;
+            if (!WebReleaseChannel.TryParseReleaseTag(tag, out var version))
+            {
+                continue;
+            }
+
             var assets = new Dictionary<string, (string Url, long Size)>(StringComparer.Ordinal);
             if (release.TryGetProperty("assets", out var assetsElement) && assetsElement.ValueKind == JsonValueKind.Array)
             {
@@ -271,11 +314,16 @@ public sealed partial class V2rayRuntime
                     var url = asset.TryGetProperty("browser_download_url", out var urlElement) ? urlElement.GetString() : null;
                     var size = asset.TryGetProperty("size", out var sizeElement) && sizeElement.TryGetInt64(out var parsedSize)
                         ? parsedSize : 0;
-                    if (!string.IsNullOrWhiteSpace(name) && !string.IsNullOrWhiteSpace(url)) assets[name] = (url, size);
+                    if (!string.IsNullOrWhiteSpace(name) && !string.IsNullOrWhiteSpace(url))
+                    {
+                        assets[name] = (url, size);
+                    }
                 }
             }
             if (assets.TryGetValue(WebReleaseChannel.ManifestAssetName, out var manifestAsset))
+            {
                 candidates.Add(new WebReleaseCandidate(tag!, version, isPrerelease, manifestAsset.Url, assets));
+            }
         }
         return candidates;
     }
@@ -287,9 +335,15 @@ public sealed partial class V2rayRuntime
         bool batch)
     {
         if (check.Manifest is null || check.Package is null)
+        {
             throw new InvalidDataException("The v2rayN.WebAPI update manifest or runtime package was not checked.");
+        }
+
         var deployment = GetWebUpdateDeployment();
-        if (!deployment.CanInstall) throw new InvalidOperationException(deployment.InstallReasonKey ?? "Web update installation is unavailable.");
+        if (!deployment.CanInstall)
+        {
+            throw new InvalidOperationException(deployment.InstallReasonKey ?? "Web update installation is unavailable.");
+        }
 
         var id = Guid.NewGuid().ToString("N");
         var archivePath = Utils.GetTempPath($"web-update-{id}.zip");
@@ -318,14 +372,22 @@ public sealed partial class V2rayRuntime
                 DisplayFileName = Path.GetFileName(archivePath),
             }, cancellationToken);
             if (downloadFailure.Task.IsCompletedSuccessfully)
+            {
                 throw new IOException("The v2rayN.WebAPI package download failed.", await downloadFailure.Task);
-            if (!File.Exists(archivePath)) throw new IOException("The v2rayN.WebAPI package download did not produce an archive.");
+            }
+
+            if (!File.Exists(archivePath))
+            {
+                throw new IOException("The v2rayN.WebAPI package download did not produce an archive.");
+            }
 
             PublishWebUpdateProgress("verifying", false, false, null, check.Manifest.Version, batch);
             var identity = await WebUpdatePackageStager.VerifyAndExtractAsync(
                 archivePath, packageDirectory, check.Manifest, check.Package, cancellationToken);
             if (identity.Rid != WebBuildIdentity.Current.Rid)
+            {
                 throw new InvalidDataException("The staged v2rayN.WebAPI package has the wrong runtime identifier.");
+            }
 
             PublishWebUpdateProgress("staged", false, false, "The app-only package passed SHA-256, RID, identity, and archive checks.",
                 check.Manifest.Version, batch);
@@ -426,7 +488,11 @@ public sealed partial class V2rayRuntime
             }
             catch
             {
-                if (isolatedWindowsHelper is not null) TryDeleteFile(isolatedWindowsHelper);
+                if (isolatedWindowsHelper is not null)
+                {
+                    TryDeleteFile(isolatedWindowsHelper);
+                }
+
                 throw;
             }
             using (helper)
@@ -488,12 +554,21 @@ public sealed partial class V2rayRuntime
         var snapshot = CurrentCoreRuntime;
         var activeChild = HasTrackedCoreProcesses;
         if (snapshot.State is CoreRuntimeState.Starting or CoreRuntimeState.Stopping or CoreRuntimeState.Restarting)
+        {
             return ApiMessageKeys.CoreRuntimeBusy;
+        }
+
         if (snapshot.State == CoreRuntimeState.Faulted && activeChild)
+        {
             return "maintenance.webUpdateRuntimeFaulted";
-        if (snapshot.State == CoreRuntimeState.Running && !activeChild
-            || snapshot.State == CoreRuntimeState.Stopped && activeChild)
+        }
+
+        if ((snapshot.State == CoreRuntimeState.Running && !activeChild)
+            || (snapshot.State == CoreRuntimeState.Stopped && activeChild))
+        {
             return "maintenance.webUpdateRuntimeFaulted";
+        }
+
         return null;
     }
 
@@ -503,9 +578,13 @@ public sealed partial class V2rayRuntime
         {
             if (new DirectoryInfo(installDirectory).LinkTarget is not null
                 || new FileInfo(executablePath).LinkTarget is not null)
+            {
                 return false;
+            }
+
             var probe = Path.Combine(installDirectory, $".v2rayn-WebAPI-write-probe-{Guid.NewGuid():N}");
-            using (new FileStream(probe, FileMode.CreateNew, FileAccess.Write, FileShare.None)) { }
+            using (new FileStream(probe, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+            { }
             File.Delete(probe);
             return true;
         }
@@ -567,7 +646,11 @@ public sealed partial class V2rayRuntime
 
     private static void CleanupWebUpdateStage(WebUpdateStage? stage)
     {
-        if (stage is null) return;
+        if (stage is null)
+        {
+            return;
+        }
+
         CleanupWebUpdateStageFiles(stage.ArchivePath, stage.PackageDirectory,
             stage.TransferredToHelper ? null : stage.CandidateDirectory);
     }
@@ -576,7 +659,10 @@ public sealed partial class V2rayRuntime
     {
         TryDeleteFile(archive);
         TryDeleteDirectory(packageDirectory);
-        if (candidateDirectory is not null) TryDeleteDirectory(candidateDirectory);
+        if (candidateDirectory is not null)
+        {
+            TryDeleteDirectory(candidateDirectory);
+        }
     }
 
     private void PublishWebUpdateProgress(
@@ -607,13 +693,25 @@ public sealed partial class V2rayRuntime
 
     private static void TryDeleteFile(string path)
     {
-        try { if (File.Exists(path)) File.Delete(path); }
+        try
+        {
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+        }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException) { }
     }
 
     private static void TryDeleteDirectory(string path)
     {
-        try { if (Directory.Exists(path)) Directory.Delete(path, recursive: true); }
+        try
+        {
+            if (Directory.Exists(path))
+            {
+                Directory.Delete(path, recursive: true);
+            }
+        }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException) { }
     }
 

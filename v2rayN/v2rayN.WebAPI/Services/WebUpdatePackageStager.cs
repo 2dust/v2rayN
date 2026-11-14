@@ -1,9 +1,8 @@
-using System.IO.Compression;
 using System.Buffers.Binary;
+using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using ServiceLib.Models.Dto;
 
 namespace v2rayN.WebAPI.Services;
 
@@ -36,11 +35,19 @@ internal static partial class WebUpdatePackageStager
         string? currentCommit = null,
         string? candidateCommit = null)
     {
-        if (!IsValidVersion(currentVersion) || !IsValidVersion(candidateVersion)) return false;
+        if (!IsValidVersion(currentVersion) || !IsValidVersion(candidateVersion))
+        {
+            return false;
+        }
+
         var current = new SemanticVersion(currentVersion);
         var candidate = new SemanticVersion(candidateVersion);
         var comparison = candidate.CompareTo(current);
-        if (comparison > 0) return true;
+        if (comparison > 0)
+        {
+            return true;
+        }
+
         return comparison == 0
             && !string.IsNullOrWhiteSpace(candidateCommit)
             && !string.IsNullOrWhiteSpace(currentCommit)
@@ -55,7 +62,10 @@ internal static partial class WebUpdatePackageStager
             new JsonSerializerOptions(JsonSerializerDefaults.Web))
             ?? throw new InvalidDataException("The Web release manifest is empty.");
         if (manifest.Product == "v2rayN.Web")
+        {
             throw new InvalidDataException("Legacy v2rayN.Web packages require a one-time manual installation of v2rayN.WebAPI.");
+        }
+
         if (manifest.Product != "v2rayN.WebAPI" || !IsValidVersion(manifest.Version)
             || string.IsNullOrWhiteSpace(manifest.Commit) || manifest.Packages is null || manifest.Packages.Count is 0 or > 8)
         {
@@ -90,7 +100,10 @@ internal static partial class WebUpdatePackageStager
     public static WebUpdatePackage RequirePackage(WebUpdateManifest manifest, string rid)
     {
         if (!IsSupportedRid(rid))
+        {
             throw new InvalidDataException($"The Web release does not support runtime identifier {rid}.");
+        }
+
         return manifest.Packages.FirstOrDefault(package => package.Rid == rid)
             ?? throw new InvalidDataException($"The Web release has no package for runtime identifier {rid}.");
     }
@@ -114,22 +127,32 @@ internal static partial class WebUpdatePackageStager
     {
         var archive = new FileInfo(archivePath);
         if (!archive.Exists || archive.Length != package.Size || archive.Length is <= 0 or > MaximumArchiveBytes)
+        {
             throw new InvalidDataException("The downloaded Web package size does not match its manifest.");
+        }
 
         await using (var stream = File.OpenRead(archivePath))
         {
             var hash = await SHA256.HashDataAsync(stream, cancellationToken);
             var expectedHash = Convert.FromHexString(package.Sha256);
             if (!CryptographicOperations.FixedTimeEquals(hash, expectedHash))
+            {
                 throw new InvalidDataException("The downloaded Web package SHA-256 does not match its manifest.");
+            }
         }
 
         if (Directory.Exists(destinationPath) || File.Exists(destinationPath))
+        {
             throw new InvalidDataException("The Web package staging directory already exists.");
+        }
+
         Directory.CreateDirectory(destinationPath);
         var root = Path.GetFullPath(destinationPath);
         if (new DirectoryInfo(root).LinkTarget is not null)
+        {
             throw new InvalidDataException("The Web package staging root must not be a symbolic link.");
+        }
+
         var rootPrefix = root.EndsWith(Path.DirectorySeparatorChar) ? root : root + Path.DirectorySeparatorChar;
         long expandedBytes = 0;
         var entryCount = 0;
@@ -140,28 +163,48 @@ internal static partial class WebUpdatePackageStager
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 if (++entryCount > MaximumEntries)
+                {
                     throw new InvalidDataException("The Web package has too many archive entries.");
+                }
+
                 var relative = NormalizeEntryName(entry.FullName);
                 var target = Path.GetFullPath(Path.Combine(root, relative.Replace('/', Path.DirectorySeparatorChar)));
                 if (!target.StartsWith(rootPrefix, StringComparison.Ordinal))
+                {
                     throw new InvalidDataException("The Web package contains a path outside its staging directory.");
+                }
+
                 if (IsEnvironmentConfigurationPath(relative))
+                {
                     throw new InvalidDataException("The Web package must not contain .env or .env.example files.");
+                }
+
                 if (!IsAllowedPath(relative, package.Rid))
+                {
                     throw new InvalidDataException($"The Web package contains an unexpected file: {relative}.");
+                }
 
                 var unixType = (entry.ExternalAttributes >> 16) & 0xF000;
                 if (unixType is not (0 or 0x4000 or 0x8000))
+                {
                     throw new InvalidDataException("The Web package contains a link or special archive entry.");
+                }
+
                 if (unixType == 0x4000 || entry.FullName.EndsWith('/'))
                 {
                     Directory.CreateDirectory(target);
                     continue;
                 }
                 if (!extractedFiles.Add(relative))
+                {
                     throw new InvalidDataException("The Web package contains duplicate file paths.");
+                }
+
                 if (entry.Length < 0 || entry.Length > MaximumExpandedBytes - expandedBytes)
+                {
                     throw new InvalidDataException("The expanded Web package exceeds the configured size limit.");
+                }
+
                 expandedBytes += entry.Length;
                 Directory.CreateDirectory(Path.GetDirectoryName(target)!);
                 await using var input = entry.Open();
@@ -203,12 +246,22 @@ internal static partial class WebUpdatePackageStager
     private static string NormalizeEntryName(string name)
     {
         if (string.IsNullOrWhiteSpace(name) || name.Contains('\\') || name.Contains('\0') || name.StartsWith('/'))
+        {
             throw new InvalidDataException("The Web package contains an invalid archive path.");
+        }
+
         var segments = name.Split('/', StringSplitOptions.RemoveEmptyEntries);
         if (segments.Any(segment => segment is "." or ".." || segment.Contains(':')))
+        {
             throw new InvalidDataException("The Web package contains a path traversal entry.");
+        }
+
         var normalized = string.Join('/', segments);
-        if (normalized.Length == 0) throw new InvalidDataException("The Web package contains an empty archive path.");
+        if (normalized.Length == 0)
+        {
+            throw new InvalidDataException("The Web package contains an empty archive path.");
+        }
+
         return normalized;
     }
 
@@ -236,7 +289,9 @@ internal static partial class WebUpdatePackageStager
             return;
         }
         if (rid is not ("linux-x64" or "linux-arm64" or "linux-riscv64" or "linux-loongarch64"))
+        {
             throw new InvalidDataException($"Unsupported WebAPI runtime identifier: {rid}.");
+        }
 
         var expectedMachine = rid switch
         {
@@ -253,13 +308,18 @@ internal static partial class WebUpdatePackageStager
             || BinaryPrimitives.ReadUInt16LittleEndian(header[18..]) != expectedMachine
             || BinaryPrimitives.ReadUInt32LittleEndian(header[20..]) != 1
             || BinaryPrimitives.ReadUInt16LittleEndian(header[52..]) != 64)
+        {
             throw new InvalidDataException("The WebAPI package executable must be a Linux ELF64 image for its declared runtime identifier.");
+        }
+
         var offset = BinaryPrimitives.ReadUInt64LittleEndian(header[32..]);
         var entrySize = BinaryPrimitives.ReadUInt16LittleEndian(header[54..]);
         var count = BinaryPrimitives.ReadUInt16LittleEndian(header[56..]);
         if (offset < 64 || offset > (ulong)stream.Length || entrySize != 56 || count == 0
             || (ulong)count * entrySize > (ulong)stream.Length - offset)
+        {
             throw new InvalidDataException("The WebAPI package executable has a truncated or invalid ELF program table.");
+        }
     }
 
     private static void RequireWindowsExecutable(Stream stream, string rid)
@@ -279,7 +339,9 @@ internal static partial class WebUpdatePackageStager
 
         var peOffset = BinaryPrimitives.ReadUInt32LittleEndian(dosHeader[0x3C..]);
         if (peOffset < dosHeader.Length || peOffset > stream.Length - 26)
+        {
             throw new InvalidDataException("The WebAPI package executable has a truncated Windows PE header.");
+        }
 
         stream.Position = peOffset;
         Span<byte> peHeader = stackalloc byte[26];
@@ -295,7 +357,10 @@ internal static partial class WebUpdatePackageStager
 
         var optionalHeaderSize = BinaryPrimitives.ReadUInt16LittleEndian(peHeader[20..]);
         if ((long)peOffset + 24 + optionalHeaderSize > stream.Length)
+        {
             throw new InvalidDataException("The WebAPI package executable has a truncated Windows optional header.");
+        }
+
         Span<byte> optionalHeaderMagic = stackalloc byte[2];
         stream.Position = (long)peOffset + 24;
         if (stream.Read(optionalHeaderMagic) != optionalHeaderMagic.Length
@@ -315,13 +380,23 @@ internal static partial class WebUpdatePackageStager
         while (true)
         {
             var read = await input.ReadAsync(buffer, cancellationToken);
-            if (read == 0) break;
+            if (read == 0)
+            {
+                break;
+            }
+
             copied += read;
             if (copied > expectedLength || copied > MaximumExpandedBytes)
+            {
                 throw new InvalidDataException("A Web package archive entry exceeded its declared size.");
+            }
+
             await output.WriteAsync(buffer.AsMemory(0, read), cancellationToken);
         }
-        if (copied != expectedLength) throw new InvalidDataException("A Web package archive entry was truncated.");
+        if (copied != expectedLength)
+        {
+            throw new InvalidDataException("A Web package archive entry was truncated.");
+        }
     }
 
     [GeneratedRegex("^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?$", RegexOptions.CultureInvariant)]

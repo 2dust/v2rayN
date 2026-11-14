@@ -90,7 +90,7 @@ public class CoreManager
             var preResult = await CoreConfigHandler.GenerateClientConfig(preContext, null);
             if (!preResult.Success)
             {
-                await UpdateFunc(true, preResult.Msg);
+                await UpdateFunc(true, preResult.Msg ?? ResUI.FailedGenDefaultConfiguration);
                 return false;
             }
             preContent = preResult.Data?.ToString();
@@ -134,9 +134,19 @@ public class CoreManager
             await RemoveTunDevice();
         }
 
-        await CoreStart(mainContext);
+        if (!await CoreStart(mainContext))
+        {
+            return false;
+        }
+
         await WaitForProxyPort(preContext);
-        await CoreStartPreService(preContext, preContent);
+        if (!await CoreStartPreService(preContext, preContent))
+        {
+            // Keep the ordinary proxy core available when only the optional TUN
+            // protection core failed. The error is reported above and the caller
+            // must not treat this as a successful TUN startup.
+            return false;
+        }
 
         if (canRemember && IsAlive(_processService) && (preContext is null || IsAlive(_processPreService)))
         {
@@ -256,7 +266,7 @@ public class CoreManager
             ShouldRunAsSudo(context.IsTunEnabled, context.RunCoreType, Utils.IsNonWindows()));
     }
 
-    private async Task CoreStart(CoreConfigContext context)
+    private async Task<bool> CoreStart(CoreConfigContext context)
     {
         var node = context.Node;
         var coreType = context.RunCoreType;
@@ -266,31 +276,47 @@ public class CoreManager
         var proc = await RunProcess(coreInfo, Global.CoreConfigFileName, displayLog, true, context.IsTunEnabled);
         if (proc is null)
         {
-            return;
+            return false;
         }
         _processService = proc;
+        return true;
     }
 
-    private async Task CoreStartPreService(CoreConfigContext? preContext, string? preparedContent = null)
+    private async Task<bool> CoreStartPreService(CoreConfigContext? preContext, string? preparedContent = null)
     {
-        if (_processService is { HasExited: false } && preContext != null)
+        if (preContext is null)
         {
-            var preCoreType = preContext.RunCoreType;
-            var fileName = Utils.GetBinConfigPath(Global.CorePreConfigFileName);
-            var result = preparedContent is null
-                ? await CoreConfigHandler.GenerateClientConfig(preContext, fileName)
-                : new RetResult(true);
-            if (result.Success)
-            {
-                var coreInfo = CoreInfoManager.Instance.GetCoreInfo(preCoreType);
-                var proc = await RunProcess(coreInfo, Global.CorePreConfigFileName, true, true, preContext.IsTunEnabled);
-                if (proc is null)
-                {
-                    return;
-                }
-                _processPreService = proc;
-            }
+            return true;
         }
+
+        if (_processService is not { HasExited: false })
+        {
+            await UpdateFunc(true, ResUI.FailedToRunCore);
+            return false;
+        }
+
+        var preCoreType = preContext.RunCoreType;
+        var fileName = Utils.GetBinConfigPath(Global.CorePreConfigFileName);
+        var result = preparedContent is null
+            ? await CoreConfigHandler.GenerateClientConfig(preContext, fileName)
+            : new RetResult(true);
+        if (!result.Success)
+        {
+            // Previously this result was ignored, so a missing/invalid
+            // configPre.json made Linux TUN fail without any actionable error.
+            await UpdateFunc(true, result.Msg ?? ResUI.FailedGenDefaultConfiguration);
+            return false;
+        }
+
+        var coreInfo = CoreInfoManager.Instance.GetCoreInfo(preCoreType);
+        var proc = await RunProcess(coreInfo, Global.CorePreConfigFileName, true, true, preContext.IsTunEnabled);
+        if (proc is null)
+        {
+            return false;
+        }
+
+        _processPreService = proc;
+        return true;
     }
 
     private async Task UpdateFunc(bool notify, string msg)
@@ -389,7 +415,7 @@ public class CoreManager
         var fileName = CoreInfoManager.Instance.GetCoreExecFile(coreInfo, out var msg);
         if (fileName.IsNullOrEmpty())
         {
-            await UpdateFunc(false, msg);
+            await UpdateFunc(mayNeedSudo, msg);
             return null;
         }
 

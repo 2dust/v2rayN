@@ -1,3 +1,4 @@
+
 using ServiceLib.Tests.CoreConfig;
 
 namespace ServiceLib.Tests.Handler;
@@ -16,8 +17,7 @@ public class ConfigHandlerCustomSubscriptionTests
     {
         var config = CoreConfigTestFactory.CreateConfig();
         CoreConfigTestFactory.BindAppManagerConfig(config);
-        SQLiteHelper.Instance.CreateTable<SubItem>();
-        SQLiteHelper.Instance.CreateTable<ProfileItem>();
+        TestDatabase.Initialize();
 
         var subId = $"sub-{Guid.NewGuid():N}";
         await SQLiteHelper.Instance.ReplaceAsync(new SubItem
@@ -32,7 +32,7 @@ public class ConfigHandlerCustomSubscriptionTests
         oldProfile.IsSub = true;
         await SQLiteHelper.Instance.InsertAsync(oldProfile);
 
-        var count = await ConfigHandler.AddBatchServers(config, FullXrayConfigs, subId, true);
+        var count = await ConfigDbManager.AddBatchServers(config, FullXrayConfigs, subId, true);
         var profiles = await AppManager.Instance.ProfileItems(subId) ?? [];
 
         await count.Should().BeEqualTo(2);
@@ -50,8 +50,7 @@ public class ConfigHandlerCustomSubscriptionTests
     {
         var config = CoreConfigTestFactory.CreateConfig();
         CoreConfigTestFactory.BindAppManagerConfig(config);
-        SQLiteHelper.Instance.CreateTable<SubItem>();
-        SQLiteHelper.Instance.CreateTable<ProfileItem>();
+        TestDatabase.Initialize();
 
         var subId = $"sub-failed-{Guid.NewGuid():N}";
         await SQLiteHelper.Instance.ReplaceAsync(new SubItem
@@ -67,7 +66,7 @@ public class ConfigHandlerCustomSubscriptionTests
         await SQLiteHelper.Instance.InsertAsync(existing);
 
         var invalidSubscription = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes("not a valid profile"));
-        var count = await ConfigHandler.AddBatchServers(config, invalidSubscription, subId, true);
+        var count = await ConfigDbManager.AddBatchServers(config, invalidSubscription, subId, true);
         var profiles = await AppManager.Instance.ProfileItems(subId) ?? [];
 
         await (count < 1).Should().BeTrue();

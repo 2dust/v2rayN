@@ -145,7 +145,10 @@ public class WebLauncherTests
     [Test]
     public async Task ExistingHealthyInstanceIsReusedAndBrowserAdapterIsInvoked()
     {
-        if (!OperatingSystem.IsLinux()) return;
+        if (!OperatingSystem.IsLinux())
+        {
+            return;
+        }
 
         using var directory = new TemporaryDirectory();
         var lockPath = Path.Combine(directory.Path, "instance.lock");
@@ -171,7 +174,10 @@ public class WebLauncherTests
     [Test]
     public async Task HealthyEndpointFromAnotherInstanceIsNotReusedForThisDataHome()
     {
-        if (!OperatingSystem.IsLinux()) return;
+        if (!OperatingSystem.IsLinux())
+        {
+            return;
+        }
 
         using var directory = new TemporaryDirectory();
         var lockPath = Path.Combine(directory.Path, "instance.lock");
@@ -205,7 +211,10 @@ public class WebLauncherTests
     [Test]
     public async Task UnlockedStaleLockFileCanBeRecovered()
     {
-        if (!OperatingSystem.IsLinux()) return;
+        if (!OperatingSystem.IsLinux())
+        {
+            return;
+        }
 
         using var directory = new TemporaryDirectory();
         var lockPath = Path.Combine(directory.Path, "instance.lock");
@@ -228,7 +237,10 @@ public class WebLauncherTests
     [Test]
     public async Task StopTreatsAnUnlockedStaleLockAsAlreadyStopped()
     {
-        if (!OperatingSystem.IsLinux()) return;
+        if (!OperatingSystem.IsLinux())
+        {
+            return;
+        }
 
         using var directory = new TemporaryDirectory();
         var lockPath = Path.Combine(directory.Path, "instance.lock");
@@ -245,7 +257,10 @@ public class WebLauncherTests
     [Test]
     public async Task StopSendsOneSigTermToVerifiedOwnerAndWaitsForLockRelease()
     {
-        if (!OperatingSystem.IsLinux()) return;
+        if (!OperatingSystem.IsLinux())
+        {
+            return;
+        }
 
         using var directory = new TemporaryDirectory();
         var lockPath = Path.Combine(directory.Path, "instance.lock");
@@ -282,7 +297,10 @@ public class WebLauncherTests
     [Test]
     public async Task StopDoesNotReportSuccessWhileAKnownCoreChildRemainsAlive()
     {
-        if (!OperatingSystem.IsLinux()) return;
+        if (!OperatingSystem.IsLinux())
+        {
+            return;
+        }
 
         using var directory = new TemporaryDirectory();
         var lockPath = Path.Combine(directory.Path, "instance.lock");
@@ -304,7 +322,10 @@ public class WebLauncherTests
     [Test]
     public async Task StopNeverSignalsWhenHealthPidDoesNotMatchLockOwner()
     {
-        if (!OperatingSystem.IsLinux()) return;
+        if (!OperatingSystem.IsLinux())
+        {
+            return;
+        }
 
         using var directory = new TemporaryDirectory();
         var lockPath = Path.Combine(directory.Path, "instance.lock");
@@ -321,7 +342,10 @@ public class WebLauncherTests
     [Test]
     public async Task StopNeverSignalsWhenHealthCannotConfirmTheInstance()
     {
-        if (!OperatingSystem.IsLinux()) return;
+        if (!OperatingSystem.IsLinux())
+        {
+            return;
+        }
 
         using var directory = new TemporaryDirectory();
         var lockPath = Path.Combine(directory.Path, "instance.lock");
@@ -338,7 +362,10 @@ public class WebLauncherTests
     [Test]
     public async Task StopWithoutAProbeEndpointNeverSignals()
     {
-        if (!OperatingSystem.IsLinux()) return;
+        if (!OperatingSystem.IsLinux())
+        {
+            return;
+        }
 
         using var directory = new TemporaryDirectory();
         var lockPath = Path.Combine(directory.Path, "instance.lock");
@@ -359,7 +386,10 @@ public class WebLauncherTests
     [Test]
     public async Task StopTimesOutWithoutEscalatingBeyondOneSigTerm()
     {
-        if (!OperatingSystem.IsLinux()) return;
+        if (!OperatingSystem.IsLinux())
+        {
+            return;
+        }
 
         using var directory = new TemporaryDirectory();
         var lockPath = Path.Combine(directory.Path, "instance.lock");
@@ -381,7 +411,10 @@ public class WebLauncherTests
     [Test]
     public async Task StopTimeoutReportsLastObservedCleanupStage()
     {
-        if (!OperatingSystem.IsLinux()) return;
+        if (!OperatingSystem.IsLinux())
+        {
+            return;
+        }
 
         using var directory = new TemporaryDirectory();
         var lockPath = Path.Combine(directory.Path, "instance.lock");
@@ -405,7 +438,10 @@ public class WebLauncherTests
     [Test]
     public async Task LockIsReleasedWhenOwnerExitsAndDataHomesUseDistinctLocks()
     {
-        if (!OperatingSystem.IsLinux()) return;
+        if (!OperatingSystem.IsLinux())
+        {
+            return;
+        }
 
         using var directory = new TemporaryDirectory();
         var firstPath = Path.Combine(directory.Path, "one", "instance.lock");
@@ -435,8 +471,8 @@ public class WebLauncherTests
         await chinese.Contains("./v2rayN.WebAPI --stop", StringComparison.Ordinal).Should().BeTrue();
         await LauncherMessages.AlreadyRunning("http://127.0.0.1:5080", command, false, LauncherLocale.TraditionalChinese)
             .Contains("--stop", StringComparison.Ordinal).Should().BeTrue();
-        await (LauncherMessages.Started("http://127.0.0.1:5080", command, LauncherLocale.TraditionalChinese)
-            .Contains("--stop", StringComparison.Ordinal)).Should().BeTrue();
+        await LauncherMessages.Started("http://127.0.0.1:5080", command, LauncherLocale.TraditionalChinese)
+            .Contains("--stop", StringComparison.Ordinal).Should().BeTrue();
         await english.Contains("API health endpoint", StringComparison.Ordinal).Should().BeTrue();
         await LauncherMessages.ForegroundStarted("http://127.0.0.1:5080", LauncherLocale.English)
             .Contains("Ctrl+C", StringComparison.Ordinal).Should().BeTrue();
@@ -498,7 +534,10 @@ public class WebLauncherTests
         {
             _healthy = isHealthy;
             _processId = instanceProcessId;
-            if (coreProcessIds is not null) _coreProcessIds = coreProcessIds;
+            if (coreProcessIds is not null)
+            {
+                _coreProcessIds = coreProcessIds;
+            }
         }
 
         public void SetShutdownStage(string? stage) => _shutdownStage = stage;

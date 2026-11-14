@@ -1,12 +1,6 @@
 using System.IO.Compression;
 using System.Text.Json;
-using SQLite;
-using ServiceLib;
-using ServiceLib.Common;
-using ServiceLib.Handler;
 using ServiceLib.Helper;
-using ServiceLib.Manager;
-using ServiceLib.Models.Configs;
 using v2rayN.WebAPI.Contracts;
 using v2rayN.WebAPI.Launcher;
 
@@ -42,7 +36,7 @@ public sealed partial class V2rayRuntime
                 Config.WebDavItem.Password = input.Password;
             }
             Config.WebDavItem.DirName = input.DirName?.Trim();
-            await EnsureConfigSaveSucceededAsync(() => ConfigHandler.SaveConfig(Config));
+            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
         });
         return OperationView.Ok(ApiMessageKeys.WebDavSettingsSaved);
     }
@@ -63,7 +57,7 @@ public sealed partial class V2rayRuntime
     {
         await _mutations.RunAsync(async () =>
         {
-            await EnsureConfigSaveSucceededAsync(() => ConfigHandler.SaveConfig(Config));
+            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
             await ProfileExManager.Instance.SaveTo();
             await StatisticsManager.Instance.SaveTo();
         });
@@ -217,7 +211,7 @@ public sealed partial class V2rayRuntime
                 await ProfileExManager.Instance.SaveTo();
                 await StatisticsManager.Instance.SaveTo();
                 StatisticsManager.Instance.Close();
-                await _mutations.RunAsync(() => EnsureConfigSaveSucceededAsync(() => ConfigHandler.SaveConfig(Config)), cancellationToken);
+                await _mutations.RunAsync(() => EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig()), cancellationToken);
                 await SQLiteHelper.Instance.DisposeDbConnectionAsync();
                 databaseClosed = true;
 
@@ -416,7 +410,10 @@ public sealed partial class V2rayRuntime
         }
         finally
         {
-            if (File.Exists(temporary)) File.Delete(temporary);
+            if (File.Exists(temporary))
+            {
+                File.Delete(temporary);
+            }
         }
     }
 
@@ -428,7 +425,11 @@ public sealed partial class V2rayRuntime
         RequeueAbandonedRestoreRuntimeClaim(path);
         try
         {
-            if (!File.Exists(path)) return null;
+            if (!File.Exists(path))
+            {
+                return null;
+            }
+
             var json = await File.ReadAllTextAsync(path, cancellationToken);
             return JsonSerializer.Deserialize<RuntimeRestartIntent>(json);
         }
@@ -457,7 +458,11 @@ public sealed partial class V2rayRuntime
             // cleanup fails or the process crashes here, startup still has a recoverable
             // authoritative marker and can retry cleanup.
             DeleteRestoreRuntimeClaims(path, requireComplete: true);
-            if (File.Exists(path)) File.Delete(path);
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+
             if (File.Exists(path))
             {
                 throw new IOException("The committed restore runtime-state marker still exists.");
@@ -474,7 +479,11 @@ public sealed partial class V2rayRuntime
     private static void RequeueAbandonedRestoreRuntimeClaim(string path)
     {
         var directory = Path.GetDirectoryName(path);
-        if (string.IsNullOrEmpty(directory) || !Directory.Exists(directory)) return;
+        if (string.IsNullOrEmpty(directory) || !Directory.Exists(directory))
+        {
+            return;
+        }
+
         try
         {
             var pattern = Path.GetFileName(path) + ".consuming-*";
@@ -541,7 +550,11 @@ public sealed partial class V2rayRuntime
     {
         try
         {
-            if (!File.Exists(path)) return null;
+            if (!File.Exists(path))
+            {
+                return null;
+            }
+
             return JsonSerializer.Deserialize<RuntimeRestartIntent>(File.ReadAllText(path));
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException or JsonException)
@@ -563,7 +576,8 @@ public sealed partial class V2rayRuntime
         }
 
         DateTime lastWriteTimeUtc;
-        try { lastWriteTimeUtc = File.GetLastWriteTimeUtc(claimPath); }
+        try
+        { lastWriteTimeUtc = File.GetLastWriteTimeUtc(claimPath); }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
         {
             lastWriteTimeUtc = DateTime.MinValue;
@@ -574,7 +588,11 @@ public sealed partial class V2rayRuntime
     private static void DeleteRestoreRuntimeClaims(string path, bool requireComplete = false)
     {
         var directory = Path.GetDirectoryName(path);
-        if (string.IsNullOrEmpty(directory) || !Directory.Exists(directory)) return;
+        if (string.IsNullOrEmpty(directory) || !Directory.Exists(directory))
+        {
+            return;
+        }
+
         try
         {
             var pattern = Path.GetFileName(path) + ".consuming-*";
@@ -586,7 +604,11 @@ public sealed partial class V2rayRuntime
                 }
                 catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
                 {
-                    if (requireComplete) throw;
+                    if (requireComplete)
+                    {
+                        throw;
+                    }
+
                     Logging.SaveLog("Committed abandoned restore runtime-state claim could not be removed: " + exception.Message);
                 }
             }
@@ -597,7 +619,11 @@ public sealed partial class V2rayRuntime
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
         {
-            if (requireComplete) throw;
+            if (requireComplete)
+            {
+                throw;
+            }
+
             Logging.SaveLog("Committed abandoned restore runtime-state claims could not be removed: " + exception.Message);
         }
     }
@@ -611,7 +637,10 @@ public sealed partial class V2rayRuntime
     {
         try
         {
-            if (File.Exists(path)) File.Delete(path);
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
         {

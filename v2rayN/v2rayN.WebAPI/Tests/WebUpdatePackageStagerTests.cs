@@ -1,5 +1,5 @@
-using System.IO.Compression;
 using System.Buffers.Binary;
+using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -97,7 +97,8 @@ public class WebUpdatePackageStagerTests
             .Should().BeTrue();
 
         var wrongRidRejected = false;
-        try { _ = WebUpdatePackageStager.RequirePackage(parsed, "linux-unknown64"); }
+        try
+        { _ = WebUpdatePackageStager.RequirePackage(parsed, "linux-unknown64"); }
         catch (InvalidDataException) { wrongRidRejected = true; }
         await wrongRidRejected.Should().BeTrue();
 
@@ -131,7 +132,8 @@ public class WebUpdatePackageStagerTests
 
         await WebUpdatePackageStager.RequirePackage(parsed, "linux-x64").Rid.Should().BeEqualTo("linux-x64");
         var unknownRejected = false;
-        try { _ = WebUpdatePackageStager.RequirePackage(parsed, "linux-future64"); }
+        try
+        { _ = WebUpdatePackageStager.RequirePackage(parsed, "linux-future64"); }
         catch (InvalidDataException) { unknownRejected = true; }
         await unknownRejected.Should().BeTrue();
     }
@@ -152,7 +154,8 @@ public class WebUpdatePackageStagerTests
             var mismatched = Path.Combine(directory.Path, $"elf-wrong-{rid}");
             await File.WriteAllBytesAsync(mismatched, BuildElfImage(machine == 62 ? 183 : 62));
             var rejected = false;
-            try { WebUpdatePackageStager.RequireNativeExecutable(mismatched, rid); }
+            try
+            { WebUpdatePackageStager.RequireNativeExecutable(mismatched, rid); }
             catch (InvalidDataException) { rejected = true; }
             await rejected.Should().BeTrue();
         }
@@ -166,7 +169,8 @@ public class WebUpdatePackageStagerTests
             var mismatched = Path.Combine(directory.Path, $"pe-wrong-{rid}.exe");
             await File.WriteAllBytesAsync(mismatched, BuildPeImage((ushort)(machine == 0x8664 ? 0xAA64 : 0x8664)));
             var rejected = false;
-            try { WebUpdatePackageStager.RequireNativeExecutable(mismatched, rid); }
+            try
+            { WebUpdatePackageStager.RequireNativeExecutable(mismatched, rid); }
             catch (InvalidDataException) { rejected = true; }
             await rejected.Should().BeTrue();
         }
@@ -345,7 +349,8 @@ public class WebUpdatePackageStagerTests
         {
             await File.WriteAllBytesAsync(path, image);
             var rejected = false;
-            try { WebUpdatePackageStager.RequireNativeExecutable(path, "linux-x64"); }
+            try
+            { WebUpdatePackageStager.RequireNativeExecutable(path, "linux-x64"); }
             catch (InvalidDataException) { rejected = true; }
             await rejected.Should().BeTrue();
         }
@@ -368,7 +373,8 @@ public class WebUpdatePackageStagerTests
         {
             await File.WriteAllBytesAsync(path, image);
             var rejected = false;
-            try { WebUpdatePackageStager.RequireNativeExecutable(path, "win-x64"); }
+            try
+            { WebUpdatePackageStager.RequireNativeExecutable(path, "win-x64"); }
             catch (InvalidDataException) { rejected = true; }
             await rejected.Should().BeTrue();
         }
@@ -439,7 +445,8 @@ public class WebUpdatePackageStagerTests
     private static async Task ExpectInvalidDataAsync(Func<Task<WebUpdatePackageIdentity>> action)
     {
         var rejected = false;
-        try { _ = await action(); }
+        try
+        { _ = await action(); }
         catch (InvalidDataException) { rejected = true; }
         await rejected.Should().BeTrue();
     }

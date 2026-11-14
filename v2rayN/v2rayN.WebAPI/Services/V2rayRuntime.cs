@@ -1,20 +1,12 @@
-using System.Net.Sockets;
 using System.Net;
 using System.Net.NetworkInformation;
-using ServiceLib;
-using ServiceLib.Common;
-using ServiceLib.Enums;
-using ServiceLib.Handler;
-using ServiceLib.Handler.Builder;
-using ServiceLib.Helper;
-using ServiceLib.Manager;
-using ServiceLib.Models.Configs;
-using ServiceLib.Models.Dto;
-using ServiceLib.Models.Entities;
-using ServiceLib.Services;
+using System.Net.Sockets;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
+using ServiceLib.Handler.Builder;
+using ServiceLib.Helper;
+using ServiceLib.Services;
 using v2rayN.WebAPI.Adapters;
 using v2rayN.WebAPI.Contracts;
 
@@ -52,7 +44,7 @@ public sealed partial class V2rayRuntime(
     private bool _restoring;
     private int _restoreAndRestartRequested;
 
-    private Config Config => AppManager.Instance.Config;
+    private Config Config => ConfigTextManager.Instance.Config;
     private CoreRuntimeSnapshot CurrentCoreRuntime => Volatile.Read(ref _coreRuntime);
     public bool RestoreAndRestartRequested => Volatile.Read(ref _restoreAndRestartRequested) != 0;
 
@@ -102,11 +94,16 @@ public sealed partial class V2rayRuntime(
             var task = _coreMonitorTask;
             _coreMonitorCancellation = null;
             _coreMonitorTask = null;
-            if (cancellation is null) return;
+            if (cancellation is null)
+            {
+                return;
+            }
+
             cancellation.Cancel();
             if (task is not null)
             {
-                try { await task.WaitAsync(TimeSpan.FromSeconds(2)); }
+                try
+                { await task.WaitAsync(TimeSpan.FromSeconds(2)); }
                 catch (OperationCanceledException) { }
                 catch (TimeoutException) { AddLog("core", "Core runtime monitor did not stop within its cleanup budget."); }
             }
@@ -248,19 +245,19 @@ public sealed partial class V2rayRuntime(
             {
                 Config.Inbound[0].AllowLANConn = allowProxyFromLan;
             }
-            await EnsureConfigSaveSucceededAsync(() => ConfigHandler.SaveConfig(Config));
+            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
         });
-        await ConfigHandler.InitBuiltinDNS(Config);
+        await ConfigDbManager.InitBuiltinDNS(Config);
         await BuiltinDnsProfileBootstrap.EnsureAsync(
             Config,
             async () => await AppManager.Instance.DNSItems() ?? [],
-            ConfigHandler.SaveDNSItems);
-        await ConfigHandler.InitBuiltinFullConfigTemplate(Config);
+            ConfigDbManager.SaveDNSItems);
+        await ConfigDbManager.InitBuiltinFullConfigTemplate(Config);
         // Keep startup aligned with Desktop's StatusBarViewModel. In particular,
         // InitBuiltinRouting owns the RoutingIndexId -> IsActive migration and must
         // run even when a restored Desktop database already has routing rows.
-        await ConfigHandler.InitBuiltinRouting(Config);
-        _ = await ConfigHandler.GetDefaultRouting(Config);
+        await ConfigDbManager.InitBuiltinRouting(Config);
+        _ = await ConfigDbManager.GetDefaultRouting(Config);
         var restoredSubscriptions = await AppManager.Instance.SubItems() ?? [];
         var normalizedSubIndexId = NormalizeSelectedSubscriptionId(
             Config.SubIndexId,
@@ -271,8 +268,8 @@ public sealed partial class V2rayRuntime(
             Config.SubIndexId = normalizedSubIndexId;
         }
         var selectedProfileId = Config.IndexId;
-        var defaultProfile = await ConfigHandler.GetDefaultServer(Config);
-        await _mutations.RunAsync(() => EnsureConfigSaveSucceededAsync(() => ConfigHandler.SaveConfig(Config)));
+        var defaultProfile = await ConfigDbManager.GetDefaultServer(Config);
+        await _mutations.RunAsync(() => EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig()));
         await ProfileExManager.Instance.Init();
         await CertPemManager.Instance.Init(Config);
         // The Web frontend owns its runtime and rejects generated launch contexts that enable TUN.
@@ -395,7 +392,7 @@ public sealed partial class V2rayRuntime(
             steps.Add(new("configuration save", async deadline =>
             {
                 await _mutations.RunAsync(
-                    () => EnsureConfigSaveSucceededAsync(() => ConfigHandler.SaveConfig(Config)),
+                    () => EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig()),
                     deadline.Token);
                 return true;
             }));
@@ -440,7 +437,7 @@ public sealed partial class V2rayRuntime(
         }
 
         var item = ToSubItem(input, null);
-        var result = await _mutations.RunAsync(() => ConfigHandler.AddSubItem(Config, item));
+        var result = await _mutations.RunAsync(() => ConfigDbManager.AddSubItem(Config, item));
         if (result != 0)
         {
             return new(false, "subscription_save_failed", ApiMessageKeys.SubscriptionSaveFailed, null);
@@ -469,7 +466,7 @@ public sealed partial class V2rayRuntime(
 
             var item = ToSubItem(input, existing);
             item.Id = id;
-            var result = await ConfigHandler.AddSubItem(Config, item);
+            var result = await ConfigDbManager.AddSubItem(Config, item);
             if (result != 0)
             {
                 return new SubscriptionMutationResult(false, "subscription_save_failed", ApiMessageKeys.SubscriptionSaveFailed, null);
@@ -499,14 +496,14 @@ public sealed partial class V2rayRuntime(
 
         await _mutations.RunAsync(async () =>
         {
-            if (await ConfigHandler.DeleteSubItem(Config, id) != 0)
+            if (await ConfigDbManager.DeleteSubItem(Config, id) != 0)
             {
                 throw new IOException("ServiceLib could not delete the subscription.");
             }
             if (removesCurrentProfile)
             {
-                _ = await ConfigHandler.GetDefaultServer(Config);
-                await EnsureConfigSaveSucceededAsync(() => ConfigHandler.SaveConfig(Config));
+                _ = await ConfigDbManager.GetDefaultServer(Config);
+                await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
             }
         });
 
@@ -555,7 +552,7 @@ public sealed partial class V2rayRuntime(
                         await handler.UpdateProcess(id);
 
                         operation.Token.ThrowIfCancellationRequested();
-                        await EnsureConfigSaveSucceededAsync(() => ConfigHandler.SaveConfig(Config));
+                        await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
                         await UpdateSubscriptionTimestampLockedAsync(id);
                     }, operation.Token);
                     _events.Publish("profiles-changed", new { subscriptionId = id });
@@ -714,7 +711,6 @@ public sealed partial class V2rayRuntime(
             sniffingEnabled,
             sniffingTypes,
             WebApiCapabilities.Current);
-
     }
 
     public async Task<OperationView> SelectProfileAsync(string profileId, CancellationToken cancellationToken)
@@ -784,7 +780,7 @@ public sealed partial class V2rayRuntime(
             await _mutations.RunAsync(async () =>
             {
                 Config.IndexId = profile.IndexId;
-                await EnsureConfigSaveSucceededAsync(() => ConfigHandler.SaveConfig(Config));
+                await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
             });
         }
 
@@ -793,10 +789,10 @@ public sealed partial class V2rayRuntime(
 
     private async Task<ProfileItem?> GetDefaultProfileAsync() => await _mutations.RunAsync(async () =>
     {
-        var selected = await ConfigHandler.GetDefaultServer(Config);
+        var selected = await ConfigDbManager.GetDefaultServer(Config);
         if (selected is not null)
         {
-            await EnsureConfigSaveSucceededAsync(() => ConfigHandler.SaveConfig(Config));
+            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
         }
         return selected;
     });
@@ -828,7 +824,7 @@ public sealed partial class V2rayRuntime(
 
         if (preflight.Success)
         {
-            RuntimeListenerSnapshot[] currentlyOwnedListeners = HasTrackedCoreProcesses
+            var currentlyOwnedListeners = HasTrackedCoreProcesses
                 ? CurrentCoreRuntime.Listeners
                 : [];
             foreach (var listener in GetConfiguredListenerSnapshots())
@@ -1052,59 +1048,59 @@ public sealed partial class V2rayRuntime(
     private async Task<OperationView> RestartCoreLockedAsync(CancellationToken cancellationToken)
     {
         var previous = CurrentCoreRuntime;
-            if (previous.State is not (CoreRuntimeState.Running or CoreRuntimeState.Faulted)
-                || string.IsNullOrEmpty(previous.ProfileId))
-            {
-                return OperationView.Fail("core_not_running", ApiMessageKeys.CoreNotRunning,
-                    new { runtimeState = previous.State.ToString(), processIds = GetActiveCoreProcessIds() });
-            }
+        if (previous.State is not (CoreRuntimeState.Running or CoreRuntimeState.Faulted)
+            || string.IsNullOrEmpty(previous.ProfileId))
+        {
+            return OperationView.Fail("core_not_running", ApiMessageKeys.CoreNotRunning,
+                new { runtimeState = previous.State.ToString(), processIds = GetActiveCoreProcessIds() });
+        }
 
-            var profile = await AppManager.Instance.GetProfileItem(previous.ProfileId);
-            if (profile is null)
-            {
-                return OperationView.Fail("profile_not_found", ApiMessageKeys.ProfileNotFound,
-                    new { profileId = previous.ProfileId });
-            }
+        var profile = await AppManager.Instance.GetProfileItem(previous.ProfileId);
+        if (profile is null)
+        {
+            return OperationView.Fail("profile_not_found", ApiMessageKeys.ProfileNotFound,
+                new { profileId = previous.ProfileId });
+        }
 
-            AppManager.Instance.Reset();
-            var restartStage = "preflight";
-            try
-            {
-                return await CoreRestartFlow.ExecuteAsync(
-                    () => BuildAndValidateCoreLaunchAsync(profile),
-                    async () =>
-                    {
-                        restartStage = "stop";
-                        SetCoreRuntime(previous with { State = CoreRuntimeState.Restarting, LastFailure = null });
-                        await StopCoreMonitorAsync();
-                        await StopCoreAndConfirmAsync(cancellationToken);
-                    },
-                    () =>
-                    {
-                        SetCoreRuntime(CoreRuntimeSnapshot.Stopped);
-                        restartStage = "start";
-                    },
-                    preflight => LaunchPreflightedCoreLockedAsync(preflight, cancellationToken));
-            }
-            catch (Exception exception)
-            {
-                var processIds = GetActiveCoreProcessIds();
-                if (restartStage != "preflight")
+        AppManager.Instance.Reset();
+        var restartStage = "preflight";
+        try
+        {
+            return await CoreRestartFlow.ExecuteAsync(
+                () => BuildAndValidateCoreLaunchAsync(profile),
+                async () =>
                 {
-                    SetCoreRuntime(CurrentCoreRuntime with
-                    {
-                        State = CoreRuntimeState.Faulted,
-                        ProcessIds = processIds,
-                        LastFailure = exception.Message,
-                    });
-                }
-                AddLog("core", $"Core restart failed during {restartStage}: {exception}");
-                return restartStage == "stop"
-                    ? OperationView.Fail("core_stop_failed", ApiMessageKeys.CoreStopFailed,
-                        new { detail = exception.Message, processIds })
-                    : OperationView.Fail("core_restart_failed", ApiMessageKeys.CoreStartFailed,
-                        new { stage = restartStage, detail = exception.Message, processIds });
+                    restartStage = "stop";
+                    SetCoreRuntime(previous with { State = CoreRuntimeState.Restarting, LastFailure = null });
+                    await StopCoreMonitorAsync();
+                    await StopCoreAndConfirmAsync(cancellationToken);
+                },
+                () =>
+                {
+                    SetCoreRuntime(CoreRuntimeSnapshot.Stopped);
+                    restartStage = "start";
+                },
+                preflight => LaunchPreflightedCoreLockedAsync(preflight, cancellationToken));
+        }
+        catch (Exception exception)
+        {
+            var processIds = GetActiveCoreProcessIds();
+            if (restartStage != "preflight")
+            {
+                SetCoreRuntime(CurrentCoreRuntime with
+                {
+                    State = CoreRuntimeState.Faulted,
+                    ProcessIds = processIds,
+                    LastFailure = exception.Message,
+                });
             }
+            AddLog("core", $"Core restart failed during {restartStage}: {exception}");
+            return restartStage == "stop"
+                ? OperationView.Fail("core_stop_failed", ApiMessageKeys.CoreStopFailed,
+                    new { detail = exception.Message, processIds })
+                : OperationView.Fail("core_restart_failed", ApiMessageKeys.CoreStartFailed,
+                    new { stage = restartStage, detail = exception.Message, processIds });
+        }
     }
 
     public async Task<OperationView> StartLatencyTestAsync(string profileId)
@@ -1182,7 +1178,7 @@ public sealed partial class V2rayRuntime(
             if (item is not null)
             {
                 item.UpdateTime = updateTime;
-                if (await ConfigHandler.AddSubItem(Config, item) != 0)
+                if (await ConfigDbManager.AddSubItem(Config, item) != 0)
                 {
                     throw new IOException("ServiceLib could not save the subscription timestamp.");
                 }
@@ -1195,7 +1191,7 @@ public sealed partial class V2rayRuntime(
             if (item.Enabled)
             {
                 item.UpdateTime = updateTime;
-                if (await ConfigHandler.AddSubItem(Config, item) != 0)
+                if (await ConfigDbManager.AddSubItem(Config, item) != 0)
                 {
                     throw new IOException("ServiceLib could not save the subscription timestamp.");
                 }
@@ -1476,7 +1472,11 @@ public sealed partial class V2rayRuntime(
         var addresses = new HashSet<IPAddress> { IPAddress.Loopback };
         foreach (var network in NetworkInterface.GetAllNetworkInterfaces())
         {
-            if (network.OperationalStatus != OperationalStatus.Up) continue;
+            if (network.OperationalStatus != OperationalStatus.Up)
+            {
+                continue;
+            }
+
             foreach (var address in network.GetIPProperties().UnicastAddresses
                          .Select(item => item.Address)
                          .Where(address => address.AddressFamily == AddressFamily.InterNetwork))
@@ -1520,7 +1520,11 @@ public sealed partial class V2rayRuntime(
                 ExclusiveAddressUse = true,
             };
             socket.Bind(new IPEndPoint(address, port));
-            if (socketType == SocketType.Stream) socket.Listen(1);
+            if (socketType == SocketType.Stream)
+            {
+                socket.Listen(1);
+            }
+
             return true;
         }
         catch (SocketException)
@@ -1532,5 +1536,4 @@ public sealed partial class V2rayRuntime(
             return false;
         }
     }
-
 }

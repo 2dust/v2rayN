@@ -33,6 +33,7 @@ global using ServiceLib.Handler.Fmt;
 global using ServiceLib.Handler.SysProxy;
 global using ServiceLib.Helper;
 global using ServiceLib.Manager;
+global using ServiceLib.Manager.Data;
 global using ServiceLib.Models.Configs;
 global using ServiceLib.Models.CoreConfigs;
 global using ServiceLib.Models.Dto;

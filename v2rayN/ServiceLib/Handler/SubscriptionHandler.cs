@@ -1,3 +1,5 @@
+
+
 namespace ServiceLib.Handler;
 
 public class SubscriptionHandler(
@@ -104,7 +106,7 @@ public class SubscriptionHandler(
         await updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgStartParsingSubscription}");
 
         // Add servers to configuration
-        var ret = await ConfigHandler.AddBatchServers(_config, result, id, true);
+        var ret = await ConfigDbManager.AddBatchServers(_config, result, id, true);
         if (ret <= 0)
         {
             Logging.SaveLog("FailedImportSubscription");

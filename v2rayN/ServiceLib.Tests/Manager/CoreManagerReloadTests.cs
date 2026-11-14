@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
+using ServiceLib.Manager.Data;
 using ServiceLib.Models.CoreConfigs;
 using ServiceLib.Services;
 using ServiceLib.Tests.CoreConfig;
@@ -131,6 +132,46 @@ public class CoreManagerReloadTests
         await fixture.Manager.StartedIds.Count.Should().BeEqualTo(1);
         using var replacement = Process.GetProcessById(fixture.Manager.StartedIds.Single());
         await replacement.HasExited.Should().BeFalse();
+    }
+
+    [Test]
+    public async Task FailedMainStartupDoesNotPublishTheRequestedCoreType()
+    {
+        await using var fixture = await ReloadFixture.Create(ECoreType.Xray, true);
+        AppManager.Instance.RunningCoreType = ECoreType.mihomo;
+        fixture.Manager.FailNextStart = true;
+
+        var reused = await fixture.Manager.LoadCore(fixture.Context("profile"), null);
+
+        await reused.Should().BeFalse();
+        await fixture.Manager.StartedIds.Count.Should().BeEqualTo(0);
+        await AppManager.Instance.RunningCoreType.Should().BeEqualTo(ECoreType.mihomo);
+    }
+
+    [Test]
+    public async Task FailedAuxiliaryStartupKeepsTheMainCoreWithoutPublishingTunSuccess()
+    {
+        await using var fixture = await ReloadFixture.Create(ECoreType.Xray, true);
+        var main = fixture.Context("profile") with { IsTunEnabled = false };
+        var pre = fixture.PreContext();
+        AppManager.Instance.RunningCoreType = ECoreType.mihomo;
+        fixture.Manager.OnStarted = count => { if (count == 1) fixture.Manager.FailNextStart = true; };
+
+        var reused = await fixture.Manager.LoadCore(main, pre);
+
+        await reused.Should().BeFalse();
+        await fixture.Manager.StartedIds.Count.Should().BeEqualTo(1);
+        using var ordinaryProxy = Process.GetProcessById(fixture.Manager.StartedIds.Single());
+        await ordinaryProxy.HasExited.Should().BeFalse();
+        await AppManager.Instance.RunningCoreType.Should().BeEqualTo(ECoreType.mihomo);
+
+        fixture.Manager.OnStarted = null;
+        await fixture.Manager.LoadCore(main, pre, forceRestart: false);
+        await fixture.Manager.StartedIds.Count.Should().BeEqualTo(3);
+        await AppManager.Instance.RunningCoreType.Should().BeEqualTo(ECoreType.sing_box);
+        var recoveredReuse = await fixture.Manager.LoadCore(main, pre, forceRestart: false);
+        await recoveredReuse.Should().BeTrue();
+        await fixture.Manager.StartedIds.Count.Should().BeEqualTo(3);
     }
 
     [Test]
@@ -322,8 +363,11 @@ public class CoreManagerReloadTests
 
         public static async Task<ReloadFixture> Create(ECoreType coreType, bool tun)
         {
-            var originalConfig = AppManager.Instance.Config;
+            var originalConfig = (Config)typeof(AppManager)
+                .GetField("_config", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!
+                .GetValue(AppManager.Instance)!;
             var originalCoreType = AppManager.Instance.RunningCoreType;
+            var originalTextConfig = ConfigTextManager.Instance.Config;
             var config = CoreConfigTestFactory.CreateConfig(coreType);
             config.TunModeItem.EnableTun = tun;
             config.IndexId = "old-profile";
@@ -331,6 +375,8 @@ public class CoreManagerReloadTests
             var fixture = new ReloadFixture(config, coreType, () =>
             {
                 CoreConfigTestFactory.BindAppManagerConfig(originalConfig);
+                typeof(ConfigTextManager).GetProperty(nameof(ConfigTextManager.Config))!
+                    .SetValue(ConfigTextManager.Instance, originalTextConfig);
                 AppManager.Instance.RunningCoreType = originalCoreType;
             });
             try

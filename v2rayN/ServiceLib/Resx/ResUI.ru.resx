@@ -1908,6 +1908,36 @@
   <data name="menuAddMasqueServer" xml:space="preserve">
     <value>Добавить сервер [MASQUE]</value>
   </data>
+  <data name="TbFakeIPv6" xml:space="preserve">
+    <value>FakeIP для IPv6</value>
+  </data>
+  <data name="TbFakeIPv6Tips" xml:space="preserve">
+    <value>Также возвращать фиктивные IPv6-адреса. Требуется включить FakeIP и разрешить DNS-запросы AAAA</value>
+  </data>
+  <data name="FillCorrectFakeIPv6Range" xml:space="preserve">
+    <value>Введите корректный диапазон IPv6 в формате CIDR, содержащий не менее двух адресов, например fc00::/18</value>
+  </data>
+  <data name="menuShowColumns" xml:space="preserve">
+    <value>Показать столбцы</value>
+  </data>
+  <data name="TbWarp" xml:space="preserve">
+    <value>Warp</value>
+  </data>
+  <data name="LvPreResolve" xml:space="preserve">
+    <value>Предварительное разрешение доменных имён серверов</value>
+  </data>
+  <data name="menuFreezeToThisColumn" xml:space="preserve">
+    <value>Закрепить столбцы до этого включительно</value>
+  </data>
+  <data name="menuUnfreezeAllColumns" xml:space="preserve">
+    <value>Снять закрепление всех столбцов</value>
+  </data>
+  <data name="menuCurrentlyFrozenColumns" xml:space="preserve">
+    <value>Закреплено столбцов слева: {0}</value>
+  </data>
+  <data name="menuHideThisColumn" xml:space="preserve">
+    <value>Скрыть этот столбец</value>
+  </data>
   <data name="XdriveProvider" xml:space="preserve">
     <value>Шаблон провайдера</value>
   </data>

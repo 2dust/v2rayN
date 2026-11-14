@@ -27,7 +27,8 @@ public class WebReleaseChannelTests
         await WebReleaseChannel.DefaultRepository.Should().BeEqualTo("2dust/v2rayN");
 
         var rejected = false;
-        try { _ = WebReleaseChannel.BuildReleaseIndexUrl("2dust/v2rayN/../../evil"); }
+        try
+        { _ = WebReleaseChannel.BuildReleaseIndexUrl("2dust/v2rayN/../../evil"); }
         catch (ArgumentException) { rejected = true; }
         await rejected.Should().BeTrue();
         await WebReleaseChannel.IsValidRepository("community-fork/v2rayN").Should().BeTrue();

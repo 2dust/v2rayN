@@ -1,7 +1,6 @@
 using System.Diagnostics;
-using System.Net.Http;
-using System.Net.Sockets;
 using System.Runtime.InteropServices;
+
 namespace v2rayN.WebAPI.Launcher;
 
 public interface IWebHealthProbe
@@ -312,7 +311,10 @@ public sealed class WebLauncher
             processPath,
             WebReplacementCommand.GetManagedEntryPoint(processPath, commandLine),
             hostArguments);
-        if (command is null) return null;
+        if (command is null)
+        {
+            return null;
+        }
 
         try
         {

@@ -1,3 +1,5 @@
+
+
 namespace ServiceLib.ViewModels;
 
 public partial class RoutingSettingViewModel : MyReactiveObject
@@ -30,7 +32,7 @@ public partial class RoutingSettingViewModel : MyReactiveObject
 
     public RoutingSettingViewModel()
     {
-        _config = AppManager.Instance.Config;
+        _config = ConfigTextManager.Instance.Config;
 
         var canEditRemove = this.WhenAnyValue(
             x => x.SelectedSource,
@@ -75,7 +77,7 @@ public partial class RoutingSettingViewModel : MyReactiveObject
         DomainStrategy = _config.RoutingBasicItem.DomainStrategy;
         DomainStrategy4Singbox = _config.RoutingBasicItem.DomainStrategy4Singbox;
 
-        await ConfigHandler.InitBuiltinRouting(_config);
+        await ConfigDbManager.InitBuiltinRouting(_config);
         await RefreshRoutingItems();
     }
 
@@ -111,7 +113,7 @@ public partial class RoutingSettingViewModel : MyReactiveObject
     {
         _config.RoutingBasicItem.DomainStrategy = DomainStrategy;
         _config.RoutingBasicItem.DomainStrategy4Singbox = DomainStrategy4Singbox;
-        await ConfigHandler.SaveConfig(_config);
+        await ConfigTextManager.Instance.SaveConfig();
     }
 
     #endregion Refresh Save
@@ -155,7 +157,7 @@ public partial class RoutingSettingViewModel : MyReactiveObject
             var item = await AppManager.Instance.GetRoutingItem(it?.Id);
             if (item != null)
             {
-                await ConfigHandler.RemoveRoutingItem(item);
+                await ConfigDbManager.RemoveRoutingItem(item);
             }
         }
 
@@ -172,7 +174,7 @@ public partial class RoutingSettingViewModel : MyReactiveObject
             return;
         }
 
-        if (await ConfigHandler.SetDefaultRouting(_config, item) == 0)
+        if (await ConfigDbManager.SetDefaultRouting(_config, item) == 0)
         {
             await RefreshRoutingItems();
             IsModified = true;
@@ -181,7 +183,7 @@ public partial class RoutingSettingViewModel : MyReactiveObject
 
     private async Task RoutingAdvancedImportRules()
     {
-        if (await ConfigHandler.InitRouting(_config, true) == 0)
+        if (await ConfigDbManager.InitRouting(_config, true) == 0)
         {
             await RefreshRoutingItems();
             IsModified = true;

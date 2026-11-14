@@ -8,7 +8,10 @@ internal static class NativeWebUpdateWorkflow
     {
         var hasCore = (health.CoreProcessIds?.Count ?? 0) > 0;
         if (!intent.WasRunning)
+        {
             return string.Equals(health.CoreState, "stopped", StringComparison.OrdinalIgnoreCase) && !hasCore;
+        }
+
         return string.Equals(health.CoreState, "running", StringComparison.OrdinalIgnoreCase)
             && hasCore
             && !string.IsNullOrWhiteSpace(health.CoreProfileId);
@@ -76,9 +79,15 @@ internal static class NativeWebUpdateWorkflow
             setPhase("restarting");
             setPhase("verifying-health");
             if (!await startPreviousAndVerifyHealthAsync())
+            {
                 return new(false, false, $"{failure} The previous Web build did not become healthy. {restoreFailure}");
+            }
+
             if (restoreFailure is not null)
+            {
                 return new(false, false, $"{failure} The previous Web process is responding, but restoring all previous app files failed: {restoreFailure}");
+            }
+
             await cleanBackupsAsync();
             return new(false, true, $"{failure} The previous Web build was restored and is healthy.");
         }

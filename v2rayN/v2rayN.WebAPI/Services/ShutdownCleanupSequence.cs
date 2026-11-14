@@ -7,8 +7,10 @@ internal static class RuntimeShutdownBudgets
     // Runtime cleanup owns 20 seconds; the host retains 5 seconds, systemd is
     // configured to 30 seconds, and the native --stop launcher waits 5 seconds more.
     public static readonly TimeSpan RuntimeCleanup = TimeSpan.FromSeconds(20);
+
     public static readonly TimeSpan HostShutdown = TimeSpan.FromSeconds(25);
     public static readonly TimeSpan LauncherWait = TimeSpan.FromSeconds(35);
+
     // Used when the host shutdown budget was already exhausted before cleanup
     // started, for example while the web server drained long-lived connections.
     public static readonly TimeSpan LateCleanup = TimeSpan.FromSeconds(5);

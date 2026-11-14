@@ -29,8 +29,15 @@ public class NativeWebUpdateWorkflowTests
         }
         finally
         {
-            if (previous is null) File.Delete(path);
-            else await File.WriteAllBytesAsync(path, previous);
+            if (previous is null)
+            {
+                File.Delete(path);
+            }
+            else
+            {
+                await File.WriteAllBytesAsync(path, previous);
+            }
+
             Environment.SetEnvironmentVariable(ServiceLib.Global.LocalAppData, previousLocalData);
         }
     }
