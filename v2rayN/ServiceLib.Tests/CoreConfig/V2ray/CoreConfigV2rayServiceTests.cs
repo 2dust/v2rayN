@@ -858,6 +858,81 @@ public class CoreConfigV2rayServiceTests
     }
 
     [Test]
+    public async Task GenerateClientConfigContent_CustomOutbound_ShouldInheritTargetStrategyFromDnsSettings()
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
+        config.SimpleDNSItem.Strategy4Proxy = "UseIPv4";
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var customNode = CoreConfigTestFactory.CreateCustomOutboundNode(ECoreType.Xray, "n-custom", "custom-xray");
+        var customJsonContent = """
+        {
+          "protocol": "shadowsocks",
+          "settings": {
+            "servers": [
+              {
+                "address": "1.2.3.4",
+                "port": 8388,
+                "method": "aes-128-gcm",
+                "password": "custom_password"
+              }
+            ]
+          }
+        }
+        """;
+
+        var context = CoreConfigTestFactory.CreateContext(config, customNode, ECoreType.Xray);
+        context.CustomOutboundContent[customNode.IndexId] = customJsonContent;
+
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue().Because($"ret msg: {result.Msg}");
+        var generatedConfig = JsonNode.Parse(result.Data!.ToString()!)!;
+        var proxy = generatedConfig["outbounds"]!.AsArray()
+            .First(outbound => outbound!["tag"]!.GetValue<string>() == Global.ProxyTag)!;
+
+        await proxy["targetStrategy"]?.GetValue<string>().Should().BeEqualTo("UseIPv4");
+    }
+
+    [Test]
+    public async Task GenerateClientConfigContent_CustomOutbound_ShouldKeepExplicitTargetStrategy()
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
+        config.SimpleDNSItem.Strategy4Proxy = "UseIPv4";
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var customNode = CoreConfigTestFactory.CreateCustomOutboundNode(ECoreType.Xray, "n-custom", "custom-xray");
+        var customJsonContent = """
+        {
+          "protocol": "shadowsocks",
+          "targetStrategy": "AsIs",
+          "settings": {
+            "servers": [
+              {
+                "address": "1.2.3.4",
+                "port": 8388,
+                "method": "aes-128-gcm",
+                "password": "custom_password"
+              }
+            ]
+          }
+        }
+        """;
+
+        var context = CoreConfigTestFactory.CreateContext(config, customNode, ECoreType.Xray);
+        context.CustomOutboundContent[customNode.IndexId] = customJsonContent;
+
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue().Because($"ret msg: {result.Msg}");
+        var generatedConfig = JsonNode.Parse(result.Data!.ToString()!)!;
+        var proxy = generatedConfig["outbounds"]!.AsArray()
+            .First(outbound => outbound!["tag"]!.GetValue<string>() == Global.ProxyTag)!;
+
+        await proxy["targetStrategy"]?.GetValue<string>().Should().BeEqualTo("AsIs");
+    }
+
+    [Test]
     public async Task GenerateClientConfigContent_XdriveGoogleDrive_ShouldGenerateValidOutbound()
     {
         var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
