@@ -99,7 +99,9 @@ public partial class CoreConfigV2rayService
                 .ToList();
             if (directDnsTags.Count > 0)
             {
-                _coreConfig.routing.rules.Add(new()
+                var rules = _coreConfig.routing.rules;
+                var catchAllIndex = rules.FindIndex(IsDnsRoutingCatchAll);
+                rules.Insert(catchAllIndex < 0 ? rules.Count : catchAllIndex, new()
                 {
                     type = "field",
                     inboundTag = directDnsTags,
@@ -123,6 +125,18 @@ public partial class CoreConfigV2rayService
         {
             Logging.SaveLog(_tag, ex);
         }
+    }
+
+    private static bool IsDnsRoutingCatchAll(RulesItem4Ray rule)
+    {
+        return (rule.outboundTag == Global.ProxyTag || rule.balancerTag == Global.ProxyTag + Global.BalancerTagSuffix)
+            && rule.inboundTag is not { Count: > 0 }
+            && rule.domain is not { Count: > 0 }
+            && rule.ip is not { Count: > 0 }
+            && rule.protocol is not { Count: > 0 }
+            && rule.process is not { Count: > 0 }
+            && rule.port is null or "0-65535" or "1-65535"
+            && rule.network is null or "tcp,udp" or "udp,tcp";
     }
 
     private void GenFakeDns()
