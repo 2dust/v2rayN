@@ -3,6 +3,56 @@ namespace ServiceLib.Tests.CoreConfig.V2ray;
 public class CoreConfigV2rayServiceTests
 {
     [Test]
+    [Arguments(false, "0-65535", null, Global.ProxyTag)]
+    [Arguments(true, "0-65535", null, Global.ProxyTag)]
+    [Arguments(true, null, "tcp,udp", Global.ProxyTag)]
+    [Arguments(false, null, null, Global.ProxyTag)]
+    [Arguments(false, "0-65535", null, Global.BlockTag)]
+    public async Task DirectDnsRule_ShouldPrecedeCatchAllAndPreserveExplicitRules(bool tun, string? port, string? network, string outbound)
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
+        config.TunModeItem.EnableTun = tun;
+        config.SimpleDNSItem.DirectDNS = "8.8.8.8";
+        config.SimpleDNSItem.RemoteDNS = "1.1.1.1";
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+        var node = CoreConfigTestFactory.CreateVmessNode(ECoreType.Xray);
+        var userRules = new List<RulesItem>
+        {
+            new() { RuleType = ERuleType.DNS, Domain = ["domain:direct.example"], OutboundTag = Global.DirectTag },
+            new() { InboundTag = ["direct-dns-1"], Ip = ["8.8.8.8"], Port = "53", OutboundTag = Global.BlockTag },
+            new() { Port = "443", Network = "tcp", OutboundTag = Global.ProxyTag },
+        };
+        if (port != null || network != null)
+        {
+            userRules.Add(new() { Port = port, Network = network, OutboundTag = outbound });
+        }
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray) with
+        {
+            RoutingItem = new RoutingItem { RuleSet = JsonUtils.Serialize(userRules), DomainStrategy = Global.IPOnDemand }
+        };
+
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue();
+        var rules = JsonUtils.Deserialize<V2rayConfig>(result.Data!.ToString())!.routing.rules;
+        var direct = rules.FindIndex(r => r.outboundTag == Global.DirectTag && r.inboundTag?.Contains("direct-dns-1") == true);
+        var explicitBlock = rules.FindIndex(r => r.outboundTag == Global.BlockTag && r.inboundTag?.Contains("direct-dns-1") == true);
+        var https = rules.FindIndex(r => r.port == "443" && r.network == "tcp" && r.outboundTag == Global.ProxyTag);
+        await (explicitBlock >= 0 && https > explicitBlock && direct > https).Should().BeTrue();
+        if (port != null || network != null)
+        {
+            var catchAll = rules.FindIndex(r => r.port == port && r.network == network && r.inboundTag == null && r.outboundTag == outbound);
+            await (catchAll >= 0 && (outbound == Global.ProxyTag ? catchAll > direct : catchAll < direct)).Should().BeTrue();
+        }
+        if (tun)
+        {
+            var intercept = rules.FindIndex(r => r.inboundTag?.Contains("tun") == true && r.port == "53" && r.outboundTag == Global.DnsOutboundTag);
+            await (intercept >= 0 && intercept < direct).Should().BeTrue();
+        }
+        await rules.Should().Contain(r => r.inboundTag != null && r.inboundTag.Contains(Global.DnsTag) && r.outboundTag == Global.ProxyTag);
+    }
+
+    [Test]
     [Arguments("demo-seed", "srtp", 2)]
     [Arguments(null, "srtp", 2)]
     [Arguments("demo-seed", "none", 1)]
