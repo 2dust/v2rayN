@@ -1415,7 +1415,8 @@
                         Grid.Row="2"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource Margin4}" />
+                        Margin="{StaticResource Margin4}"
+                        IsEditable="True" />
 
                     <TextBlock
                         Grid.Row="3"
@@ -1428,7 +1429,8 @@
                         Grid.Row="3"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource Margin4}" />
+                        Margin="{StaticResource Margin4}"
+                        IsEditable="True" />
 
                     <TextBlock
                         Grid.Row="4"
@@ -1581,7 +1583,8 @@
                         Grid.Row="1"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource Margin4}" />
+                        Margin="{StaticResource Margin4}"
+                        IsEditable="True" />
 
                     <TextBlock
                         Grid.Row="2"
