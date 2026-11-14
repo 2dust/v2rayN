@@ -157,7 +157,10 @@ public class WebInstanceLockProcessTests
         {
             try
             {
-                if (!_process.HasExited) _process.Kill(entireProcessTree: true);
+                if (!_process.HasExited)
+                {
+                    _process.Kill(entireProcessTree: true);
+                }
             }
             catch (InvalidOperationException)
             {

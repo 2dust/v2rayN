@@ -1,6 +1,5 @@
 using System.Collections.Concurrent;
 using System.Security.Cryptography;
-using Microsoft.AspNetCore.Http;
 
 namespace v2rayN.WebAPI.Security;
 
@@ -329,9 +328,9 @@ public sealed class WebSessionService : IDisposable
     {
         digest = string.Empty;
         if (token is null || token.Length != TokenEncodedLength
-            || token.Any(character => !(character is >= 'A' and <= 'Z'
-                or >= 'a' and <= 'z'
-                or >= '0' and <= '9'
+            || token.Any(character => !(character is (>= 'A' and <= 'Z')
+                or (>= 'a' and <= 'z')
+                or (>= '0' and <= '9')
                 or '-' or '_')))
         {
             return false;

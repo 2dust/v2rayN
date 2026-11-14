@@ -335,7 +335,7 @@ public static class ConfigDbManager
             return Task.FromResult(-1);
         }
 
-        int[] movingIndices = sourceIndices
+        var movingIndices = sourceIndices
             .Distinct()
             .OrderBy(index => index)
             .ToArray();

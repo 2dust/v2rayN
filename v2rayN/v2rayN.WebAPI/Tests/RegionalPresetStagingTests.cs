@@ -1,12 +1,4 @@
 using System.Collections.Concurrent;
-using System.Net;
-using ServiceLib;
-using ServiceLib.Common;
-using ServiceLib.Enums;
-
-using ServiceLib.Models.Configs;
-using ServiceLib.Models.Dto;
-using ServiceLib.Models.Entities;
 using v2rayN.WebAPI.Services;
 
 namespace v2rayN.WebAPI.Tests;
@@ -182,7 +174,11 @@ public class RegionalPresetStagingTests
                 return Task.FromResult(true);
             });
 
-        if (result.Success) restartCalled = true;
+        if (result.Success)
+        {
+            restartCalled = true;
+        }
+
         await result.Success.Should().BeFalse();
         await result.RollbackSucceeded.Should().BeTrue();
         await restartCalled.Should().BeFalse();

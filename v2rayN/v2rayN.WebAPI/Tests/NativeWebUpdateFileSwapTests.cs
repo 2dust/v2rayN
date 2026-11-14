@@ -1,7 +1,7 @@
-using v2rayN.WebAPI.Launcher;
+using System.IO.MemoryMappedFiles;
 using System.Security.Cryptography;
 using System.Text;
-using System.IO.MemoryMappedFiles;
+using v2rayN.WebAPI.Launcher;
 
 namespace v2rayN.WebAPI.Tests;
 
@@ -13,7 +13,11 @@ public class NativeWebUpdateFileSwapTests
     [Test]
     public async Task RollbackDoesNotModifyAnExecutableThatIsStillMemoryMapped()
     {
-        if (!OperatingSystem.IsLinux()) return;
+        if (!OperatingSystem.IsLinux())
+        {
+            return;
+        }
+
         using var directory = new TemporaryDirectory();
         var plan = await CreatePlanAsync(directory.Path, includeNewIdentity: true);
         NativeWebUpdateHelper.CopyCurrentAppToBackup(plan);
@@ -96,7 +100,10 @@ public class NativeWebUpdateFileSwapTests
         await File.WriteAllTextAsync(Path.Combine(install, ".env"), "V2RAYN_WEB_API_KEY=private-test-key\n");
         await File.WriteAllTextAsync(Path.Combine(candidate, ExecutableName), "new-web");
         if (includeNewIdentity)
+        {
             await File.WriteAllTextAsync(Path.Combine(candidate, "v2rayN.WebAPI.build.json"), "new-identity");
+        }
+
         return new NativeWebUpdatePlan(
             install,
             candidate,

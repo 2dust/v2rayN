@@ -5,7 +5,7 @@ namespace v2rayN.Desktop.Views;
 
 public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
 {
-    private static Config _config; 
+    private static Config _config;
 
     public OptionSettingWindow()
     {

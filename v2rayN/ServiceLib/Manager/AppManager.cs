@@ -67,12 +67,11 @@ public sealed class AppManager
         }
 
         Logging.Setup();
-        var config = ConfigTextManager.Instance.Init();
-        if (config == null)
+        _config = ConfigTextManager.Instance.Init();
+        if (_config == null)
         {
             return false;
         }
-        _config = config;
         Thread.CurrentThread.CurrentUICulture = new(_config.UiItem.CurrentLanguage);
 
         //Under Win10

@@ -1,8 +1,3 @@
-using ServiceLib;
-using ServiceLib.Enums;
-
-using ServiceLib.Models.Configs;
-using ServiceLib.Models.Entities;
 using v2rayN.WebAPI.Contracts;
 using v2rayN.WebAPI.Services;
 
@@ -113,7 +108,7 @@ public class ParityValidationTests
             EConfigType.Hysteria2,
             EConfigType.WireGuard,
         };
-        await (editableTypes.SequenceEqual(expected)).Should().BeTrue();
+        await editableTypes.SequenceEqual(expected).Should().BeTrue();
 
         var validMappings = expected.Select(configType => new CoreTypeMapping(configType, ECoreType.Xray)).ToArray();
         await V2rayRuntime.AreWebCoreTypeMappingsValid(validMappings).Should().BeTrue();

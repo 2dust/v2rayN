@@ -618,30 +618,62 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
         {
             case "Cloudflare R2":
                 XdriveService = "s3";
-                if (XdriveS3Region.IsNullOrEmpty()) XdriveS3Region = "auto";
+                if (XdriveS3Region.IsNullOrEmpty())
+                {
+                    XdriveS3Region = "auto";
+                }
+
                 XdriveS3PathStyle = true;
                 break;
             case "Google Drive":
                 XdriveService = "google-drive";
                 SelectedSource.StreamSecurity = Global.StreamSecurity;
-                if (SelectedSource.Sni.IsNullOrEmpty()) SelectedSource.Sni = "www.google.com";
-                if (SelectedSource.Alpn.IsNullOrEmpty()) SelectedSource.Alpn = "h2";
-                if (SelectedSource.Address.IsNullOrEmpty()) SelectedSource.Address = "www.google.com";
-                if (SelectedSource.Port <= 0) SelectedSource.Port = 443;
+                if (SelectedSource.Sni.IsNullOrEmpty())
+                {
+                    SelectedSource.Sni = "www.google.com";
+                }
+
+                if (SelectedSource.Alpn.IsNullOrEmpty())
+                {
+                    SelectedSource.Alpn = "h2";
+                }
+
+                if (SelectedSource.Address.IsNullOrEmpty())
+                {
+                    SelectedSource.Address = "www.google.com";
+                }
+
+                if (SelectedSource.Port <= 0)
+                {
+                    SelectedSource.Port = 443;
+                }
+
                 break;
             case "AWS S3 (Global)":
                 XdriveService = "s3";
-                if (XdriveS3Region.IsNullOrEmpty()) XdriveS3Region = "ap-northeast-1";
+                if (XdriveS3Region.IsNullOrEmpty())
+                {
+                    XdriveS3Region = "ap-northeast-1";
+                }
+
                 XdriveS3PathStyle = false;
                 break;
             case "Yandex Cloud S3":
                 XdriveService = "s3";
-                if (XdriveS3Region.IsNullOrEmpty()) XdriveS3Region = "ru-central1";
+                if (XdriveS3Region.IsNullOrEmpty())
+                {
+                    XdriveS3Region = "ru-central1";
+                }
+
                 XdriveS3PathStyle = true;
                 break;
             case "ArvanCloud S3":
                 XdriveService = "s3";
-                if (XdriveS3Region.IsNullOrEmpty()) XdriveS3Region = "ir-tbz-sh1";
+                if (XdriveS3Region.IsNullOrEmpty())
+                {
+                    XdriveS3Region = "ir-tbz-sh1";
+                }
+
                 XdriveS3PathStyle = true;
                 break;
             case "Custom S3":

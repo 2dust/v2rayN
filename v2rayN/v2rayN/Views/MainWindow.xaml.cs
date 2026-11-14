@@ -345,15 +345,15 @@ public partial class MainWindow
 
     private void StorageUI()
     {
-        ConfigTextManager.SaveWindowSizeItem(_config, GetType().Name, Width, Height);
+        ConfigTextManager.Instance.SaveWindowSizeItem(GetType().Name, Width, Height);
 
         if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Horizontal)
         {
-            ConfigTextManager.SaveMainGirdHeight(_config, gridMain.ColumnDefinitions[0].ActualWidth, gridMain.ColumnDefinitions[2].ActualWidth);
+            ConfigTextManager.Instance.SaveMainGirdHeight(gridMain.ColumnDefinitions[0].ActualWidth, gridMain.ColumnDefinitions[2].ActualWidth);
         }
         else if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Vertical)
         {
-            ConfigTextManager.SaveMainGirdHeight(_config, gridMain1.RowDefinitions[0].ActualHeight, gridMain1.RowDefinitions[2].ActualHeight);
+            ConfigTextManager.Instance.SaveMainGirdHeight(gridMain1.RowDefinitions[0].ActualHeight, gridMain1.RowDefinitions[2].ActualHeight);
         }
     }
 

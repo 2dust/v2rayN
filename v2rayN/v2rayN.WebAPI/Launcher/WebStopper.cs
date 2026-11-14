@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.IO;
 using v2rayN.WebAPI.Services;
 
 namespace v2rayN.WebAPI.Launcher;
@@ -154,7 +153,11 @@ public sealed class WebStopper
 
     internal static bool IsManagedBySystemd(int processId)
     {
-        if (!OperatingSystem.IsLinux()) return false;
+        if (!OperatingSystem.IsLinux())
+        {
+            return false;
+        }
+
         try
         {
             return IsSystemdServiceCgroup(File.ReadAllText($"/proc/{processId}/cgroup"));

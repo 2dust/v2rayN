@@ -31,7 +31,7 @@ public sealed class WebInstanceLock : IDisposable
             {
                 throw new IOException("Unable to open the v2rayN.WebAPI instance lock.", new Win32Exception(Marshal.GetLastPInvokeError()));
             }
-            stream = new FileStream(new SafeFileHandle((IntPtr)descriptor, ownsHandle: true), FileAccess.ReadWrite);
+            stream = new FileStream(new SafeFileHandle(descriptor, ownsHandle: true), FileAccess.ReadWrite);
         }
         else
         {
@@ -97,7 +97,7 @@ public sealed class WebInstanceLock : IDisposable
                 {
                     return null;
                 }
-                using var stream = new FileStream(new SafeFileHandle((IntPtr)descriptor, ownsHandle: true), FileAccess.Read);
+                using var stream = new FileStream(new SafeFileHandle(descriptor, ownsHandle: true), FileAccess.Read);
                 using var reader = new StreamReader(stream, Encoding.ASCII);
                 ownerText = reader.ReadToEnd().Trim();
             }
@@ -152,7 +152,8 @@ public sealed class WebInstanceLock : IDisposable
         }
         else if (OperatingSystem.IsWindows())
         {
-            try { _stream.Unlock(WindowsLockOffset, WindowsLockLength); }
+            try
+            { _stream.Unlock(WindowsLockOffset, WindowsLockLength); }
             catch (IOException) { }
         }
         _stream.Dispose();

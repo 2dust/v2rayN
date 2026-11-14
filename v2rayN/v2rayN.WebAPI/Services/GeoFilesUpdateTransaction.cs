@@ -30,7 +30,10 @@ internal static class GeoFilesUpdateTransaction
 
         Task RollBackFilesAsync()
         {
-            if (rollbackCompleted) return Task.CompletedTask;
+            if (rollbackCompleted)
+            {
+                return Task.CompletedTask;
+            }
 
             var originallyExisting = backups.Keys.ToHashSet(PathComparer);
             foreach (var target in originalTargets)
@@ -44,7 +47,11 @@ internal static class GeoFilesUpdateTransaction
             foreach (var (target, backup) in backups)
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(target)!);
-                if (IsSymbolicLink(target)) File.Delete(target);
+                if (IsSymbolicLink(target))
+                {
+                    File.Delete(target);
+                }
+
                 File.Copy(backup.BackupPath, target, overwrite: true);
                 File.SetLastWriteTimeUtc(target, backup.LastWriteTimeUtc);
             }
@@ -67,7 +74,11 @@ internal static class GeoFilesUpdateTransaction
                 {
                     throw new IOException($"GeoFiles target is a symbolic link and cannot be updated safely: {target}");
                 }
-                if (!File.Exists(target)) continue;
+                if (!File.Exists(target))
+                {
+                    continue;
+                }
+
                 var backup = Path.Combine(backupRoot, index.ToString("D6", System.Globalization.CultureInfo.InvariantCulture));
                 var lastWriteTimeUtc = File.GetLastWriteTimeUtc(target);
                 File.Copy(target, backup);
@@ -86,7 +97,11 @@ internal static class GeoFilesUpdateTransaction
                         throw new IOException($"GeoFiles update did not produce a non-empty {Path.GetFileName(requiredFile)}.");
                     }
                 }
-                if (beforeCommit is not null) await beforeCommit(RollBackFilesAsync, cancellationToken);
+                if (beforeCommit is not null)
+                {
+                    await beforeCommit(RollBackFilesAsync, cancellationToken);
+                }
+
                 transactionCompleted = true;
             }
             catch (Exception updateException)
@@ -110,7 +125,8 @@ internal static class GeoFilesUpdateTransaction
         {
             if ((transactionCompleted || rollbackCompleted || !updateStarted) && Directory.Exists(backupRoot))
             {
-                try { Directory.Delete(backupRoot, recursive: true); }
+                try
+                { Directory.Delete(backupRoot, recursive: true); }
                 catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
                 {
                     // A cleanup failure does not invalidate a successful update or rollback.
@@ -127,7 +143,11 @@ internal static class GeoFilesUpdateTransaction
     {
         try
         {
-            if (new FileInfo(path).LinkTarget is not null) return true;
+            if (new FileInfo(path).LinkTarget is not null)
+            {
+                return true;
+            }
+
             return File.Exists(path) && File.GetAttributes(path).HasFlag(FileAttributes.ReparsePoint);
         }
         catch (Exception exception) when (exception is FileNotFoundException or DirectoryNotFoundException)

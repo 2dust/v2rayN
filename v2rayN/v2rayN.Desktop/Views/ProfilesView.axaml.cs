@@ -478,7 +478,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         var visibleColumns = lstProfiles.Columns
             .Where(c => c.IsVisible)
             .OrderBy(c => c.DisplayIndex < 0 ? int.MaxValue : c.DisplayIndex)
-            
+
             .ToList();
         var targetIndex = visibleColumns.IndexOf(column);
         var targetCount = targetIndex >= 0 ? targetIndex + 1 : 0;

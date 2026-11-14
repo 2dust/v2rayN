@@ -1,8 +1,3 @@
-using ServiceLib;
-using ServiceLib.Enums;
-using ServiceLib.Models.Configs;
-using ServiceLib.Models.Entities;
-
 namespace v2rayN.WebAPI.Services;
 
 internal static class BuiltinDnsProfileBootstrap

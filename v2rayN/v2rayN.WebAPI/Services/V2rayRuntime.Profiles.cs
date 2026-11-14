@@ -1,13 +1,5 @@
-using ServiceLib;
-using ServiceLib.Common;
-using ServiceLib.Enums;
-using ServiceLib.Handler;
 using ServiceLib.Handler.Builder;
 using ServiceLib.Handler.Fmt;
-using ServiceLib.Manager;
-
-using ServiceLib.Models.Dto;
-using ServiceLib.Models.Entities;
 using ServiceLib.Services;
 using v2rayN.WebAPI.Contracts;
 
@@ -437,15 +429,15 @@ public sealed partial class V2rayRuntime
         {
             foreach (var item in items)
             {
-            var (context, validation) = await CoreConfigContextBuilder.Build(Config, item);
-            if (validation.Success)
-            {
-                var generated = await CoreConfigHandler.GenerateClientConfig(context, null);
-                if (generated.Success && generated.Data is string configText)
+                var (context, validation) = await CoreConfigContextBuilder.Build(Config, item);
+                if (validation.Success)
                 {
-                    output.Add(new(item.IndexId, item.Remarks, "client-config", configText));
+                    var generated = await CoreConfigHandler.GenerateClientConfig(context, null);
+                    if (generated.Success && generated.Data is string configText)
+                    {
+                        output.Add(new(item.IndexId, item.Remarks, "client-config", configText));
+                    }
                 }
-            }
             }
         }
         return output;

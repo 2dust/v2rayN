@@ -1,5 +1,4 @@
 using System.Net;
-using Microsoft.AspNetCore.Http;
 
 namespace v2rayN.WebAPI.Security;
 

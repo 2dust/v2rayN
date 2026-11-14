@@ -74,7 +74,7 @@ public class PacManager
                     await stream.FlushAsync(token).ConfigureAwait(false);
                 }
                 catch
-                {                   
+                {
                 }
             }
         }

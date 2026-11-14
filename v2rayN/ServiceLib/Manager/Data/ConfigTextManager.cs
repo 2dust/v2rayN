@@ -259,9 +259,9 @@ public class ConfigTextManager
 
     #region UIItem
 
-    public static WindowSizeItem? GetWindowSizeItem(Config config, string typeName)
+    public WindowSizeItem? GetWindowSizeItem(string typeName)
     {
-        var sizeItem = config?.UiItem?.WindowSizeItem?.FirstOrDefault(t => t.TypeName == typeName);
+        var sizeItem = Config?.UiItem?.WindowSizeItem?.FirstOrDefault(t => t.TypeName == typeName);
         if (sizeItem == null || sizeItem.Width <= 0 || sizeItem.Height <= 0)
         {
             return null;
@@ -270,13 +270,13 @@ public class ConfigTextManager
         return sizeItem;
     }
 
-    public static int SaveWindowSizeItem(Config config, string typeName, double width, double height)
+    public int SaveWindowSizeItem(string typeName, double width, double height)
     {
-        var sizeItem = config?.UiItem?.WindowSizeItem?.FirstOrDefault(t => t.TypeName == typeName);
+        var sizeItem = Config?.UiItem?.WindowSizeItem?.FirstOrDefault(t => t.TypeName == typeName);
         if (sizeItem == null)
         {
             sizeItem = new WindowSizeItem { TypeName = typeName };
-            config.UiItem.WindowSizeItem.Add(sizeItem);
+            Config.UiItem.WindowSizeItem.Add(sizeItem);
         }
 
         sizeItem.Width = (int)width;
@@ -285,9 +285,9 @@ public class ConfigTextManager
         return 0;
     }
 
-    public static int SaveMainGirdHeight(Config config, double height1, double height2)
+    public int SaveMainGirdHeight(double height1, double height2)
     {
-        var uiItem = config.UiItem ?? new();
+        var uiItem = Config.UiItem ?? new();
 
         uiItem.MainGirdHeight1 = (int)(height1 + 0.1);
         uiItem.MainGirdHeight2 = (int)(height2 + 0.1);
