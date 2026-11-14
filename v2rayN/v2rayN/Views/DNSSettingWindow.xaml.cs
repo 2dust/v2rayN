@@ -45,6 +45,8 @@ public partial class DNSSettingWindow
             this.Bind(ViewModel, vm => vm.Hosts, v => v.txtHosts.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.DirectExpectedIPs, v => v.cmbDirectExpectedIPs.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.ParallelQuery, v => v.togParallelQuery.IsChecked).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.DisableFallbackIfMatch, v => v.togDisableFallbackIfMatch.IsChecked).DisposeWith(disposables);
+            this.OneWayBind(ViewModel, vm => vm.RayCustomDNSEnableCompatible, v => v.togDisableFallbackIfMatch.IsEnabled, enabled => !enabled).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.ServeStale, v => v.togServeStale.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.EnableHappyEyeballs, v => v.togEnableHappyEyeballs.IsChecked).DisposeWith(disposables);
 

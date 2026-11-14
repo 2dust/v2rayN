@@ -21,6 +21,7 @@ public partial class DNSSettingViewModel : MyReactiveObject, ICloseable
     [Reactive] public partial string Hosts { get; set; }
     [Reactive] public partial string DirectExpectedIPs { get; set; }
     [Reactive] public partial bool ParallelQuery { get; set; }
+    [Reactive] public partial bool DisableFallbackIfMatch { get; set; }
     [Reactive] public partial bool ServeStale { get; set; }
     [Reactive] public partial bool EnableHappyEyeballs { get; set; }
 
@@ -99,6 +100,7 @@ public partial class DNSSettingViewModel : MyReactiveObject, ICloseable
         Hosts = item.Hosts ?? string.Empty;
         DirectExpectedIPs = item.DirectExpectedIPs ?? string.Empty;
         ParallelQuery = item.ParallelQuery ?? false;
+        DisableFallbackIfMatch = item.DisableFallbackIfMatch ?? false;
         ServeStale = item.ServeStale ?? false;
         EnableHappyEyeballs = item.EnableHappyEyeballs ?? false;
         var item1 = await AppManager.Instance.GetDNSItem(ECoreType.Xray);
@@ -143,6 +145,7 @@ public partial class DNSSettingViewModel : MyReactiveObject, ICloseable
         _config.SimpleDNSItem.Hosts = Hosts;
         _config.SimpleDNSItem.DirectExpectedIPs = DirectExpectedIPs;
         _config.SimpleDNSItem.ParallelQuery = ParallelQuery;
+        _config.SimpleDNSItem.DisableFallbackIfMatch = DisableFallbackIfMatch;
         _config.SimpleDNSItem.ServeStale = ServeStale;
         _config.SimpleDNSItem.EnableHappyEyeballs = EnableHappyEyeballs;
         if (NormalDNSCompatible.IsNotEmpty())
