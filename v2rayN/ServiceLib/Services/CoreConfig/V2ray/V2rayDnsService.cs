@@ -135,7 +135,7 @@ public partial class CoreConfigV2rayService
             && rule.ip is not { Count: > 0 }
             && rule.protocol is not { Count: > 0 }
             && rule.process is not { Count: > 0 }
-            && rule.port is null or "0-65535"
+            && rule.port is null or "0-65535" or "1-65535"
             && rule.network is null or "tcp,udp" or "udp,tcp";
     }
 
