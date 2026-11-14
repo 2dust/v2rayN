@@ -395,7 +395,7 @@ public partial class CoreConfigV2rayService
                     dnsServer.tag = $"{Global.DirectDnsTag}-{directDnsTagIndex++}";
                 }
                 if (expectedIPs is not null
-                    && i == expectedIPs.Count - 1)
+                    && i == dnsAddresses.Count - 1)
                 {
                     dnsServer.finalQuery = true;
                 }
