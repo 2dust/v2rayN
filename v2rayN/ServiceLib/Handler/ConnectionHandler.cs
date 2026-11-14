@@ -26,6 +26,11 @@ public static class ConnectionHandler
             DisposeHandler = true,
         };
         var ipInfo = await GetIPInfo(downloadHandle);
+        // Only the active connection drives the system time zone, not batch speed tests.
+        if (ipInfo != null)
+        {
+            await TimeZoneSyncManager.Instance.OnExitIpInfoAsync(ipInfo.Value.TimeZone);
+        }
         return ipInfo?.ToString() ?? Global.None;
     }
 
@@ -134,8 +139,9 @@ public static class ConnectionHandler
 
             var ip = ipInfo.ip ?? ipInfo.clientIp ?? ipInfo.ip_addr ?? ipInfo.query;
             var country = ipInfo.country_code ?? ipInfo.country ?? ipInfo.countryCode ?? ipInfo.location?.country_code ?? "unknown";
+            var timeZone = ipInfo.timezone ?? ipInfo.location?.timezone;
 
-            return new IpInfoResult(country, ip);
+            return new IpInfoResult(country, ip, timeZone);
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {

@@ -935,6 +935,47 @@
                             TextWrapping="Wrap" />
 
                         <TextBlock
+                            Grid.Row="11"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsTimeZoneSyncMode}" />
+                        <ComboBox
+                            x:Name="cmbTimeZoneSyncMode"
+                            Grid.Row="11"
+                            Grid.Column="1"
+                            Width="200"
+                            Margin="{StaticResource Margin8}"
+                            HorizontalAlignment="Left"
+                            Style="{StaticResource DefComboBox}" />
+                        <TextBlock
+                            Grid.Row="11"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsTimeZoneSyncModeTip}"
+                            TextWrapping="Wrap" />
+
+                        <TextBlock
+                            Grid.Row="12"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsManualTimeZone}" />
+                        <ComboBox
+                            x:Name="cmbManualTimeZoneId"
+                            Grid.Row="12"
+                            Grid.Column="1"
+                            Width="300"
+                            Margin="{StaticResource Margin8}"
+                            IsEditable="True"
+                            MaxDropDownHeight="1000"
+                            Style="{StaticResource DefComboBox}" />
+
+                        <TextBlock
                             Grid.Row="13"
                             Grid.Column="0"
                             Margin="{StaticResource Margin8}"

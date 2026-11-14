@@ -11,14 +11,16 @@ internal class IPAPIInfo
     public string? country_code { get; set; }
     public string? countryCode { get; set; }
     public LocationInfo? location { get; set; }
+    public string? timezone { get; set; }
 }
 
 public class LocationInfo
 {
     public string? country_code { get; set; }
+    public string? timezone { get; set; }
 }
 
-public readonly record struct IpInfoResult(string Country, string? Ip)
+public readonly record struct IpInfoResult(string Country, string? Ip, string? TimeZone = null)
 {
     public override string ToString()
     {

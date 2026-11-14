@@ -59,6 +59,8 @@ public partial class OptionSettingWindow
         txtbindInterface.ItemsSource = NetworkUtils.GetBindInterfaceNames();
 
         cmbMainGirdOrientation.ItemsSource = Utils.GetEnumNames<EGirdOrientation>();
+        cmbTimeZoneSyncMode.ItemsSource = Utils.GetEnumNames<ETimeZoneSyncMode>();
+        cmbManualTimeZoneId.ItemsSource = TimeZoneSyncManager.GetSystemZoneIds();
 
         _ = InitSettingFont();
 
@@ -112,6 +114,8 @@ public partial class OptionSettingWindow
             this.Bind(ViewModel, vm => vm.UdpTestTarget, v => v.cmbUdpTestTarget.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.MixedConcurrencyCount, v => v.cmbMixedConcurrencyCount.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.EnableHWA, v => v.togEnableHWA.IsChecked).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.TimeZoneSyncMode, v => v.cmbTimeZoneSyncMode.SelectedIndex).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.ManualTimeZoneId, v => v.cmbManualTimeZoneId.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SubConvertUrl, v => v.cmbSubConvertUrl.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.MainGirdOrientation, v => v.cmbMainGirdOrientation.SelectedIndex).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.GeoFileSourceUrl, v => v.cmbGetFilesSourceUrl.Text).DisposeWith(disposables);

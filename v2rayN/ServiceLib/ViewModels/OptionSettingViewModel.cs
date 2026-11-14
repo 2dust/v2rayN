@@ -61,6 +61,8 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
     [Reactive] public partial string UdpTestTarget { get; set; }
     [Reactive] public partial int MixedConcurrencyCount { get; set; }
     [Reactive] public partial bool EnableHWA { get; set; }
+    [Reactive] public partial int TimeZoneSyncMode { get; set; }
+    [Reactive] public partial string ManualTimeZoneId { get; set; }
     [Reactive] public partial string SubConvertUrl { get; set; }
     [Reactive] public partial int MainGirdOrientation { get; set; }
     [Reactive] public partial string GeoFileSourceUrl { get; set; }
@@ -196,6 +198,8 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         SpeedPingTestUrl = _config.SpeedTestItem.SpeedPingTestUrl;
         UdpTestTarget = _config.SpeedTestItem.UdpTestTarget;
         EnableHWA = _config.GuiItem.EnableHWA;
+        TimeZoneSyncMode = (int)_config.GuiItem.TimeZoneSyncMode;
+        ManualTimeZoneId = _config.GuiItem.ManualTimeZoneId ?? string.Empty;
         SubConvertUrl = _config.ConstItem.SubConvertUrl;
         MainGirdOrientation = (int)_config.UiItem.MainGirdOrientation;
         GeoFileSourceUrl = _config.ConstItem.GeoSourceUrl;
@@ -314,6 +318,12 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
             NoticeManager.Instance.Enqueue(ResUI.FillFragmentParameterError);
             return;
         }
+        if ((ETimeZoneSyncMode)TimeZoneSyncMode == ETimeZoneSyncMode.Manual
+            && !TimeZoneSyncManager.IsKnownWindowsZone(ManualTimeZoneId))
+        {
+            NoticeManager.Instance.Enqueue(ResUI.TimeZoneSyncInvalidManualZone);
+            return;
+        }
         var needReboot = EnableStatistics != _config.GuiItem.EnableStatistics
                           || DisplayRealTimeSpeed != _config.GuiItem.DisplayRealTimeSpeed
                         || EnableDragDropSort != _config.UiItem.EnableDragDropSort
@@ -376,6 +386,8 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         _config.SpeedTestItem.SpeedPingTestUrl = SpeedPingTestUrl;
         _config.SpeedTestItem.UdpTestTarget = UdpTestTarget;
         _config.GuiItem.EnableHWA = EnableHWA;
+        _config.GuiItem.TimeZoneSyncMode = (ETimeZoneSyncMode)TimeZoneSyncMode;
+        _config.GuiItem.ManualTimeZoneId = ManualTimeZoneId.IsNullOrEmpty() ? null : ManualTimeZoneId;
         _config.ConstItem.SubConvertUrl = SubConvertUrl;
         _config.UiItem.MainGirdOrientation = (EGirdOrientation)MainGirdOrientation;
         _config.ConstItem.GeoSourceUrl = GeoFileSourceUrl;
@@ -410,6 +422,7 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         if (await ConfigTextManager.Instance.SaveConfig() == 0)
         {
             await AutoStartupHandler.UpdateTask(_config);
+            await TimeZoneSyncManager.Instance.ApplyConfiguredAsync();
             AppManager.Instance.Reset();
 
             NoticeManager.Instance.Enqueue(needReboot ? ResUI.NeedRebootTips : ResUI.OperationSuccess);

@@ -975,6 +975,27 @@
   <data name="TbSettingsEnableHWA" xml:space="preserve">
     <value>Enable hardware acceleration (requires restart)</value>
   </data>
+  <data name="TbSettingsTimeZoneSyncMode" xml:space="preserve">
+    <value>System time zone</value>
+  </data>
+  <data name="TbSettingsTimeZoneSyncModeTip" xml:space="preserve">
+    <value>Windows only. Auto: use the time zone of the exit IP (needs the current connection info test URL). Manual: use the zone below. The original zone is restored on exit or when set to Off. Turn off "Set time zone automatically" in Windows settings.</value>
+  </data>
+  <data name="TbSettingsManualTimeZone" xml:space="preserve">
+    <value>Manual time zone</value>
+  </data>
+  <data name="TimeZoneSyncInvalidManualZone" xml:space="preserve">
+    <value>Please choose a valid manual time zone</value>
+  </data>
+  <data name="TimeZoneSyncApplied" xml:space="preserve">
+    <value>System time zone set to {0} ({1})</value>
+  </data>
+  <data name="TimeZoneSyncRestored" xml:space="preserve">
+    <value>System time zone restored to {0}</value>
+  </data>
+  <data name="TimeZoneSyncAutoUpdateWarning" xml:space="preserve">
+    <value>"Set time zone automatically" is on in Windows settings and may switch the time zone back.</value>
+  </data>
   <data name="SpeedtestingWait" xml:space="preserve">
     <value>Waiting...</value>
   </data>
