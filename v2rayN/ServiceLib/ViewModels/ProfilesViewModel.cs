@@ -11,6 +11,7 @@ public partial class ProfilesViewModel : MyReactiveObject
     public Interaction<RxVoid, RxVoid> AdjustMainLvColWidthInteraction { get; } = new();
 
     public EventChannel<RxVoid> ReloadRequested { get; } = new();
+
     public EventChannel<RxVoid> RefreshServersRequested { get; } = new();
 
     #region private prop
@@ -87,6 +88,7 @@ public partial class ProfilesViewModel : MyReactiveObject
     public ReactiveCommand<RxVoid, RxVoid> AddSubCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> EditSubCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> DeleteSubCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> WorkflowCmd { get; }
 
     #endregion Menu
 
@@ -237,6 +239,7 @@ public partial class ProfilesViewModel : MyReactiveObject
         {
             await DeleteSubAsync();
         });
+        WorkflowCmd = ReactiveCommand.Create(() => AppEvents.WorkflowRequested.Publish());
 
         #endregion WhenAnyValue && ReactiveCommand
 

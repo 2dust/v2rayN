@@ -16,6 +16,7 @@ public class CoreManager
     private ProcessService? _processPreService;
     private bool _linuxSudo = false;
     private Func<bool, string, Task>? _updateFunc;
+    private readonly SemaphoreSlim _coreSemaphore = new(1, 1);
     private const string _tag = "CoreHandler";
 
     public async Task Init(Config config, Func<bool, string, Task> updateFunc)
@@ -63,6 +64,51 @@ public class CoreManager
     /// <param name="mainContext">Resolved main context (with pre-socks ports already merged if applicable).</param>
     /// <param name="preContext">Optional pre-socks context passed to <see cref="CoreStartPreService"/>.</param>
     public async Task LoadCore(CoreConfigContext? mainContext, CoreConfigContext? preContext)
+    {
+        // Restarting writes the shared core config and stops the old process first, so two
+        // restarts at once would race and could leave an orphaned core behind. Serialize here,
+        // where the resource lives, so every caller is covered.
+        await _coreSemaphore.WaitAsync();
+        try
+        {
+            await LoadCoreLocked(mainContext, preContext);
+        }
+        finally
+        {
+            _coreSemaphore.Release();
+        }
+    }
+
+    /// <summary>
+    /// Restart the core on the current default server and apply the system proxy, without any
+    /// window involvement. Shared by the main window reload and by a workflow's activation
+    /// step, so the sequence of build, load and proxy update lives in one place. Returns the
+    /// profile the core was started with, or <c>null</c> when the restart could not proceed.
+    /// </summary>
+    public async Task<ProfileItem?> ReloadCore()
+    {
+        // Building the config and starting the core is slow and partly synchronous; keep it off
+        // the caller's thread so a workflow started from the UI does not block the window.
+        return await Task.Run(async () =>
+        {
+            var profileItem = await ConfigHandler.GetDefaultServer(_config);
+            if (profileItem is null)
+            {
+                NoticeManager.Instance.Enqueue(ResUI.CheckServerSettings);
+                return null;
+            }
+            var allResult = await CoreConfigContextBuilder.BuildAll(_config, profileItem);
+            if (NoticeManager.Instance.NotifyValidatorResult(allResult.CombinedValidatorResult) && !allResult.Success)
+            {
+                return null;
+            }
+            await LoadCore(allResult.MainResult.Context, allResult.PreSocksResult?.Context);
+            await SysProxyHandler.UpdateSysProxy(_config, false);
+            return profileItem;
+        });
+    }
+
+    private async Task LoadCoreLocked(CoreConfigContext? mainContext, CoreConfigContext? preContext)
     {
         if (mainContext == null)
         {

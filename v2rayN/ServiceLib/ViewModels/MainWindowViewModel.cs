@@ -48,6 +48,7 @@ public partial class MainWindowViewModel : MyReactiveObject
     public ReactiveCommand<RxVoid, RxVoid> SubUpdateViaProxyCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> SubGroupUpdateCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> SubGroupUpdateViaProxyCmd { get; }
+    public ReactiveCommand<RxVoid, RxVoid> WorkflowCmd { get; }
 
     //Setting
     public ReactiveCommand<RxVoid, RxVoid> OptionSettingCmd { get; }
@@ -197,6 +198,11 @@ public partial class MainWindowViewModel : MyReactiveObject
             await UpdateSubscriptionProcess(_config.SubIndexId, true);
         });
 
+        WorkflowCmd = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await WorkflowAsync();
+        });
+
         //Setting
         OptionSettingCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -268,6 +274,16 @@ public partial class MainWindowViewModel : MyReactiveObject
             .AsObservable()
             .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(bl => BlNewUpdate = bl);
+
+        AppEvents.ServerStateChanged
+            .AsObservable()
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
+            .SubscribeAsync(async _ => await RefreshServersDispatcherAsync());
+
+        AppEvents.WorkflowRequested
+            .AsObservable()
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
+            .SubscribeAsync(async _ => await WorkflowAsync());
 
         #endregion AppEvents
 
@@ -573,6 +589,7 @@ public partial class MainWindowViewModel : MyReactiveObject
         if (await AppManager.Instance.WindowDialog.ShowDialogAsync(subSettingViewModel) == true)
         {
             await RefreshSubscriptions();
+            await ProfilesViewModel.RefreshServers();
         }
     }
 
@@ -583,6 +600,22 @@ public partial class MainWindowViewModel : MyReactiveObject
             var handler = new SubscriptionHandler(_config, blProxy, UpdateTaskHandler);
             await handler.UpdateProcess(subId);
         });
+    }
+
+    private async Task WorkflowAsync()
+    {
+        RefreshWorkflowRunner();
+        var workflowViewModel = new WorkflowViewModel();
+        await AppManager.Instance.WindowDialog.ShowDialogAsync(workflowViewModel);
+    }
+
+    /// <summary>
+    /// Make the workflow runtime available to the workflow manager window. The runtime is
+    /// headless, so it only needs the configuration.
+    /// </summary>
+    private void RefreshWorkflowRunner()
+    {
+        WorkflowRunnerManager.Instance.Register(new WorkflowRuntimeService(_config));
     }
 
     #endregion Subscription
@@ -696,24 +729,14 @@ public partial class MainWindowViewModel : MyReactiveObject
                     TabMainSelectedIndex = 0;
                 }
             });
-            var profileItem = await ConfigHandler.GetDefaultServer(_config);
-            if (profileItem == null)
-            {
-                NoticeManager.Instance.Enqueue(ResUI.CheckServerSettings);
-                return;
-            }
-            var allResult = await CoreConfigContextBuilder.BuildAll(_config, profileItem);
-            if (NoticeManager.Instance.NotifyValidatorResult(allResult.CombinedValidatorResult) && !allResult.Success)
+            // The build/load/proxy sequence lives in CoreManager so the workflow activation
+            // step can reuse it without going through this window.
+            var profileItem = await CoreManager.Instance.ReloadCore();
+            if (profileItem is null)
             {
                 return;
             }
-
-            await Task.Run(async () =>
-            {
-                await LoadCore(allResult.MainResult.Context, allResult.PreSocksResult?.Context);
-                await SysProxyHandler.UpdateSysProxy(_config, false);
-                await Task.Delay(1000);
-            });
+            await Task.Delay(1000);
             RxSchedulers.MainThreadScheduler.Schedule(async () =>
             {
                 var result = await StatusBarViewModel.TestServerAvailability();
@@ -775,11 +798,6 @@ public partial class MainWindowViewModel : MyReactiveObject
     private void SetReloadEnabled(bool enabled)
     {
         RxSchedulers.MainThreadScheduler.Schedule(() => BlReloadEnabled = enabled);
-    }
-
-    private async Task LoadCore(CoreConfigContext? mainContext, CoreConfigContext? preContext)
-    {
-        await CoreManager.Instance.LoadCore(mainContext, preContext);
     }
 
     #endregion core job

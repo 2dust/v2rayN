@@ -1966,4 +1966,7 @@
   <data name="TransportPathTip6" xml:space="preserve">
     <value>XDRIVE 远端目录</value>
   </data>
+  <data name="menuWorkflowSetting" xml:space="preserve">
+    <value>工作流</value>
+  </data>
 </root>
