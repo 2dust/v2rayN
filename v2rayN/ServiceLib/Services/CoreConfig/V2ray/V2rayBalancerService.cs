@@ -47,7 +47,7 @@ public partial class CoreConfigV2rayService
                     subjectSelector = [baseTagName],
                     pingConfig = new()
                     {
-                        destination = ConfigTextManager.Config.SpeedTestItem.SpeedPingTestUrl,
+                        destination = ConfigTextHandler.Config.SpeedTestItem.SpeedPingTestUrl,
                         interval = "5m",
                         timeout = "30s",
                         sampling = 2,
@@ -68,7 +68,7 @@ public partial class CoreConfigV2rayService
                 _coreConfig.observatory = new Observatory4Ray
                 {
                     subjectSelector = [baseTagName],
-                    probeUrl = ConfigTextManager.Config.SpeedTestItem.SpeedPingTestUrl,
+                    probeUrl = ConfigTextHandler.Config.SpeedTestItem.SpeedPingTestUrl,
                     probeInterval = "3m",
                     enableConcurrency = true,
                 };

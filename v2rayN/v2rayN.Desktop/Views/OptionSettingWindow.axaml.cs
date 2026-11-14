@@ -13,7 +13,7 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
 
         Loaded += Window_Loaded;
         btnCancel.Click += (s, e) => Close();
-        _config = ConfigTextManager.Config;
+        _config = ConfigTextHandler.Config;
 
         clbdestOverride.SelectionChanged += ClbdestOverride_SelectionChanged;
         btnBrowseCustomSystemProxyPacPath.Click += BtnBrowseCustomSystemProxyPacPath_Click;

@@ -319,7 +319,7 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
 
     public AddServerViewModel(ProfileItem profileItem)
     {
-        _config = ConfigTextManager.Config;
+        _config = ConfigTextHandler.Config;
 
         FetchCertCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -594,7 +594,7 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
         });
         SelectedSource.SetTransportExtra(transport);
 
-        if (await ConfigDbManager.AddServer(_config, SelectedSource) == 0)
+        if (await ConfigDbHandler.AddServer(_config, SelectedSource) == 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
             RequestClose?.Invoke(this, EventArgs.Empty);

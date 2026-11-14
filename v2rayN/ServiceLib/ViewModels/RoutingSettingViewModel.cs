@@ -32,7 +32,7 @@ public partial class RoutingSettingViewModel : MyReactiveObject
 
     public RoutingSettingViewModel()
     {
-        _config = ConfigTextManager.Config;
+        _config = ConfigTextHandler.Config;
 
         var canEditRemove = this.WhenAnyValue(
             x => x.SelectedSource,
@@ -77,7 +77,7 @@ public partial class RoutingSettingViewModel : MyReactiveObject
         DomainStrategy = _config.RoutingBasicItem.DomainStrategy;
         DomainStrategy4Singbox = _config.RoutingBasicItem.DomainStrategy4Singbox;
 
-        await ConfigDbManager.InitBuiltinRouting(_config);
+        await ConfigDbHandler.InitBuiltinRouting(_config);
         await RefreshRoutingItems();
     }
 
@@ -113,7 +113,7 @@ public partial class RoutingSettingViewModel : MyReactiveObject
     {
         _config.RoutingBasicItem.DomainStrategy = DomainStrategy;
         _config.RoutingBasicItem.DomainStrategy4Singbox = DomainStrategy4Singbox;
-        await ConfigTextManager.SaveConfig();
+        await ConfigTextHandler.SaveConfig();
     }
 
     #endregion Refresh Save
@@ -157,7 +157,7 @@ public partial class RoutingSettingViewModel : MyReactiveObject
             var item = await ConfigDbQuery.GetRoutingItem(it?.Id);
             if (item != null)
             {
-                await ConfigDbManager.RemoveRoutingItem(item);
+                await ConfigDbHandler.RemoveRoutingItem(item);
             }
         }
 
@@ -174,7 +174,7 @@ public partial class RoutingSettingViewModel : MyReactiveObject
             return;
         }
 
-        if (await ConfigDbManager.SetDefaultRouting(_config, item) == 0)
+        if (await ConfigDbHandler.SetDefaultRouting(_config, item) == 0)
         {
             await RefreshRoutingItems();
             IsModified = true;
@@ -183,7 +183,7 @@ public partial class RoutingSettingViewModel : MyReactiveObject
 
     private async Task RoutingAdvancedImportRules()
     {
-        if (await ConfigDbManager.InitRouting(_config, true) == 0)
+        if (await ConfigDbHandler.InitRouting(_config, true) == 0)
         {
             await RefreshRoutingItems();
             IsModified = true;

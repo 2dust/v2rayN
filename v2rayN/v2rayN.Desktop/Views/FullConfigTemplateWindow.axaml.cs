@@ -10,7 +10,7 @@ public partial class FullConfigTemplateWindow : WindowBase<FullConfigTemplateVie
     {
         InitializeComponent();
 
-        _config = ConfigTextManager.Config;
+        _config = ConfigTextHandler.Config;
         Loaded += Window_Loaded;
         btnCancel.Click += (_, _) => Close();
 

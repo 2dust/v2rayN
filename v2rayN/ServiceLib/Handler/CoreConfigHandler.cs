@@ -9,7 +9,7 @@ public static class CoreConfigHandler
 
     public static async Task<RetResult> GenerateClientConfig(CoreConfigContext context, string? fileName)
     {
-        var config = ConfigTextManager.Config;
+        var config = ConfigTextHandler.Config;
         var result = new RetResult();
         var node = context.Node;
 

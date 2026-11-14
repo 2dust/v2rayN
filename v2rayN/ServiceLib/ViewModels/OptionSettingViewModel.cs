@@ -124,7 +124,7 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
 
     public OptionSettingViewModel()
     {
-        _config = ConfigTextManager.Config;
+        _config = ConfigTextHandler.Config;
         BlIsWindows = Utils.IsWindows();
         BlIsLinux = Utils.IsLinux();
         BlIsIsMacOS = Utils.IsMacOS();
@@ -407,7 +407,7 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         //coreType
         await SaveCoreType();
 
-        if (await ConfigTextManager.SaveConfig() == 0)
+        if (await ConfigTextHandler.SaveConfig() == 0)
         {
             await AutoStartupHandler.UpdateTask(_config);
             AppManager.Instance.Reset();

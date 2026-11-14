@@ -24,7 +24,7 @@ public class ParityValidationTests
         await code.Should().BeEqualTo("ok");
         await profile.IsValid().Should().BeFalse();
 
-        var result = await ConfigDbManager.AddShadowsocksServer(new Config(), profile, toFile: false);
+        var result = await ConfigDbHandler.AddShadowsocksServer(new Config(), profile, toFile: false);
 
         await result.Should().BeEqualTo(0);
         await profile.ConfigVersion.Should().BeEqualTo(4);
@@ -41,7 +41,7 @@ public class ParityValidationTests
         await code.Should().BeEqualTo("ok");
         await profile.IsValid().Should().BeTrue();
 
-        var result = await ConfigDbManager.AddShadowsocksServer(new Config(), profile, toFile: false);
+        var result = await ConfigDbHandler.AddShadowsocksServer(new Config(), profile, toFile: false);
 
         await result.Should().BeEqualTo(0);
     }
@@ -54,7 +54,7 @@ public class ParityValidationTests
         var valid = V2rayRuntime.TryValidateProfile(profile, out _, out _);
         await valid.Should().BeTrue();
 
-        var result = await ConfigDbManager.AddShadowsocksServer(new Config(), profile, toFile: false);
+        var result = await ConfigDbHandler.AddShadowsocksServer(new Config(), profile, toFile: false);
 
         await result.Should().BeEqualTo(-1);
     }

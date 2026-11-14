@@ -1,9 +1,9 @@
-namespace ServiceLib.Manager.Data;
+namespace ServiceLib.Handler.Data;
 
-public static class ConfigTextManager
+public static class ConfigTextHandler
 {
     private static readonly string _configRes = Global.ConfigFileName;
-    private static readonly string _tag = "ConfigTextManager";
+    private static readonly string _tag = "ConfigTextHandler";
 
     public static Config Config
     {
@@ -145,7 +145,7 @@ public static class ConfigTextManager
 
         config.ConstItem ??= new ConstItem();
 
-        config.SimpleDNSItem ??= ConfigDbManager.InitBuiltinSimpleDNS();
+        config.SimpleDNSItem ??= ConfigDbHandler.InitBuiltinSimpleDNS();
         config.SimpleDNSItem.BlockAAAAQuery ??= false;
         config.SimpleDNSItem.FakeIPRange ??= Global.FakeIPRanges.FirstOrDefault();
         config.SimpleDNSItem.FakeIPv6 ??= false;

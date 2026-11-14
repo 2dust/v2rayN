@@ -22,7 +22,7 @@ public partial class SubSettingViewModel : MyReactiveObject
 
     public SubSettingViewModel()
     {
-        _config = ConfigTextManager.Config;
+        _config = ConfigTextHandler.Config;
 
         var canEditRemove = this.WhenAnyValue(
            x => x.SelectedSource,
@@ -92,7 +92,7 @@ public partial class SubSettingViewModel : MyReactiveObject
 
         foreach (var it in SelectedSources ?? [SelectedSource])
         {
-            await ConfigDbManager.DeleteSubItem(_config, it.Id);
+            await ConfigDbHandler.DeleteSubItem(_config, it.Id);
         }
         await RefreshSubItems();
         NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);

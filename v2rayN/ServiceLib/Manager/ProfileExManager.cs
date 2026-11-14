@@ -1,4 +1,4 @@
-namespace ServiceLib.Manager.Data;
+namespace ServiceLib.Manager;
 
 public class ProfileExManager
 {

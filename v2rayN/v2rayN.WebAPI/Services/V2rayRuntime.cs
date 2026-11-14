@@ -44,7 +44,7 @@ public sealed partial class V2rayRuntime(
     private bool _restoring;
     private int _restoreAndRestartRequested;
 
-    private Config Config => ConfigTextManager.Config;
+    private Config Config => ConfigTextHandler.Config;
     private CoreRuntimeSnapshot CurrentCoreRuntime => Volatile.Read(ref _coreRuntime);
     public bool RestoreAndRestartRequested => Volatile.Read(ref _restoreAndRestartRequested) != 0;
 
@@ -245,19 +245,19 @@ public sealed partial class V2rayRuntime(
             {
                 Config.Inbound[0].AllowLANConn = allowProxyFromLan;
             }
-            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig());
+            await EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig());
         });
-        await ConfigDbManager.InitBuiltinDNS(Config);
+        await ConfigDbHandler.InitBuiltinDNS(Config);
         await BuiltinDnsProfileBootstrap.EnsureAsync(
             Config,
             async () => await ConfigDbQuery.DNSItems() ?? [],
-            ConfigDbManager.SaveDNSItems);
-        await ConfigDbManager.InitBuiltinFullConfigTemplate(Config);
+            ConfigDbHandler.SaveDNSItems);
+        await ConfigDbHandler.InitBuiltinFullConfigTemplate(Config);
         // Keep startup aligned with Desktop's StatusBarViewModel. In particular,
         // InitBuiltinRouting owns the RoutingIndexId -> IsActive migration and must
         // run even when a restored Desktop database already has routing rows.
-        await ConfigDbManager.InitBuiltinRouting(Config);
-        _ = await ConfigDbManager.GetDefaultRouting(Config);
+        await ConfigDbHandler.InitBuiltinRouting(Config);
+        _ = await ConfigDbHandler.GetDefaultRouting(Config);
         var restoredSubscriptions = await ConfigDbQuery.SubItems() ?? [];
         var normalizedSubIndexId = NormalizeSelectedSubscriptionId(
             Config.SubIndexId,
@@ -268,8 +268,8 @@ public sealed partial class V2rayRuntime(
             Config.SubIndexId = normalizedSubIndexId;
         }
         var selectedProfileId = Config.IndexId;
-        var defaultProfile = await ConfigDbManager.GetDefaultServer(Config);
-        await _mutations.RunAsync(() => EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig()));
+        var defaultProfile = await ConfigDbHandler.GetDefaultServer(Config);
+        await _mutations.RunAsync(() => EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig()));
         await ProfileExManager.Instance.Init();
         await CertPemManager.Instance.Init(Config);
         // The Web frontend owns its runtime and rejects generated launch contexts that enable TUN.
@@ -392,7 +392,7 @@ public sealed partial class V2rayRuntime(
             steps.Add(new("configuration save", async deadline =>
             {
                 await _mutations.RunAsync(
-                    () => EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig()),
+                    () => EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig()),
                     deadline.Token);
                 return true;
             }));
@@ -437,7 +437,7 @@ public sealed partial class V2rayRuntime(
         }
 
         var item = ToSubItem(input, null);
-        var result = await _mutations.RunAsync(() => ConfigDbManager.AddSubItem(Config, item));
+        var result = await _mutations.RunAsync(() => ConfigDbHandler.AddSubItem(Config, item));
         if (result != 0)
         {
             return new(false, "subscription_save_failed", ApiMessageKeys.SubscriptionSaveFailed, null);
@@ -466,7 +466,7 @@ public sealed partial class V2rayRuntime(
 
             var item = ToSubItem(input, existing);
             item.Id = id;
-            var result = await ConfigDbManager.AddSubItem(Config, item);
+            var result = await ConfigDbHandler.AddSubItem(Config, item);
             if (result != 0)
             {
                 return new SubscriptionMutationResult(false, "subscription_save_failed", ApiMessageKeys.SubscriptionSaveFailed, null);
@@ -496,14 +496,14 @@ public sealed partial class V2rayRuntime(
 
         await _mutations.RunAsync(async () =>
         {
-            if (await ConfigDbManager.DeleteSubItem(Config, id) != 0)
+            if (await ConfigDbHandler.DeleteSubItem(Config, id) != 0)
             {
                 throw new IOException("ServiceLib could not delete the subscription.");
             }
             if (removesCurrentProfile)
             {
-                _ = await ConfigDbManager.GetDefaultServer(Config);
-                await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig());
+                _ = await ConfigDbHandler.GetDefaultServer(Config);
+                await EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig());
             }
         });
 
@@ -552,7 +552,7 @@ public sealed partial class V2rayRuntime(
                         await handler.UpdateProcess(id);
 
                         operation.Token.ThrowIfCancellationRequested();
-                        await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig());
+                        await EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig());
                         await UpdateSubscriptionTimestampLockedAsync(id);
                     }, operation.Token);
                     _events.Publish("profiles-changed", new { subscriptionId = id });
@@ -780,7 +780,7 @@ public sealed partial class V2rayRuntime(
             await _mutations.RunAsync(async () =>
             {
                 Config.IndexId = profile.IndexId;
-                await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig());
+                await EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig());
             });
         }
 
@@ -789,10 +789,10 @@ public sealed partial class V2rayRuntime(
 
     private async Task<ProfileItem?> GetDefaultProfileAsync() => await _mutations.RunAsync(async () =>
     {
-        var selected = await ConfigDbManager.GetDefaultServer(Config);
+        var selected = await ConfigDbHandler.GetDefaultServer(Config);
         if (selected is not null)
         {
-            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig());
+            await EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig());
         }
         return selected;
     });
@@ -1178,7 +1178,7 @@ public sealed partial class V2rayRuntime(
             if (item is not null)
             {
                 item.UpdateTime = updateTime;
-                if (await ConfigDbManager.AddSubItem(Config, item) != 0)
+                if (await ConfigDbHandler.AddSubItem(Config, item) != 0)
                 {
                     throw new IOException("ServiceLib could not save the subscription timestamp.");
                 }
@@ -1191,7 +1191,7 @@ public sealed partial class V2rayRuntime(
             if (item.Enabled)
             {
                 item.UpdateTime = updateTime;
-                if (await ConfigDbManager.AddSubItem(Config, item) != 0)
+                if (await ConfigDbHandler.AddSubItem(Config, item) != 0)
                 {
                     throw new IOException("ServiceLib could not save the subscription timestamp.");
                 }

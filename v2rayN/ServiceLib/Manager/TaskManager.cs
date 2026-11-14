@@ -42,7 +42,7 @@ public class TaskManager
 
                 try
                 {
-                    await ConfigTextManager.SaveConfig();
+                    await ConfigTextHandler.SaveConfig();
                     await ProfileExManager.Instance.SaveTo();
                 }
                 catch (Exception ex)
@@ -113,7 +113,7 @@ public class TaskManager
             });
             await handler.UpdateProcess(item.Id);
             item.UpdateTime = updateTime;
-            await ConfigDbManager.AddSubItem(_config, item);
+            await ConfigDbHandler.AddSubItem(_config, item);
             await Task.Delay(1000);
         }
     }

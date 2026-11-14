@@ -1,14 +1,14 @@
-namespace ServiceLib.Manager.Data;
+namespace ServiceLib.Handler.Data;
 
-public static class ConfigDbManager
+public static class ConfigDbHandler
 {
-    private static readonly string _tag = "ConfigDbManager";
+    private static readonly string _tag = "ConfigDbHandler";
 
     private static Config CurrentConfig => ConfigState.Instance.Current;
 
     private static async Task<int> SaveConfig()
     {
-        return await ConfigTextManager.SaveConfig();
+        return await ConfigTextHandler.SaveConfig();
     }
 
     #region Server
@@ -2011,7 +2011,7 @@ public static class ConfigDbManager
             var existItem = FindMatchedProfileItem(lstSub, activeProfile);
             if (existItem != null)
             {
-                await ConfigDbManager.SetDefaultServerIndex(config, existItem.IndexId);
+                await ConfigDbHandler.SetDefaultServerIndex(config, existItem.IndexId);
             }
         }
 
@@ -2504,7 +2504,7 @@ public static class ConfigDbManager
         var lockItem = items?.FirstOrDefault(t => t.Locked == true);
         if (lockItem != null)
         {
-            await ConfigDbManager.RemoveRoutingItem(lockItem);
+            await ConfigDbHandler.RemoveRoutingItem(lockItem);
             items = await ConfigDbQuery.RoutingItems();
         }
 
@@ -3009,7 +3009,7 @@ public static class ConfigDbManager
     private static async Task<int> MigrateProfileExtraV2ToV3Sub(List<ProfileItem> batch)
     {
         var updateProfileItems = new List<ProfileItem>();
-        var config = ConfigTextManager.Config;
+        var config = ConfigTextHandler.Config;
 
         foreach (var item in batch)
         {

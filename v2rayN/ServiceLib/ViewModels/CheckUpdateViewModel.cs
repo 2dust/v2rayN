@@ -19,7 +19,7 @@ public partial class CheckUpdateViewModel : MyReactiveObject
 
     public CheckUpdateViewModel()
     {
-        _config = ConfigTextManager.Config;
+        _config = ConfigTextHandler.Config;
 
         CheckUpdateCmd = ReactiveCommand.CreateFromTask(CheckUpdate);
         CheckUpdateCmd.ThrownExceptions.Subscribe(ex =>
@@ -126,7 +126,7 @@ public partial class CheckUpdateViewModel : MyReactiveObject
                            .Select(t => t.CoreTypeForStorage)
                            .ToList();
 
-        await ConfigTextManager.SaveConfig();
+        await ConfigTextHandler.SaveConfig();
     }
 
     private async Task CheckOnly()

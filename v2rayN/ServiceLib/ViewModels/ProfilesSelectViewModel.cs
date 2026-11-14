@@ -51,7 +51,7 @@ public partial class ProfilesSelectViewModel : MyReactiveObject, ICloseable
 
     public ProfilesSelectViewModel()
     {
-        _config = ConfigTextManager.Config;
+        _config = ConfigTextHandler.Config;
         _subIndexId = _config.SubIndexId ?? string.Empty;
 
         #region WhenAnyValue && ReactiveCommand

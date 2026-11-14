@@ -107,7 +107,7 @@ public partial class StatusBarViewModel : MyReactiveObject
 
     public StatusBarViewModel()
     {
-        _config = ConfigTextManager.Config;
+        _config = ConfigTextHandler.Config;
         SelectedRouting = new();
         SelectedServer = new();
         RunningServerToolTipText = GetRunningServerToolTipText("-");
@@ -218,7 +218,7 @@ public partial class StatusBarViewModel : MyReactiveObject
 
     private async Task Init()
     {
-        await ConfigDbManager.InitBuiltinRouting(_config);
+        await ConfigDbHandler.InitBuiltinRouting(_config);
         await RefreshRoutingsMenu();
         await InboundDisplayStatus();
         // The view refreshes its icon on initialization; interaction handlers are not registered yet.
@@ -267,7 +267,7 @@ public partial class StatusBarViewModel : MyReactiveObject
         await RefreshServersMenu();
 
         //display running server
-        var running = await ConfigDbManager.GetDefaultServer(_config);
+        var running = await ConfigDbHandler.GetDefaultServer(_config);
         if (running != null)
         {
             RunningServerDisplay = running.GetSummary();
@@ -319,7 +319,7 @@ public partial class StatusBarViewModel : MyReactiveObject
 
     public async Task<AvailabilityCheckResult?> TestServerAvailability()
     {
-        var item = await ConfigDbManager.GetDefaultServer(_config);
+        var item = await ConfigDbHandler.GetDefaultServer(_config);
         if (item == null)
         {
             return null;
@@ -373,7 +373,7 @@ public partial class StatusBarViewModel : MyReactiveObject
         NoticeManager.Instance.SendMessageEx($"{ResUI.TipChangeSystemProxy} - {_config.SystemProxyItem.SysProxyType}");
 
         SystemProxySelected = (int)_config.SystemProxyItem.SysProxyType;
-        await ConfigTextManager.SaveConfig();
+        await ConfigTextHandler.SaveConfig();
     }
 
     public async Task ChangeSystemProxyAsync(ESysProxyType type, bool blChange)
@@ -413,7 +413,7 @@ public partial class StatusBarViewModel : MyReactiveObject
             return;
         }
 
-        if (await ConfigDbManager.SetDefaultRouting(_config, item) == 0)
+        if (await ConfigDbHandler.SetDefaultRouting(_config, item) == 0)
         {
             NoticeManager.Instance.SendMessageEx(ResUI.TipChangeRouting);
             ReloadRequested.Publish();
@@ -459,7 +459,7 @@ public partial class StatusBarViewModel : MyReactiveObject
             }
         }
 
-        await ConfigTextManager.SaveConfig();
+        await ConfigTextHandler.SaveConfig();
         ReloadRequested.Publish();
     }
 

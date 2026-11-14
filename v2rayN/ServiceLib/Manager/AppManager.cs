@@ -67,7 +67,7 @@ public sealed class AppManager
         }
 
         Logging.Setup();
-        _config = ConfigTextManager.Init();
+        _config = ConfigTextHandler.Init();
         if (_config == null)
         {
             return false;
@@ -104,7 +104,7 @@ public sealed class AppManager
 
         Task.Run(async () =>
         {
-            await ConfigDbManager.MigrateProfileExtra();
+            await ConfigDbHandler.MigrateProfileExtra();
         }).Wait();
 
         return true;
@@ -127,7 +127,7 @@ public sealed class AppManager
             AppEvents.AppExitRequested.Publish();
             await Task.Delay(50); //Wait for AppExitRequested to be processed
 
-            await ConfigTextManager.SaveConfig();
+            await ConfigTextHandler.SaveConfig();
             await ProfileExManager.Instance.SaveTo();
             await StatisticsManager.Instance.SaveTo();
             await CoreManager.Instance.CoreStop();

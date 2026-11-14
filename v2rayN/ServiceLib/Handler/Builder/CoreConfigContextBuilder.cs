@@ -46,7 +46,7 @@ public class CoreConfigContextBuilder
             SimpleDnsItem = config.SimpleDNSItem,
             ProtectDomainList = [],
             RawDnsItem = await ConfigDbQuery.GetDNSItem(coreType),
-            RoutingItem = await ConfigDbManager.GetDefaultRouting(config),
+            RoutingItem = await ConfigDbHandler.GetDefaultRouting(config),
             IsWindows = Utils.IsWindows(),
             IsMacOS = Utils.IsMacOS(),
             IsLinux = Utils.IsLinux(),
@@ -204,7 +204,7 @@ public class CoreConfigContextBuilder
         var node = nodeContext.Node;
         var coreType = AppManager.Instance.GetCoreType(node, node.ConfigType);
 
-        var preSocksItem = ConfigDbManager.GetPreSocksItem(config, node, coreType);
+        var preSocksItem = ConfigDbHandler.GetPreSocksItem(config, node, coreType);
         if (preSocksItem != null)
         {
             var preSocksResult = await Build(nodeContext.AppConfig, preSocksItem);

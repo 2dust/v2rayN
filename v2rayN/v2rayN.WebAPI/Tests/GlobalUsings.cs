@@ -1,8 +1,8 @@
 global using ServiceLib;
 global using ServiceLib.Common;
 global using ServiceLib.Enums;
+global using ServiceLib.Handler.Data;
 global using ServiceLib.Manager;
-global using ServiceLib.Manager.Data;
 global using ServiceLib.Models.Configs;
 global using ServiceLib.Models.CoreConfigs;
 global using ServiceLib.Models.Dto;

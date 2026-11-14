@@ -44,7 +44,7 @@ public partial class FullConfigTemplateViewModel : MyReactiveObject, ICloseable
 
     public FullConfigTemplateViewModel()
     {
-        _config = ConfigTextManager.Config;
+        _config = ConfigTextHandler.Config;
         SaveCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await SaveSettingAsync();
@@ -104,7 +104,7 @@ public partial class FullConfigTemplateViewModel : MyReactiveObject, ICloseable
         item.AddProxyOnly = AddProxyOnly4Ray;
         item.ProxyDetour = ProxyDetour4Ray;
 
-        await ConfigDbManager.SaveFullConfigTemplate(_config, item);
+        await ConfigDbHandler.SaveFullConfigTemplate(_config, item);
         return true;
     }
 
@@ -122,7 +122,7 @@ public partial class FullConfigTemplateViewModel : MyReactiveObject, ICloseable
         item.AddProxyOnly = AddProxyOnly4Singbox;
         item.ProxyDetour = ProxyDetour4Singbox;
 
-        await ConfigDbManager.SaveFullConfigTemplate(_config, item);
+        await ConfigDbHandler.SaveFullConfigTemplate(_config, item);
         return true;
     }
 }

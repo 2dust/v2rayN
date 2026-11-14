@@ -221,7 +221,7 @@ public class SniffingSettingsIntegrationTests
         ],
         GlobalHotkeys = [],
         CoreTypeItem = [new CoreTypeItem { ConfigType = EConfigType.VMess, CoreType = ECoreType.Xray }],
-        SimpleDNSItem = ConfigDbManager.InitBuiltinSimpleDNS(),
+        SimpleDNSItem = ConfigDbHandler.InitBuiltinSimpleDNS(),
         HappyEyeballs4RayItem = new HappyEyeballs4RayItem(),
         IndexId = string.Empty,
         SubIndexId = string.Empty,

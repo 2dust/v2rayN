@@ -113,7 +113,7 @@ public sealed partial class V2rayRuntime
                 .Distinct(StringComparer.Ordinal)
                 .ToList();
             Config.CheckUpdateItem.UpdateViaProxy = input.UseProxy;
-            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig());
+            await EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig());
         });
 
         return OperationView.Ok(ApiMessageKeys.CoreUpdateSettingsSaved);

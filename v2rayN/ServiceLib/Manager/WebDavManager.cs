@@ -16,7 +16,7 @@ public sealed class WebDavManager
 
     public WebDavManager()
     {
-        _config = ConfigTextManager.Config;
+        _config = ConfigTextHandler.Config;
     }
 
     private async Task<bool> GetClient()

@@ -1,4 +1,4 @@
-namespace ServiceLib.Manager.Data;
+namespace ServiceLib.Handler.Data;
 
 public class ConfigDbQuery
 {
