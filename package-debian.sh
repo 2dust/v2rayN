@@ -17,8 +17,8 @@ OUTPUT_DIR="${HOME}/debbuild"
 NUGET_CACHE_DIR=""
 DOTNET_NUPKG_BASE="${DOTNET_NUPKG_BASE:-https://github.com/autorepobot/dotnet-nupkg-prebuild/releases/download}"
 SKIASHARP_BASE="${SKIASHARP_BASE:-https://github.com/autorepobot/SkiaSharp-ppc64le/releases/download}"
-SkiaSharp_VERSION="${SkiaSharp_VERSION:-3.119.4}"
-HarfBuzzSharp_VERSION="${HarfBuzzSharp_VERSION:-8.3.1.5}"
+SkiaSharp_VERSION="${SkiaSharp_VERSION:-4.156.0}"
+HarfBuzzSharp_VERSION="${HarfBuzzSharp_VERSION:-14.4.0.100}"
 
 DOTNET_SDK_VERSION="${DOTNET_SDK_VERSION:-10.0.114}"
 
@@ -368,6 +368,8 @@ resolve_version() {
 
 download_nuget_packages() {
   NUGET_CACHE_DIR="$(mktemp -d)"
+  # Official packages with the same version omit the custom PPC assets.
+  export NUGET_PACKAGES="$NUGET_CACHE_DIR/packages"
 
   local riscv_rt ppc64le_rt loong_rt
   riscv_rt="$(get_runtime_version "$DOTNET_RISCV_VERSION")"
@@ -831,6 +833,10 @@ package_binary() {
   prepare_deb_target_arch "$short"
 
   extra_depends="libc6 (>= 2.39), fontconfig (>= 2.15.0), desktop-file-utils (>= 0.26), xdg-utils (>= 1.1.3), coreutils (>= 9.4), bash (>= 5.2.21), libfreetype6 (>= 2.13)"
+  # .NET runtime dependencies not covered by ELF dependency scanning.
+  extra_depends+=", ca-certificates, libgssapi-krb5-2, libicu76 | libicu72, libssl3t64 | libssl3, tzdata"
+  # Avalonia loads X11 dynamically; libsm6 also depends on libice6.
+  extra_depends+=", libx11-6, libsm6"
 
   mkdir -p "$workdir/debian"
   cat > "$workdir/debian/control" <<EOF
