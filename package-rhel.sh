@@ -719,6 +719,7 @@ ExclusiveArch:  aarch64 x86_64 riscv64 ppc64le loongarch64
 Source0:        __PKGROOT__.tar.gz
 
 Requires:       cairo, pango, openssl, mesa-libEGL, mesa-libGL
+Requires:       ca-certificates, libgcc%{?_isa}, krb5-libs%{?_isa}, libicu%{?_isa}, openssl-libs%{?_isa}, libstdc++%{?_isa}, tzdata, libX11%{?_isa}, libICE%{?_isa}, libSM%{?_isa}
 Requires:       glibc >= 2.39
 Requires:       fontconfig >= 2.15.0
 Requires:       desktop-file-utils >= 0.26

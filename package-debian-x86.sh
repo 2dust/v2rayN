@@ -764,7 +764,7 @@ package_binary() {
 
   prepare_deb_target_arch
 
-  extra_depends="libc6 (>= 2.36), fontconfig (>= 2.14.1), desktop-file-utils (>= 0.26), xdg-utils (>= 1.1.3), coreutils (>= 9.1), bash (>= 5.2.15), libfreetype6 (>= 2.12)"
+  extra_depends="libc6 (>= 2.36), fontconfig (>= 2.14.1), desktop-file-utils (>= 0.26), xdg-utils (>= 1.1.3), coreutils (>= 9.1), bash (>= 5.2.15), libfreetype6 (>= 2.12), ca-certificates, libgcc-s1, libgssapi-krb5-2, libicu76 | libicu72, libssl3t64 | libssl3, libstdc++6, tzdata, libx11-6, libice6, libsm6"
 
   mkdir -p "$workdir/debian"
   cat > "$workdir/debian/control" <<EOF_CONTROL
