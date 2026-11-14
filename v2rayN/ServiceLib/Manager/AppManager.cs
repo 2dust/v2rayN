@@ -124,6 +124,7 @@ public sealed class AppManager
             Logging.SaveLog("AppExitAsync Begin");
 
             await SysProxyHandler.UpdateSysProxy(_config, true);
+            await TimeZoneSyncManager.Instance.RestoreAsync();
             AppEvents.AppExitRequested.Publish();
             await Task.Delay(50); //Wait for AppExitRequested to be processed
 

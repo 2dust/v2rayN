@@ -4391,6 +4391,69 @@ namespace ServiceLib.Resx {
                 return ResourceManager.GetString("TbSettingsEnableHWA", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to System time zone.
+        /// </summary>
+        public static string TbSettingsTimeZoneSyncMode {
+            get {
+                return ResourceManager.GetString("TbSettingsTimeZoneSyncMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Windows only. Auto: use the time zone of the exit IP....
+        /// </summary>
+        public static string TbSettingsTimeZoneSyncModeTip {
+            get {
+                return ResourceManager.GetString("TbSettingsTimeZoneSyncModeTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manual time zone.
+        /// </summary>
+        public static string TbSettingsManualTimeZone {
+            get {
+                return ResourceManager.GetString("TbSettingsManualTimeZone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please choose a valid manual time zone.
+        /// </summary>
+        public static string TimeZoneSyncInvalidManualZone {
+            get {
+                return ResourceManager.GetString("TimeZoneSyncInvalidManualZone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System time zone set to {0} ({1}).
+        /// </summary>
+        public static string TimeZoneSyncApplied {
+            get {
+                return ResourceManager.GetString("TimeZoneSyncApplied", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to System time zone restored to {0}.
+        /// </summary>
+        public static string TimeZoneSyncRestored {
+            get {
+                return ResourceManager.GetString("TimeZoneSyncRestored", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to "Set time zone automatically" is on in Windows settings....
+        /// </summary>
+        public static string TimeZoneSyncAutoUpdateWarning {
+            get {
+                return ResourceManager.GetString("TimeZoneSyncAutoUpdateWarning", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   查找类似 Enable IPv6 Address 的本地化字符串。

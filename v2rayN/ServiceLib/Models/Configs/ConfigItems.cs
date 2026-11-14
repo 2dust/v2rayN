@@ -70,6 +70,13 @@ public class GUIItem
     public bool EnableHWA { get; set; } = false;
     public bool EnableLog { get; set; } = true;
     public string? RootCertProvider { get; set; }
+    public ETimeZoneSyncMode TimeZoneSyncMode { get; set; } = ETimeZoneSyncMode.Off;
+
+    /// <summary>Windows zone id used in Manual mode, e.g. "Tokyo Standard Time".</summary>
+    public string? ManualTimeZoneId { get; set; }
+
+    /// <summary>Windows zone id active before the first sync; null when nothing needs restoring.</summary>
+    public string? OriginalTimeZoneId { get; set; }
 }
 
 public class MsgUIItem
