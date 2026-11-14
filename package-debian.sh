@@ -832,7 +832,11 @@ package_binary() {
 
   prepare_deb_target_arch "$short"
 
-  extra_depends="libc6 (>= 2.39), fontconfig (>= 2.15.0), desktop-file-utils (>= 0.26), xdg-utils (>= 1.1.3), coreutils (>= 9.4), bash (>= 5.2.21), libfreetype6 (>= 2.13), ca-certificates, libgcc-s1, libgssapi-krb5-2, libicu76 | libicu72, libssl3t64 | libssl3, libstdc++6, tzdata, libx11-6, libice6, libsm6"
+  extra_depends="libc6 (>= 2.39), fontconfig (>= 2.15.0), desktop-file-utils (>= 0.26), xdg-utils (>= 1.1.3), coreutils (>= 9.4), bash (>= 5.2.21), libfreetype6 (>= 2.13)"
+  # .NET runtime dependencies not covered by ELF dependency scanning.
+  extra_depends+=", ca-certificates, libgssapi-krb5-2, libicu76 | libicu72, libssl3t64 | libssl3, tzdata"
+  # Avalonia loads X11 dynamically; libsm6 also depends on libice6.
+  extra_depends+=", libx11-6, libsm6"
 
   mkdir -p "$workdir/debian"
   cat > "$workdir/debian/control" <<EOF
