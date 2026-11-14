@@ -54,6 +54,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -263,6 +264,29 @@
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbEnableHappyEyeballsTip}"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            Grid.Row="11"
+                            Grid.Column="0"
+                            MaxWidth="260"
+                            HorizontalAlignment="Left"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbDisableFallbackIfMatch}"
+                            TextWrapping="Wrap" />
+                        <ToggleButton
+                            x:Name="togDisableFallbackIfMatch"
+                            Grid.Row="11"
+                            Grid.Column="1"
+                            Margin="{StaticResource Margin8}"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center" />
+                        <TextBlock
+                            Grid.Row="11"
+                            Grid.Column="2"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Text="{x:Static resx:ResUI.TbDisableFallbackIfMatchTip}"
                             TextWrapping="Wrap" />
                     </Grid>
                 </ScrollViewer>

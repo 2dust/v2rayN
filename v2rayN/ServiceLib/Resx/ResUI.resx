@@ -1974,4 +1974,10 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TransportPathTip6" xml:space="preserve">
     <value>XDRIVE remote folder</value>
   </data>
+  <data name="TbDisableFallbackIfMatch" xml:space="preserve">
+    <value>Restrict DNS fallback on domain match (Xray)</value>
+  </data>
+  <data name="TbDisableFallbackIfMatchTip" xml:space="preserve">
+    <value>Use only DNS servers with matching domain rules, including bootstrap. If all fail, resolution fails. Other domains use the default DNS servers.</value>
+  </data>
 </root>

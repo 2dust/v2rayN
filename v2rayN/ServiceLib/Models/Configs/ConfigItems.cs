@@ -268,6 +268,7 @@ public class SimpleDNSItem
     public string? Strategy4ProxyDial { get; set; }
     public bool? ServeStale { get; set; }
     public bool? ParallelQuery { get; set; }
+    public bool? DisableFallbackIfMatch { get; set; }
     public string? Hosts { get; set; }
     public string? DirectExpectedIPs { get; set; }
     public bool? EnableHappyEyeballs { get; set; }

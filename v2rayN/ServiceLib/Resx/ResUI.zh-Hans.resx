@@ -1966,4 +1966,10 @@
   <data name="TransportPathTip6" xml:space="preserve">
     <value>XDRIVE 远端目录</value>
   </data>
+  <data name="TbDisableFallbackIfMatch" xml:space="preserve">
+    <value>域名匹配时限制 DNS 回退（Xray）</value>
+  </data>
+  <data name="TbDisableFallbackIfMatchTip" xml:space="preserve">
+    <value>仅使用域名规则匹配的 DNS（包括引导 DNS）。若全部失败，解析失败。其他域名使用默认 DNS。</value>
+  </data>
 </root>
