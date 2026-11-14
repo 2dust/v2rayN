@@ -17,8 +17,8 @@ RPM_TOPDIR="${HOME}/rpmbuild"
 NUGET_CACHE_DIR=""
 DOTNET_NUPKG_BASE="${DOTNET_NUPKG_BASE:-https://github.com/autorepobot/dotnet-nupkg-prebuild/releases/download}"
 SKIASHARP_BASE="${SKIASHARP_BASE:-https://github.com/autorepobot/SkiaSharp-ppc64le/releases/download}"
-SkiaSharp_VERSION="${SkiaSharp_VERSION:-3.119.4}"
-HarfBuzzSharp_VERSION="${HarfBuzzSharp_VERSION:-8.3.1.5}"
+SkiaSharp_VERSION="${SkiaSharp_VERSION:-4.156.0}"
+HarfBuzzSharp_VERSION="${HarfBuzzSharp_VERSION:-14.4.0.100}"
 
 DOTNET_SDK_VERSION="${DOTNET_SDK_VERSION:-10.0.114}"
 
@@ -340,6 +340,8 @@ resolve_version() {
 
 download_nuget_packages() {
   NUGET_CACHE_DIR="$(mktemp -d)"
+  # Official packages with the same version omit the custom PPC assets.
+  export NUGET_PACKAGES="$NUGET_CACHE_DIR/packages"
 
   local riscv_rt ppc64le_rt loong_rt
   riscv_rt="$(get_runtime_version "$DOTNET_RISCV_VERSION")"
