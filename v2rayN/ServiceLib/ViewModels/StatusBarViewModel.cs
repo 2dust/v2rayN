@@ -107,7 +107,7 @@ public partial class StatusBarViewModel : MyReactiveObject
 
     public StatusBarViewModel()
     {
-        _config = ConfigTextManager.Instance.Config;
+        _config = ConfigTextManager.Config;
         SelectedRouting = new();
         SelectedServer = new();
         RunningServerToolTipText = GetRunningServerToolTipText("-");
@@ -373,7 +373,7 @@ public partial class StatusBarViewModel : MyReactiveObject
         NoticeManager.Instance.SendMessageEx($"{ResUI.TipChangeSystemProxy} - {_config.SystemProxyItem.SysProxyType}");
 
         SystemProxySelected = (int)_config.SystemProxyItem.SysProxyType;
-        await ConfigTextManager.Instance.SaveConfig();
+        await ConfigTextManager.SaveConfig();
     }
 
     public async Task ChangeSystemProxyAsync(ESysProxyType type, bool blChange)
@@ -459,7 +459,7 @@ public partial class StatusBarViewModel : MyReactiveObject
             }
         }
 
-        await ConfigTextManager.Instance.SaveConfig();
+        await ConfigTextManager.SaveConfig();
         ReloadRequested.Publish();
     }
 

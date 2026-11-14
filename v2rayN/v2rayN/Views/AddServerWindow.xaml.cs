@@ -204,7 +204,7 @@ public partial class AddServerWindow
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
         });
 
-        WindowsUtils.SetDarkBorder(this, ConfigTextManager.Instance.Config.UiItem.CurrentTheme);
+        WindowsUtils.SetDarkBorder(this, ConfigTextManager.Config.UiItem.CurrentTheme);
     }
 
     private void InitializeData(ProfileItem profileItem)

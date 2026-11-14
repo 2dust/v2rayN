@@ -31,7 +31,7 @@ public class PacManager
 
     private async Task<byte[]> InitText(int httpPort)
     {
-        var customSystemProxyPacPath = ConfigTextManager.Instance.Config.SystemProxyItem.CustomSystemProxyPacPath;
+        var customSystemProxyPacPath = ConfigTextManager.Config.SystemProxyItem.CustomSystemProxyPacPath;
         var fileName = customSystemProxyPacPath.IsNotEmpty() && File.Exists(customSystemProxyPacPath)
             ? customSystemProxyPacPath
             : Path.Combine(Utils.GetConfigPath(), "pac.txt");

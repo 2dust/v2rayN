@@ -61,7 +61,7 @@ public sealed partial class V2rayRuntime
                     await using var operation = await _operations.EnterOperationAsync(token);
                     await _mutations.RunAsync(async () =>
                     {
-                        await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+                        await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig());
                         await ProfileExManager.Instance.SaveTo();
                     }, operation.Token);
                 }, cancellationToken);

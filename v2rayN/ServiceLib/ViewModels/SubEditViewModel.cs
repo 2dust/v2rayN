@@ -24,7 +24,7 @@ public partial class SubEditViewModel : MyReactiveObject, ICloseable
 
     public SubEditViewModel(SubItem subItem)
     {
-        _config = ConfigTextManager.Instance.Config;
+        _config = ConfigTextManager.Config;
 
         SelectPrevProfileCmd = ReactiveCommand.CreateFromTask(async () =>
         {

@@ -12,7 +12,7 @@ public class GlobalHotkeySettingViewModel : MyReactiveObject, ICloseable
 
     public GlobalHotkeySettingViewModel()
     {
-        _config = ConfigTextManager.Instance.Config;
+        _config = ConfigTextManager.Config;
 
         _globalHotkeys = JsonUtils.DeepCopy(_config.GlobalHotkeys);
 
@@ -52,7 +52,7 @@ public class GlobalHotkeySettingViewModel : MyReactiveObject, ICloseable
     {
         _config.GlobalHotkeys = _globalHotkeys;
 
-        if (await ConfigTextManager.Instance.SaveConfig() == 0)
+        if (await ConfigTextManager.SaveConfig() == 0)
         {
             RequestClose?.Invoke(this, EventArgs.Empty);
         }

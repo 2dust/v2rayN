@@ -38,7 +38,7 @@ public partial class RoutingRuleSettingViewModel : MyReactiveObject, ICloseable
 
     public RoutingRuleSettingViewModel(RoutingItem routingItem)
     {
-        _config = ConfigTextManager.Instance.Config;
+        _config = ConfigTextManager.Config;
 
         var canEditRemove = this.WhenAnyValue(
             x => x.SelectedSource,

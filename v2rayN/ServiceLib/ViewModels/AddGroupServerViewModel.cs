@@ -43,7 +43,7 @@ public partial class AddGroupServerViewModel : MyReactiveObject, ICloseable
 
     public AddGroupServerViewModel(ProfileItem profileItem)
     {
-        _config = ConfigTextManager.Instance.Config;
+        _config = ConfigTextManager.Config;
 
         var canEditRemove = this.WhenAnyValue(
             x => x.SelectedChild,

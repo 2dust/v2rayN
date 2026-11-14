@@ -90,7 +90,7 @@ public partial class MainWindowViewModel : MyReactiveObject
 
     public MainWindowViewModel()
     {
-        _config = ConfigTextManager.Instance.Config;
+        _config = ConfigTextManager.Config;
         BlIsWindows = Utils.IsWindows();
         MainGirdOrientation = _config.UiItem.MainGirdOrientation;
 
@@ -795,7 +795,7 @@ public partial class MainWindowViewModel : MyReactiveObject
             await StatusBarViewModel.RefreshRoutingsMenu();
         });
 
-        await ConfigTextManager.Instance.SaveConfig();
+        await ConfigTextManager.SaveConfig();
         using var downloadService = await DownloadService.CreateDownloadServiceWithCheck();
         await new UpdateService(downloadService, _config, UpdateTaskHandler).UpdateGeoFileAll();
         await Reload();

@@ -32,7 +32,7 @@ public partial class RoutingSettingViewModel : MyReactiveObject
 
     public RoutingSettingViewModel()
     {
-        _config = ConfigTextManager.Instance.Config;
+        _config = ConfigTextManager.Config;
 
         var canEditRemove = this.WhenAnyValue(
             x => x.SelectedSource,
@@ -113,7 +113,7 @@ public partial class RoutingSettingViewModel : MyReactiveObject
     {
         _config.RoutingBasicItem.DomainStrategy = DomainStrategy;
         _config.RoutingBasicItem.DomainStrategy4Singbox = DomainStrategy4Singbox;
-        await ConfigTextManager.Instance.SaveConfig();
+        await ConfigTextManager.SaveConfig();
     }
 
     #endregion Refresh Save

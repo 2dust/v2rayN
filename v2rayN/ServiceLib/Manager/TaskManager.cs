@@ -42,7 +42,7 @@ public class TaskManager
 
                 try
                 {
-                    await ConfigTextManager.Instance.SaveConfig();
+                    await ConfigTextManager.SaveConfig();
                     await ProfileExManager.Instance.SaveTo();
                 }
                 catch (Exception ex)

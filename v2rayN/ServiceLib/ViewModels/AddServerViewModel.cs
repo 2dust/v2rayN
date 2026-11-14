@@ -319,7 +319,7 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
 
     public AddServerViewModel(ProfileItem profileItem)
     {
-        _config = ConfigTextManager.Instance.Config;
+        _config = ConfigTextManager.Config;
 
         FetchCertCmd = ReactiveCommand.CreateFromTask(async () =>
         {

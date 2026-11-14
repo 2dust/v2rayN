@@ -67,7 +67,7 @@ public sealed class AppManager
         }
 
         Logging.Setup();
-        _config = ConfigTextManager.Instance.Init();
+        _config = ConfigTextManager.Init();
         if (_config == null)
         {
             return false;
@@ -127,7 +127,7 @@ public sealed class AppManager
             AppEvents.AppExitRequested.Publish();
             await Task.Delay(50); //Wait for AppExitRequested to be processed
 
-            await ConfigTextManager.Instance.SaveConfig();
+            await ConfigTextManager.SaveConfig();
             await ProfileExManager.Instance.SaveTo();
             await StatisticsManager.Instance.SaveTo();
             await CoreManager.Instance.CoreStop();

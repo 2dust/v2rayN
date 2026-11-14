@@ -44,7 +44,7 @@ public partial class FullConfigTemplateViewModel : MyReactiveObject, ICloseable
 
     public FullConfigTemplateViewModel()
     {
-        _config = ConfigTextManager.Instance.Config;
+        _config = ConfigTextManager.Config;
         SaveCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await SaveSettingAsync();

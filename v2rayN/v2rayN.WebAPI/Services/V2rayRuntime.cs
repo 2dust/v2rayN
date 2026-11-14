@@ -44,7 +44,7 @@ public sealed partial class V2rayRuntime(
     private bool _restoring;
     private int _restoreAndRestartRequested;
 
-    private Config Config => ConfigTextManager.Instance.Config;
+    private Config Config => ConfigTextManager.Config;
     private CoreRuntimeSnapshot CurrentCoreRuntime => Volatile.Read(ref _coreRuntime);
     public bool RestoreAndRestartRequested => Volatile.Read(ref _restoreAndRestartRequested) != 0;
 
@@ -245,7 +245,7 @@ public sealed partial class V2rayRuntime(
             {
                 Config.Inbound[0].AllowLANConn = allowProxyFromLan;
             }
-            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig());
         });
         await ConfigDbManager.InitBuiltinDNS(Config);
         await BuiltinDnsProfileBootstrap.EnsureAsync(
@@ -269,7 +269,7 @@ public sealed partial class V2rayRuntime(
         }
         var selectedProfileId = Config.IndexId;
         var defaultProfile = await ConfigDbManager.GetDefaultServer(Config);
-        await _mutations.RunAsync(() => EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig()));
+        await _mutations.RunAsync(() => EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig()));
         await ProfileExManager.Instance.Init();
         await CertPemManager.Instance.Init(Config);
         // The Web frontend owns its runtime and rejects generated launch contexts that enable TUN.
@@ -392,7 +392,7 @@ public sealed partial class V2rayRuntime(
             steps.Add(new("configuration save", async deadline =>
             {
                 await _mutations.RunAsync(
-                    () => EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig()),
+                    () => EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig()),
                     deadline.Token);
                 return true;
             }));
@@ -503,7 +503,7 @@ public sealed partial class V2rayRuntime(
             if (removesCurrentProfile)
             {
                 _ = await ConfigDbManager.GetDefaultServer(Config);
-                await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+                await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig());
             }
         });
 
@@ -552,7 +552,7 @@ public sealed partial class V2rayRuntime(
                         await handler.UpdateProcess(id);
 
                         operation.Token.ThrowIfCancellationRequested();
-                        await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+                        await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig());
                         await UpdateSubscriptionTimestampLockedAsync(id);
                     }, operation.Token);
                     _events.Publish("profiles-changed", new { subscriptionId = id });
@@ -780,7 +780,7 @@ public sealed partial class V2rayRuntime(
             await _mutations.RunAsync(async () =>
             {
                 Config.IndexId = profile.IndexId;
-                await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+                await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig());
             });
         }
 
@@ -792,7 +792,7 @@ public sealed partial class V2rayRuntime(
         var selected = await ConfigDbManager.GetDefaultServer(Config);
         if (selected is not null)
         {
-            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig());
         }
         return selected;
     });

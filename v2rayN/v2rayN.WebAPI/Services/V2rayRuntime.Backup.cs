@@ -36,7 +36,7 @@ public sealed partial class V2rayRuntime
                 Config.WebDavItem.Password = input.Password;
             }
             Config.WebDavItem.DirName = input.DirName?.Trim();
-            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig());
         });
         return OperationView.Ok(ApiMessageKeys.WebDavSettingsSaved);
     }
@@ -57,7 +57,7 @@ public sealed partial class V2rayRuntime
     {
         await _mutations.RunAsync(async () =>
         {
-            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig());
             await ProfileExManager.Instance.SaveTo();
             await StatisticsManager.Instance.SaveTo();
         });
@@ -211,7 +211,7 @@ public sealed partial class V2rayRuntime
                 await ProfileExManager.Instance.SaveTo();
                 await StatisticsManager.Instance.SaveTo();
                 StatisticsManager.Instance.Close();
-                await _mutations.RunAsync(() => EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig()), cancellationToken);
+                await _mutations.RunAsync(() => EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig()), cancellationToken);
                 await SQLiteHelper.Instance.DisposeDbConnectionAsync();
                 databaseClosed = true;
 

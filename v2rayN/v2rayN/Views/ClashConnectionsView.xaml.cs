@@ -14,7 +14,7 @@ public partial class ClashConnectionsView
     public ClashConnectionsView()
     {
         InitializeComponent();
-        _config = ConfigTextManager.Instance.Config;
+        _config = ConfigTextManager.Config;
 
         btnAutofitColumnWidth.Click += BtnAutofitColumnWidth_Click;
 

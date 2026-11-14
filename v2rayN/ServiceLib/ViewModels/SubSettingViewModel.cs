@@ -22,7 +22,7 @@ public partial class SubSettingViewModel : MyReactiveObject
 
     public SubSettingViewModel()
     {
-        _config = ConfigTextManager.Instance.Config;
+        _config = ConfigTextManager.Config;
 
         var canEditRemove = this.WhenAnyValue(
            x => x.SelectedSource,

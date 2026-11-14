@@ -37,7 +37,7 @@ public partial class RoutingRuleDetailsWindow
             this.BindCommand(ViewModel, vm => vm.SelectProfileCmd, v => v.btnSelectProfile).DisposeWith(disposables);
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
         });
-        WindowsUtils.SetDarkBorder(this, ConfigTextManager.Instance.Config.UiItem.CurrentTheme);
+        WindowsUtils.SetDarkBorder(this, ConfigTextManager.Config.UiItem.CurrentTheme);
     }
 
     private void InitializeData(RulesItem rulesItem)

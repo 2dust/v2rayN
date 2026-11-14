@@ -11,7 +11,7 @@ public class WindowBase<TViewModel> : ReactiveWindow<TViewModel> where TViewMode
     {
         try
         {
-            var sizeItem = ConfigTextManager.Instance.GetWindowSizeItem(GetType().Name);
+            var sizeItem = ConfigTextManager.GetWindowSizeItem(GetType().Name);
             if (sizeItem == null)
             {
                 return;
@@ -32,7 +32,7 @@ public class WindowBase<TViewModel> : ReactiveWindow<TViewModel> where TViewMode
 
         try
         {
-            ConfigTextManager.Instance.SaveWindowSizeItem(GetType().Name, Width, Height);
+            ConfigTextManager.SaveWindowSizeItem(GetType().Name, Width, Height);
         }
         catch { }
     }

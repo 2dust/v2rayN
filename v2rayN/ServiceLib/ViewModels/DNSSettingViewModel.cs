@@ -48,7 +48,7 @@ public partial class DNSSettingViewModel : MyReactiveObject, ICloseable
 
     public DNSSettingViewModel()
     {
-        _config = ConfigTextManager.Instance.Config;
+        _config = ConfigTextManager.Config;
         SaveCmd = ReactiveCommand.CreateFromTask(SaveSettingAsync);
 
         ImportDefConfig4V2rayCompatibleCmd = ReactiveCommand.CreateFromTask(async () =>
@@ -82,7 +82,7 @@ public partial class DNSSettingViewModel : MyReactiveObject, ICloseable
 
     private async Task Init()
     {
-        _config = ConfigTextManager.Instance.Config;
+        _config = ConfigTextManager.Config;
         var item = _config.SimpleDNSItem;
         UseSystemHosts = item.UseSystemHosts ?? false;
         AddCommonHosts = item.AddCommonHosts ?? false;
@@ -217,7 +217,7 @@ public partial class DNSSettingViewModel : MyReactiveObject, ICloseable
         item2.TunDNS = JsonUtils.Serialize(JsonUtils.Deserialize<Dns4Sbox>(TunDNS2Compatible));
         await ConfigDbManager.SaveDNSItems(_config, item2);
 
-        await ConfigTextManager.Instance.SaveConfig();
+        await ConfigTextManager.SaveConfig();
         RequestClose?.Invoke(this, EventArgs.Empty);
     }
 }

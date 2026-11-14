@@ -9,7 +9,7 @@ public partial class StatusBarView
     public StatusBarView()
     {
         InitializeComponent();
-        _config = ConfigTextManager.Instance.Config;
+        _config = ConfigTextManager.Config;
 
         menuExit.Click += menuExit_Click;
         txtRunningServerDisplay.PreviewMouseDown += txtRunningInfoDisplay_MouseDoubleClick;

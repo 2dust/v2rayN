@@ -10,7 +10,7 @@ public partial class OptionSettingWindow
     {
         InitializeComponent();
 
-        _config = ConfigTextManager.Instance.Config;
+        _config = ConfigTextManager.Config;
 
         clbdestOverride.SelectionChanged += ClbdestOverride_SelectionChanged;
         btnBrowseCustomSystemProxyPacPath.Click += BtnBrowseCustomSystemProxyPacPath_Click;
@@ -149,7 +149,7 @@ public partial class OptionSettingWindow
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
         });
-        WindowsUtils.SetDarkBorder(this, ConfigTextManager.Instance.Config.UiItem.CurrentTheme);
+        WindowsUtils.SetDarkBorder(this, ConfigTextManager.Config.UiItem.CurrentTheme);
     }
 
     private async Task InitSettingFont()

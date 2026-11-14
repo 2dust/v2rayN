@@ -10,7 +10,7 @@ public class MaterialDesignFonts
     {
         try
         {
-            var fontFamily = ConfigTextManager.Instance.Config.UiItem.CurrentFontFamily;
+            var fontFamily = ConfigTextManager.Config.UiItem.CurrentFontFamily;
             if (fontFamily.IsNotEmpty())
             {
                 var fontPath = Utils.GetFontsPath();

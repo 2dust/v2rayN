@@ -96,7 +96,7 @@ public partial class ProfilesViewModel : MyReactiveObject
 
     public ProfilesViewModel()
     {
-        _config = ConfigTextManager.Instance.Config;
+        _config = ConfigTextManager.Config;
 
         #region WhenAnyValue && ReactiveCommand
 

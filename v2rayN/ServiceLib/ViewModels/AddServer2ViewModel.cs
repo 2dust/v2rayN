@@ -24,7 +24,7 @@ public partial class AddServer2ViewModel : MyReactiveObject, ICloseable
 
     public AddServer2ViewModel(ProfileItem profileItem)
     {
-        _config = ConfigTextManager.Instance.Config;
+        _config = ConfigTextManager.Config;
 
         BrowseServerCmd = ReactiveCommand.CreateFromTask(async () =>
         {

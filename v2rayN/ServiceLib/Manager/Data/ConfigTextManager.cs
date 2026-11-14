@@ -1,20 +1,27 @@
 namespace ServiceLib.Manager.Data;
 
-public class ConfigTextManager
+public static class ConfigTextManager
 {
-    private static readonly Lazy<ConfigTextManager> _instance = new(() => new());
-    public static ConfigTextManager Instance => _instance.Value;
-
     private static readonly string _configRes = Global.ConfigFileName;
     private static readonly string _tag = "ConfigTextManager";
 
-    public Config Config { get; private set; }
+    public static Config Config
+    {
+        get => ConfigState.Instance.Current;
+        private set => ConfigState.Instance.SetCurrent(value);
+    }
 
     #region Init
 
-    public Config? Init()
+    public static Config? Init()
     {
-        Config = LoadConfig();
+        var config = LoadConfig();
+        if (config == null)
+        {
+            return null;
+        }
+
+        Config = config;
         return Config;
     }
 
@@ -25,7 +32,7 @@ public class ConfigTextManager
     /// Initialize default values for missing configuration sections
     /// </summary>
     /// <returns>Config object containing application settings or null if there's an error</returns>
-    private Config? LoadConfig()
+    private static Config? LoadConfig()
     {
         Config? config = null;
         var result = EmbedUtils.LoadResource(Utils.GetConfigPath(_configRes));
@@ -228,7 +235,7 @@ public class ConfigTextManager
     /// </summary>
     /// <param name="_config">Configuration object to be saved</param>
     /// <returns>0 if successful, -1 if failed</returns>
-    public async Task<int> SaveConfig()
+    public static async Task<int> SaveConfig()
     {
         try
         {
@@ -259,7 +266,7 @@ public class ConfigTextManager
 
     #region UIItem
 
-    public WindowSizeItem? GetWindowSizeItem(string typeName)
+    public static WindowSizeItem? GetWindowSizeItem(string typeName)
     {
         var sizeItem = Config?.UiItem?.WindowSizeItem?.FirstOrDefault(t => t.TypeName == typeName);
         if (sizeItem == null || sizeItem.Width <= 0 || sizeItem.Height <= 0)
@@ -270,7 +277,7 @@ public class ConfigTextManager
         return sizeItem;
     }
 
-    public int SaveWindowSizeItem(string typeName, double width, double height)
+    public static int SaveWindowSizeItem(string typeName, double width, double height)
     {
         var sizeItem = Config?.UiItem?.WindowSizeItem?.FirstOrDefault(t => t.TypeName == typeName);
         if (sizeItem == null)
@@ -285,7 +292,7 @@ public class ConfigTextManager
         return 0;
     }
 
-    public int SaveMainGirdHeight(double height1, double height2)
+    public static int SaveMainGirdHeight(double height1, double height2)
     {
         var uiItem = Config.UiItem ?? new();
 

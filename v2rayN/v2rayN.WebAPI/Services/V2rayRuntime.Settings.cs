@@ -252,7 +252,7 @@ public sealed partial class V2rayRuntime
                 }
                 Config.RoutingBasicItem.DomainStrategy = input.DomainStrategy!;
                 Config.RoutingBasicItem.DomainStrategy4Singbox = input.DomainStrategy4Singbox!;
-                await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+                await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig());
             });
         }
         catch (Exception exception)
@@ -260,7 +260,7 @@ public sealed partial class V2rayRuntime
             RestoreConfigValues(Config, oldConfig);
             try
             {
-                await _mutations.RunAsync(() => EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig()));
+                await _mutations.RunAsync(() => EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig()));
             }
             catch (Exception rollbackException)
             {
@@ -314,7 +314,7 @@ public sealed partial class V2rayRuntime
         await _mutations.RunAsync(async () =>
         {
             ApplyInboundSettings(Config.Inbound[0], input);
-            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig());
         });
 
         return await CompleteCoreAffectingChangeAsync("inbound", fingerprint != GetCoreConfigurationFingerprint(), applyContext);
@@ -375,7 +375,7 @@ public sealed partial class V2rayRuntime
             Config.Fragment4RayItem.Lengths = fragmentLengths.ToList();
             Config.Fragment4RayItem.Delays = fragmentDelays.ToList();
             Config.Fragment4RayItem.MaxSplit = input.FragmentMaxSplit;
-            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig());
         });
 
         return await CompleteCoreAffectingChangeAsync("core", fingerprint != GetCoreConfigurationFingerprint(), applyContext);
@@ -402,7 +402,7 @@ public sealed partial class V2rayRuntime
             Config.ConstItem.SrsSourceUrl = input.SrsSourceUrl;
             Config.ConstItem.RouteRulesTemplateSourceUrl = input.RouteRulesTemplateSourceUrl;
             Config.ConstItem.SubConvertUrl = input.SubConvertUrl;
-            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig());
         });
 
         if (statisticsChanged)
@@ -435,7 +435,7 @@ public sealed partial class V2rayRuntime
             Config.SpeedTestItem.MixedConcurrencyCount = Math.Max(input.MixedConcurrencyCount, Global.SpeedTestConcurrencyCountMin);
             Config.SpeedTestItem.IPAPIUrl = input.IPAPIUrl;
             Config.SpeedTestItem.UdpTestTarget = input.UdpTestTarget;
-            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig());
         });
         _events.Publish("settings-changed", new { section = "speedtest", restartRequired = false });
         return OperationView.Ok(ApiMessageKeys.SpeedTestSettingsSaved);
@@ -467,7 +467,7 @@ public sealed partial class V2rayRuntime
                     item.CoreType = mapping.CoreType;
                 }
             }
-            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig());
         });
         return await CompleteCoreAffectingChangeAsync("core-types", fingerprint != GetCoreConfigurationFingerprint(), applyContext);
     }
@@ -503,7 +503,7 @@ public sealed partial class V2rayRuntime
         {
             Config.RoutingBasicItem.DomainStrategy = input.DomainStrategy!;
             Config.RoutingBasicItem.DomainStrategy4Singbox = input.DomainStrategy4Singbox!;
-            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig());
         });
         return await CompleteCoreAffectingChangeAsync("routing", fingerprint != GetCoreConfigurationFingerprint(), applyContext);
     }
@@ -522,7 +522,7 @@ public sealed partial class V2rayRuntime
         await _mutations.RunAsync(async () =>
         {
             Config.SimpleDNSItem = input;
-            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig());
         });
         return await CompleteCoreAffectingChangeAsync("dns", fingerprint != GetCoreConfigurationFingerprint(), applyContext);
     }
@@ -743,7 +743,7 @@ public sealed partial class V2rayRuntime
                 else
                 {
                     Config.RoutingBasicItem.RoutingIndexId = string.Empty;
-                    await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+                    await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig());
                 }
             }
             return (Removed: true, AffectsCore: item.IsActive);
@@ -1234,7 +1234,7 @@ public sealed partial class V2rayRuntime
                             }
 
                             token.ThrowIfCancellationRequested();
-                            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+                            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig());
                             token.ThrowIfCancellationRequested();
                         }, token),
                         () => RestoreRegionalPresetSnapshotAsync(applyContext));
@@ -1349,7 +1349,7 @@ public sealed partial class V2rayRuntime
             await _mutations.RunAsync(async () =>
             {
                 RestoreConfigValues(Config, context.OldConfig);
-                await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+                await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig());
 
                 await SQLiteHelper.Instance.DeleteAllAsync<RoutingItem>();
                 if (context.OldRoutingItems.Length > 0
@@ -1625,7 +1625,7 @@ public sealed partial class V2rayRuntime
         try
         {
             RestoreConfigValues(Config, context.OldConfig);
-            await _mutations.RunAsync(() => EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig()));
+            await _mutations.RunAsync(() => EnsureConfigSaveSucceededAsync(() => ConfigTextManager.SaveConfig()));
             configRestored = true;
             await _mutations.RunAsync(async () =>
             {

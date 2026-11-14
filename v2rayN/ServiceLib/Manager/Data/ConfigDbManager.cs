@@ -4,12 +4,24 @@ public static class ConfigDbManager
 {
     private static readonly string _tag = "ConfigDbManager";
 
+    private static Config CurrentConfig => ConfigState.Instance.Current;
+
     private static async Task<int> SaveConfig()
     {
-        return await ConfigTextManager.Instance.SaveConfig();
+        return await ConfigTextManager.SaveConfig();
     }
 
     #region Server
+
+    /// <summary>
+    /// Add a server profile to the current configuration from ConfigState.
+    /// </summary>
+    /// <param name="profileItem">Server profile to add</param>
+    /// <returns>Result of the operation (0 if successful, -1 if failed)</returns>
+    public static Task<int> AddServer(ProfileItem profileItem)
+    {
+        return AddServer(CurrentConfig, profileItem);
+    }
 
     /// <summary>
     /// Add a server profile to the configuration
@@ -2997,7 +3009,7 @@ public static class ConfigDbManager
     private static async Task<int> MigrateProfileExtraV2ToV3Sub(List<ProfileItem> batch)
     {
         var updateProfileItems = new List<ProfileItem>();
-        var config = ConfigTextManager.Instance.Config;
+        var config = ConfigTextManager.Config;
 
         foreach (var item in batch)
         {

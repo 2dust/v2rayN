@@ -45,7 +45,7 @@ public partial class RoutingRuleDetailsViewModel : MyReactiveObject, ICloseable
 
     public RoutingRuleDetailsViewModel(RulesItem rulesItem)
     {
-        _config = ConfigTextManager.Instance.Config;
+        _config = ConfigTextManager.Config;
 
         SelectProfileCmd = ReactiveCommand.CreateFromTask(async () =>
         {
