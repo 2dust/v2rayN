@@ -65,7 +65,9 @@ public static class CoreConfigHandler
             }
             if (!File.Exists(addressFileName))
             {
-                ret.Msg = ResUI.FailedGenDefaultConfiguration;
+                var message = $"{ResUI.FailedReadConfiguration}: {addressFileName}";
+                Logging.SaveLog($"{_tag}: {message}");
+                ret.Msg = message;
                 return ret;
             }
             File.Copy(addressFileName, fileName);
@@ -74,7 +76,9 @@ public static class CoreConfigHandler
             //check again
             if (!File.Exists(fileName))
             {
-                ret.Msg = ResUI.FailedGenDefaultConfiguration;
+                var message = $"{ResUI.FailedReadConfiguration}: {fileName}";
+                Logging.SaveLog($"{_tag}: {message}");
+                ret.Msg = message;
                 return ret;
             }
 
