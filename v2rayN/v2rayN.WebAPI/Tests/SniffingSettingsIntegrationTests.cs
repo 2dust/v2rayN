@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Text.Json.Nodes;
+using ServiceLib.Manager.Data;
 using ServiceLib.Services.CoreConfig;
 using v2rayN.WebAPI.Contracts;
 using v2rayN.WebAPI.Services;
@@ -159,6 +160,8 @@ public class SniffingSettingsIntegrationTests
     {
         var field = typeof(AppManager).GetField("_config", BindingFlags.Instance | BindingFlags.NonPublic);
         field?.SetValue(AppManager.Instance, config);
+        typeof(ConfigTextManager).GetProperty(nameof(ConfigTextManager.Config))!
+            .SetValue(ConfigTextManager.Instance, config);
     }
 
     private static ProfileItem CreateVmessNode(ECoreType coreType)

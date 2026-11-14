@@ -336,7 +336,7 @@ public partial class MainWindowViewModel : MyReactiveObject
         await ProfileExManager.Instance.Init();
         await CoreManager.Instance.Init(_config, UpdateHandler);
         await CertPemManager.Instance.Init(_config);
-        TaskManager.Instance.RegUpdateTask(_config, UpdateTaskHandler);
+        TaskManager.Instance.RegUpdateTask(_config, (success, msg) => UpdateTaskHandler(success, msg, false));
 
         if (_config.GuiItem.EnableStatistics || _config.GuiItem.DisplayRealTimeSpeed)
         {
@@ -361,7 +361,9 @@ public partial class MainWindowViewModel : MyReactiveObject
         await Task.CompletedTask;
     }
 
-    private async Task UpdateTaskHandler(bool success, string msg)
+    private Task UpdateTaskHandler(bool success, string msg) => UpdateTaskHandler(success, msg, true);
+
+    private async Task UpdateTaskHandler(bool success, string msg, bool forceRestart)
     {
         NoticeManager.Instance.SendMessageEx(msg);
         if (success)
@@ -369,10 +371,10 @@ public partial class MainWindowViewModel : MyReactiveObject
             var indexIdOld = _config.IndexId;
             await RefreshServersDispatcherAsync();
 
-            // If indexId changed or subIndexId is empty, directly reload.
-            if (indexIdOld != _config.IndexId || _config.SubIndexId.IsNullOrEmpty())
+            // Subscription completion checks the working configuration, independently of the visible group.
+            if (!forceRestart || indexIdOld != _config.IndexId || _config.SubIndexId.IsNullOrEmpty())
             {
-                await Reload();
+                await Reload(forceRestart);
             }
             else
             {
@@ -380,7 +382,7 @@ public partial class MainWindowViewModel : MyReactiveObject
                 var profile = await ConfigDbQuery.GetProfileItem(_config.IndexId);
                 if (profile != null && profile.Subid == _config.SubIndexId)
                 {
-                    await Reload();
+                    await Reload(forceRestart);
                 }
             }
 
@@ -580,7 +582,7 @@ public partial class MainWindowViewModel : MyReactiveObject
     {
         await Task.Run(async () =>
         {
-            var handler = new SubscriptionHandler(_config, blProxy, UpdateTaskHandler);
+            var handler = new SubscriptionHandler(_config, blProxy, (success, msg) => UpdateTaskHandler(success, msg, false));
             await handler.UpdateProcess(subId);
         });
     }
@@ -667,24 +669,15 @@ public partial class MainWindowViewModel : MyReactiveObject
 
     #region core job
 
-    private bool _hasNextReloadJob = false;
-    private readonly SemaphoreSlim _reloadSemaphore = new(1, 1);
-
-    public async Task Reload()
+    private readonly PendingCoreReload _pendingReload = new();
+    public Task Reload(bool forceRestart = true)
     {
-        //If there are unfinished reload job, marked with next job.
-        if (!await _reloadSemaphore.WaitAsync(0))
-        {
-            _hasNextReloadJob = true;
-            return;
-        }
+        if (DesignMode || !_pendingReload.TryStart(forceRestart)) return Task.CompletedTask;
+        return ReloadCore(forceRestart);
+    }
 
-        if (DesignMode)
-        {
-            _reloadSemaphore.Release();
-            return;
-        }
-
+    private async Task ReloadCore(bool forceRestart)
+    {
         try
         {
             SetReloadEnabled(false);
@@ -708,12 +701,13 @@ public partial class MainWindowViewModel : MyReactiveObject
                 return;
             }
 
-            await Task.Run(async () =>
-            {
-                await LoadCore(allResult.MainResult.Context, allResult.PreSocksResult?.Context);
-                await SysProxyHandler.UpdateSysProxy(_config, false);
-                await Task.Delay(1000);
-            });
+            await Task.Run(() => RunCoreReloadAsync(
+                () => LoadCore(allResult.MainResult.Context, allResult.PreSocksResult?.Context, forceRestart),
+                async () =>
+                {
+                    await SysProxyHandler.UpdateSysProxy(_config, false);
+                    await Task.Delay(1000);
+                }));
             RxSchedulers.MainThreadScheduler.Schedule(async () =>
             {
                 var result = await StatusBarViewModel.TestServerAvailability();
@@ -750,12 +744,9 @@ public partial class MainWindowViewModel : MyReactiveObject
         finally
         {
             SetReloadEnabled(true);
-            _reloadSemaphore.Release();
-            //If there is a next reload job, execute it.
-            if (_hasNextReloadJob)
+            if (_pendingReload.Complete() is bool nextForce)
             {
-                _hasNextReloadJob = false;
-                await Reload();
+                await ReloadCore(nextForce);
             }
         }
     }
@@ -777,9 +768,15 @@ public partial class MainWindowViewModel : MyReactiveObject
         RxSchedulers.MainThreadScheduler.Schedule(() => BlReloadEnabled = enabled);
     }
 
-    private async Task LoadCore(CoreConfigContext? mainContext, CoreConfigContext? preContext)
+    private Task<bool> LoadCore(CoreConfigContext? mainContext, CoreConfigContext? preContext, bool forceRestart) =>
+        CoreManager.Instance.LoadCore(mainContext, preContext, forceRestart);
+
+    internal static async Task RunCoreReloadAsync(Func<Task<bool>> loadCore, Func<Task> updateProxy)
     {
-        await CoreManager.Instance.LoadCore(mainContext, preContext);
+        if (!await loadCore())
+        {
+            await updateProxy();
+        }
     }
 
     #endregion core job
