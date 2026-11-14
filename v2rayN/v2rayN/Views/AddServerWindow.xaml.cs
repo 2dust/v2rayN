@@ -299,6 +299,11 @@ public partial class AddServerWindow
                 gridMasque.Visibility = Visibility.Visible;
                 sepa2.Visibility = Visibility.Collapsed;
                 gridTransport.Visibility = Visibility.Collapsed;
+                lstStreamSecurity.Remove(string.Empty);
+                if (string.IsNullOrEmpty(profileItem.StreamSecurity))
+                {
+                    profileItem.StreamSecurity = lstStreamSecurity.First();
+                }
                 break;
         }
         cmbStreamSecurity.ItemsSource = lstStreamSecurity;
@@ -322,7 +327,7 @@ public partial class AddServerWindow
 
     private void CmbStreamSecurity_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        var security = cmbStreamSecurity.SelectedItem.ToString();
+        var security = cmbStreamSecurity.SelectedItem?.ToString();
         if (security == Global.StreamSecurityReality)
         {
             gridRealityMore.Visibility = Visibility.Visible;

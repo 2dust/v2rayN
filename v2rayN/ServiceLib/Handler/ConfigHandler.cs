@@ -1080,10 +1080,6 @@ public static class ConfigHandler
         {
             profileItem.StreamSecurity = Global.StreamSecurity;
         }
-        if (profileItem.Password.IsNullOrEmpty())
-        {
-            return -1;
-        }
         await AddServerCommon(config, profileItem, toFile);
         return 0;
     }
