@@ -1415,46 +1415,6 @@ public static class ConfigDbHandler
         return result;
     }
 
-    /// <summary>
-    /// Get a SOCKS server profile for pre-SOCKS functionality
-    /// Used when TUN mode is enabled or when a custom config has a pre-SOCKS port
-    /// </summary>
-    /// <param name="config">Current configuration</param>
-    /// <param name="node">Server node that might need pre-SOCKS</param>
-    /// <param name="coreType">Core type being used</param>
-    /// <returns>A SOCKS profile item or null if not needed</returns>
-    public static ProfileItem? GetPreSocksItem(Config config, ProfileItem node, ECoreType coreType)
-    {
-        ProfileItem? itemSocks = null;
-        var enableLegacyProtect = config.TunModeItem.EnableLegacyProtect;
-        if (node.ConfigType != EConfigType.Custom
-            && coreType != ECoreType.sing_box
-            && config.TunModeItem.EnableTun
-            && enableLegacyProtect)
-        {
-            itemSocks = new ProfileItem()
-            {
-                CoreType = ECoreType.sing_box,
-                ConfigType = EConfigType.SOCKS,
-                Address = Global.Loopback,
-                Port = AppManager.Instance.GetLocalPort(EInboundProtocol.socks)
-            };
-        }
-        else if (node.ConfigType == EConfigType.Custom
-            && node.PreSocksPort is > 0 and <= 65535)
-        {
-            var customPreCoreType = AppManager.Instance.GetCoreType(null, EConfigType.Custom);
-            var preCoreType = (enableLegacyProtect && config.TunModeItem.EnableTun) ? ECoreType.sing_box : customPreCoreType;
-            itemSocks = new ProfileItem()
-            {
-                CoreType = preCoreType,
-                ConfigType = EConfigType.SOCKS,
-                Address = Global.Loopback,
-                Port = node.PreSocksPort.Value,
-            };
-        }
-        return itemSocks;
-    }
 
     /// <summary>
     /// Remove servers with invalid test results (timeout)
