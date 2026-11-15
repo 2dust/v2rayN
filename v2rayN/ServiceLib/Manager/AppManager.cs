@@ -5,7 +5,7 @@ public sealed class AppManager
     #region Property
 
     private static readonly Lazy<AppManager> _instance = new(() => new());
-    private Config _config;
+    private static Config CurrentConfig => ConfigState.Instance.Current;
     private int? _statePort;
     private int? _statePort2;
     public static AppManager Instance => _instance.Value;
@@ -25,7 +25,7 @@ public sealed class AppManager
         get
         {
             _statePort2 ??= Utils.GetFreePort(GetLocalPort(EInboundProtocol.api2));
-            return _statePort2.Value + (_config.TunModeItem.EnableTun ? 1 : 0);
+            return _statePort2.Value + (CurrentConfig.TunModeItem.EnableTun ? 1 : 0);
         }
     }
 
@@ -67,12 +67,11 @@ public sealed class AppManager
         }
 
         Logging.Setup();
-        _config = ConfigTextHandler.Init();
-        if (_config == null)
+        if (ConfigTextHandler.Init() != true)
         {
             return false;
         }
-        Thread.CurrentThread.CurrentUICulture = new(_config.UiItem.CurrentLanguage);
+        Thread.CurrentThread.CurrentUICulture = new(CurrentConfig.UiItem.CurrentLanguage);
 
         //Under Win10
         if (Utils.IsWindows() && Environment.OSVersion.Version.Major < 10)
@@ -96,16 +95,13 @@ public sealed class AppManager
     public bool InitComponents()
     {
         Logging.SaveLog($"v2rayN start up | {Utils.GetRuntimeInfo()}");
-        Logging.LoggingEnabled(_config.GuiItem.EnableLog);
+        Logging.LoggingEnabled(CurrentConfig.GuiItem.EnableLog);
 
         //First determine the port value
         _ = StatePort;
         _ = StatePort2;
 
-        Task.Run(async () =>
-        {
-            await ConfigDbHandler.MigrateProfileExtra();
-        }).Wait();
+        Task.Run(async () => await ConfigDbHandler.MigrateProfileExtra()).Wait();
 
         return true;
     }
@@ -123,7 +119,7 @@ public sealed class AppManager
         {
             Logging.SaveLog("AppExitAsync Begin");
 
-            await SysProxyHandler.UpdateSysProxy(_config, true);
+            await SysProxyHandler.UpdateSysProxy(CurrentConfig, true);
             AppEvents.AppExitRequested.Publish();
             await Task.Delay(50); //Wait for AppExitRequested to be processed
 
@@ -162,7 +158,7 @@ public sealed class AppManager
 
     public int GetLocalPort(EInboundProtocol protocol)
     {
-        var localPort = _config.Inbound.FirstOrDefault(t => t.Protocol == nameof(EInboundProtocol.socks))?.LocalPort ?? 10808;
+        var localPort = CurrentConfig.Inbound.FirstOrDefault(t => t.Protocol == nameof(EInboundProtocol.socks))?.LocalPort ?? 10808;
         return localPort + (int)protocol;
     }
 
@@ -194,7 +190,7 @@ public sealed class AppManager
             return (ECoreType)profileItem.CoreType;
         }
 
-        var item = _config.CoreTypeItem?.FirstOrDefault(it => it.ConfigType == eConfigType);
+        var item = CurrentConfig.CoreTypeItem?.FirstOrDefault(it => it.ConfigType == eConfigType);
         return item?.CoreType ?? ECoreType.Xray;
     }
 

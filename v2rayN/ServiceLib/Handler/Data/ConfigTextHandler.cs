@@ -13,16 +13,16 @@ public static class ConfigTextHandler
 
     #region Init
 
-    public static Config? Init()
+    public static bool Init()
     {
         var config = LoadConfig();
         if (config == null)
         {
-            return null;
+            return false;
         }
 
         Config = config;
-        return Config;
+        return true;
     }
 
     /// <summary>

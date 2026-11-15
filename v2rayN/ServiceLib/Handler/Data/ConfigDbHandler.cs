@@ -350,7 +350,7 @@ public static class ConfigDbHandler
         profileItem.ConfigType = EConfigType.Custom;
         if (profileItem.Remarks.IsNullOrEmpty())
         {
-            profileItem.Remarks = $"import custom@{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}";
+            profileItem.Remarks = $"import custom@{DateTime.Now:yyyy/MM/dd HH:mm:ss}";
         }
 
         await AddServerCommon(profileItem, true);
@@ -387,7 +387,7 @@ public static class ConfigDbHandler
         profileItem.ConfigType = EConfigType.Outbound;
         if (profileItem.Remarks.IsNullOrEmpty())
         {
-            profileItem.Remarks = $"import custom outbound@{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}";
+            profileItem.Remarks = $"import custom outbound@{DateTime.Now:yyyy/MM/dd HH:mm:ss}";
         }
 
         await AddServerCommon(profileItem, toFile);
