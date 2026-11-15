@@ -4,99 +4,117 @@ on:
   workflow_dispatch:
     inputs:
       release_tag:
+        description: 'Release version. Use auto (default) to read it from v2rayN/Directory.Build.props; an optional leading v is accepted.'
         required: false
+        default: 'auto'
         type: string
 
-permissions: 
+permissions:
   actions: write
   contents: write
 
 jobs:
+  validate-release:
+    name: Resolve and validate release version
+    runs-on: ubuntu-latest
+    outputs:
+      release_tag: ${{ steps.validate.outputs.release_tag }}
+      release: ${{ steps.validate.outputs.release }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Resolve release version from project
+        id: validate
+        shell: bash
+        env:
+          INPUT_TAG: ${{ inputs.release_tag }}
+        run: |
+          set -euo pipefail
+          project_version="$(sed -nE 's#^[[:space:]]*<Version>([^<]+)</Version>[[:space:]]*$#\1#p' v2rayN/Directory.Build.props | head -n1)"
+          [[ -n "$project_version" ]] || { echo "Could not read Version from v2rayN/Directory.Build.props" >&2; exit 1; }
+
+          input_tag="${INPUT_TAG:-auto}"
+          input_tag="${input_tag#v}"
+          if [[ -z "$input_tag" || "$input_tag" == "auto" ]]; then
+            release_tag="$project_version"
+          else
+            release_tag="$input_tag"
+          fi
+
+          if [[ ! "$release_tag" =~ ^[0-9]+(\.[0-9]+){2,3}$ ]]; then
+            echo "Invalid release version: $release_tag" >&2
+            echo "Use three or four numeric components, e.g. 7.25.6.002 (without v)." >&2
+            exit 1
+          fi
+          if [[ "$release_tag" != "$project_version" ]]; then
+            echo "Requested tag ($release_tag) does not match project version ($project_version)." >&2
+            echo "Set the version once in v2rayN/Directory.Build.props or use auto." >&2
+            exit 1
+          fi
+
+          echo "release_tag=$release_tag" >> "$GITHUB_OUTPUT"
+          echo "release=true" >> "$GITHUB_OUTPUT"
+          echo "Resolved release version: $release_tag"
+
+  create-release:
+    name: Create tag and GitHub release if missing
+    needs: validate-release
+    if: needs.validate-release.outputs.release == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create the release/tag idempotently
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ needs.validate-release.outputs.release_tag }}
+          REPOSITORY: ${{ github.repository }}
+          TARGET_SHA: ${{ github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh release view "$RELEASE_TAG" --repo "$REPOSITORY" >/dev/null 2>&1; then
+            echo "Release $RELEASE_TAG already exists; keeping its existing tag and assets."
+          else
+            gh release create "$RELEASE_TAG" \
+              --repo "$REPOSITORY" \
+              --target "$TARGET_SHA" \
+              --title "v2rayN $RELEASE_TAG" \
+              --notes "Automated multi-platform release $RELEASE_TAG." \
+              --prerelease
+          fi
+
   public-key:
-    if: inputs.release_tag != ''
+    needs: [validate-release, create-release]
+    if: needs.validate-release.outputs.release == 'true'
     uses: ./.github/workflows/pub-key.yml
     with:
-      release_tag: ${{ inputs.release_tag }}
+      release_tag: ${{ needs.validate-release.outputs.release_tag }}
     secrets:
       GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
 
   release-WebAPI:
-    if: inputs.release_tag != ''
+    needs: [validate-release, create-release]
+    if: needs.validate-release.outputs.release == 'true'
     uses: ./.github/workflows/release-WebAPI.yml
     with:
-      release_tag: ${{ inputs.release_tag }}
+      release_tag: ${{ needs.validate-release.outputs.release_tag }}
     secrets: inherit
 
   update:
+    needs: [validate-release, create-release]
+    if: needs.validate-release.outputs.release == 'true'
     runs-on: ubuntu-latest
     steps:
-
-      - name: Trigger build windows
-        if: inputs.release_tag != ''
+      - name: Trigger platform release workflows
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ needs.validate-release.outputs.release_tag }}
+        shell: bash
         run: |
-          curl -X POST \
-            -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            https://api.github.com/repos/${{ github.repository }}/actions/workflows/build-windows.yml/dispatches \
-            -d "{
-              \"ref\": \"master\",
-              \"inputs\": {
-                \"release_tag\": \"${{ inputs.release_tag }}\"
-              }
-            }"
-
-      - name: Trigger build linux
-        if: inputs.release_tag != ''
-        run: |
-          curl -X POST \
-            -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            https://api.github.com/repos/${{ github.repository }}/actions/workflows/build-linux.yml/dispatches \
-            -d "{
-              \"ref\": \"master\",
-              \"inputs\": {
-                \"release_tag\": \"${{ inputs.release_tag }}\"
-              }
-            }"
-
-      - name: Trigger build osx
-        if: inputs.release_tag != ''
-        run: |
-          curl -X POST \
-            -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            https://api.github.com/repos/${{ github.repository }}/actions/workflows/build-osx.yml/dispatches \
-            -d "{
-              \"ref\": \"master\",
-              \"inputs\": {
-                \"release_tag\": \"${{ inputs.release_tag }}\"
-              }
-            }"
-
-      - name: Trigger build windows desktop
-        if: inputs.release_tag != ''
-        run: |
-          curl -X POST \
-            -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            https://api.github.com/repos/${{ github.repository }}/actions/workflows/build-windows-desktop.yml/dispatches \
-            -d "{
-              \"ref\": \"master\",
-              \"inputs\": {
-                \"release_tag\": \"${{ inputs.release_tag }}\"
-              }
-            }"
-            
-      - name: Trigger build windows x86
-        if: inputs.release_tag != ''
-        run: |
-          curl -X POST \
-            -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            https://api.github.com/repos/${{ github.repository }}/actions/workflows/build-windows-x86.yml/dispatches \
-            -d "{
-              \"ref\": \"master\",
-              \"inputs\": {
-                \"release_tag\": \"${{ inputs.release_tag }}\"
-              }
-            }"
+          set -euo pipefail
+          gh workflow run build-windows.yml --ref master -f "release_tag=$RELEASE_TAG"
+          gh workflow run build-linux.yml --ref master -f "release_tag=$RELEASE_TAG"
+          gh workflow run build-osx.yml --ref master -f "release_tag=$RELEASE_TAG"
+          gh workflow run build-windows-desktop.yml --ref master -f "release_tag=$RELEASE_TAG"
+          gh workflow run build-windows-x86.yml --ref master -f "release_tag=$RELEASE_TAG"
