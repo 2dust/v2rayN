@@ -57,9 +57,8 @@ public class BuiltinDnsProfileBootstrapTests
         var rows = new List<DNSItem>(initial);
         var savedTypes = new List<ECoreType>();
         await BuiltinDnsProfileBootstrap.EnsureAsync(
-            new Config(),
             () => Task.FromResult<IReadOnlyList<DNSItem>>(rows.ToArray()),
-            (_, item) =>
+            (item) =>
             {
                 rows.Add(item);
                 savedTypes.Add(item.CoreType);

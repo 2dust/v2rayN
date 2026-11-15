@@ -1,16 +1,11 @@
-using ServiceLib.Manager.Data;
-
 namespace ServiceLib.Tests.CoreConfig;
 
 internal static class CoreConfigTestFactory
 {
     public static void BindAppManagerConfig(Config config)
     {
-        var field = typeof(AppManager).GetField("_config", BindingFlags.Instance | BindingFlags.NonPublic);
-        field?.SetValue(AppManager.Instance, config);
-        // Match the text owner and AppManager's cached configuration after initialization.
-        typeof(ConfigTextManager).GetProperty(nameof(ConfigTextManager.Config))!
-            .SetValue(ConfigTextManager.Instance, config);
+        var field = typeof(ConfigState).GetField("_current", BindingFlags.Instance | BindingFlags.NonPublic);
+        field?.SetValue(ConfigState.Instance, config);
     }
 
     public static Config CreateConfig(ECoreType vmessCoreType = ECoreType.Xray)

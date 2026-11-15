@@ -42,7 +42,7 @@ public class TaskManager
 
                 try
                 {
-                    await ConfigTextManager.Instance.SaveConfig();
+                    await ConfigTextHandler.SaveConfig();
                     await ProfileExManager.Instance.SaveTo();
                 }
                 catch (Exception ex)
@@ -89,7 +89,7 @@ public class TaskManager
     private async Task UpdateTaskRunSubscription()
     {
         var updateTime = ((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds();
-        var lstSubs = (await AppManager.Instance.SubItems())?
+        var lstSubs = (await ConfigDbQuery.SubItems())?
             .Where(t => t.AutoUpdateInterval > 0)
             .Where(t => updateTime - t.UpdateTime >= t.AutoUpdateInterval * 60)
             .ToList();
@@ -113,7 +113,7 @@ public class TaskManager
             });
             await handler.UpdateProcess(item.Id);
             item.UpdateTime = updateTime;
-            await ConfigDbManager.AddSubItem(_config, item);
+            await ConfigDbHandler.AddSubItem(item);
             await Task.Delay(1000);
         }
     }

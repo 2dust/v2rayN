@@ -107,7 +107,7 @@ public partial class StatusBarViewModel : MyReactiveObject
 
     public StatusBarViewModel()
     {
-        _config = ConfigTextManager.Instance.Config;
+        _config = ConfigTextHandler.Config;
         SelectedRouting = new();
         SelectedServer = new();
         RunningServerToolTipText = GetRunningServerToolTipText("-");
@@ -218,7 +218,7 @@ public partial class StatusBarViewModel : MyReactiveObject
 
     private async Task Init()
     {
-        await ConfigDbManager.InitBuiltinRouting(_config);
+        await ConfigDbHandler.InitBuiltinRouting();
         await RefreshRoutingsMenu();
         await InboundDisplayStatus();
         // The view refreshes its icon on initialization; interaction handlers are not registered yet.
@@ -267,7 +267,7 @@ public partial class StatusBarViewModel : MyReactiveObject
         await RefreshServersMenu();
 
         //display running server
-        var running = await ConfigDbManager.GetDefaultServer(_config);
+        var running = await ConfigTextHandler.GetDefaultServer();
         if (running != null)
         {
             RunningServerDisplay = running.GetSummary();
@@ -287,7 +287,7 @@ public partial class StatusBarViewModel : MyReactiveObject
 
     private async Task RefreshServersMenu()
     {
-        var lstModel = await AppManager.Instance.ProfileModels(_config.SubIndexId, "");
+        var lstModel = await ConfigDbQuery.ProfileModels(_config.SubIndexId, "");
 
         if (lstModel?.Count > _config.GuiItem.TrayMenuServersLimit)
         {
@@ -319,7 +319,7 @@ public partial class StatusBarViewModel : MyReactiveObject
 
     public async Task<AvailabilityCheckResult?> TestServerAvailability()
     {
-        var item = await ConfigDbManager.GetDefaultServer(_config);
+        var item = await ConfigTextHandler.GetDefaultServer();
         if (item == null)
         {
             return null;
@@ -373,7 +373,7 @@ public partial class StatusBarViewModel : MyReactiveObject
         NoticeManager.Instance.SendMessageEx($"{ResUI.TipChangeSystemProxy} - {_config.SystemProxyItem.SysProxyType}");
 
         SystemProxySelected = (int)_config.SystemProxyItem.SysProxyType;
-        await ConfigTextManager.Instance.SaveConfig();
+        await ConfigTextHandler.SaveConfig();
     }
 
     public async Task ChangeSystemProxyAsync(ESysProxyType type, bool blChange)
@@ -393,7 +393,7 @@ public partial class StatusBarViewModel : MyReactiveObject
 
     public async Task RefreshRoutingsMenu()
     {
-        var routings = await AppManager.Instance.RoutingItems();
+        var routings = await ConfigDbQuery.RoutingItems();
 
         RoutingItems.ReplaceRange(routings);
 
@@ -407,13 +407,13 @@ public partial class StatusBarViewModel : MyReactiveObject
             return;
         }
 
-        var item = await AppManager.Instance.GetRoutingItem(SelectedRouting?.Id);
+        var item = await ConfigDbQuery.GetRoutingItem(SelectedRouting?.Id);
         if (item is null)
         {
             return;
         }
 
-        if (await ConfigDbManager.SetDefaultRouting(_config, item) == 0)
+        if (await ConfigDbHandler.SetDefaultRouting(item) == 0)
         {
             NoticeManager.Instance.SendMessageEx(ResUI.TipChangeRouting);
             ReloadRequested.Publish();
@@ -459,7 +459,7 @@ public partial class StatusBarViewModel : MyReactiveObject
             }
         }
 
-        await ConfigTextManager.Instance.SaveConfig();
+        await ConfigTextHandler.SaveConfig();
         ReloadRequested.Publish();
     }
 

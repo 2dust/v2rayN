@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
-using ServiceLib.Manager.Data;
+using ServiceLib.Handler.Data;
 using ServiceLib.Models.CoreConfigs;
 using ServiceLib.Services;
 using ServiceLib.Tests.CoreConfig;
@@ -363,20 +363,17 @@ public class CoreManagerReloadTests
 
         public static async Task<ReloadFixture> Create(ECoreType coreType, bool tun)
         {
-            var originalConfig = (Config)typeof(AppManager)
-                .GetField("_config", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!
-                .GetValue(AppManager.Instance)!;
+            var configField = typeof(ConfigState)
+                .GetField("_current", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!;
+            var originalConfig = configField.GetValue(ConfigState.Instance);
             var originalCoreType = AppManager.Instance.RunningCoreType;
-            var originalTextConfig = ConfigTextManager.Instance.Config;
             var config = CoreConfigTestFactory.CreateConfig(coreType);
             config.TunModeItem.EnableTun = tun;
             config.IndexId = "old-profile";
             CoreConfigTestFactory.BindAppManagerConfig(config);
             var fixture = new ReloadFixture(config, coreType, () =>
             {
-                CoreConfigTestFactory.BindAppManagerConfig(originalConfig);
-                typeof(ConfigTextManager).GetProperty(nameof(ConfigTextManager.Config))!
-                    .SetValue(ConfigTextManager.Instance, originalTextConfig);
+                configField.SetValue(ConfigState.Instance, originalConfig);
                 AppManager.Instance.RunningCoreType = originalCoreType;
             });
             try

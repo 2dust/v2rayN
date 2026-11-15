@@ -13,7 +13,7 @@ public partial class ThemeSettingViewModel : MyReactiveObject
 
     public ThemeSettingViewModel()
     {
-        _config = ConfigTextManager.Instance.Config;
+        _config = ConfigTextHandler.Config;
 
         BindingUI();
         RestoreUI();
@@ -43,7 +43,7 @@ public partial class ThemeSettingViewModel : MyReactiveObject
                 {
                     _config.UiItem.CurrentTheme = CurrentTheme;
                     ModifyTheme();
-                    await ConfigTextManager.Instance.SaveConfig();
+                    await ConfigTextHandler.SaveConfig();
                 }
             });
 
@@ -55,7 +55,7 @@ public partial class ThemeSettingViewModel : MyReactiveObject
                 {
                     _config.UiItem.CurrentFontSize = CurrentFontSize;
                     ModifyFontSize();
-                    await ConfigTextManager.Instance.SaveConfig();
+                    await ConfigTextHandler.SaveConfig();
                 }
             });
 
@@ -67,7 +67,7 @@ public partial class ThemeSettingViewModel : MyReactiveObject
                 {
                     _config.UiItem.CurrentLanguage = CurrentLanguage;
                     Thread.CurrentThread.CurrentUICulture = new(CurrentLanguage);
-                    await ConfigTextManager.Instance.SaveConfig();
+                    await ConfigTextHandler.SaveConfig();
                     NoticeManager.Instance.Enqueue(ResUI.NeedRebootTips);
                 }
             });

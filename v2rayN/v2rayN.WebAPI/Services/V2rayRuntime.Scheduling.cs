@@ -61,7 +61,7 @@ public sealed partial class V2rayRuntime
                     await using var operation = await _operations.EnterOperationAsync(token);
                     await _mutations.RunAsync(async () =>
                     {
-                        await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+                        await EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig());
                         await ProfileExManager.Instance.SaveTo();
                     }, operation.Token);
                 }, cancellationToken);
@@ -114,7 +114,7 @@ public sealed partial class V2rayRuntime
         IReadOnlyList<SubItem> subscriptions;
         await using (var operation = await _operations.EnterOperationAsync(cancellationToken))
         {
-            subscriptions = (await AppManager.Instance.SubItems() ?? [])
+            subscriptions = (await ConfigDbQuery.SubItems() ?? [])
                 .Where(item => item.AutoUpdateInterval > 0
                                && now - item.UpdateTime >= item.AutoUpdateInterval * 60L)
                 .ToArray();

@@ -1,4 +1,5 @@
 using System.Reflection;
+using ServiceLib.Handler.Data;
 using ServiceLib.Helper;
 using v2rayN.WebAPI.Contracts;
 using v2rayN.WebAPI.Services;
@@ -12,16 +13,16 @@ public class SubscriptionCreationTests
     public async Task EmptyUrlSubscriptionIsCreatedAndReturnedWithAnEmptyUrl()
     {
         var previousLocalData = Environment.GetEnvironmentVariable(Global.LocalAppData);
-        var manager = AppManager.Instance;
-        var configField = typeof(AppManager).GetField("_config", BindingFlags.Instance | BindingFlags.NonPublic)
-            ?? throw new MissingFieldException(typeof(AppManager).FullName, "_config");
-        var previousConfig = configField.GetValue(manager);
+        var state = ConfigState.Instance;
+        var configField = typeof(ConfigState).GetField("_current", BindingFlags.Instance | BindingFlags.NonPublic)
+            ?? throw new MissingFieldException(typeof(ConfigState).FullName, "_current");
+        var previousConfig = configField.GetValue(state);
         var config = new Config();
         SubItem? saved = null;
         try
         {
             Environment.SetEnvironmentVariable(Global.LocalAppData, "0");
-            configField.SetValue(manager, config);
+            state.SetCurrent(config);
             SQLiteHelper.Instance.CreateTable<SubItem>();
             var runtime = new V2rayRuntime(null!, null!, null!, null!, null!);
             var result = await runtime.AddSubscriptionAsync(new SubscriptionInput(
@@ -29,7 +30,7 @@ public class SubscriptionCreationTests
 
             if (result.Data is not null)
             {
-                saved = await manager.GetSubItem(result.Data.Id);
+                saved = await ConfigDbQuery.GetSubItem(result.Data.Id);
             }
 
             await result.Success.Should().BeTrue();
@@ -48,7 +49,7 @@ public class SubscriptionCreationTests
             await updateResult.Success.Should().BeTrue();
             await updateResult.Data!.Url.Should().BeEqualTo(string.Empty);
 
-            saved = await manager.GetSubItem(result.Data.Id);
+            saved = await ConfigDbQuery.GetSubItem(result.Data.Id);
             await (saved is not null).Should().BeTrue();
             await saved!.Remarks.Should().BeEqualTo("自建（已编辑）");
             await saved.Url.Should().BeEqualTo(string.Empty);
@@ -71,7 +72,7 @@ public class SubscriptionCreationTests
             }
             finally
             {
-                configField.SetValue(manager, previousConfig);
+                configField.SetValue(state, previousConfig);
                 Environment.SetEnvironmentVariable(Global.LocalAppData, previousLocalData);
             }
         }

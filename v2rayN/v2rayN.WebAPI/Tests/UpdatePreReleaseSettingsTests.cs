@@ -1,6 +1,6 @@
 using System.Reflection;
 using System.Text.Json;
-using ServiceLib.Manager.Data;
+using ServiceLib.Handler.Data;
 using v2rayN.WebAPI.Contracts;
 using v2rayN.WebAPI.Services;
 
@@ -153,13 +153,10 @@ public class UpdatePreReleaseSettingsTests
 
     private sealed class RuntimeFixture : IDisposable
     {
-        private readonly FieldInfo _configField = typeof(AppManager)
-            .GetField("_config", BindingFlags.Instance | BindingFlags.NonPublic)
-            ?? throw new MissingFieldException(typeof(AppManager).FullName, "_config");
+        private readonly FieldInfo _configField = typeof(ConfigState)
+            .GetField("_current", BindingFlags.Instance | BindingFlags.NonPublic)
+            ?? throw new MissingFieldException(typeof(ConfigState).FullName, "_current");
         private readonly object? _previousConfig;
-        private readonly PropertyInfo _textConfigProperty = typeof(ConfigTextManager)
-            .GetProperty(nameof(ConfigTextManager.Config))!;
-        private readonly object? _previousTextConfig;
         private readonly string? _previousLocalData;
         private readonly string _configPath;
         private readonly byte[]? _previousConfigFile;
@@ -170,8 +167,7 @@ public class UpdatePreReleaseSettingsTests
 
         public RuntimeFixture()
         {
-            _previousConfig = _configField.GetValue(AppManager.Instance);
-            _previousTextConfig = _textConfigProperty.GetValue(ConfigTextManager.Instance);
+            _previousConfig = _configField.GetValue(ConfigState.Instance);
             _previousLocalData = Environment.GetEnvironmentVariable(Global.LocalAppData);
             // Configuration writes stay in the test build directory, never user data.
             _configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "guiConfigs", Global.ConfigFileName);
@@ -184,8 +180,7 @@ public class UpdatePreReleaseSettingsTests
                 }
             }
             Environment.SetEnvironmentVariable(Global.LocalAppData, "0");
-            _configField.SetValue(AppManager.Instance, Config);
-            _textConfigProperty.SetValue(ConfigTextManager.Instance, Config);
+            ConfigState.Instance.SetCurrent(Config);
         }
 
         public async Task<Config> ReadSavedConfigAsync() =>
@@ -214,8 +209,7 @@ public class UpdatePreReleaseSettingsTests
             }
             finally
             {
-                _configField.SetValue(AppManager.Instance, _previousConfig);
-                _textConfigProperty.SetValue(ConfigTextManager.Instance, _previousTextConfig);
+                _configField.SetValue(ConfigState.Instance, _previousConfig);
                 Environment.SetEnvironmentVariable(Global.LocalAppData, _previousLocalData);
             }
         }

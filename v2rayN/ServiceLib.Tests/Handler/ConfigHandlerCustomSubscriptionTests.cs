@@ -32,8 +32,8 @@ public class ConfigHandlerCustomSubscriptionTests
         oldProfile.IsSub = true;
         await SQLiteHelper.Instance.InsertAsync(oldProfile);
 
-        var count = await ConfigDbManager.AddBatchServers(config, FullXrayConfigs, subId, true);
-        var profiles = await AppManager.Instance.ProfileItems(subId) ?? [];
+        var count = await ConfigDbHandler.AddBatchServers( FullXrayConfigs, subId, true);
+        var profiles = await ConfigDbQuery.ProfileItems(subId) ?? [];
 
         await count.Should().BeEqualTo(2);
         await profiles.Should().HaveCount(2);
@@ -66,8 +66,8 @@ public class ConfigHandlerCustomSubscriptionTests
         await SQLiteHelper.Instance.InsertAsync(existing);
 
         var invalidSubscription = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes("not a valid profile"));
-        var count = await ConfigDbManager.AddBatchServers(config, invalidSubscription, subId, true);
-        var profiles = await AppManager.Instance.ProfileItems(subId) ?? [];
+        var count = await ConfigDbHandler.AddBatchServers( invalidSubscription, subId, true);
+        var profiles = await ConfigDbQuery.ProfileItems(subId) ?? [];
 
         await (count < 1).Should().BeTrue();
         await profiles.Should().HaveCount(1);

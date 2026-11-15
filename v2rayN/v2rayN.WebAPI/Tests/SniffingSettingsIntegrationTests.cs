@@ -1,6 +1,6 @@
 using System.Reflection;
 using System.Text.Json.Nodes;
-using ServiceLib.Manager.Data;
+using ServiceLib.Handler.Data;
 using ServiceLib.Services.CoreConfig;
 using v2rayN.WebAPI.Contracts;
 using v2rayN.WebAPI.Services;
@@ -158,10 +158,7 @@ public class SniffingSettingsIntegrationTests
 
     internal static void BindAppManagerConfig(Config config)
     {
-        var field = typeof(AppManager).GetField("_config", BindingFlags.Instance | BindingFlags.NonPublic);
-        field?.SetValue(AppManager.Instance, config);
-        typeof(ConfigTextManager).GetProperty(nameof(ConfigTextManager.Config))!
-            .SetValue(ConfigTextManager.Instance, config);
+        ConfigState.Instance.SetCurrent(config);
     }
 
     private static ProfileItem CreateVmessNode(ECoreType coreType)
@@ -224,7 +221,7 @@ public class SniffingSettingsIntegrationTests
         ],
         GlobalHotkeys = [],
         CoreTypeItem = [new CoreTypeItem { ConfigType = EConfigType.VMess, CoreType = ECoreType.Xray }],
-        SimpleDNSItem = ConfigDbManager.InitBuiltinSimpleDNS(),
+        SimpleDNSItem = ConfigDbHandler.InitBuiltinSimpleDNS(),
         HappyEyeballs4RayItem = new HappyEyeballs4RayItem(),
         IndexId = string.Empty,
         SubIndexId = string.Empty,

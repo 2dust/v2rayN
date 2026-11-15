@@ -13,7 +13,7 @@ public class SubscriptionHandler(
     public async Task UpdateProcess(string subId)
     {
         await updateFunc?.Invoke(false, ResUI.MsgUpdateSubscriptionStart);
-        var subItem = await AppManager.Instance.SubItems();
+        var subItem = await ConfigDbQuery.SubItems();
 
         if (subItem is not { Count: > 0 })
         {
@@ -106,7 +106,7 @@ public class SubscriptionHandler(
         await updateFunc?.Invoke(false, $"{hashCode}{ResUI.MsgStartParsingSubscription}");
 
         // Add servers to configuration
-        var ret = await ConfigDbManager.AddBatchServers(_config, result, id, true);
+        var ret = await ConfigDbHandler.AddBatchServers(result, id, true);
         if (ret <= 0)
         {
             Logging.SaveLog("FailedImportSubscription");

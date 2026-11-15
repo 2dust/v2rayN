@@ -9,9 +9,8 @@ internal static class BuiltinDnsProfileBootstrap
     ];
 
     public static async Task EnsureAsync(
-        Config config,
         Func<Task<IReadOnlyList<DNSItem>>> load,
-        Func<Config, DNSItem, Task<int>> save)
+        Func<DNSItem, Task<int>> save)
     {
         var existing = await load();
         foreach (var (coreType, remarks) in BuiltinProfiles)
@@ -27,7 +26,7 @@ internal static class BuiltinDnsProfileBootstrap
                 CoreType = coreType,
                 Enabled = false,
             };
-            if (await save(config, item) != 0)
+            if (await save(item) != 0)
             {
                 throw new IOException($"The built-in {coreType} DNS profile could not be created.");
             }

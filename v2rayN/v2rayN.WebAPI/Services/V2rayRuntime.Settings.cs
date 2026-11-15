@@ -252,7 +252,7 @@ public sealed partial class V2rayRuntime
                 }
                 Config.RoutingBasicItem.DomainStrategy = input.DomainStrategy!;
                 Config.RoutingBasicItem.DomainStrategy4Singbox = input.DomainStrategy4Singbox!;
-                await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+                await EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig());
             });
         }
         catch (Exception exception)
@@ -260,7 +260,7 @@ public sealed partial class V2rayRuntime
             RestoreConfigValues(Config, oldConfig);
             try
             {
-                await _mutations.RunAsync(() => EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig()));
+                await _mutations.RunAsync(() => EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig()));
             }
             catch (Exception rollbackException)
             {
@@ -314,7 +314,7 @@ public sealed partial class V2rayRuntime
         await _mutations.RunAsync(async () =>
         {
             ApplyInboundSettings(Config.Inbound[0], input);
-            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+            await EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig());
         });
 
         return await CompleteCoreAffectingChangeAsync("inbound", fingerprint != GetCoreConfigurationFingerprint(), applyContext);
@@ -375,7 +375,7 @@ public sealed partial class V2rayRuntime
             Config.Fragment4RayItem.Lengths = fragmentLengths.ToList();
             Config.Fragment4RayItem.Delays = fragmentDelays.ToList();
             Config.Fragment4RayItem.MaxSplit = input.FragmentMaxSplit;
-            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+            await EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig());
         });
 
         return await CompleteCoreAffectingChangeAsync("core", fingerprint != GetCoreConfigurationFingerprint(), applyContext);
@@ -402,7 +402,7 @@ public sealed partial class V2rayRuntime
             Config.ConstItem.SrsSourceUrl = input.SrsSourceUrl;
             Config.ConstItem.RouteRulesTemplateSourceUrl = input.RouteRulesTemplateSourceUrl;
             Config.ConstItem.SubConvertUrl = input.SubConvertUrl;
-            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+            await EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig());
         });
 
         if (statisticsChanged)
@@ -435,7 +435,7 @@ public sealed partial class V2rayRuntime
             Config.SpeedTestItem.MixedConcurrencyCount = Math.Max(input.MixedConcurrencyCount, Global.SpeedTestConcurrencyCountMin);
             Config.SpeedTestItem.IPAPIUrl = input.IPAPIUrl;
             Config.SpeedTestItem.UdpTestTarget = input.UdpTestTarget;
-            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+            await EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig());
         });
         _events.Publish("settings-changed", new { section = "speedtest", restartRequired = false });
         return OperationView.Ok(ApiMessageKeys.SpeedTestSettingsSaved);
@@ -467,7 +467,7 @@ public sealed partial class V2rayRuntime
                     item.CoreType = mapping.CoreType;
                 }
             }
-            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+            await EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig());
         });
         return await CompleteCoreAffectingChangeAsync("core-types", fingerprint != GetCoreConfigurationFingerprint(), applyContext);
     }
@@ -503,7 +503,7 @@ public sealed partial class V2rayRuntime
         {
             Config.RoutingBasicItem.DomainStrategy = input.DomainStrategy!;
             Config.RoutingBasicItem.DomainStrategy4Singbox = input.DomainStrategy4Singbox!;
-            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+            await EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig());
         });
         return await CompleteCoreAffectingChangeAsync("routing", fingerprint != GetCoreConfigurationFingerprint(), applyContext);
     }
@@ -522,13 +522,13 @@ public sealed partial class V2rayRuntime
         await _mutations.RunAsync(async () =>
         {
             Config.SimpleDNSItem = input;
-            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+            await EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig());
         });
         return await CompleteCoreAffectingChangeAsync("dns", fingerprint != GetCoreConfigurationFingerprint(), applyContext);
     }
 
     public async Task<IReadOnlyList<DnsProfileView>> GetDnsProfilesAsync() =>
-        (await AppManager.Instance.DNSItems() ?? [])
+        (await ConfigDbQuery.DNSItems() ?? [])
             .Select(ToDnsProfileView)
             .ToArray();
 
@@ -550,7 +550,7 @@ public sealed partial class V2rayRuntime
 
         var result = await _mutations.RunAsync(async () =>
         {
-            var current = await AppManager.Instance.GetDNSItem(coreType);
+            var current = await ConfigDbQuery.GetDNSItem(coreType);
             if (current is null)
             {
                 return (Result: -2, Changed: false);
@@ -563,7 +563,7 @@ public sealed partial class V2rayRuntime
                 || current.DomainDNSAddress != input.DomainDNSAddress
                 || current.Remarks != (input.Remarks ?? current.Remarks);
             var item = ApplyDnsProfileInput(current, coreType, input);
-            return (Result: await ConfigDbManager.SaveDNSItems(Config, item), Changed: changed);
+            return (Result: await ConfigDbHandler.SaveDNSItems( item), Changed: changed);
         });
         if (result.Result == -2)
         {
@@ -622,7 +622,7 @@ public sealed partial class V2rayRuntime
         return json is not null && json["servers"] is not null;
     }
 
-    public async Task<IReadOnlyList<RoutingItem>> GetRoutingProfilesAsync() => await AppManager.Instance.RoutingItems() ?? [];
+    public async Task<IReadOnlyList<RoutingItem>> GetRoutingProfilesAsync() => await ConfigDbQuery.RoutingItems() ?? [];
 
     public async Task<OperationView> SaveRoutingProfileAsync(RoutingItem input, string? routingId = null)
     {
@@ -656,12 +656,12 @@ public sealed partial class V2rayRuntime
                 item = input;
                 item.Id = string.Empty;
                 item.IsActive = false;
-                var existing = await AppManager.Instance.RoutingItems() ?? [];
+                var existing = await ConfigDbQuery.RoutingItems() ?? [];
                 item.Sort = item.Sort > 0 ? item.Sort : (existing.MaxBy(route => route.Sort)?.Sort ?? 0) + 1;
             }
             else
             {
-                var existingItem = await AppManager.Instance.GetRoutingItem(routingId);
+                var existingItem = await ConfigDbQuery.GetRoutingItem(routingId);
                 if (existingItem is null)
                 {
                     return (Result: -2, Item: null, Changed: false);
@@ -696,8 +696,8 @@ public sealed partial class V2rayRuntime
                 item.RuleNum = parsedRules.Count;
             }
             var result = parsedRules.Count == 0
-                ? await ConfigDbManager.SaveRoutingItem(Config, item)
-                : await ConfigDbManager.AddBatchRoutingRules(item, JsonUtils.Serialize(parsedRules, false));
+                ? await ConfigDbHandler.SaveRoutingItem( item)
+                : await ConfigDbHandler.AddBatchRoutingRules(item, JsonUtils.Serialize(parsedRules, false));
             return (Result: result, Item: (RoutingItem?)item, Changed: changed);
         });
         if (save.Result == -2)
@@ -723,19 +723,19 @@ public sealed partial class V2rayRuntime
 
         var removed = await _mutations.RunAsync(async () =>
         {
-            var item = await AppManager.Instance.GetRoutingItem(id);
+            var item = await ConfigDbQuery.GetRoutingItem(id);
             if (item is null)
             {
                 return (Removed: false, AffectsCore: false);
             }
-            await ConfigDbManager.RemoveRoutingItem(item);
+            await ConfigDbHandler.RemoveRoutingItem(item);
             if (item.IsActive)
             {
-                var remaining = await AppManager.Instance.RoutingItems() ?? [];
+                var remaining = await ConfigDbQuery.RoutingItems() ?? [];
                 var fallback = remaining.FirstOrDefault();
                 if (fallback is not null)
                 {
-                    if (await ConfigDbManager.SetDefaultRouting(Config, fallback) != 0)
+                    if (await ConfigDbHandler.SetDefaultRouting( fallback) != 0)
                     {
                         throw new IOException("ServiceLib could not select the fallback routing profile.");
                     }
@@ -743,7 +743,7 @@ public sealed partial class V2rayRuntime
                 else
                 {
                     Config.RoutingBasicItem.RoutingIndexId = string.Empty;
-                    await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+                    await EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig());
                 }
             }
             return (Removed: true, AffectsCore: item.IsActive);
@@ -766,13 +766,13 @@ public sealed partial class V2rayRuntime
 
         var result = await _mutations.RunAsync(async () =>
         {
-            var item = await AppManager.Instance.GetRoutingItem(id);
+            var item = await ConfigDbQuery.GetRoutingItem(id);
             if (item is null)
             {
                 return (Result: -2, Changed: false);
             }
             var changed = !item.IsActive;
-            return (Result: changed ? await ConfigDbManager.SetDefaultRouting(Config, item) : 0, Changed: changed);
+            return (Result: changed ? await ConfigDbHandler.SetDefaultRouting( item) : 0, Changed: changed);
         });
         if (result.Result == -2)
         {
@@ -788,7 +788,7 @@ public sealed partial class V2rayRuntime
 
     public async Task<IReadOnlyList<RulesItem>> GetRoutingRulesAsync(string routingId)
     {
-        var item = await AppManager.Instance.GetRoutingItem(routingId);
+        var item = await ConfigDbQuery.GetRoutingItem(routingId);
         return JsonUtils.Deserialize<List<RulesItem>>(item?.RuleSet ?? "[]") ?? [];
     }
 
@@ -801,7 +801,7 @@ public sealed partial class V2rayRuntime
         }
 
         var items = rules.ToArray();
-        var before = await AppManager.Instance.GetRoutingItem(routingId);
+        var before = await ConfigDbQuery.GetRoutingItem(routingId);
         var changed = before is not null && before.IsActive
             && before.RuleSet != JsonUtils.Serialize(items, false);
         var saved = await _mutations.RunAsync(() => SaveRoutingRulesLockedAsync(routingId, items));
@@ -818,17 +818,17 @@ public sealed partial class V2rayRuntime
 
     private static async Task<int> SaveRoutingRulesLockedAsync(string routingId, IReadOnlyList<RulesItem> rules)
     {
-        var item = await AppManager.Instance.GetRoutingItem(routingId);
+        var item = await ConfigDbQuery.GetRoutingItem(routingId);
         if (item is null)
         {
             return -2;
         }
-        return await ConfigDbManager.AddBatchRoutingRules(item, JsonUtils.Serialize(rules, false));
+        return await ConfigDbHandler.AddBatchRoutingRules(item, JsonUtils.Serialize(rules, false));
     }
 
     private async Task<string> GetActiveRoutingSignatureAsync()
     {
-        var active = (await AppManager.Instance.RoutingItems() ?? []).FirstOrDefault(item => item.IsActive);
+        var active = (await ConfigDbQuery.RoutingItems() ?? []).FirstOrDefault(item => item.IsActive);
         return active is null
             ? string.Empty
             : System.Text.Json.JsonSerializer.Serialize(new
@@ -855,13 +855,13 @@ public sealed partial class V2rayRuntime
             return applyFailure;
         }
 
-        var activeBefore = await AppManager.Instance.GetRoutingItem(routingId);
+        var activeBefore = await ConfigDbQuery.GetRoutingItem(routingId);
         var beforeRuleSet = activeBefore?.RuleSet;
         var saved = await _mutations.RunAsync(async () =>
         {
             if (request.Append)
             {
-                var item = await AppManager.Instance.GetRoutingItem(routingId);
+                var item = await ConfigDbQuery.GetRoutingItem(routingId);
                 if (item is null)
                 {
                     return -2;
@@ -880,14 +880,14 @@ public sealed partial class V2rayRuntime
         {
             return OperationView.Fail("routing_rules_save_failed", ApiMessageKeys.RoutingSaveFailed);
         }
-        var activeAfter = await AppManager.Instance.GetRoutingItem(routingId);
+        var activeAfter = await ConfigDbQuery.GetRoutingItem(routingId);
         var changed = activeBefore?.IsActive == true && activeAfter?.RuleSet != beforeRuleSet;
         return await CompleteCoreAffectingChangeAsync("routing-rules", changed, applyContext, data: new { routingId });
     }
 
     public async Task<OperationView> ImportRoutingRulesFromUrlAsync(string routingId, bool append, CancellationToken cancellationToken)
     {
-        var item = await AppManager.Instance.GetRoutingItem(routingId);
+        var item = await ConfigDbQuery.GetRoutingItem(routingId);
         if (item is null)
         {
             return OperationView.Fail("routing_profile_not_found", ApiMessageKeys.RoutingProfileNotFound);
@@ -916,10 +916,10 @@ public sealed partial class V2rayRuntime
             return applyFailure;
         }
 
-        var routeWasActive = (await AppManager.Instance.GetRoutingItem(routingId))?.IsActive == true;
+        var routeWasActive = (await ConfigDbQuery.GetRoutingItem(routingId))?.IsActive == true;
         var result = await _mutations.RunAsync(async () =>
         {
-            var item = await AppManager.Instance.GetRoutingItem(routingId);
+            var item = await ConfigDbQuery.GetRoutingItem(routingId);
             if (item is null)
             {
                 return -2;
@@ -930,7 +930,7 @@ public sealed partial class V2rayRuntime
             {
                 return -3;
             }
-            if (await ConfigDbManager.MoveRoutingRule(rules, index, direction, position) != 0)
+            if (await ConfigDbHandler.MoveRoutingRule(rules, index, direction, position) != 0)
             {
                 return -4;
             }
@@ -957,10 +957,10 @@ public sealed partial class V2rayRuntime
             return applyFailure;
         }
 
-        var routeWasActive = (await AppManager.Instance.GetRoutingItem(routingId))?.IsActive == true;
+        var routeWasActive = (await ConfigDbQuery.GetRoutingItem(routingId))?.IsActive == true;
         var result = await _mutations.RunAsync(async () =>
         {
-            var item = await AppManager.Instance.GetRoutingItem(routingId);
+            var item = await ConfigDbQuery.GetRoutingItem(routingId);
             if (item is null)
             {
                 return -2;
@@ -993,7 +993,7 @@ public sealed partial class V2rayRuntime
         }
 
         var before = await GetActiveRoutingSignatureAsync();
-        var result = await _mutations.RunAsync(() => ConfigDbManager.InitRouting(Config, true));
+        var result = await _mutations.RunAsync(() => ConfigDbHandler.InitRouting( true));
         if (result != 0)
         {
             return OperationView.Fail("routing_import_failed", ApiMessageKeys.RoutingSaveFailed);
@@ -1003,7 +1003,7 @@ public sealed partial class V2rayRuntime
     }
 
     public async Task<IReadOnlyList<CoreConfigTemplateView>> GetFullConfigTemplatesAsync() =>
-        (await AppManager.Instance.FullConfigTemplateItem() ?? [])
+        (await ConfigDbQuery.FullConfigTemplateItem() ?? [])
             .Select(ToCoreConfigTemplateView)
             .ToArray();
 
@@ -1033,7 +1033,7 @@ public sealed partial class V2rayRuntime
             return applyFailure;
         }
 
-        var existingBefore = await AppManager.Instance.GetFullConfigTemplateItem(coreType);
+        var existingBefore = await ConfigDbQuery.GetFullConfigTemplateItem(coreType);
         var changed = existingBefore is not null
             && (existingBefore.Remarks != (input.Remarks ?? existingBefore.Remarks)
                 || existingBefore.Enabled != input.Enabled
@@ -1042,13 +1042,13 @@ public sealed partial class V2rayRuntime
                 || existingBefore.ProxyDetour != input.ProxyDetour);
         var result = await _mutations.RunAsync(async () =>
         {
-            var current = await AppManager.Instance.GetFullConfigTemplateItem(coreType);
+            var current = await ConfigDbQuery.GetFullConfigTemplateItem(coreType);
             if (current is null)
             {
                 return -2;
             }
             var item = ApplyCoreConfigTemplateInput(current, coreType, input);
-            return await ConfigDbManager.SaveFullConfigTemplate(Config, item);
+            return await ConfigDbHandler.SaveFullConfigTemplate( item);
         });
         if (result == -2)
         {
@@ -1074,8 +1074,8 @@ public sealed partial class V2rayRuntime
         await _regionalPresetGate.WaitAsync(cancellationToken);
         try
         {
-            var existingDnsItems = await AppManager.Instance.DNSItems() ?? [];
-            var existingRoutingItems = await AppManager.Instance.RoutingItems() ?? [];
+            var existingDnsItems = await ConfigDbQuery.DNSItems() ?? [];
+            var existingRoutingItems = await ConfigDbQuery.RoutingItems() ?? [];
             var proxy = preset == EPresetType.Default
                 ? null
                 : await GetRegionalPresetProxyAsync(cancellationToken);
@@ -1160,7 +1160,7 @@ public sealed partial class V2rayRuntime
                                 await SQLiteHelper.Instance.DeleteAllAsync<DNSItem>();
                                 foreach (var item in stage.DnsItems)
                                 {
-                                    if (await ConfigDbManager.SaveDNSItems(Config, item) != 0)
+                                    if (await ConfigDbHandler.SaveDNSItems( item) != 0)
                                     {
                                         throw new IOException($"The {item.CoreType} DNS profile could not be saved.");
                                     }
@@ -1168,7 +1168,7 @@ public sealed partial class V2rayRuntime
 
                                 // Default routing uses embedded data only; this call performs no network I/O
                                 // because the route template source was cleared in the staged plan.
-                                if (await ConfigDbManager.InitRouting(Config, false) != 0)
+                                if (await ConfigDbHandler.InitRouting( false) != 0)
                                 {
                                     throw new IOException("The built-in routing profiles could not be initialized.");
                                 }
@@ -1177,7 +1177,7 @@ public sealed partial class V2rayRuntime
                             {
                                 foreach (var item in stage.DnsItems)
                                 {
-                                    if (await ConfigDbManager.SaveDNSItems(Config, item) != 0)
+                                    if (await ConfigDbHandler.SaveDNSItems( item) != 0)
                                     {
                                         throw new IOException($"The {item.CoreType} DNS profile could not be saved.");
                                     }
@@ -1185,10 +1185,10 @@ public sealed partial class V2rayRuntime
 
                                 foreach (var itemId in stage.Routing.RemoveItemIds ?? [])
                                 {
-                                    var item = await AppManager.Instance.GetRoutingItem(itemId);
+                                    var item = await ConfigDbQuery.GetRoutingItem(itemId);
                                     if (item is not null)
                                     {
-                                        await ConfigDbManager.RemoveRoutingItem(item);
+                                        await ConfigDbHandler.RemoveRoutingItem(item);
                                     }
                                 }
 
@@ -1197,7 +1197,7 @@ public sealed partial class V2rayRuntime
                                     Config.RoutingBasicItem.RoutingIndexId = string.Empty;
                                 }
 
-                                var currentRoutes = await AppManager.Instance.RoutingItems() ?? [];
+                                var currentRoutes = await ConfigDbQuery.RoutingItems() ?? [];
                                 var hasVersion = stage.Routing.TemplateVersion is { Length: > 0 } version
                                     && currentRoutes.Any(item => item.Remarks?.StartsWith(version, StringComparison.Ordinal) == true);
                                 var builtinFallbackAlreadyInitialized = stage.Routing.IsBuiltinFallback && currentRoutes.Count > 0;
@@ -1207,7 +1207,7 @@ public sealed partial class V2rayRuntime
                                     foreach (var item in stage.Routing.Items)
                                     {
                                         item.Sort = ++nextSort;
-                                        if (await ConfigDbManager.AddBatchRoutingRules(item, item.RuleSet ?? "[]") != 0)
+                                        if (await ConfigDbHandler.AddBatchRoutingRules(item, item.RuleSet ?? "[]") != 0)
                                         {
                                             throw new IOException($"The routing profile '{item.Remarks}' could not be saved.");
                                         }
@@ -1216,7 +1216,7 @@ public sealed partial class V2rayRuntime
                                     var defaultItem = stage.Routing.DefaultRemarks is { } remarks
                                         ? stage.Routing.Items.FirstOrDefault(item => item.Remarks == remarks)
                                         : null;
-                                    if (defaultItem is not null && await ConfigDbManager.SetDefaultRouting(Config, defaultItem) != 0)
+                                    if (defaultItem is not null && await ConfigDbHandler.SetDefaultRouting( defaultItem) != 0)
                                     {
                                         throw new IOException("The first staged routing profile could not be activated.");
                                     }
@@ -1226,7 +1226,7 @@ public sealed partial class V2rayRuntime
                                 {
                                     var existingDefault = currentRoutes.FirstOrDefault(item => item.Id == existingDefaultId);
                                     if (existingDefault is not null && !existingDefault.IsActive
-                                        && await ConfigDbManager.SetDefaultRouting(Config, existingDefault) != 0)
+                                        && await ConfigDbHandler.SetDefaultRouting( existingDefault) != 0)
                                     {
                                         throw new IOException("The migrated default routing profile could not be activated.");
                                     }
@@ -1234,7 +1234,7 @@ public sealed partial class V2rayRuntime
                             }
 
                             token.ThrowIfCancellationRequested();
-                            await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+                            await EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig());
                             token.ThrowIfCancellationRequested();
                         }, token),
                         () => RestoreRegionalPresetSnapshotAsync(applyContext));
@@ -1349,7 +1349,7 @@ public sealed partial class V2rayRuntime
             await _mutations.RunAsync(async () =>
             {
                 RestoreConfigValues(Config, context.OldConfig);
-                await EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig());
+                await EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig());
 
                 await SQLiteHelper.Instance.DeleteAllAsync<RoutingItem>();
                 if (context.OldRoutingItems.Length > 0
@@ -1589,9 +1589,9 @@ public sealed partial class V2rayRuntime
                     new { runtimeState = oldRuntime.State.ToString().ToLowerInvariant(), processIds = GetActiveCoreProcessIds() }),
                 _ => null,
             };
-            var oldRoutingItems = failure is null ? await AppManager.Instance.RoutingItems() ?? [] : [];
-            var oldDnsItems = failure is null ? await AppManager.Instance.DNSItems() ?? [] : [];
-            var oldFullConfigTemplates = failure is null ? await AppManager.Instance.FullConfigTemplateItem() ?? [] : [];
+            var oldRoutingItems = failure is null ? await ConfigDbQuery.RoutingItems() ?? [] : [];
+            var oldDnsItems = failure is null ? await ConfigDbQuery.DNSItems() ?? [] : [];
+            var oldFullConfigTemplates = failure is null ? await ConfigDbQuery.FullConfigTemplateItem() ?? [] : [];
             return new CoreSettingsApplyContext(_coreGate, oldConfig, oldRuntime, hasActiveChild,
                 oldRoutingItems.ToArray(), oldDnsItems.ToArray(), oldFullConfigTemplates.ToArray(), failure);
         }
@@ -1625,7 +1625,7 @@ public sealed partial class V2rayRuntime
         try
         {
             RestoreConfigValues(Config, context.OldConfig);
-            await _mutations.RunAsync(() => EnsureConfigSaveSucceededAsync(() => ConfigTextManager.Instance.SaveConfig()));
+            await _mutations.RunAsync(() => EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig()));
             configRestored = true;
             await _mutations.RunAsync(async () =>
             {
@@ -1702,7 +1702,7 @@ public sealed partial class V2rayRuntime
 
             await CoreManager.Instance.Init(Config, OnCoreMessageAsync);
             var oldProfileId = context.OldRuntime.ProfileId ?? Config.IndexId;
-            var oldProfile = await AppManager.Instance.GetProfileItem(oldProfileId)
+            var oldProfile = await ConfigDbQuery.GetProfileItem(oldProfileId)
                 ?? throw new InvalidOperationException($"The previous Core profile {oldProfileId} no longer exists.");
             var restored = await StartCoreLockedAsync(oldProfile, CancellationToken.None);
             if (!restored.Success)

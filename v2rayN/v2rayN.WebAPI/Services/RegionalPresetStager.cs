@@ -42,7 +42,7 @@ internal sealed class RegionalPresetStager(
                 string.Empty,
                 string.Empty,
                 string.Empty,
-                ConfigDbManager.InitBuiltinSimpleDNS(),
+                ConfigDbHandler.InitBuiltinSimpleDNS(),
                 [CreateDefaultDns(ECoreType.Xray, "V2ray"), CreateDefaultDns(ECoreType.sing_box, "sing-box")],
                 new(null, []));
         }
@@ -136,7 +136,7 @@ internal sealed class RegionalPresetStager(
         var content = await TryDownloadAsync(url, proxy, cancellationToken);
         var template = content is null ? null : JsonUtils.Deserialize<SimpleDNSItem>(content);
         return template is null
-            ? (ConfigDbManager.InitBuiltinSimpleDNS(), true)
+            ? (ConfigDbHandler.InitBuiltinSimpleDNS(), true)
             : (template, false);
     }
 
