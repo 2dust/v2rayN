@@ -12,9 +12,9 @@ public class SubscriptionCreationTests
     public async Task EmptyUrlSubscriptionIsCreatedAndReturnedWithAnEmptyUrl()
     {
         var previousLocalData = Environment.GetEnvironmentVariable(Global.LocalAppData);
-        var manager = AppManager.Instance;
-        var configField = typeof(AppManager).GetField("_config", BindingFlags.Instance | BindingFlags.NonPublic)
-            ?? throw new MissingFieldException(typeof(AppManager).FullName, "_config");
+        var manager = ConfigState.Instance;
+        var configField = typeof(ConfigState).GetField("_current", BindingFlags.Instance | BindingFlags.NonPublic)
+            ?? throw new MissingFieldException(typeof(ConfigState).FullName, "_current");
         var previousConfig = configField.GetValue(manager);
         var config = new Config();
         SubItem? saved = null;

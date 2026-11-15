@@ -157,8 +157,8 @@ public class SniffingSettingsIntegrationTests
 
     internal static void BindAppManagerConfig(Config config)
     {
-        var field = typeof(AppManager).GetField("_config", BindingFlags.Instance | BindingFlags.NonPublic);
-        field?.SetValue(AppManager.Instance, config);
+        var field = typeof(ConfigState).GetField("_current", BindingFlags.Instance | BindingFlags.NonPublic);
+        field?.SetValue(ConfigState.Instance, config);
     }
 
     private static ProfileItem CreateVmessNode(ECoreType coreType)
