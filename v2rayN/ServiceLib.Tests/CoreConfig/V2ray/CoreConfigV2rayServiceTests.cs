@@ -3,6 +3,130 @@ namespace ServiceLib.Tests.CoreConfig.V2ray;
 public class CoreConfigV2rayServiceTests
 {
     [Test]
+    [Arguments(false, "0-65535", null, Global.ProxyTag)]
+    [Arguments(false, "1-65535", null, Global.ProxyTag)]
+    [Arguments(true, "0-65535", null, Global.ProxyTag)]
+    [Arguments(true, null, "tcp,udp", Global.ProxyTag)]
+    [Arguments(false, null, null, Global.ProxyTag)]
+    [Arguments(false, "0-65535", null, Global.BlockTag)]
+    public async Task DirectDnsRule_ShouldPrecedeCatchAllAndPreserveExplicitRules(bool tun, string? port, string? network, string outbound)
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
+        config.TunModeItem.EnableTun = tun;
+        config.SimpleDNSItem.DirectDNS = "8.8.8.8";
+        config.SimpleDNSItem.RemoteDNS = "1.1.1.1";
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+        var node = CoreConfigTestFactory.CreateVmessNode(ECoreType.Xray);
+        var userRules = new List<RulesItem>
+        {
+            new() { RuleType = ERuleType.DNS, Domain = ["domain:direct.example"], OutboundTag = Global.DirectTag },
+            new() { InboundTag = ["direct-dns-1"], Ip = ["8.8.8.8"], Port = "53", OutboundTag = Global.BlockTag },
+            new() { Port = "443", Network = "tcp", OutboundTag = Global.ProxyTag },
+        };
+        if (port != null || network != null)
+        {
+            userRules.Add(new() { Port = port, Network = network, OutboundTag = outbound });
+        }
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray) with
+        {
+            RoutingItem = new RoutingItem { RuleSet = JsonUtils.Serialize(userRules), DomainStrategy = Global.IPOnDemand }
+        };
+
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue();
+        var rules = JsonUtils.Deserialize<V2rayConfig>(result.Data!.ToString())!.routing.rules;
+        var direct = rules.FindIndex(r => r.outboundTag == Global.DirectTag && r.inboundTag?.Contains("direct-dns-1") == true);
+        var explicitBlock = rules.FindIndex(r => r.outboundTag == Global.BlockTag && r.inboundTag?.Contains("direct-dns-1") == true);
+        var https = rules.FindIndex(r => r.port == "443" && r.network == "tcp" && r.outboundTag == Global.ProxyTag);
+        await (explicitBlock >= 0 && https > explicitBlock && direct > https).Should().BeTrue();
+        if (port != null || network != null)
+        {
+            var catchAll = rules.FindIndex(r => r.port == port && r.network == network && r.inboundTag == null && r.outboundTag == outbound);
+            await (catchAll >= 0 && (outbound == Global.ProxyTag ? catchAll > direct : catchAll < direct)).Should().BeTrue();
+        }
+        if (tun)
+        {
+            var intercept = rules.FindIndex(r => r.inboundTag?.Contains("tun") == true && r.port == "53" && r.outboundTag == Global.DnsOutboundTag);
+            await (intercept >= 0 && intercept < direct).Should().BeTrue();
+        }
+        await rules.Should().Contain(r => r.inboundTag != null && r.inboundTag.Contains(Global.DnsTag) && r.outboundTag == Global.ProxyTag);
+    }
+
+    [Test]
+    [Arguments("0-65535", null)]
+    [Arguments("1-65535", null)]
+    [Arguments(null, "udp,tcp")]
+    public async Task DirectDnsRule_ShouldPrecedeCatchAllBalancer(string? port, string? network)
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
+        config.SimpleDNSItem.DirectDNS = "8.8.8.8,https://8.8.4.4/dns-query";
+        config.SimpleDNSItem.RemoteDNS = "1.1.1.1";
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+        var n1 = CoreConfigTestFactory.CreateSocksNode(ECoreType.Xray, "n1", "node-1");
+        var n2 = CoreConfigTestFactory.CreateSocksNode(ECoreType.Xray, "n2", "node-2");
+        var group = CoreConfigTestFactory.CreatePolicyGroupNode(ECoreType.Xray, "g1", "group", [n1.IndexId, n2.IndexId]);
+        var context = CoreConfigTestFactory.CreateContext(config, group, ECoreType.Xray) with
+        {
+            RoutingItem = new RoutingItem
+            {
+                RuleSet = JsonUtils.Serialize(new List<RulesItem>
+                {
+                    new() { RuleType = ERuleType.DNS, Domain = ["domain:direct.example"], OutboundTag = Global.DirectTag },
+                    new() { Port = port, Network = network, OutboundTag = Global.ProxyTag },
+                }),
+                DomainStrategy = Global.AsIs,
+            },
+        };
+        context.AllProxiesMap[n1.IndexId] = n1;
+        context.AllProxiesMap[n2.IndexId] = n2;
+
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue();
+        var rules = JsonUtils.Deserialize<V2rayConfig>(result.Data!.ToString())!.routing.rules;
+        var direct = rules.FindIndex(r => r.outboundTag == Global.DirectTag && r.inboundTag?.Contains("direct-dns-1") == true);
+        var catchAll = rules.FindIndex(r => r.port == port && r.network == network && r.inboundTag == null
+            && r.balancerTag == Global.ProxyTag + Global.BalancerTagSuffix);
+        await (direct >= 0 && catchAll > direct).Should().BeTrue();
+        await rules[direct].inboundTag.Should().Contain("direct-dns-2");
+        await rules.Should().Contain(r => r.inboundTag != null && r.inboundTag.Contains(Global.DnsTag)
+            && r.balancerTag == Global.ProxyTag + Global.BalancerTagSuffix);
+    }
+
+    [Test]
+    [Arguments("demo-seed", "srtp", 2)]
+    [Arguments(null, "srtp", 2)]
+    [Arguments("demo-seed", "none", 1)]
+    [Arguments(null, "none", 1)]
+    public async Task GenerateClientConfigContent_KcpHeader_ShouldPreserveInnerMask(string? seed, string header, int expectedCount)
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+        var node = CoreConfigTestFactory.CreateVmessNode(ECoreType.Xray);
+        node.Network = nameof(ETransport.kcp);
+        node.SetTransportExtra(new TransportExtraItem { KcpSeed = seed, KcpHeaderType = header });
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray);
+
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue();
+        var generatedConfig = JsonNode.Parse(result.Data!.ToString()!)!;
+        var proxy = generatedConfig["outbounds"]!.AsArray()
+            .First(outbound => outbound!["tag"]!.GetValue<string>() == Global.ProxyTag)!;
+        var masks = proxy["streamSettings"]!["finalmask"]!["udp"]!.AsArray();
+        await masks.Count.Should().BeEqualTo(expectedCount);
+        await masks[0]!["type"]!.GetValue<string>().Should().BeEqualTo("mkcp-legacy");
+        await (masks[0]!["settings"]?["value"]?.GetValue<string>()).Should().BeEqualTo(seed);
+        await (masks[0]!["settings"]?["header"]?.GetValue<string>()).Should().BeNull();
+        if (expectedCount == 2)
+        {
+            await masks[1]!["type"]!.GetValue<string>().Should().BeEqualTo("mkcp-legacy");
+            await masks[1]!["settings"]!["header"]!.GetValue<string>().Should().BeEqualTo(header);
+        }
+    }
+
+    [Test]
     [Arguments(null)]
     [Arguments("")]
     [Arguments("AGH+DQBdAAAgACBAi73MnT3WWXWj4M9MUiTygpjSPUfM/Rj3Iasve4uFQAAkAAEAAQABAAIAAQADAAIAAQACAAIAAgADAAMAAQADAAIAAwADAA5vdXRlci5lY2gudGVzdAAA")]
@@ -823,6 +947,81 @@ public class CoreConfigV2rayServiceTests
         var proxyOutbound = cfg!.outbounds.FirstOrDefault(o => o.tag == Global.ProxyTag);
         await proxyOutbound.Should().NotBeNull();
         await proxyOutbound!.protocol.Should().BeEqualTo("shadowsocks");
+    }
+
+    [Test]
+    public async Task GenerateClientConfigContent_CustomOutbound_ShouldInheritTargetStrategyFromDnsSettings()
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
+        config.SimpleDNSItem.Strategy4Proxy = "UseIPv4";
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var customNode = CoreConfigTestFactory.CreateCustomOutboundNode(ECoreType.Xray, "n-custom", "custom-xray");
+        var customJsonContent = """
+        {
+          "protocol": "shadowsocks",
+          "settings": {
+            "servers": [
+              {
+                "address": "1.2.3.4",
+                "port": 8388,
+                "method": "aes-128-gcm",
+                "password": "custom_password"
+              }
+            ]
+          }
+        }
+        """;
+
+        var context = CoreConfigTestFactory.CreateContext(config, customNode, ECoreType.Xray);
+        context.CustomOutboundContent[customNode.IndexId] = customJsonContent;
+
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue().Because($"ret msg: {result.Msg}");
+        var generatedConfig = JsonNode.Parse(result.Data!.ToString()!)!;
+        var proxy = generatedConfig["outbounds"]!.AsArray()
+            .First(outbound => outbound!["tag"]!.GetValue<string>() == Global.ProxyTag)!;
+
+        await proxy["targetStrategy"]?.GetValue<string>().Should().BeEqualTo("UseIPv4");
+    }
+
+    [Test]
+    public async Task GenerateClientConfigContent_CustomOutbound_ShouldKeepExplicitTargetStrategy()
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
+        config.SimpleDNSItem.Strategy4Proxy = "UseIPv4";
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var customNode = CoreConfigTestFactory.CreateCustomOutboundNode(ECoreType.Xray, "n-custom", "custom-xray");
+        var customJsonContent = """
+        {
+          "protocol": "shadowsocks",
+          "targetStrategy": "AsIs",
+          "settings": {
+            "servers": [
+              {
+                "address": "1.2.3.4",
+                "port": 8388,
+                "method": "aes-128-gcm",
+                "password": "custom_password"
+              }
+            ]
+          }
+        }
+        """;
+
+        var context = CoreConfigTestFactory.CreateContext(config, customNode, ECoreType.Xray);
+        context.CustomOutboundContent[customNode.IndexId] = customJsonContent;
+
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue().Because($"ret msg: {result.Msg}");
+        var generatedConfig = JsonNode.Parse(result.Data!.ToString()!)!;
+        var proxy = generatedConfig["outbounds"]!.AsArray()
+            .First(outbound => outbound!["tag"]!.GetValue<string>() == Global.ProxyTag)!;
+
+        await proxy["targetStrategy"]?.GetValue<string>().Should().BeEqualTo("AsIs");
     }
 
     [Test]

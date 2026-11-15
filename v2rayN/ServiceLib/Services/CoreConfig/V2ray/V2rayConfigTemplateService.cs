@@ -29,6 +29,7 @@ public partial class CoreConfigV2rayService
                 continue;
             }
             var outboundTag = outbound.tag;
+            var outboundTargetStrategy = outbound.targetStrategy;
             var outboundDetour = outbound.streamSettings?.sockopt?.dialerProxy ?? string.Empty;
             var outboundBindInterface = outbound.streamSettings?.sockopt?.Interface ?? string.Empty;
             var customOutboundContent = context.CustomOutboundContent[customOutboundIndex];
@@ -43,6 +44,12 @@ public partial class CoreConfigV2rayService
             if (!containTagPlaceholder)
             {
                 customOutboundObj?["tag"] = outboundTag;
+            }
+            if (customOutboundObj is not null
+                && customOutboundObj["targetStrategy"] is null
+                && !outboundTargetStrategy.IsNullOrEmpty())
+            {
+                customOutboundObj["targetStrategy"] = outboundTargetStrategy;
             }
             if (!containDetourPlaceholder && !outboundDetour.IsNullOrEmpty())
             {

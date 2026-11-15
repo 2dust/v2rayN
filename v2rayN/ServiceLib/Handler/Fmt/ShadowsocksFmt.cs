@@ -282,7 +282,7 @@ public class ShadowsocksFmt : BaseFmt
     {
         //SsSIP008
         var lstSsServer = JsonUtils.Deserialize<List<SsServer>>(result);
-        if (lstSsServer?.Count <= 0)
+        if (lstSsServer == null || lstSsServer.Count == 0)
         {
             var ssSIP008 = JsonUtils.Deserialize<SsSIP008>(result);
             if (ssSIP008?.servers?.Count > 0)
@@ -301,7 +301,7 @@ public class ShadowsocksFmt : BaseFmt
                     Remarks = it.remarks,
                     Password = it.password,
                     Address = it.server,
-                    Port = it.server_port.ToInt()
+                    Port = it.server_port
                 };
                 ssItem.SetProtocolExtra(new ProtocolExtraItem() { SsMethod = it.method });
                 lst.Add(ssItem);

@@ -86,10 +86,14 @@ public class WebListenerSecurityPolicyTests
             .AddInMemoryCollection(new Dictionary<string, string?> { ["urls"] = "http://192.168.1.20:5080" })
             .AddCommandLine(value is null ? [argument] : [argument, value]).Build();
         // URLs win over port-only configuration, so remove the URL for the ports-only case.
-        if (argument == "--http_ports") configuration["urls"] = "";
+        if (argument == "--http_ports")
+        {
+            configuration["urls"] = "";
+        }
+
         await (WebListenerSecurityPolicy.GetStartupError(configuration, null) is not null).Should().BeEqualTo(requiresKey);
     }
 
     private static IConfigurationRoot Config(params (string Key, string Value)[] values) =>
-        new ConfigurationBuilder().AddInMemoryCollection(values.ToDictionary(item => item.Key, item => (string?)item.Value)).Build();
+        new ConfigurationBuilder().AddInMemoryCollection(values.ToDictionary(item => item.Key, item => item.Value)).Build();
 }

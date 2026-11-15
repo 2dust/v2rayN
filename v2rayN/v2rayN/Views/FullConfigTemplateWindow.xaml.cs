@@ -8,7 +8,7 @@ public partial class FullConfigTemplateWindow
     {
         InitializeComponent();
 
-        _config = AppManager.Instance.Config;
+        _config = ConfigTextHandler.Config;
 
         this.WhenActivated(disposables =>
         {
@@ -25,7 +25,7 @@ public partial class FullConfigTemplateWindow
 
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
         });
-        WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
+        WindowsUtils.SetDarkBorder(this, ConfigTextHandler.Config.UiItem.CurrentTheme);
     }
 
     private void linkFullConfigTemplateDoc_Click(object sender, RoutedEventArgs e)

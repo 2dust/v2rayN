@@ -8,7 +8,10 @@ public class CoreProcessTrackerTests
     [Test]
     public async Task WebTrackerCapturesNewCoreProcessesAndPrunesExitedIdentities()
     {
-        if (!OperatingSystem.IsLinux()) return;
+        if (!OperatingSystem.IsLinux())
+        {
+            return;
+        }
 
         using var directory = new TemporaryDirectory();
         var executable = CopySleepExecutable(directory.Path);
@@ -39,7 +42,10 @@ public class CoreProcessTrackerTests
     [Test]
     public async Task WebTrackerDoesNotClaimProcessesThatPredateItsLaunchSnapshot()
     {
-        if (!OperatingSystem.IsLinux()) return;
+        if (!OperatingSystem.IsLinux())
+        {
+            return;
+        }
 
         using var directory = new TemporaryDirectory();
         var executable = CopySleepExecutable(directory.Path);
@@ -61,7 +67,11 @@ public class CoreProcessTrackerTests
     [Test]
     public async Task WebTrackerRecognizesAnExecutableRunningThroughItsInterpreter()
     {
-        if (!OperatingSystem.IsLinux()) return;
+        if (!OperatingSystem.IsLinux())
+        {
+            return;
+        }
+
         using var directory = new TemporaryDirectory();
         var executable = Path.Combine(directory.Path, "test-core-shim");
         await File.WriteAllTextAsync(executable, "#!/bin/sh\nsleep 60\n");
@@ -88,7 +98,11 @@ public class CoreProcessTrackerTests
     [Test]
     public async Task WebTrackerDoesNotClaimSameNamedExecutableFromAnotherPath()
     {
-        if (!OperatingSystem.IsLinux()) return;
+        if (!OperatingSystem.IsLinux())
+        {
+            return;
+        }
+
         using var directory = new TemporaryDirectory();
         var unrelatedExecutable = Path.Combine(directory.Path, "sleep");
         File.Copy("/bin/sleep", unrelatedExecutable);
@@ -113,7 +127,11 @@ public class CoreProcessTrackerTests
     [Test]
     public async Task LinuxTrackerRequiresTheWebCoreConfigPathWhenProvided()
     {
-        if (!OperatingSystem.IsLinux()) return;
+        if (!OperatingSystem.IsLinux())
+        {
+            return;
+        }
+
         using var directory = new TemporaryDirectory();
         var executable = Path.Combine(directory.Path, "test-core-shim");
         var configPath = Path.Combine(directory.Path, "config.json");
@@ -144,7 +162,11 @@ public class CoreProcessTrackerTests
     [Test]
     public async Task WebTrackerRejectsReusedPidWithDifferentStartTimeOrExecutable()
     {
-        if (!OperatingSystem.IsLinux()) return;
+        if (!OperatingSystem.IsLinux())
+        {
+            return;
+        }
+
         using var directory = new TemporaryDirectory();
         var executable = CopySleepExecutable(directory.Path);
         var existingProcessIds = CoreProcessTracker.CaptureExistingProcessIds();

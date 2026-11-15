@@ -17,7 +17,7 @@ public partial class MainWindow
     {
         InitializeComponent();
 
-        _config = AppManager.Instance.Config;
+        _config = ConfigTextHandler.Config;
         ThreadPool.RegisterWaitForSingleObject(App.ProgramStarted, OnProgramStarted, null, -1, false);
 
         App.Current.SessionEnding += Current_SessionEnding;
@@ -345,15 +345,15 @@ public partial class MainWindow
 
     private void StorageUI()
     {
-        ConfigHandler.SaveWindowSizeItem(_config, GetType().Name, Width, Height);
+        ConfigTextHandler.SaveWindowSizeItem(GetType().Name, Width, Height);
 
         if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Horizontal)
         {
-            ConfigHandler.SaveMainGirdHeight(_config, gridMain.ColumnDefinitions[0].ActualWidth, gridMain.ColumnDefinitions[2].ActualWidth);
+            ConfigTextHandler.SaveMainGirdHeight(gridMain.ColumnDefinitions[0].ActualWidth, gridMain.ColumnDefinitions[2].ActualWidth);
         }
         else if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Vertical)
         {
-            ConfigHandler.SaveMainGirdHeight(_config, gridMain1.RowDefinitions[0].ActualHeight, gridMain1.RowDefinitions[2].ActualHeight);
+            ConfigTextHandler.SaveMainGirdHeight(gridMain1.RowDefinitions[0].ActualHeight, gridMain1.RowDefinitions[2].ActualHeight);
         }
     }
 

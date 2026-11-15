@@ -90,12 +90,14 @@ public class WebUpdateReleaseSelectionTests
     public async Task InvalidReleaseIndexesAreRejected()
     {
         var malformedRejected = false;
-        try { _ = V2rayRuntime.ParseWebReleaseCandidates("{ not json", allowPrerelease: false); }
+        try
+        { _ = V2rayRuntime.ParseWebReleaseCandidates("{ not json", allowPrerelease: false); }
         catch (JsonException) { malformedRejected = true; }
         await malformedRejected.Should().BeTrue();
 
         var nonArrayRejected = false;
-        try { _ = V2rayRuntime.ParseWebReleaseCandidates("{}", allowPrerelease: false); }
+        try
+        { _ = V2rayRuntime.ParseWebReleaseCandidates("{}", allowPrerelease: false); }
         catch (InvalidDataException) { nonArrayRejected = true; }
         await nonArrayRejected.Should().BeTrue();
     }

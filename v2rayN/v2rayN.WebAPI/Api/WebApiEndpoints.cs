@@ -1,5 +1,3 @@
-using ServiceLib.Enums;
-using ServiceLib.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using v2rayN.WebAPI.Contracts;
 using v2rayN.WebAPI.Security;
@@ -206,7 +204,7 @@ public static class WebApiEndpoints
         {
             var (result, filePath) = await runtime.CreateBackupArchiveAsync();
             return result.Success && filePath is not null
-                ? (IResult)new DeleteAfterFileResult(filePath)
+                ? new DeleteAfterFileResult(filePath)
                 : ApiReplies.Operation(result);
         });
         app.MapPost("/api/backup/restore", async (IFormFile file, V2rayRuntime runtime, CancellationToken cancellationToken) =>

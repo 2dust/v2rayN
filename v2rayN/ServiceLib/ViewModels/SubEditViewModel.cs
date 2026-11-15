@@ -1,3 +1,5 @@
+
+
 namespace ServiceLib.ViewModels;
 
 public partial class SubEditViewModel : MyReactiveObject, ICloseable
@@ -22,7 +24,7 @@ public partial class SubEditViewModel : MyReactiveObject, ICloseable
 
     public SubEditViewModel(SubItem subItem)
     {
-        _config = AppManager.Instance.Config;
+        _config = ConfigTextHandler.Config;
 
         SelectPrevProfileCmd = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -87,7 +89,7 @@ public partial class SubEditViewModel : MyReactiveObject, ICloseable
         SelectedSource.PrevProfile = PrevProfile;
         SelectedSource.NextProfile = NextProfile;
 
-        if (await ConfigHandler.AddSubItem(_config, SelectedSource) == 0)
+        if (await ConfigDbHandler.AddSubItem( SelectedSource) == 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
             RequestClose?.Invoke(this, EventArgs.Empty);

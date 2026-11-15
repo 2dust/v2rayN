@@ -1,3 +1,5 @@
+
+
 namespace ServiceLib.ViewModels;
 
 public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
@@ -122,7 +124,7 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
 
     public OptionSettingViewModel()
     {
-        _config = AppManager.Instance.Config;
+        _config = ConfigTextHandler.Config;
         BlIsWindows = Utils.IsWindows();
         BlIsLinux = Utils.IsLinux();
         BlIsIsMacOS = Utils.IsMacOS();
@@ -405,7 +407,7 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         //coreType
         await SaveCoreType();
 
-        if (await ConfigHandler.SaveConfig(_config) == 0)
+        if (await ConfigTextHandler.SaveConfig() == 0)
         {
             await AutoStartupHandler.UpdateTask(_config);
             AppManager.Instance.Reset();

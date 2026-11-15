@@ -1,3 +1,5 @@
+
+
 namespace ServiceLib.ViewModels;
 
 public partial class CheckUpdateViewModel : MyReactiveObject
@@ -17,7 +19,7 @@ public partial class CheckUpdateViewModel : MyReactiveObject
 
     public CheckUpdateViewModel()
     {
-        _config = AppManager.Instance.Config;
+        _config = ConfigTextHandler.Config;
 
         CheckUpdateCmd = ReactiveCommand.CreateFromTask(CheckUpdate);
         CheckUpdateCmd.ThrownExceptions.Subscribe(ex =>
@@ -124,7 +126,7 @@ public partial class CheckUpdateViewModel : MyReactiveObject
                            .Select(t => t.CoreTypeForStorage)
                            .ToList();
 
-        await ConfigHandler.SaveConfig(_config);
+        await ConfigTextHandler.SaveConfig();
     }
 
     private async Task CheckOnly()

@@ -1,9 +1,7 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
-using ServiceLib.Common;
 using v2rayN.WebAPI.Services;
 
 namespace v2rayN.WebAPI.Launcher;
@@ -78,8 +76,15 @@ internal static class NativeWebUpdateHelper
                         "The update could not be prepared; restarting the unchanged application."));
                     using var oldProcess = StartWebInstance(plan);
                     previousRestarted = await WaitForExpectedHealthAsync(plan, oldProcess, plan.PreviousVersion, HealthTimeout);
-                    if (!previousRestarted) StopOwnedProcess(oldProcess, plan.InstanceLockPath);
-                    if (previousRestarted) DeleteRuntimeIntent(plan.RuntimeIntentPath);
+                    if (!previousRestarted)
+                    {
+                        StopOwnedProcess(oldProcess, plan.InstanceLockPath);
+                    }
+
+                    if (previousRestarted)
+                    {
+                        DeleteRuntimeIntent(plan.RuntimeIntentPath);
+                    }
                 }
                 catch (Exception restartException)
                 {
@@ -150,7 +155,11 @@ internal static class NativeWebUpdateHelper
                 {
                     replacementProcess = StartWebInstance(plan);
                     var healthy = await WaitForExpectedHealthAsync(plan, replacementProcess, plan.ExpectedVersion, HealthTimeout);
-                    if (!healthy) StopOwnedProcess(replacementProcess, plan.InstanceLockPath);
+                    if (!healthy)
+                    {
+                        StopOwnedProcess(replacementProcess, plan.InstanceLockPath);
+                    }
+
                     return healthy;
                 },
                 () =>
@@ -163,7 +172,11 @@ internal static class NativeWebUpdateHelper
                 {
                     replacementProcess = StartWebInstance(plan);
                     var healthy = await WaitForExpectedHealthAsync(plan, replacementProcess, plan.PreviousVersion, HealthTimeout);
-                    if (!healthy) StopOwnedProcess(replacementProcess, plan.InstanceLockPath);
+                    if (!healthy)
+                    {
+                        StopOwnedProcess(replacementProcess, plan.InstanceLockPath);
+                    }
+
                     return healthy;
                 },
                 phase => WriteProgress(plan, new WebUpdateProgressState(phase, false, false, plan.ExpectedVersion, null)),
@@ -175,7 +188,10 @@ internal static class NativeWebUpdateHelper
                 });
 
             if (transaction.Success || transaction.RollbackSucceeded)
+            {
                 DeleteRuntimeIntent(plan.RuntimeIntentPath);
+            }
+
             WriteProgress(plan, new WebUpdateProgressState(
                 transaction.Success ? "completed" : "failed",
                 true,
@@ -218,7 +234,10 @@ internal static class NativeWebUpdateHelper
                 {
                     var restoredProcess = StartWebInstance(plan);
                     rollbackSucceeded = await WaitForExpectedHealthAsync(plan, restoredProcess, plan.PreviousVersion, HealthTimeout);
-                    if (rollbackSucceeded) DeleteRuntimeIntent(plan.RuntimeIntentPath);
+                    if (rollbackSucceeded)
+                    {
+                        DeleteRuntimeIntent(plan.RuntimeIntentPath);
+                    }
                 }
                 catch (Exception restartException)
                 {
@@ -274,7 +293,10 @@ internal static class NativeWebUpdateHelper
     internal static string CreateIsolatedHelperExecutable(string executable)
     {
         if (new FileInfo(executable).LinkTarget is not null)
+        {
             throw new InvalidDataException("The native update helper cannot be copied from a symlink.");
+        }
+
         var extension = OperatingSystem.IsWindows() ? ".exe" : string.Empty;
         var helperPath = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(executable))!,
             $"{IsolatedHelperPrefix}{Guid.NewGuid():N}{extension}");
@@ -282,7 +304,10 @@ internal static class NativeWebUpdateHelper
         {
             File.Copy(executable, helperPath, overwrite: false);
             if (OperatingSystem.IsLinux())
+            {
                 File.SetUnixFileMode(helperPath, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
+            }
+
             return helperPath;
         }
         catch
@@ -294,7 +319,11 @@ internal static class NativeWebUpdateHelper
 
     internal static bool IsUpdateHelperExecutableName(string name)
     {
-        if (name is "v2rayN.WebAPI" or "v2rayN.WebAPI.exe") return true;
+        if (name is "v2rayN.WebAPI" or "v2rayN.WebAPI.exe")
+        {
+            return true;
+        }
+
         return IsIsolatedHelperExecutableName(name);
     }
 
@@ -415,7 +444,8 @@ internal static class NativeWebUpdateHelper
             throw new InvalidDataException("The staged executable identity does not match the verified update plan.");
         }
         var writableProbe = Path.Combine(install, $".v2rayn-WebAPI-helper-write-probe-{Guid.NewGuid():N}");
-        using (new FileStream(writableProbe, FileMode.CreateNew, FileAccess.Write, FileShare.None)) { }
+        using (new FileStream(writableProbe, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+        { }
         File.Delete(writableProbe);
         if (new DirectoryInfo(install).LinkTarget is not null
             || new FileInfo(Path.Combine(install, executableName)).LinkTarget is not null)
@@ -513,13 +543,19 @@ internal static class NativeWebUpdateHelper
         var executableName = WebUpdatePackageStager.ExecutableNameForRid(plan.Rid);
         Directory.CreateDirectory(plan.BackupDirectory);
         if (new FileInfo(Path.Combine(plan.InstallDirectory, executableName)).LinkTarget is not null)
+        {
             throw new InvalidDataException("The installed Web executable is a symlink and cannot be transactionally replaced.");
+        }
+
         File.Copy(Path.Combine(plan.InstallDirectory, executableName), Path.Combine(plan.BackupDirectory, executableName));
         var oldIdentity = Path.Combine(plan.InstallDirectory, "v2rayN.WebAPI.build.json");
         if (File.Exists(oldIdentity))
         {
             if (new FileInfo(oldIdentity).LinkTarget is not null)
+            {
                 throw new InvalidDataException("The installed Web build identity is a symlink.");
+            }
+
             File.Copy(oldIdentity, Path.Combine(plan.BackupDirectory, "v2rayN.WebAPI.build.json"));
         }
     }
@@ -546,7 +582,10 @@ internal static class NativeWebUpdateHelper
         var install = plan.InstallDirectory;
         var backup = plan.BackupDirectory;
         var executableName = WebUpdatePackageStager.ExecutableNameForRid(plan.Rid);
-        if (!Directory.Exists(backup)) throw new DirectoryNotFoundException("The previous Web application backup is missing.");
+        if (!Directory.Exists(backup))
+        {
+            throw new DirectoryNotFoundException("The previous Web application backup is missing.");
+        }
 
         var previousIdentity = Path.Combine(backup, "v2rayN.WebAPI.build.json");
         var restoredExecutable = Path.Combine(install, $".v2rayn-WebAPI-restore-{Guid.NewGuid():N}{Path.GetExtension(executableName)}");
@@ -622,7 +661,11 @@ internal static class NativeWebUpdateHelper
         {
             throw new PlatformNotSupportedException("Native Web self-update is supported on Linux and Windows x64.");
         }
-        foreach (var argument in plan.HostArguments) startInfo.ArgumentList.Add(argument);
+        foreach (var argument in plan.HostArguments)
+        {
+            startInfo.ArgumentList.Add(argument);
+        }
+
         return Process.Start(startInfo) ?? throw new InvalidOperationException("Could not start the updated Web application.");
     }
 
@@ -679,7 +722,11 @@ internal static class NativeWebUpdateHelper
     {
         try
         {
-            if (!File.Exists(intentPath)) return false;
+            if (!File.Exists(intentPath))
+            {
+                return false;
+            }
+
             var intent = JsonSerializer.Deserialize<RuntimeRestartIntent>(File.ReadAllText(intentPath), JsonOptions);
             return intent is not null && NativeWebUpdateWorkflow.RuntimeIntentIsSatisfied(intent, health);
         }
@@ -694,7 +741,11 @@ internal static class NativeWebUpdateHelper
         var deadline = DateTimeOffset.UtcNow + timeout;
         while (DateTimeOffset.UtcNow < deadline)
         {
-            if (!WebInstanceLock.IsHeld(lockPath)) return true;
+            if (!WebInstanceLock.IsHeld(lockPath))
+            {
+                return true;
+            }
+
             await Task.Delay(PollInterval);
         }
         return !WebInstanceLock.IsHeld(lockPath);
@@ -702,7 +753,11 @@ internal static class NativeWebUpdateHelper
 
     private static Process? CaptureWindowsOwnerProcess(NativeWebUpdatePlan plan)
     {
-        if (!OperatingSystem.IsWindows() || !WebInstanceLock.IsHeld(plan.InstanceLockPath)) return null;
+        if (!OperatingSystem.IsWindows() || !WebInstanceLock.IsHeld(plan.InstanceLockPath))
+        {
+            return null;
+        }
+
         var ownerProcessId = WebInstanceLock.ReadOwnerProcessId(plan.InstanceLockPath)
             ?? throw new InvalidDataException("The running Windows Web process identity could not be read from its instance lock.");
         try
@@ -722,7 +777,10 @@ internal static class NativeWebUpdateHelper
         {
             try
             {
-                if (process.HasExited) return true;
+                if (process.HasExited)
+                {
+                    return true;
+                }
             }
             catch (InvalidOperationException)
             {
@@ -730,16 +788,25 @@ internal static class NativeWebUpdateHelper
             }
             await Task.Delay(PollInterval);
         }
-        try { return process.HasExited; }
+        try
+        { return process.HasExited; }
         catch (InvalidOperationException) { return true; }
     }
 
     private static void StopOwnedProcess(Process? process, string lockPath)
     {
-        if (process is null) return;
+        if (process is null)
+        {
+            return;
+        }
+
         try
         {
-            if (process.HasExited) return;
+            if (process.HasExited)
+            {
+                return;
+            }
+
             if (WebInstanceLock.ReadOwnerProcessId(lockPath) == process.Id)
             {
                 process.Kill(entireProcessTree: true);
@@ -766,16 +833,24 @@ internal static class NativeWebUpdateHelper
     private static void EnsureNoLinks(string directory)
     {
         if (new DirectoryInfo(directory).LinkTarget is not null)
+        {
             throw new InvalidDataException("The staged update directory is a symlink.");
+        }
+
         foreach (var file in Directory.EnumerateFiles(directory, "*", SearchOption.TopDirectoryOnly))
         {
             if (new FileInfo(file).LinkTarget is not null)
+            {
                 throw new InvalidDataException("The staged Web update contains a symbolic link.");
+            }
         }
         foreach (var childDirectory in Directory.EnumerateDirectories(directory, "*", SearchOption.TopDirectoryOnly))
         {
             if (new DirectoryInfo(childDirectory).LinkTarget is not null)
+            {
                 throw new InvalidDataException("The staged Web update contains a symbolic link.");
+            }
+
             EnsureNoLinks(childDirectory);
         }
     }
@@ -800,7 +875,10 @@ internal static class NativeWebUpdateHelper
     {
         try
         {
-            if (Directory.Exists(path)) Directory.Delete(path, recursive: true);
+            if (Directory.Exists(path))
+            {
+                Directory.Delete(path, recursive: true);
+            }
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
         {
@@ -812,7 +890,10 @@ internal static class NativeWebUpdateHelper
     {
         try
         {
-            if (File.Exists(path)) File.Delete(path);
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
         {

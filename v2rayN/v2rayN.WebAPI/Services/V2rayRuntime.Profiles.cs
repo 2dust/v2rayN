@@ -1,12 +1,5 @@
-using ServiceLib;
-using ServiceLib.Common;
-using ServiceLib.Enums;
-using ServiceLib.Handler;
 using ServiceLib.Handler.Builder;
 using ServiceLib.Handler.Fmt;
-using ServiceLib.Manager;
-using ServiceLib.Models.Dto;
-using ServiceLib.Models.Entities;
 using ServiceLib.Services;
 using v2rayN.WebAPI.Contracts;
 
@@ -16,8 +9,8 @@ public sealed partial class V2rayRuntime
 {
     public async Task<IReadOnlyList<ProfileGroupView>> GetProfileGroupsAsync()
     {
-        var subscriptions = await AppManager.Instance.SubItems() ?? [];
-        var profiles = await AppManager.Instance.ProfileItems(string.Empty) ?? [];
+        var subscriptions = await ConfigDbQuery.SubItems() ?? [];
+        var profiles = await ConfigDbQuery.ProfileItems(string.Empty) ?? [];
         var counts = profiles.GroupBy(item => item.Subid).ToDictionary(group => group.Key, group => group.Count());
         var groups = new List<ProfileGroupView>
         {
@@ -38,7 +31,7 @@ public sealed partial class V2rayRuntime
     public async Task<OperationView> SelectProfileGroupAsync(string? subscriptionId)
     {
         if (!string.IsNullOrWhiteSpace(subscriptionId)
-            && await AppManager.Instance.GetSubItem(subscriptionId) is null)
+            && await ConfigDbQuery.GetSubItem(subscriptionId) is null)
         {
             return OperationView.Fail("subscription_not_found", ApiMessageKeys.SubscriptionNotFound);
         }
@@ -46,7 +39,7 @@ public sealed partial class V2rayRuntime
         await _mutations.RunAsync(async () =>
         {
             Config.SubIndexId = subscriptionId ?? string.Empty;
-            await EnsureConfigSaveSucceededAsync(() => ConfigHandler.SaveConfig(Config));
+            await EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig());
         });
         _events.Publish("profiles-changed", new { subscriptionId = Config.SubIndexId });
         return OperationView.Ok(ApiMessageKeys.CommonCompleted, new { subscriptionId = Config.SubIndexId });
@@ -60,17 +53,17 @@ public sealed partial class V2rayRuntime
         }
 
         var groupId = request.SubscriptionId ?? Config.SubIndexId ?? string.Empty;
-        if (!string.IsNullOrEmpty(groupId) && await AppManager.Instance.GetSubItem(groupId) is null)
+        if (!string.IsNullOrEmpty(groupId) && await ConfigDbQuery.GetSubItem(groupId) is null)
         {
             return OperationView.Fail("subscription_not_found", ApiMessageKeys.SubscriptionNotFound, new { imported = 0 });
         }
 
         var count = await _mutations.RunAsync(async () =>
         {
-            var imported = await ConfigHandler.AddBatchServers(Config, request.Content, groupId, request.IsSubscription);
+            var imported = await ConfigDbHandler.AddBatchServers(request.Content, groupId, request.IsSubscription);
             if (imported > 0)
             {
-                await EnsureConfigSaveSucceededAsync(() => ConfigHandler.SaveConfig(Config));
+                await EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig());
             }
             return imported;
         });
@@ -94,7 +87,7 @@ public sealed partial class V2rayRuntime
         var isNew = string.IsNullOrWhiteSpace(profileId);
         if (!isNew)
         {
-            var existing = await AppManager.Instance.GetProfileItem(profileId!);
+            var existing = await ConfigDbQuery.GetProfileItem(profileId!);
             if (existing is null)
             {
                 return OperationView.Fail("profile_not_found", ApiMessageKeys.ProfileNotFound);
@@ -113,7 +106,7 @@ public sealed partial class V2rayRuntime
             profile.Subid = Config.SubIndexId ?? string.Empty;
             profile.IsSub = false;
             if (!string.IsNullOrEmpty(profile.Subid)
-                && await AppManager.Instance.GetSubItem(profile.Subid) is null)
+                && await ConfigDbQuery.GetSubItem(profile.Subid) is null)
             {
                 AddLog("profile", $"Rejected profile creation for missing subscription group {profile.Subid}.");
                 return OperationView.Fail("subscription_not_found", ApiMessageKeys.SubscriptionNotFound,
@@ -133,11 +126,11 @@ public sealed partial class V2rayRuntime
                 return OperationView.Fail("profile_group_invalid", ApiMessageKeys.ProfileInvalid);
             }
             if (!string.IsNullOrWhiteSpace(protocolExtra.SubChildItems)
-                && await AppManager.Instance.GetSubItem(protocolExtra.SubChildItems) is null)
+                && await ConfigDbQuery.GetSubItem(protocolExtra.SubChildItems) is null)
             {
                 return OperationView.Fail("subscription_not_found", ApiMessageKeys.SubscriptionNotFound);
             }
-            var children = await AppManager.Instance.GetProfileItemsByIndexIds(childIds);
+            var children = await ConfigDbQuery.GetProfileItemsByIndexIds(childIds);
             if (children.Count != childIds.Distinct(StringComparer.Ordinal).Count()
                 || await GroupProfileManager.HasCycle(profile))
             {
@@ -167,13 +160,13 @@ public sealed partial class V2rayRuntime
         try
         {
             result = await _mutations.RunAsync(() => profile.ConfigType.IsGroupType()
-                ? ConfigHandler.AddServerCommon(Config, profile)
+                ? ConfigDbHandler.AddServerCommon(profile)
                 : profile.ConfigType switch
                 {
-                    EConfigType.Custom when isNew => ConfigHandler.AddCustomServer(Config, profile, blDelete: false),
-                    EConfigType.Outbound when isNew => ConfigHandler.AddCustomOutboundServer(Config, profile, blDelete: false, toFile: true),
-                    EConfigType.Custom or EConfigType.Outbound => ConfigHandler.EditCustomServer(Config, profile),
-                    _ => ConfigHandler.AddServer(Config, profile),
+                    EConfigType.Custom when isNew => ConfigDbHandler.AddCustomServer(profile, blDelete: false),
+                    EConfigType.Outbound when isNew => ConfigDbHandler.AddCustomOutboundServer(profile, blDelete: false, toFile: true),
+                    EConfigType.Custom or EConfigType.Outbound => ConfigDbHandler.EditCustomServer(profile),
+                    _ => ConfigDbHandler.AddServer(profile),
                 });
         }
         catch (Exception exception)
@@ -250,7 +243,7 @@ public sealed partial class V2rayRuntime
             return OperationView.Fail("profile_selection_required", ApiMessageKeys.ProfileSelectRequired);
         }
 
-        var selected = await AppManager.Instance.GetProfileItemsByIndexIds(ids);
+        var selected = await ConfigDbQuery.GetProfileItemsByIndexIds(ids);
         if (selected.Count == 0)
         {
             return OperationView.Fail("profile_not_found", ApiMessageKeys.ProfileNotFound);
@@ -270,14 +263,14 @@ public sealed partial class V2rayRuntime
 
         await _mutations.RunAsync(async () =>
         {
-            if (await ConfigHandler.RemoveServers(Config, selected) != 0)
+            if (await ConfigDbHandler.RemoveServers(selected) != 0)
             {
                 throw new IOException("ServiceLib could not remove the selected profiles.");
             }
             if (removesCurrent)
             {
-                _ = await ConfigHandler.GetDefaultServer(Config);
-                await EnsureConfigSaveSucceededAsync(() => ConfigHandler.SaveConfig(Config));
+                _ = await ConfigTextHandler.GetDefaultServer();
+                await EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig());
             }
         });
 
@@ -298,13 +291,13 @@ public sealed partial class V2rayRuntime
     public async Task<OperationView> CopyProfilesAsync(IEnumerable<string> profileIds)
     {
         var ids = profileIds.Where(id => !string.IsNullOrWhiteSpace(id)).Distinct(StringComparer.Ordinal).ToArray();
-        var items = await AppManager.Instance.GetProfileItemsOrderedByIndexIds(ids);
+        var items = await ConfigDbQuery.GetProfileItemsOrderedByIndexIds(ids);
         if (items.Count == 0)
         {
             return OperationView.Fail("profile_not_found", ApiMessageKeys.ProfileNotFound);
         }
 
-        if (await _mutations.RunAsync(() => ConfigHandler.CopyServer(Config, items)) != 0)
+        if (await _mutations.RunAsync(() => ConfigDbHandler.CopyServer(items)) != 0)
         {
             return OperationView.Fail("profile_copy_failed", ApiMessageKeys.CommonInvalidInput);
         }
@@ -315,18 +308,18 @@ public sealed partial class V2rayRuntime
     public async Task<OperationView> MoveProfilesToGroupAsync(MoveProfilesRequest request)
     {
         if (!string.IsNullOrEmpty(request.SubscriptionId)
-            && await AppManager.Instance.GetSubItem(request.SubscriptionId) is null)
+            && await ConfigDbQuery.GetSubItem(request.SubscriptionId) is null)
         {
             return OperationView.Fail("subscription_not_found", ApiMessageKeys.SubscriptionNotFound);
         }
 
-        var items = await AppManager.Instance.GetProfileItemsByIndexIds(request.ProfileIds);
+        var items = await ConfigDbQuery.GetProfileItemsByIndexIds(request.ProfileIds);
         if (items.Count == 0)
         {
             return OperationView.Fail("profile_not_found", ApiMessageKeys.ProfileNotFound);
         }
 
-        if (await _mutations.RunAsync(() => ConfigHandler.MoveToGroup(Config, items, request.SubscriptionId ?? string.Empty)) != 0)
+        if (await _mutations.RunAsync(() => ConfigDbHandler.MoveToGroup(items, request.SubscriptionId ?? string.Empty)) != 0)
         {
             return OperationView.Fail("profile_move_failed", ApiMessageKeys.CommonInvalidInput);
         }
@@ -345,7 +338,7 @@ public sealed partial class V2rayRuntime
             return OperationView.Fail("profile_not_in_group", ApiMessageKeys.ProfileNotInGroup);
         }
 
-        var result = await _mutations.RunAsync(() => ConfigHandler.MoveServer(Config, orderedIds, index, request.Direction, request.Position));
+        var result = await _mutations.RunAsync(() => ConfigDbHandler.MoveServer(orderedIds, index, request.Direction, request.Position));
         _events.Publish("profiles-changed", new { subscriptionId = groupId });
         return result == 0
             ? OperationView.Ok(ApiMessageKeys.ProfileOrderSaved)
@@ -360,7 +353,7 @@ public sealed partial class V2rayRuntime
             return OperationView.Fail("profile_sort_column_invalid", ApiMessageKeys.CommonInvalidInput);
         }
 
-        var result = await _mutations.RunAsync(() => ConfigHandler.SortServers(Config, groupId, request.Column, request.Ascending));
+        var result = await _mutations.RunAsync(() => ConfigDbHandler.SortServers(groupId, request.Column, request.Ascending));
         _events.Publish("profiles-changed", new { subscriptionId = groupId });
         return result == 0
             ? OperationView.Ok(ApiMessageKeys.ProfileOrderSaved)
@@ -369,14 +362,14 @@ public sealed partial class V2rayRuntime
 
     public async Task<OperationView> RemoveDuplicateProfilesAsync(string? subscriptionId)
     {
-        var result = await _mutations.RunAsync(() => ConfigHandler.DedupServerList(Config, subscriptionId ?? Config.SubIndexId ?? string.Empty));
+        var result = await _mutations.RunAsync(() => ConfigDbHandler.DedupServerList(subscriptionId ?? Config.SubIndexId ?? string.Empty));
         _events.Publish("profiles-changed", new { subscriptionId = subscriptionId ?? Config.SubIndexId });
         return OperationView.Ok(ApiMessageKeys.ProfileDeduplicated, new { removed = result.Item1 - result.Item2 });
     }
 
     public async Task<OperationView> RemoveInvalidProfilesAsync(string? subscriptionId)
     {
-        var count = await _mutations.RunAsync(() => ConfigHandler.RemoveInvalidServerResult(Config, subscriptionId ?? Config.SubIndexId ?? string.Empty));
+        var count = await _mutations.RunAsync(() => ConfigDbHandler.RemoveInvalidServerResult(subscriptionId ?? Config.SubIndexId ?? string.Empty));
         _events.Publish("profiles-changed", new { subscriptionId = subscriptionId ?? Config.SubIndexId });
         return count < 0
             ? OperationView.Ok(ApiMessageKeys.CommonCompleted, new { removed = 0 })
@@ -388,7 +381,7 @@ public sealed partial class V2rayRuntime
         SubItem? subscription = null;
         if (!string.IsNullOrEmpty(subscriptionId))
         {
-            subscription = await AppManager.Instance.GetSubItem(subscriptionId);
+            subscription = await ConfigDbQuery.GetSubItem(subscriptionId);
             if (subscription is null)
             {
                 return OperationView.Fail("subscription_not_found", ApiMessageKeys.SubscriptionNotFound);
@@ -396,8 +389,8 @@ public sealed partial class V2rayRuntime
         }
 
         var result = await _mutations.RunAsync(() => byRegion
-            ? ConfigHandler.AddGroupRegionServer(Config, subscription)
-            : ConfigHandler.AddGroupAllServer(Config, subscription));
+            ? ConfigDbHandler.AddGroupRegionServer(subscription)
+            : ConfigDbHandler.AddGroupAllServer(subscription));
         if (!result.Success)
         {
             return OperationView.Fail("profile_group_empty", ApiMessageKeys.ProfileGrouped, result.Data);
@@ -409,7 +402,7 @@ public sealed partial class V2rayRuntime
 
     public async Task<IReadOnlyList<ProfileExportItem>> ExportProfileDataAsync(ProfileExportRequest request)
     {
-        var items = await AppManager.Instance.GetProfileItemsOrderedByIndexIds(request.ProfileIds);
+        var items = await ConfigDbQuery.GetProfileItemsOrderedByIndexIds(request.ProfileIds);
         var output = new List<ProfileExportItem>();
 
         if (request.IncludeShareUris)
@@ -436,15 +429,15 @@ public sealed partial class V2rayRuntime
         {
             foreach (var item in items)
             {
-            var (context, validation) = await CoreConfigContextBuilder.Build(Config, item);
-            if (validation.Success)
-            {
-                var generated = await CoreConfigHandler.GenerateClientConfig(context, null);
-                if (generated.Success && generated.Data is string configText)
+                var (context, validation) = await CoreConfigContextBuilder.Build(Config, item);
+                if (validation.Success)
                 {
-                    output.Add(new(item.IndexId, item.Remarks, "client-config", configText));
+                    var generated = await CoreConfigHandler.GenerateClientConfig(context, null);
+                    if (generated.Success && generated.Data is string configText)
+                    {
+                        output.Add(new(item.IndexId, item.Remarks, "client-config", configText));
+                    }
                 }
-            }
             }
         }
         return output;
@@ -452,7 +445,7 @@ public sealed partial class V2rayRuntime
 
     public async Task<string?> GetSubscriptionShareAsync(string id)
     {
-        return (await AppManager.Instance.GetSubItem(id))?.Url;
+        return (await ConfigDbQuery.GetSubItem(id))?.Url;
     }
 
     public async Task<OperationView> StartSpeedTestAsync(SpeedTestRequest request, CancellationToken cancellationToken)
@@ -460,8 +453,8 @@ public sealed partial class V2rayRuntime
         cancellationToken.ThrowIfCancellationRequested();
         var action = request.Action == ESpeedActionType.FastRealping ? ESpeedActionType.Realping : request.Action;
         var profiles = request.ProfileIds is { Length: > 0 }
-            ? await AppManager.Instance.GetProfileItemsOrderedByIndexIds(request.ProfileIds)
-            : await AppManager.Instance.ProfileItems(Config.SubIndexId ?? string.Empty) ?? [];
+            ? await ConfigDbQuery.GetProfileItemsOrderedByIndexIds(request.ProfileIds)
+            : await ConfigDbQuery.ProfileItems(Config.SubIndexId ?? string.Empty) ?? [];
         if (profiles.Count == 0)
         {
             return OperationView.Fail("speedtest_profile_selection_required", ApiMessageKeys.SpeedTestSelectRequired);

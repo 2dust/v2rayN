@@ -5,7 +5,7 @@ namespace v2rayN.Desktop.Views;
 
 public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
 {
-    private static Config _config; 
+    private static Config _config;
 
     public OptionSettingWindow()
     {
@@ -13,7 +13,7 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
 
         Loaded += Window_Loaded;
         btnCancel.Click += (s, e) => Close();
-        _config = AppManager.Instance.Config;
+        _config = ConfigTextHandler.Config;
 
         clbdestOverride.SelectionChanged += ClbdestOverride_SelectionChanged;
         btnBrowseCustomSystemProxyPacPath.Click += BtnBrowseCustomSystemProxyPacPath_Click;

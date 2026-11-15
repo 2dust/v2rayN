@@ -76,7 +76,7 @@ public partial class RoutingRuleSettingWindow
                 interaction.SetOutput(fileName);
             }).DisposeWith(disposables);
         });
-        WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
+        WindowsUtils.SetDarkBorder(this, ConfigTextHandler.Config.UiItem.CurrentTheme);
     }
 
     private void Window_Loaded(object sender, RoutedEventArgs e)

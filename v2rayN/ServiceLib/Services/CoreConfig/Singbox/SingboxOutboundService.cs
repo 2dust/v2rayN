@@ -277,13 +277,12 @@ public partial class CoreConfigSingboxService
                             }
                             else if (protocolExtra.HopInterval?.Contains('-') ?? false)
                             {
-                                // may be a range like 5-10
                                 var parts = protocolExtra.HopInterval.Split('-');
                                 if (parts.Length == 2 && int.TryParse(parts[0], out var hiL) &&
-                                    int.TryParse(parts[0], out var hiH))
+                                    int.TryParse(parts[1], out var hiH) && hiL >= 5 && hiH >= hiL)
                                 {
-                                    var hi = (hiL + hiH) / 2;
-                                    outbound.hop_interval = hi >= 5 ? $"{hi}s" : outbound.hop_interval;
+                                    outbound.hop_interval = $"{hiL}s";
+                                    outbound.hop_interval_max = $"{hiH}s";
                                 }
                             }
                         }

@@ -1,5 +1,3 @@
-using ServiceLib.Enums;
-
 namespace v2rayN.WebAPI.Contracts;
 
 public sealed record SubscriptionInput(

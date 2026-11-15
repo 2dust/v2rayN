@@ -14,6 +14,33 @@ public class SQLiteHelperTests
     });
 
     [Test]
+    public async Task RepeatedSharedSchemaInitialization_ShouldSucceedDuringAnExclusiveTransaction()
+    {
+        TestDatabase.Initialize();
+        var database = Database.Value;
+        var item = new SubItem { Id = Guid.NewGuid().ToString("N"), Remarks = "schema-init", Url = "http://127.0.0.1/sub" };
+        await database.InsertAsync(item);
+        try
+        {
+            await database.ExecuteAsync("BEGIN EXCLUSIVE");
+            try
+            {
+                TestDatabase.Initialize();
+                var saved = await database.TableAsync<SubItem>().Where(row => row.Id == item.Id).FirstAsync();
+                await saved.Id.Should().BeEqualTo(item.Id);
+            }
+            finally
+            {
+                await database.ExecuteAsync("ROLLBACK");
+            }
+        }
+        finally
+        {
+            await database.DeleteAsync(item);
+        }
+    }
+
+    [Test]
     public async Task SingleWrites_ShouldPreserveValuesAndDeleteByPrimaryKey()
     {
         var database = Database.Value;

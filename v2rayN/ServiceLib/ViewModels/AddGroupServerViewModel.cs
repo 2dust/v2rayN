@@ -43,7 +43,7 @@ public partial class AddGroupServerViewModel : MyReactiveObject, ICloseable
 
     public AddGroupServerViewModel(ProfileItem profileItem)
     {
-        _config = AppManager.Instance.Config;
+        _config = ConfigTextHandler.Config;
 
         var canEditRemove = this.WhenAnyValue(
             x => x.SelectedChild,
@@ -97,14 +97,14 @@ public partial class AddGroupServerViewModel : MyReactiveObject, ICloseable
             _ => ResUI.TbLeastPing,
         };
 
-        var subs = await AppManager.Instance.SubItems();
+        var subs = await ConfigDbQuery.SubItems();
         subs.Add(new SubItem());
         SubItems.AddRange(subs);
         SelectedSubItem = SubItems.FirstOrDefault(s => s.Id == protocolExtra?.SubChildItems);
         Filter = protocolExtra?.Filter;
 
         var childIndexIds = Utils.String2List(protocolExtra?.ChildItems) ?? [];
-        var childItemList = await AppManager.Instance.GetProfileItemsOrderedByIndexIds(childIndexIds);
+        var childItemList = await ConfigDbQuery.GetProfileItemsOrderedByIndexIds(childIndexIds);
         ChildItemsObs.AddRange(childItemList);
     }
 
@@ -245,7 +245,7 @@ public partial class AddGroupServerViewModel : MyReactiveObject, ICloseable
 
         SelectedSource.SetProtocolExtra(protocolExtra);
 
-        if (await ConfigHandler.AddServerCommon(_config, SelectedSource) == 0)
+        if (await ConfigDbHandler.AddServerCommon(SelectedSource) == 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
             RequestClose?.Invoke(this, EventArgs.Empty);

@@ -1,9 +1,6 @@
-using System.Collections;
 using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using ServiceLib;
-using ServiceLib.Common;
 using v2rayN.WebAPI.Api;
 using v2rayN.WebAPI.Configuration;
 using v2rayN.WebAPI.Contracts;
@@ -348,7 +345,11 @@ internal static class Program
         var line = $"{DateTimeOffset.UtcNow:O} {(success ? "INFO" : "ERROR")} {message}"
             + (processId.HasValue ? $" ProcessId={processId.Value}." : string.Empty)
             + Environment.NewLine;
-        if (!success) Console.Error.WriteLine(message);
+        if (!success)
+        {
+            Console.Error.WriteLine(message);
+        }
+
         try
         {
             var path = Utils.GetLogPath("native-restore-restart.log");
@@ -357,7 +358,10 @@ internal static class Program
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
         {
-            if (!success) Console.Error.WriteLine($"Could not persist the native restart diagnostic: {exception.Message}");
+            if (!success)
+            {
+                Console.Error.WriteLine($"Could not persist the native restart diagnostic: {exception.Message}");
+            }
         }
     }
 

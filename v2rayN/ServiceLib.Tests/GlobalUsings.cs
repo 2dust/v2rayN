@@ -21,6 +21,7 @@ global using ServiceLib.Handler;
 global using ServiceLib.Handler.Builder;
 global using ServiceLib.Handler.Fmt;
 global using ServiceLib.Handler.SysProxy;
+global using ServiceLib.Handler.Data;
 global using ServiceLib.Helper;
 global using ServiceLib.Manager;
 global using ServiceLib.Models.CoreConfigs;

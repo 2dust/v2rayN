@@ -38,7 +38,7 @@ public partial class AddServer2Window
                 interaction.SetOutput(fileName);
             }).DisposeWith(disposables);
         });
-        WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
+        WindowsUtils.SetDarkBorder(this, ConfigTextHandler.Config.UiItem.CurrentTheme);
     }
 
     private void InitializeData(ProfileItem profileItem)

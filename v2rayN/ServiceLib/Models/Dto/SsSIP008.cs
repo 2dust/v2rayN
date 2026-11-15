@@ -9,7 +9,8 @@ public class SsServer
 {
     public string? remarks { get; set; }
     public string? server { get; set; }
-    public string? server_port { get; set; }
+    [JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)]
+    public int server_port { get; set; }
     public string? method { get; set; }
     public string? password { get; set; }
     public string? plugin { get; set; }

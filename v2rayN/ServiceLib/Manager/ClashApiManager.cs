@@ -82,7 +82,7 @@ public sealed class ClashApiManager
     private async Task<int> TestProxyDelay(string name)
     {
         var url = $"{ApiUrl}/proxies/{Utils.UrlEncode(name)}/delay?timeout=10000&url=" +
-                  Utils.UrlEncode(AppManager.Instance.Config.SpeedTestItem.SpeedPingTestUrl);
+                  Utils.UrlEncode(ConfigTextHandler.Config.SpeedTestItem.SpeedPingTestUrl);
         return await SendTestRequest(url);
     }
 
@@ -90,7 +90,7 @@ public sealed class ClashApiManager
     {
         var url =
             $"{ApiUrl}/providers/proxies/{Utils.UrlEncode(providerName)}/{Utils.UrlEncode(name)}/healthcheck?timeout=10000&url=" +
-            Utils.UrlEncode(AppManager.Instance.Config.SpeedTestItem.SpeedPingTestUrl);
+            Utils.UrlEncode(ConfigTextHandler.Config.SpeedTestItem.SpeedPingTestUrl);
         return await SendTestRequest(url);
     }
 

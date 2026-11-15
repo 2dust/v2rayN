@@ -82,8 +82,10 @@ public class NativeWebUpdateHelperTests
             await Path.GetDirectoryName(helper).Should().BeEqualTo(directory);
             await NativeWebUpdateHelper.IsUpdateHelperExecutableName(Path.GetFileName(helper)).Should().BeTrue();
             if (OperatingSystem.IsLinux())
+            {
                 await File.GetUnixFileMode(helper).Should().BeEqualTo(
                     UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
+            }
 
             var candidate = Path.Combine(directory, "candidate");
             await File.WriteAllTextAsync(candidate, "different-bundle-layout");
@@ -100,7 +102,11 @@ public class NativeWebUpdateHelperTests
     [Test]
     public async Task SymlinkManagedExecutablesCannotCreateWorkers()
     {
-        if (!OperatingSystem.IsLinux()) return;
+        if (!OperatingSystem.IsLinux())
+        {
+            return;
+        }
+
         var directory = Path.Combine(Path.GetTempPath(), $"webapi-helper-link-{Guid.NewGuid():N}");
         Directory.CreateDirectory(directory);
         try
@@ -110,7 +116,8 @@ public class NativeWebUpdateHelperTests
             var link = Path.Combine(directory, "v2rayN.WebAPI");
             File.CreateSymbolicLink(link, target);
             var rejected = false;
-            try { NativeWebUpdateHelper.CreateIsolatedHelperExecutable(link); }
+            try
+            { NativeWebUpdateHelper.CreateIsolatedHelperExecutable(link); }
             catch (InvalidDataException) { rejected = true; }
             await rejected.Should().BeTrue();
             await Directory.GetFiles(directory, ".v2rayn-WebAPI-update-helper-*").Length.Should().BeEqualTo(0);

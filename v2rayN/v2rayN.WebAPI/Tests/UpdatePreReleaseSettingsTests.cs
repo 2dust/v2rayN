@@ -1,9 +1,5 @@
 using System.Reflection;
 using System.Text.Json;
-using ServiceLib;
-using ServiceLib.Common;
-using ServiceLib.Manager;
-using ServiceLib.Models.Configs;
 using v2rayN.WebAPI.Contracts;
 using v2rayN.WebAPI.Services;
 
@@ -177,7 +173,10 @@ public class UpdatePreReleaseSettingsTests
             if (File.Exists(_configPath))
             {
                 _previousConfigFile = File.ReadAllBytes(_configPath);
-                if (!OperatingSystem.IsWindows()) _previousConfigMode = File.GetUnixFileMode(_configPath);
+                if (!OperatingSystem.IsWindows())
+                {
+                    _previousConfigMode = File.GetUnixFileMode(_configPath);
+                }
             }
             Environment.SetEnvironmentVariable(Global.LocalAppData, "0");
             _configField.SetValue(AppManager.Instance, Config);
@@ -193,13 +192,18 @@ public class UpdatePreReleaseSettingsTests
             {
                 if (_previousConfigFile is null)
                 {
-                    if (File.Exists(_configPath)) File.Delete(_configPath);
+                    if (File.Exists(_configPath))
+                    {
+                        File.Delete(_configPath);
+                    }
                 }
                 else
                 {
                     File.WriteAllBytes(_configPath, _previousConfigFile);
                     if (!OperatingSystem.IsWindows() && _previousConfigMode is { } mode)
+                    {
                         File.SetUnixFileMode(_configPath, mode);
+                    }
                 }
             }
             finally

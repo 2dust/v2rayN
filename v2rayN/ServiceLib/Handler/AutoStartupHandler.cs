@@ -251,19 +251,16 @@ public static class AutoStartupHandler
     {
         try
         {
-            var launchAgentPath = GetLaunchAgentPathMacOS();
-            if (File.Exists(launchAgentPath))
-            {
-                var args = new[] { "-c", $"launchctl unload -w \"{launchAgentPath}\"" };
-                await Utils.GetCliWrapOutput(Global.LinuxBash, args);
-
-                File.Delete(launchAgentPath);
-            }
+            // Do not "launchctl unload" the agent: launchd then terminates the job's processes, which is
+            // v2rayN itself when it was started at login. The agent only runs at load, so removing the
+            // plist is enough to stop the next start.
+            File.Delete(GetLaunchAgentPathMacOS());
         }
         catch (Exception ex)
         {
             Logging.SaveLog(_tag, ex);
         }
+        await Task.CompletedTask;
     }
 
     [SupportedOSPlatform("macos")]

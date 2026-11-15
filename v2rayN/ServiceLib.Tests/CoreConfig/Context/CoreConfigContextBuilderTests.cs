@@ -98,7 +98,7 @@ public class CoreConfigContextBuilderTests
 
     private static async Task UpsertProfilesAsync(params ProfileItem[] profiles)
     {
-        SQLiteHelper.Instance.CreateTable<ProfileItem>();
+        TestDatabase.Initialize();
         foreach (var profile in profiles)
         {
             await SQLiteHelper.Instance.ReplaceAsync(profile);
