@@ -1,4 +1,4 @@
-using System.Reflection;
+using ServiceLib.Handler.Data;
 using System.Text.Json.Nodes;
 using ServiceLib.Services.CoreConfig;
 using v2rayN.WebAPI.Contracts;
@@ -157,8 +157,7 @@ public class SniffingSettingsIntegrationTests
 
     internal static void BindAppManagerConfig(Config config)
     {
-        var field = typeof(AppManager).GetField("_config", BindingFlags.Instance | BindingFlags.NonPublic);
-        field?.SetValue(AppManager.Instance, config);
+        ConfigState.Instance.SetCurrent(config);
     }
 
     private static ProfileItem CreateVmessNode(ECoreType coreType)
