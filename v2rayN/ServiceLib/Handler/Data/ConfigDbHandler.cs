@@ -777,10 +777,6 @@ public static class ConfigDbHandler
         {
             profileItem.StreamSecurity = Global.StreamSecurity;
         }
-        if (profileItem.Password.IsNullOrEmpty())
-        {
-            return -1;
-        }
         await AddServerCommon(profileItem, toFile);
         return 0;
     }

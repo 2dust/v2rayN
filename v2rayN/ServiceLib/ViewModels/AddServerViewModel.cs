@@ -501,7 +501,7 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
                 return;
             }
         }
-        if (SelectedSource.ConfigType is not EConfigType.SOCKS and not EConfigType.HTTP)
+        if (SelectedSource.ConfigType is not EConfigType.SOCKS and not EConfigType.HTTP and not EConfigType.MASQUE)
         {
             if (SelectedSource.Password.IsNullOrEmpty())
             {
