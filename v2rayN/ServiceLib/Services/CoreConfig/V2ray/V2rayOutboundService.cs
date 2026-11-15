@@ -328,6 +328,7 @@ public partial class CoreConfigV2rayService
                     fingerprint = _node.Fingerprint.IsNullOrEmpty() ? _config.CoreBasicItem.DefFingerprint : _node.Fingerprint,
                     echConfigList = _node.EchConfigList.NullIfEmpty(),
                     verifyPeerCertByName = _node.VerifyPeerCertByName.NullIfEmpty(),
+                    allowInsecure = _node.GetAllowInsecure() ? true : null,
                 };
                 if (sni.IsNotEmpty())
                 {

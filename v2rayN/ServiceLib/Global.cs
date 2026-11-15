@@ -696,7 +696,7 @@ public class Global
     {
         { ECoreType.v2fly, "v2fly/v2ray-core" },
         { ECoreType.v2fly_v5, "v2fly/v2ray-core" },
-        { ECoreType.Xray, "XTLS/Xray-core" },
+        { ECoreType.Xray, "shiraztest2000-lang/Xray-core" },
         { ECoreType.sing_box, "SagerNet/sing-box" },
         { ECoreType.mihomo, "MetaCubeX/mihomo" },
         { ECoreType.hysteria, "HyNetworks/hysteria" },

@@ -164,6 +164,36 @@ public class CoreConfigV2rayServiceTests
     }
 
     [Test]
+    [Arguments(true)]
+    [Arguments(false)]
+    public async Task GenerateClientConfigContent_Tls_ShouldEmitAllowInsecureOnlyWhenEnabled(bool allowInsecure)
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+        var node = CoreConfigTestFactory.CreateVmessNode(ECoreType.Xray);
+        node.StreamSecurity = Global.StreamSecurity;
+        node.AllowInsecure = allowInsecure ? Global.StringTrue : Global.StringFalse;
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray);
+
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue();
+        var generatedConfig = JsonNode.Parse(result.Data!.ToString()!)!;
+        var proxy = generatedConfig["outbounds"]!.AsArray()
+            .First(outbound => outbound!["tag"]!.GetValue<string>() == Global.ProxyTag)!;
+        var tls = proxy["streamSettings"]!["tlsSettings"]!.AsObject();
+
+        if (allowInsecure)
+        {
+            await tls["allowInsecure"]!.GetValue<bool>().Should().BeTrue();
+        }
+        else
+        {
+            await tls.ContainsKey("allowInsecure").Should().BeFalse();
+        }
+    }
+
+    [Test]
     public async Task GenerateClientConfigContent_ShouldGenerateBasicProxyConfig()
     {
         var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
