@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       release_tag:
-        description: 'Release tag (for example 7.x.y). Empty builds a development API package.'
+        description: 'Release tag (for example 7.25.6 or 7.25.6.001). Empty builds a development API package.'
         required: false
         default: ''
         type: string
@@ -73,6 +73,9 @@ jobs:
       release: ${{ steps.resolve.outputs.release }}
       build_date: ${{ steps.resolve.outputs.build_date }}
     steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - name: Resolve release identity
         id: resolve
         shell: bash
@@ -89,8 +92,14 @@ jobs:
               echo "build_date=$build_date"
             } >> "$GITHUB_OUTPUT"
           else
-            [[ "$RELEASE_TAG" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || {
-              echo "Invalid release tag: $RELEASE_TAG" >&2
+            [[ "$RELEASE_TAG" =~ ^[0-9]+(\.[0-9]+){2,3}$ ]] || {
+              echo "Invalid release tag: $RELEASE_TAG (expected 7.25.6 or 7.25.6.001; no leading v)" >&2
+              exit 1
+            }
+            project_version="$(sed -nE 's#^[[:space:]]*<Version>([^<]+)</Version>[[:space:]]*$#\1#p' v2rayN/Directory.Build.props | head -n1)"
+            [[ -n "$project_version" ]] || { echo "Could not read project Version." >&2; exit 1; }
+            [[ "$RELEASE_TAG" == "$project_version" ]] || {
+              echo "Release tag ($RELEASE_TAG) does not match project version ($project_version)." >&2
               exit 1
             }
             {
