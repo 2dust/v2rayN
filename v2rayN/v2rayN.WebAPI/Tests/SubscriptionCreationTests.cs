@@ -1,4 +1,4 @@
-using System.Reflection;
+using ServiceLib.Handler.Data;
 using ServiceLib.Helper;
 using v2rayN.WebAPI.Contracts;
 using v2rayN.WebAPI.Services;
@@ -12,16 +12,13 @@ public class SubscriptionCreationTests
     public async Task EmptyUrlSubscriptionIsCreatedAndReturnedWithAnEmptyUrl()
     {
         var previousLocalData = Environment.GetEnvironmentVariable(Global.LocalAppData);
-        var manager = AppManager.Instance;
-        var configField = typeof(AppManager).GetField("_config", BindingFlags.Instance | BindingFlags.NonPublic)
-            ?? throw new MissingFieldException(typeof(AppManager).FullName, "_config");
-        var previousConfig = configField.GetValue(manager);
+        var previousConfig = ConfigState.Instance.Current;
         var config = new Config();
         SubItem? saved = null;
         try
         {
             Environment.SetEnvironmentVariable(Global.LocalAppData, "0");
-            configField.SetValue(manager, config);
+            ConfigState.Instance.SetCurrent(config);
             SQLiteHelper.Instance.CreateTable<SubItem>();
             var runtime = new V2rayRuntime(null!, null!, null!, null!, null!);
             var result = await runtime.AddSubscriptionAsync(new SubscriptionInput(
@@ -71,7 +68,7 @@ public class SubscriptionCreationTests
             }
             finally
             {
-                configField.SetValue(manager, previousConfig);
+                ConfigState.Instance.SetCurrent(previousConfig);
                 Environment.SetEnvironmentVariable(Global.LocalAppData, previousLocalData);
             }
         }
