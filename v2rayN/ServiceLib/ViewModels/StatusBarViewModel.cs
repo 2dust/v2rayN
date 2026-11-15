@@ -267,7 +267,7 @@ public partial class StatusBarViewModel : MyReactiveObject
         await RefreshServersMenu();
 
         //display running server
-        var running = await ConfigDbHandler.GetDefaultServer(_config);
+        var running = await ConfigTextHandler.GetDefaultServer();
         if (running != null)
         {
             RunningServerDisplay = running.GetSummary();
@@ -319,7 +319,7 @@ public partial class StatusBarViewModel : MyReactiveObject
 
     public async Task<AvailabilityCheckResult?> TestServerAvailability()
     {
-        var item = await ConfigDbHandler.GetDefaultServer(_config);
+        var item = await ConfigTextHandler.GetDefaultServer();
         if (item == null)
         {
             return null;

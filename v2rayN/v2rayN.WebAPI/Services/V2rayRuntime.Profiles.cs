@@ -269,7 +269,7 @@ public sealed partial class V2rayRuntime
             }
             if (removesCurrent)
             {
-                _ = await ConfigDbHandler.GetDefaultServer(Config);
+                _ = await ConfigTextHandler.GetDefaultServer();
                 await EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig());
             }
         });

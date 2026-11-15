@@ -188,73 +188,6 @@ public static class ConfigDbHandler
     }
 
     /// <summary>
-    /// Set the default server by its index ID
-    /// Updates the configuration to use the specified server as default
-    /// </summary>
-    /// <param name="config">Current configuration</param>
-    /// <param name="indexId">Index ID of the server to set as default</param>
-    /// <returns>0 if successful, -1 if failed</returns>
-    public static async Task<int> SetDefaultServerIndex(Config config, string? indexId)
-    {
-        if (indexId.IsNullOrEmpty())
-        {
-            return -1;
-        }
-
-        config.IndexId = indexId;
-
-        await SaveConfig();
-
-        return 0;
-    }
-
-    /// <summary>
-    /// Set a default server from the provided list of profiles
-    /// Ensures there's always a valid default server selected
-    /// </summary>
-    /// <param name="config">Current configuration</param>
-    /// <param name="lstProfile">List of profile models to choose from</param>
-    /// <returns>Result of SetDefaultServerIndex operation</returns>
-    public static async Task<int> SetDefaultServer(Config config, List<ProfileItemModel> lstProfile)
-    {
-        if (lstProfile.Exists(t => t.IndexId == config.IndexId))
-        {
-            return 0;
-        }
-
-        if (await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(t => t.IndexId == config.IndexId) != null)
-        {
-            return 0;
-        }
-        if (lstProfile.Count > 0)
-        {
-            return await SetDefaultServerIndex(config, lstProfile.FirstOrDefault(t => t.Port > 0)?.IndexId);
-        }
-
-        var item = await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(t => t.Port > 0);
-        return await SetDefaultServerIndex(config, item?.IndexId);
-    }
-
-    /// <summary>
-    /// Get the current default server profile
-    /// If the current default is invalid, selects a new default
-    /// </summary>
-    /// <param name="config">Current configuration</param>
-    /// <returns>The default profile item or null if none exists</returns>
-    public static async Task<ProfileItem?> GetDefaultServer(Config config)
-    {
-        var item = await ConfigDbQuery.GetProfileItem(config.IndexId);
-        if (item is null)
-        {
-            var item2 = await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync();
-            await SetDefaultServerIndex(config, item2?.IndexId);
-            return item2;
-        }
-
-        return item;
-    }
-
-    /// <summary>
     /// Move a server in the list to a different position
     /// Supports moving to top, up, down, bottom or specific position
     /// </summary>
@@ -1415,7 +1348,6 @@ public static class ConfigDbHandler
         return result;
     }
 
-
     /// <summary>
     /// Remove servers with invalid test results (timeout)
     /// Useful for cleaning up subscription lists
@@ -1971,7 +1903,7 @@ public static class ConfigDbHandler
             var existItem = FindMatchedProfileItem(lstSub, activeProfile);
             if (existItem != null)
             {
-                await ConfigDbHandler.SetDefaultServerIndex(config, existItem.IndexId);
+                await ConfigTextHandler.SetDefaultServerIndex(existItem.IndexId);
             }
         }
 

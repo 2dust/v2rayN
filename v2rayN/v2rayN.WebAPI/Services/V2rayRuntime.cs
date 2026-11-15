@@ -268,7 +268,7 @@ public sealed partial class V2rayRuntime(
             Config.SubIndexId = normalizedSubIndexId;
         }
         var selectedProfileId = Config.IndexId;
-        var defaultProfile = await ConfigDbHandler.GetDefaultServer(Config);
+        var defaultProfile = await ConfigTextHandler.GetDefaultServer();
         await _mutations.RunAsync(() => EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig()));
         await ProfileExManager.Instance.Init();
         await CertPemManager.Instance.Init(Config);
@@ -502,7 +502,7 @@ public sealed partial class V2rayRuntime(
             }
             if (removesCurrentProfile)
             {
-                _ = await ConfigDbHandler.GetDefaultServer(Config);
+                _ = await ConfigTextHandler.GetDefaultServer();
                 await EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig());
             }
         });
@@ -789,7 +789,7 @@ public sealed partial class V2rayRuntime(
 
     private async Task<ProfileItem?> GetDefaultProfileAsync() => await _mutations.RunAsync(async () =>
     {
-        var selected = await ConfigDbHandler.GetDefaultServer(Config);
+        var selected = await ConfigTextHandler.GetDefaultServer();
         if (selected is not null)
         {
             await EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig());

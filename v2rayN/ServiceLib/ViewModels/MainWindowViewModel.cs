@@ -696,7 +696,7 @@ public partial class MainWindowViewModel : MyReactiveObject
                     TabMainSelectedIndex = 0;
                 }
             });
-            var profileItem = await ConfigDbHandler.GetDefaultServer(_config);
+            var profileItem = await ConfigTextHandler.GetDefaultServer();
             if (profileItem == null)
             {
                 NoticeManager.Instance.Enqueue(ResUI.CheckServerSettings);

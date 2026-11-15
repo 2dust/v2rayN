@@ -303,4 +303,72 @@ public static class ConfigTextHandler
     }
 
     #endregion UIItem
+
+    #region DefaultServer
+
+    /// <summary>
+    /// Set the default server by its index ID
+    /// Updates the configuration to use the specified server as default
+    /// </summary>
+    /// <param name="indexId">Index ID of the server to set as default</param>
+    /// <returns>0 if successful, -1 if failed</returns>
+    public static async Task<int> SetDefaultServerIndex(string? indexId)
+    {
+        if (indexId.IsNullOrEmpty())
+        {
+            return -1;
+        }
+
+        Config.IndexId = indexId;
+
+        await SaveConfig();
+
+        return 0;
+    }
+
+    /// <summary>
+    /// Set a default server from the provided list of profiles
+    /// Ensures there's always a valid default server selected
+    /// </summary>
+    /// <param name="lstProfile">List of profile models to choose from</param>
+    /// <returns>Result of SetDefaultServerIndex operation</returns>
+    public static async Task<int> SetDefaultServer(List<ProfileItemModel> lstProfile)
+    {
+        if (lstProfile.Exists(t => t.IndexId == Config.IndexId))
+        {
+            return 0;
+        }
+
+        if (await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(t => t.IndexId == Config.IndexId) != null)
+        {
+            return 0;
+        }
+        if (lstProfile.Count > 0)
+        {
+            return await SetDefaultServerIndex(lstProfile.FirstOrDefault(t => t.Port > 0)?.IndexId);
+        }
+
+        var item = await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(t => t.Port > 0);
+        return await SetDefaultServerIndex(item?.IndexId);
+    }
+
+    /// <summary>
+    /// Get the current default server profile
+    /// If the current default is invalid, selects a new default
+    /// </summary>
+    /// <returns>The default profile item or null if none exists</returns>
+    public static async Task<ProfileItem?> GetDefaultServer()
+    {
+        var item = await ConfigDbQuery.GetProfileItem(Config.IndexId);
+        if (item is null)
+        {
+            var item2 = await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync();
+            await SetDefaultServerIndex(item2?.IndexId);
+            return item2;
+        }
+
+        return item;
+    }
+
+    #endregion DefaultServer
 }

@@ -1,5 +1,3 @@
-
-
 namespace ServiceLib.ViewModels;
 
 public partial class ProfilesViewModel : MyReactiveObject
@@ -401,7 +399,7 @@ public partial class ProfilesViewModel : MyReactiveObject
     {
         var lstModel = await ConfigDbQuery.ProfileModels(_config.SubIndexId, filter);
 
-        await ConfigDbHandler.SetDefaultServer(_config, lstModel);
+        await ConfigTextHandler.SetDefaultServer(lstModel);
 
         var lstServerStat = (_config.GuiItem.EnableStatistics ? StatisticsManager.Instance.ServerStat : null) ?? [];
         var lstProfileExs = await ProfileExManager.Instance.GetProfileExs();
@@ -585,7 +583,7 @@ public partial class ProfilesViewModel : MyReactiveObject
             return;
         }
 
-        if (await ConfigDbHandler.SetDefaultServerIndex(_config, indexId) == 0)
+        if (await ConfigTextHandler.SetDefaultServerIndex(indexId) == 0)
         {
             await RefreshServers();
             Reload();
