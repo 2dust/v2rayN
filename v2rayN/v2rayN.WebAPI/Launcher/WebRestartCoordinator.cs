@@ -1,6 +1,5 @@
-using System.Diagnostics;
 using System.ComponentModel;
-using System.IO;
+using System.Diagnostics;
 
 namespace v2rayN.WebAPI.Launcher;
 
@@ -140,6 +139,7 @@ public interface IWebReplacementProcess : IDisposable
 {
     int Id { get; }
     bool HasExited { get; }
+
     void KillTree();
 }
 
@@ -151,6 +151,7 @@ public interface IWebReplacementProcessStarter
 public interface IWebInstanceOwnershipProbe
 {
     bool IsLockHeld(string lockPath);
+
     int? ReadOwnerProcessId(string lockPath);
 }
 
@@ -186,7 +187,8 @@ public sealed class NativeReplacementProcessStarter : IWebReplacementProcessStar
         {
             get
             {
-                try { return process.HasExited; }
+                try
+                { return process.HasExited; }
                 catch (InvalidOperationException) { return true; }
             }
         }
@@ -241,8 +243,15 @@ public sealed class NativeWebRestartCoordinator
         _pollInterval = pollInterval ?? DefaultPollInterval;
         _timeProvider = timeProvider ?? TimeProvider.System;
         _delay = delay ?? ((duration, token) => Task.Delay(duration, _timeProvider, token));
-        if (_timeout <= TimeSpan.Zero) throw new ArgumentOutOfRangeException(nameof(timeout));
-        if (_pollInterval <= TimeSpan.Zero) throw new ArgumentOutOfRangeException(nameof(pollInterval));
+        if (_timeout <= TimeSpan.Zero)
+        {
+            throw new ArgumentOutOfRangeException(nameof(timeout));
+        }
+
+        if (_pollInterval <= TimeSpan.Zero)
+        {
+            throw new ArgumentOutOfRangeException(nameof(pollInterval));
+        }
     }
 
     public async Task<WebRestartHandoffResult> StartReplacementAfterOwnerReleaseAsync(

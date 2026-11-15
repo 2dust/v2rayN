@@ -1,5 +1,4 @@
 using System.Net;
-using Microsoft.AspNetCore.Hosting;
 
 namespace v2rayN.WebAPI.Security;
 
@@ -7,6 +6,7 @@ namespace v2rayN.WebAPI.Security;
 public static class WebListenerSecurityPolicy
 {
     public const string DefaultUrl = "http://127.0.0.1:5080";
+
     public const string MissingManagementKeyMessage =
         "Management Key is required for non-loopback Web listeners. Set V2RAYN_WEB_API_KEY before starting v2rayN.WebAPI, or bind only to 127.0.0.1, localhost, or [::1] for local first-run setup.";
 

@@ -10,7 +10,7 @@ public partial class DNSSettingWindow : WindowBase<DNSSettingViewModel>
     {
         InitializeComponent();
 
-        _config = AppManager.Instance.Config;
+        _config = ConfigTextHandler.Config;
         Loaded += Window_Loaded;
         btnCancel.Click += (s, e) => Close();
 

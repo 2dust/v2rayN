@@ -24,7 +24,7 @@ public static class ProxySettingOSX
 
     private static async Task ExecCmd(List<string> args)
     {
-        var customSystemProxyScriptPath = AppManager.Instance.Config.SystemProxyItem?.CustomSystemProxyScriptPath;
+        var customSystemProxyScriptPath = ConfigTextHandler.Config.SystemProxyItem?.CustomSystemProxyScriptPath;
         var fileName = (customSystemProxyScriptPath.IsNotEmpty() && File.Exists(customSystemProxyScriptPath))
             ? customSystemProxyScriptPath
             : await FileUtils.CreateLinuxShellFile(_proxySetFileName, EmbedUtils.GetEmbedText(Global.ProxySetOSXShellFileName), false);

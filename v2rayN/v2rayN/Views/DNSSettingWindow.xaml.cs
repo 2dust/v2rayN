@@ -8,7 +8,7 @@ public partial class DNSSettingWindow
     {
         InitializeComponent();
 
-        _config = AppManager.Instance.Config;
+        _config = ConfigTextHandler.Config;
 
         cmbDirectDNSStrategy.ItemsSource = Global.DomainStrategy;
         cmbRemoteDNSStrategy.ItemsSource = Global.DomainStrategy;
@@ -72,7 +72,7 @@ public partial class DNSSettingWindow
             this.OneWayBind(ViewModel, vm => vm.IsSimpleDNSEnabled, v => v.gridBasicDNSSettings.IsEnabled).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.IsSimpleDNSEnabled, v => v.gridAdvancedDNSSettings.IsEnabled).DisposeWith(disposables);
         });
-        WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
+        WindowsUtils.SetDarkBorder(this, ConfigTextHandler.Config.UiItem.CurrentTheme);
     }
 
     private void linkDnsObjectDoc_Click(object sender, RoutedEventArgs e)

@@ -16,7 +16,7 @@ public partial class MsgViewModel : MyReactiveObject
 
     public MsgViewModel()
     {
-        _config = AppManager.Instance.Config;
+        _config = ConfigTextHandler.Config;
         MsgFilter = _config.MsgUIItem.MainMsgFilter ?? string.Empty;
         AutoRefresh = _config.MsgUIItem.AutoRefresh ?? true;
 

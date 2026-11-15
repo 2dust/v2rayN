@@ -130,7 +130,7 @@ public class BackupRestorePreflightTests
 
     private static IConfigurationRoot Config(params (string Key, string Value)[] values) =>
         new ConfigurationBuilder()
-            .AddInMemoryCollection(values.ToDictionary(item => item.Key, item => (string?)item.Value))
+            .AddInMemoryCollection(values.ToDictionary(item => item.Key, item => item.Value))
             .Build();
 
     private sealed class TemporaryDirectory : IDisposable

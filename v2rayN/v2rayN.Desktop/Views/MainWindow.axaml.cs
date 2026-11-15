@@ -25,7 +25,7 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
     {
         InitializeComponent();
 
-        _config = AppManager.Instance.Config;
+        _config = ConfigTextHandler.Config;
         _manager = new WindowNotificationManager(TopLevel.GetTopLevel(this)) { MaxItems = 3, Position = NotificationPosition.TopRight };
 
         KeyDown += MainWindow_KeyDown;
@@ -396,15 +396,15 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
 
     private void StorageUI()
     {
-        ConfigHandler.SaveWindowSizeItem(_config, GetType().Name, Width, Height);
+        ConfigTextHandler.SaveWindowSizeItem(GetType().Name, Width, Height);
 
         if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Horizontal)
         {
-            ConfigHandler.SaveMainGirdHeight(_config, gridMain.ColumnDefinitions[0].ActualWidth, gridMain.ColumnDefinitions[2].ActualWidth);
+            ConfigTextHandler.SaveMainGirdHeight(gridMain.ColumnDefinitions[0].ActualWidth, gridMain.ColumnDefinitions[2].ActualWidth);
         }
         else if (_config.UiItem.MainGirdOrientation == EGirdOrientation.Vertical)
         {
-            ConfigHandler.SaveMainGirdHeight(_config, gridMain.RowDefinitions[0].ActualHeight, gridMain.RowDefinitions[2].ActualHeight);
+            ConfigTextHandler.SaveMainGirdHeight(gridMain.RowDefinitions[0].ActualHeight, gridMain.RowDefinitions[2].ActualHeight);
         }
     }
 

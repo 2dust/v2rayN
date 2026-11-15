@@ -1,250 +1,15 @@
-namespace ServiceLib.Handler;
+namespace ServiceLib.Handler.Data;
 
-public static class ConfigHandler
+public static class ConfigDbHandler
 {
-    private static readonly string _configRes = Global.ConfigFileName;
-    private static readonly string _tag = "ConfigHandler";
+    private static readonly string _tag = "ConfigDbHandler";
 
-    #region ConfigHandler
+    private static Config CurrentConfig => ConfigState.Instance.Current;
 
-    /// <summary>
-    /// Load the application configuration file
-    /// If the file exists, deserialize it from JSON
-    /// If not found, create a new Config object with default settings
-    /// Initialize default values for missing configuration sections
-    /// </summary>
-    /// <returns>Config object containing application settings or null if there's an error</returns>
-    public static Config? LoadConfig()
+    private static async Task<int> SaveConfig()
     {
-        Config? config = null;
-        var result = EmbedUtils.LoadResource(Utils.GetConfigPath(_configRes));
-        if (result.IsNotEmpty())
-        {
-            config = JsonUtils.Deserialize<Config>(result);
-        }
-        else
-        {
-            if (File.Exists(Utils.GetConfigPath(_configRes)))
-            {
-                Logging.SaveLog("LoadConfig Exception");
-                return null;
-            }
-        }
-
-        config ??= new Config();
-
-        config.CoreBasicItem ??= new()
-        {
-            LogEnabled = false,
-            Loglevel = "warning",
-        };
-
-        if (config.Inbound == null)
-        {
-            config.Inbound = [];
-            InItem inItem = new()
-            {
-                Protocol = nameof(EInboundProtocol.socks),
-                LocalPort = 10808,
-                UdpEnabled = true,
-                SniffingEnabled = true,
-                RouteOnly = false,
-            };
-
-            config.Inbound.Add(inItem);
-        }
-        else
-        {
-            if (config.Inbound.Count > 0)
-            {
-                config.Inbound.First().Protocol = nameof(EInboundProtocol.socks);
-            }
-        }
-
-        config.RoutingBasicItem ??= new();
-        if (config.RoutingBasicItem.DomainStrategy.IsNullOrEmpty())
-        {
-            config.RoutingBasicItem.DomainStrategy = Global.DomainStrategies.First();
-        }
-
-        config.KcpItem ??= new KcpItem
-        {
-            Mtu = 1350,
-            Tti = 50,
-            UplinkCapacity = 12,
-            DownlinkCapacity = 100,
-            CwndMultiplier = 1,
-            MaxSendingWindow = 2 * 1024 * 1024,
-        };
-        config.KcpItem.CwndMultiplier = config.KcpItem.CwndMultiplier <= 0 ? 1 : config.KcpItem.CwndMultiplier;
-        config.KcpItem.MaxSendingWindow = config.KcpItem.MaxSendingWindow <= 0 ? (2 * 1024 * 1024) : config.KcpItem.MaxSendingWindow;
-        config.GrpcItem ??= new GrpcItem
-        {
-            IdleTimeout = 60,
-            HealthCheckTimeout = 20,
-            PermitWithoutStream = false,
-            InitialWindowsSize = 0,
-        };
-        config.TunModeItem ??= new TunModeItem
-        {
-            EnableTun = false,
-            Mtu = 9000,
-            IcmpRouting = Global.TunIcmpRoutingPolicies.First(),
-            EnableLegacyProtect = true,
-        };
-        config.GuiItem ??= new();
-        if (!Global.RootCertProviders.Contains(config.GuiItem.RootCertProvider))
-        {
-            config.GuiItem.RootCertProvider = Global.RootCertProviders.First();
-        }
-        config.MsgUIItem ??= new();
-
-        config.UiItem ??= new();
-        config.UiItem.MainColumnItem ??= [];
-        config.UiItem.WindowSizeItem ??= [];
-        if (config.UiItem.FrozenColumnCount == null)
-        {
-            var lvColumnItem = config.UiItem.MainColumnItem.OrderBy(t => t.Index).ToList();
-            if (lvColumnItem.Count == 0
-                || (lvColumnItem.Count >= 2
-                    && lvColumnItem[0].Name.Equals("ConfigType")
-                    && lvColumnItem[1].Name.Equals("Remarks")))
-            {
-                config.UiItem.FrozenColumnCount = 2;
-            }
-            else
-            {
-                config.UiItem.FrozenColumnCount = 0;
-            }
-        }
-
-        if (config.UiItem.CurrentLanguage.IsNullOrEmpty())
-        {
-            config.UiItem.CurrentLanguage = Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName.Equals("zh", StringComparison.CurrentCultureIgnoreCase)
-                ? Global.Languages.First()
-                : Global.Languages[2];
-        }
-
-        config.ConstItem ??= new ConstItem();
-
-        config.SimpleDNSItem ??= InitBuiltinSimpleDNS();
-        config.SimpleDNSItem.BlockAAAAQuery ??= false;
-        config.SimpleDNSItem.FakeIPRange ??= Global.FakeIPRanges.FirstOrDefault();
-        config.SimpleDNSItem.FakeIPv6 ??= false;
-        config.SimpleDNSItem.FakeIPv6Range ??= Global.FakeIPv6Ranges.First();
-        config.SimpleDNSItem.GlobalFakeIp ??= true;
-        config.SimpleDNSItem.BootstrapDNS ??= Global.DomainPureIPDNSAddress.FirstOrDefault();
-        config.SimpleDNSItem.ServeStale ??= false;
-        config.SimpleDNSItem.ParallelQuery ??= false;
-        config.SimpleDNSItem.EnableHappyEyeballs ??= false;
-
-        config.SpeedTestItem ??= new();
-        if (config.SpeedTestItem.SpeedTestTimeout < 10)
-        {
-            config.SpeedTestItem.SpeedTestTimeout = 10;
-        }
-        if (config.SpeedTestItem.SpeedTestUrl.IsNullOrEmpty())
-        {
-            config.SpeedTestItem.SpeedTestUrl = Global.SpeedTestUrls.First();
-        }
-        if (config.SpeedTestItem.SpeedPingTestUrl.IsNullOrEmpty())
-        {
-            config.SpeedTestItem.SpeedPingTestUrl = Global.SpeedPingTestUrls.First();
-        }
-        config.SpeedTestItem.MixedConcurrencyCount = Math.Max(config.SpeedTestItem.MixedConcurrencyCount, Global.SpeedTestConcurrencyCountMin);
-        if (config.SpeedTestItem.UdpTestTarget.IsNullOrEmpty())
-        {
-            config.SpeedTestItem.UdpTestTarget = Global.UdpTestTargets.First();
-        }
-
-        config.Mux4RayItem ??= new()
-        {
-            Concurrency = 8,
-            XudpConcurrency = 16,
-            XudpProxyUDP443 = "reject"
-        };
-
-        config.Mux4SboxItem ??= new()
-        {
-            Protocol = Global.SingboxMuxs.First(),
-            MaxConnections = 8
-        };
-
-        config.HysteriaItem ??= new()
-        {
-            UpMbps = 100,
-            DownMbps = 100
-        };
-        config.ClashUIItem ??= new();
-        config.ClashUIItem.ConnectionsColumnItem ??= [];
-        config.SystemProxyItem ??= new();
-        config.WebDavItem ??= new();
-        config.CheckUpdateItem ??= new();
-        config.Fragment4RayItem ??= new()
-        {
-            Packets = "tlshello",
-        };
-        config.Fragment4RayItem.MaxSplit ??= "0";
-
-        config.HappyEyeballs4RayItem ??= new()
-        {
-            TryDelayMs = 250,
-            PrioritizeIPv6 = false,
-            Interleave = 1,
-            MaxConcurrentTry = 4,
-        };
-        if ((config.Fragment4RayItem.Lengths ?? []).Count == 0)
-        {
-            config.Fragment4RayItem.Lengths = [config.Fragment4RayItem.Length ?? "50-100"];
-        }
-        if ((config.Fragment4RayItem.Delays ?? []).Count == 0)
-        {
-            config.Fragment4RayItem.Delays = [config.Fragment4RayItem.Interval ?? "10-20"];
-        }
-        config.GlobalHotkeys ??= [];
-
-        if (config.SystemProxyItem.SystemProxyExceptions.IsNullOrEmpty())
-        {
-            config.SystemProxyItem.SystemProxyExceptions = Utils.IsWindows() ? Global.SystemProxyExceptionsWindows : Global.SystemProxyExceptionsLinux;
-        }
-
-        return config;
+        return await ConfigTextHandler.SaveConfig();
     }
-
-    /// <summary>
-    /// Save the configuration to a file
-    /// First writes to a temporary file, then replaces the original file
-    /// </summary>
-    /// <param name="config">Configuration object to be saved</param>
-    /// <returns>0 if successful, -1 if failed</returns>
-    public static async Task<int> SaveConfig(Config config)
-    {
-        try
-        {
-            //save temp file
-            var resPath = Utils.GetConfigPath(_configRes);
-            var tempPath = $"{resPath}_temp";
-
-            var content = JsonUtils.Serialize(config, true, true);
-            if (content.IsNullOrEmpty())
-            {
-                return -1;
-            }
-            await File.WriteAllTextAsync(tempPath, content);
-
-            //rename
-            File.Move(tempPath, resPath, true);
-        }
-        catch (Exception ex)
-        {
-            Logging.SaveLog(_tag, ex);
-            return -1;
-        }
-
-        return 0;
-    }
-
-    #endregion ConfigHandler
 
     #region Server
 
@@ -255,9 +20,9 @@ public static class ConfigHandler
     /// <param name="config">Current configuration</param>
     /// <param name="profileItem">Server profile to add</param>
     /// <returns>Result of the operation (0 if successful, -1 if failed)</returns>
-    public static async Task<int> AddServer(Config config, ProfileItem profileItem)
+    public static async Task<int> AddServer(ProfileItem profileItem)
     {
-        var item = await AppManager.Instance.GetProfileItem(profileItem.IndexId);
+        var item = await ConfigDbQuery.GetProfileItem(profileItem.IndexId);
         if (item is null)
         {
             item = profileItem;
@@ -296,18 +61,18 @@ public static class ConfigHandler
 
         var ret = item.ConfigType switch
         {
-            EConfigType.VMess => await AddVMessServer(config, item),
-            EConfigType.Shadowsocks => await AddShadowsocksServer(config, item),
-            EConfigType.SOCKS => await AddSocksServer(config, item),
-            EConfigType.HTTP => await AddHttpServer(config, item),
-            EConfigType.Trojan => await AddTrojanServer(config, item),
-            EConfigType.VLESS => await AddVlessServer(config, item),
-            EConfigType.Hysteria2 => await AddHysteria2Server(config, item),
-            EConfigType.TUIC => await AddTuicServer(config, item),
-            EConfigType.WireGuard => await AddWireguardServer(config, item),
-            EConfigType.Anytls => await AddAnytlsServer(config, item),
-            EConfigType.Naive => await AddNaiveServer(config, item),
-            EConfigType.MASQUE => await AddMasqueServer(config, item),
+            EConfigType.VMess => await AddVMessServer(item),
+            EConfigType.Shadowsocks => await AddShadowsocksServer(item),
+            EConfigType.SOCKS => await AddSocksServer(item),
+            EConfigType.HTTP => await AddHttpServer(item),
+            EConfigType.Trojan => await AddTrojanServer(item),
+            EConfigType.VLESS => await AddVlessServer(item),
+            EConfigType.Hysteria2 => await AddHysteria2Server(item),
+            EConfigType.TUIC => await AddTuicServer(item),
+            EConfigType.WireGuard => await AddWireguardServer(item),
+            EConfigType.Anytls => await AddAnytlsServer(item),
+            EConfigType.Naive => await AddNaiveServer(item),
+            EConfigType.MASQUE => await AddMasqueServer(item),
             _ => -1,
         };
         return ret;
@@ -321,7 +86,7 @@ public static class ConfigHandler
     /// <param name="profileItem">VMess profile to add</param>
     /// <param name="toFile">Whether to save to file</param>
     /// <returns>0 if successful, -1 if failed</returns>
-    public static async Task<int> AddVMessServer(Config config, ProfileItem profileItem, bool toFile = true)
+    public static async Task<int> AddVMessServer(ProfileItem profileItem, bool toFile = true)
     {
         profileItem.ConfigType = EConfigType.VMess;
 
@@ -343,7 +108,7 @@ public static class ConfigHandler
             return -1;
         }
 
-        await AddServerCommon(config, profileItem, toFile);
+        await AddServerCommon(profileItem, toFile);
 
         return 0;
     }
@@ -354,7 +119,7 @@ public static class ConfigHandler
     /// <param name="config">Current configuration</param>
     /// <param name="indexes">List of server profiles to remove</param>
     /// <returns>0 if successful</returns>
-    public static async Task<int> RemoveServers(Config config, List<ProfileItem> indexes)
+    public static async Task<int> RemoveServers(List<ProfileItem> indexes)
     {
         var subid = "TempRemoveSubId";
         foreach (var item in indexes)
@@ -363,7 +128,7 @@ public static class ConfigHandler
         }
 
         await SQLiteHelper.Instance.UpdateAllAsync(indexes);
-        await RemoveServersViaSubid(config, subid, false);
+        await RemoveServersViaSubid(subid, false);
 
         return 0;
     }
@@ -375,11 +140,11 @@ public static class ConfigHandler
     /// <param name="config">Current configuration</param>
     /// <param name="indexes">List of server profiles to clone</param>
     /// <returns>0 if successful</returns>
-    public static async Task<int> CopyServer(Config config, List<ProfileItem> indexes)
+    public static async Task<int> CopyServer(List<ProfileItem> indexes)
     {
         foreach (var it in indexes)
         {
-            var item = await AppManager.Instance.GetProfileItem(it.IndexId);
+            var item = await ConfigDbQuery.GetProfileItem(it.IndexId);
             if (item is null)
             {
                 continue;
@@ -392,91 +157,24 @@ public static class ConfigHandler
             if (profileItem.ConfigType == EConfigType.Custom)
             {
                 profileItem.Address = Utils.GetConfigPath(profileItem.Address);
-                if (await AddCustomServer(config, profileItem, false) == 0)
+                if (await AddCustomServer(profileItem, false) == 0)
                 {
                 }
             }
             else if (profileItem.ConfigType == EConfigType.Outbound)
             {
                 profileItem.Address = Utils.GetConfigPath(profileItem.Address);
-                if (await AddCustomOutboundServer(config, profileItem, false) == 0)
+                if (await AddCustomOutboundServer(profileItem, false) == 0)
                 {
                 }
             }
             else
             {
-                await AddServerCommon(config, profileItem, true);
+                await AddServerCommon(profileItem, true);
             }
         }
 
         return 0;
-    }
-
-    /// <summary>
-    /// Set the default server by its index ID
-    /// Updates the configuration to use the specified server as default
-    /// </summary>
-    /// <param name="config">Current configuration</param>
-    /// <param name="indexId">Index ID of the server to set as default</param>
-    /// <returns>0 if successful, -1 if failed</returns>
-    public static async Task<int> SetDefaultServerIndex(Config config, string? indexId)
-    {
-        if (indexId.IsNullOrEmpty())
-        {
-            return -1;
-        }
-
-        config.IndexId = indexId;
-
-        await SaveConfig(config);
-
-        return 0;
-    }
-
-    /// <summary>
-    /// Set a default server from the provided list of profiles
-    /// Ensures there's always a valid default server selected
-    /// </summary>
-    /// <param name="config">Current configuration</param>
-    /// <param name="lstProfile">List of profile models to choose from</param>
-    /// <returns>Result of SetDefaultServerIndex operation</returns>
-    public static async Task<int> SetDefaultServer(Config config, List<ProfileItemModel> lstProfile)
-    {
-        if (lstProfile.Exists(t => t.IndexId == config.IndexId))
-        {
-            return 0;
-        }
-
-        if (await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(t => t.IndexId == config.IndexId) != null)
-        {
-            return 0;
-        }
-        if (lstProfile.Count > 0)
-        {
-            return await SetDefaultServerIndex(config, lstProfile.FirstOrDefault(t => t.Port > 0)?.IndexId);
-        }
-
-        var item = await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(t => t.Port > 0);
-        return await SetDefaultServerIndex(config, item?.IndexId);
-    }
-
-    /// <summary>
-    /// Get the current default server profile
-    /// If the current default is invalid, selects a new default
-    /// </summary>
-    /// <param name="config">Current configuration</param>
-    /// <returns>The default profile item or null if none exists</returns>
-    public static async Task<ProfileItem?> GetDefaultServer(Config config)
-    {
-        var item = await AppManager.Instance.GetProfileItem(config.IndexId);
-        if (item is null)
-        {
-            var item2 = await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync();
-            await SetDefaultServerIndex(config, item2?.IndexId);
-            return item2;
-        }
-
-        return item;
     }
 
     /// <summary>
@@ -489,7 +187,7 @@ public static class ConfigHandler
     /// <param name="eMove">Direction to move the server</param>
     /// <param name="pos">Target position when using EMove.Position</param>
     /// <returns>0 if successful, -1 if failed</returns>
-    public static async Task<int> MoveServer(Config config, List<string> lstProfile, int index, EMove eMove, int pos = -1)
+    public static async Task<int> MoveServer(List<string> lstProfile, int index, EMove eMove, int pos = -1)
     {
         var count = lstProfile.Count;
         if (index < 0 || index > lstProfile.Count - 1)
@@ -556,7 +254,6 @@ public static class ConfigHandler
     }
 
     public static Task<int> MoveServersTo(
-        Config config,
         IReadOnlyList<string> orderedProfileIds,
         IReadOnlyList<int> sourceIndices,
         int insertIndex)
@@ -572,7 +269,7 @@ public static class ConfigHandler
             return Task.FromResult(-1);
         }
 
-        int[] movingIndices = sourceIndices
+        var movingIndices = sourceIndices
             .Distinct()
             .OrderBy(index => index)
             .ToArray();
@@ -624,7 +321,7 @@ public static class ConfigHandler
     /// <param name="profileItem">Profile item with the file path in Address</param>
     /// <param name="blDelete">Whether to delete the source file after copying</param>
     /// <returns>0 if successful, -1 if failed</returns>
-    public static async Task<int> AddCustomServer(Config config, ProfileItem profileItem, bool blDelete)
+    public static async Task<int> AddCustomServer(ProfileItem profileItem, bool blDelete)
     {
         var fileName = profileItem.Address;
         if (!File.Exists(fileName))
@@ -653,15 +350,15 @@ public static class ConfigHandler
         profileItem.ConfigType = EConfigType.Custom;
         if (profileItem.Remarks.IsNullOrEmpty())
         {
-            profileItem.Remarks = $"import custom@{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}";
+            profileItem.Remarks = $"import custom@{DateTime.Now:yyyy/MM/dd HH:mm:ss}";
         }
 
-        await AddServerCommon(config, profileItem, true);
+        await AddServerCommon(profileItem, true);
 
         return 0;
     }
 
-    public static async Task<int> AddCustomOutboundServer(Config config, ProfileItem profileItem, bool blDelete, bool toFile = true)
+    public static async Task<int> AddCustomOutboundServer(ProfileItem profileItem, bool blDelete, bool toFile = true)
     {
         var fileName = profileItem.Address;
         if (!File.Exists(fileName))
@@ -690,10 +387,10 @@ public static class ConfigHandler
         profileItem.ConfigType = EConfigType.Outbound;
         if (profileItem.Remarks.IsNullOrEmpty())
         {
-            profileItem.Remarks = $"import custom outbound@{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}";
+            profileItem.Remarks = $"import custom outbound@{DateTime.Now:yyyy/MM/dd HH:mm:ss}";
         }
 
-        await AddServerCommon(config, profileItem, toFile);
+        await AddServerCommon(profileItem, toFile);
 
         return 0;
     }
@@ -705,9 +402,9 @@ public static class ConfigHandler
     /// <param name="config">Current configuration</param>
     /// <param name="profileItem">Profile item with updated properties</param>
     /// <returns>0 if successful, -1 if failed</returns>
-    public static async Task<int> EditCustomServer(Config config, ProfileItem profileItem)
+    public static async Task<int> EditCustomServer(ProfileItem profileItem)
     {
-        var item = await AppManager.Instance.GetProfileItem(profileItem.IndexId);
+        var item = await ConfigDbQuery.GetProfileItem(profileItem.IndexId);
         if (item is null)
         {
             item = profileItem;
@@ -743,7 +440,7 @@ public static class ConfigHandler
     /// <param name="profileItem">Shadowsocks profile to add</param>
     /// <param name="toFile">Whether to save to file</param>
     /// <returns>0 if successful, -1 if failed</returns>
-    public static async Task<int> AddShadowsocksServer(Config config, ProfileItem profileItem, bool toFile = true)
+    public static async Task<int> AddShadowsocksServer(ProfileItem profileItem, bool toFile = true)
     {
         profileItem.ConfigType = EConfigType.Shadowsocks;
 
@@ -763,7 +460,7 @@ public static class ConfigHandler
             return -1;
         }
 
-        await AddServerCommon(config, profileItem, toFile);
+        await AddServerCommon(profileItem, toFile);
 
         return 0;
     }
@@ -776,13 +473,13 @@ public static class ConfigHandler
     /// <param name="profileItem">SOCKS profile to add</param>
     /// <param name="toFile">Whether to save to file</param>
     /// <returns>0 if successful, -1 if failed</returns>
-    public static async Task<int> AddSocksServer(Config config, ProfileItem profileItem, bool toFile = true)
+    public static async Task<int> AddSocksServer(ProfileItem profileItem, bool toFile = true)
     {
         profileItem.ConfigType = EConfigType.SOCKS;
 
         profileItem.Address = profileItem.Address.TrimEx();
 
-        await AddServerCommon(config, profileItem, toFile);
+        await AddServerCommon(profileItem, toFile);
 
         return 0;
     }
@@ -795,13 +492,13 @@ public static class ConfigHandler
     /// <param name="profileItem">HTTP profile to add</param>
     /// <param name="toFile">Whether to save to file</param>
     /// <returns>0 if successful, -1 if failed</returns>
-    public static async Task<int> AddHttpServer(Config config, ProfileItem profileItem, bool toFile = true)
+    public static async Task<int> AddHttpServer(ProfileItem profileItem, bool toFile = true)
     {
         profileItem.ConfigType = EConfigType.HTTP;
 
         profileItem.Address = profileItem.Address.TrimEx();
 
-        await AddServerCommon(config, profileItem, toFile);
+        await AddServerCommon(profileItem, toFile);
 
         return 0;
     }
@@ -814,7 +511,7 @@ public static class ConfigHandler
     /// <param name="profileItem">Trojan profile to add</param>
     /// <param name="toFile">Whether to save to file</param>
     /// <returns>0 if successful, -1 if failed</returns>
-    public static async Task<int> AddTrojanServer(Config config, ProfileItem profileItem, bool toFile = true)
+    public static async Task<int> AddTrojanServer(ProfileItem profileItem, bool toFile = true)
     {
         profileItem.ConfigType = EConfigType.Trojan;
 
@@ -829,7 +526,7 @@ public static class ConfigHandler
             return -1;
         }
 
-        await AddServerCommon(config, profileItem, toFile);
+        await AddServerCommon(profileItem, toFile);
 
         return 0;
     }
@@ -843,7 +540,7 @@ public static class ConfigHandler
     /// <param name="profileItem">Hysteria2 profile to add</param>
     /// <param name="toFile">Whether to save to file</param>
     /// <returns>0 if successful, -1 if failed</returns>
-    public static async Task<int> AddHysteria2Server(Config config, ProfileItem profileItem, bool toFile = true)
+    public static async Task<int> AddHysteria2Server(ProfileItem profileItem, bool toFile = true)
     {
         profileItem.ConfigType = EConfigType.Hysteria2;
 
@@ -907,7 +604,7 @@ public static class ConfigHandler
             });
         }
 
-        await AddServerCommon(config, profileItem, toFile);
+        await AddServerCommon(profileItem, toFile);
 
         return 0;
     }
@@ -921,7 +618,7 @@ public static class ConfigHandler
     /// <param name="profileItem">TUIC profile to add</param>
     /// <param name="toFile">Whether to save to file</param>
     /// <returns>0 if successful, -1 if failed</returns>
-    public static async Task<int> AddTuicServer(Config config, ProfileItem profileItem, bool toFile = true)
+    public static async Task<int> AddTuicServer(ProfileItem profileItem, bool toFile = true)
     {
         profileItem.ConfigType = EConfigType.TUIC;
         profileItem.CoreType = ECoreType.sing_box;
@@ -952,7 +649,7 @@ public static class ConfigHandler
             return -1;
         }
 
-        await AddServerCommon(config, profileItem, toFile);
+        await AddServerCommon(profileItem, toFile);
 
         return 0;
     }
@@ -965,7 +662,7 @@ public static class ConfigHandler
     /// <param name="profileItem">WireGuard profile to add</param>
     /// <param name="toFile">Whether to save to file</param>
     /// <returns>0 if successful, -1 if failed</returns>
-    public static async Task<int> AddWireguardServer(Config config, ProfileItem profileItem, bool toFile = true)
+    public static async Task<int> AddWireguardServer(ProfileItem profileItem, bool toFile = true)
     {
         profileItem.ConfigType = EConfigType.WireGuard;
 
@@ -1004,7 +701,7 @@ public static class ConfigHandler
             return -1;
         }
 
-        await AddServerCommon(config, profileItem, toFile);
+        await AddServerCommon(profileItem, toFile);
 
         return 0;
     }
@@ -1017,7 +714,7 @@ public static class ConfigHandler
     /// <param name="profileItem">Anytls profile to add</param>
     /// <param name="toFile">Whether to save to file</param>
     /// <returns>0 if successful, -1 if failed</returns>
-    public static async Task<int> AddAnytlsServer(Config config, ProfileItem profileItem, bool toFile = true)
+    public static async Task<int> AddAnytlsServer(ProfileItem profileItem, bool toFile = true)
     {
         profileItem.ConfigType = EConfigType.Anytls;
         profileItem.CoreType = ECoreType.sing_box;
@@ -1033,7 +730,7 @@ public static class ConfigHandler
         {
             return -1;
         }
-        await AddServerCommon(config, profileItem, toFile);
+        await AddServerCommon(profileItem, toFile);
         return 0;
     }
 
@@ -1045,7 +742,7 @@ public static class ConfigHandler
     /// <param name="profileItem">Naive profile to add</param>
     /// <param name="toFile">Whether to save to file</param>
     /// <returns>0 if successful, -1 if failed</returns>
-    public static async Task<int> AddNaiveServer(Config config, ProfileItem profileItem, bool toFile = true)
+    public static async Task<int> AddNaiveServer(ProfileItem profileItem, bool toFile = true)
     {
         profileItem.ConfigType = EConfigType.Naive;
         profileItem.CoreType = ECoreType.sing_box;
@@ -1065,11 +762,11 @@ public static class ConfigHandler
         {
             return -1;
         }
-        await AddServerCommon(config, profileItem, toFile);
+        await AddServerCommon(profileItem, toFile);
         return 0;
     }
 
-    public static async Task<int> AddMasqueServer(Config config, ProfileItem profileItem, bool toFile = true)
+    public static async Task<int> AddMasqueServer(ProfileItem profileItem, bool toFile = true)
     {
         profileItem.ConfigType = EConfigType.MASQUE;
 
@@ -1080,11 +777,7 @@ public static class ConfigHandler
         {
             profileItem.StreamSecurity = Global.StreamSecurity;
         }
-        if (profileItem.Password.IsNullOrEmpty())
-        {
-            return -1;
-        }
-        await AddServerCommon(config, profileItem, toFile);
+        await AddServerCommon(profileItem, toFile);
         return 0;
     }
 
@@ -1097,14 +790,14 @@ public static class ConfigHandler
     /// <param name="colName">Column name to sort by</param>
     /// <param name="asc">Sort in ascending order if true, descending if false</param>
     /// <returns>0 if successful, -1 if failed</returns>
-    public static async Task<int> SortServers(Config config, string subId, string colName, bool asc)
+    public static async Task<int> SortServers(string subId, string colName, bool asc)
     {
-        var lstModel = await AppManager.Instance.ProfileModels(subId, "");
+        var lstModel = await ConfigDbQuery.ProfileModels(subId, "");
         if (lstModel.Count <= 0)
         {
             return -1;
         }
-        var lstServerStat = (config.GuiItem.EnableStatistics ? StatisticsManager.Instance.ServerStat : null) ?? [];
+        var lstServerStat = (CurrentConfig.GuiItem.EnableStatistics ? StatisticsManager.Instance.ServerStat : null) ?? [];
         var lstProfileExs = await ProfileExManager.Instance.GetProfileExs();
         var lstProfile = (from t in lstModel
                           join t2 in lstServerStat on t.IndexId equals t2.IndexId into t2b
@@ -1215,7 +908,7 @@ public static class ConfigHandler
     /// <param name="profileItem">VLESS profile to add</param>
     /// <param name="toFile">Whether to save to file</param>
     /// <returns>0 if successful, -1 if failed</returns>
-    public static async Task<int> AddVlessServer(Config config, ProfileItem profileItem, bool toFile = true)
+    public static async Task<int> AddVlessServer(ProfileItem profileItem, bool toFile = true)
     {
         profileItem.ConfigType = EConfigType.VLESS;
 
@@ -1237,7 +930,7 @@ public static class ConfigHandler
             return -1;
         }
 
-        await AddServerCommon(config, profileItem, toFile);
+        await AddServerCommon(profileItem, toFile);
 
         return 0;
     }
@@ -1249,9 +942,9 @@ public static class ConfigHandler
     /// <param name="config">Current configuration</param>
     /// <param name="subId">Subscription ID to deduplicate</param>
     /// <returns>Tuple with total count and remaining count after deduplication</returns>
-    public static async Task<Tuple<int, int>> DedupServerList(Config config, string subId)
+    public static async Task<Tuple<int, int>> DedupServerList(string subId)
     {
-        var lstProfile = await AppManager.Instance.ProfileItems(subId);
+        var lstProfile = await ConfigDbQuery.ProfileItems(subId);
         if (lstProfile == null)
         {
             return new Tuple<int, int>(0, 0);
@@ -1259,7 +952,7 @@ public static class ConfigHandler
 
         List<ProfileItem> lstKeep = [];
         List<ProfileItem> lstRemove = [];
-        if (!config.GuiItem.KeepOlderDedupl)
+        if (!CurrentConfig.GuiItem.KeepOlderDedupl)
         {
             lstProfile.Reverse();
         }
@@ -1281,7 +974,7 @@ public static class ConfigHandler
                 lstKeep.Add(item);
             }
         }
-        await RemoveServers(config, lstRemove);
+        await RemoveServers(lstRemove);
 
         return new Tuple<int, int>(lstProfile.Count, lstKeep.Count);
     }
@@ -1294,7 +987,7 @@ public static class ConfigHandler
     /// <param name="profileItem">Profile item to add</param>
     /// <param name="toFile">Whether to save to database</param>
     /// <returns>0 if successful</returns>
-    public static async Task<int> AddServerCommon(Config config, ProfileItem profileItem, bool toFile = true)
+    public static async Task<int> AddServerCommon(ProfileItem profileItem, bool toFile = true)
     {
         profileItem.ConfigVersion = 4;
 
@@ -1309,7 +1002,7 @@ public static class ConfigHandler
             {
                 if (profileItem.Fingerprint.IsNullOrEmpty() && profileItem.StreamSecurity == Global.StreamSecurityReality)
                 {
-                    profileItem.Fingerprint = config.CoreBasicItem.DefFingerprint;
+                    profileItem.Fingerprint = CurrentConfig.CoreBasicItem.DefFingerprint;
                 }
             }
         }
@@ -1484,11 +1177,11 @@ public static class ConfigHandler
     /// <param name="config">Current configuration</param>
     /// <param name="indexId">Index ID of the profile to remove</param>
     /// <returns>0 if successful</returns>
-    private static async Task<int> RemoveProfileItem(Config config, string indexId)
+    private static async Task<int> RemoveProfileItem(string indexId)
     {
         try
         {
-            var item = await AppManager.Instance.GetProfileItem(indexId);
+            var item = await ConfigDbQuery.GetProfileItem(indexId);
             if (item == null)
             {
                 return 0;
@@ -1515,7 +1208,7 @@ public static class ConfigHandler
     /// <param name="config">Current configuration</param>
     /// <param name="subItem">Sub-item for grouping</param>
     /// <returns>Result object with success state and data</returns>
-    public static async Task<RetResult> AddGroupAllServer(Config config, SubItem? subItem)
+    public static async Task<RetResult> AddGroupAllServer(SubItem? subItem)
     {
         var result = new RetResult();
 
@@ -1548,7 +1241,7 @@ public static class ConfigHandler
             Filter = Global.PolicyGroupDefaultAllFilter,
         };
         profile.SetProtocolExtra(extraItem);
-        var ret = await AddServerCommon(config, profile, true);
+        var ret = await AddServerCommon(profile, true);
         result.Success = ret == 0;
         result.Data = indexId;
         return result;
@@ -1580,7 +1273,7 @@ public static class ConfigHandler
         { "MX", "墨西哥|\\b[Mm][Xx]\\b|🇲🇽|[Mm]exico" }
     };
 
-    public static async Task<RetResult> AddGroupRegionServer(Config config, SubItem? subItem)
+    public static async Task<RetResult> AddGroupRegionServer(SubItem? subItem)
     {
         var result = new RetResult();
         var subId = subItem?.Id;
@@ -1589,7 +1282,7 @@ public static class ConfigHandler
             result.Success = false;
             return result;
         }
-        var childProfiles = await AppManager.Instance.ProfileItems(subId);
+        var childProfiles = await ConfigDbQuery.ProfileItems(subId);
         List<string> indexIdList = [];
 
         foreach (var regionFilter in PolicyGroupRegionFilters)
@@ -1629,7 +1322,7 @@ public static class ConfigHandler
                 continue;
             }
 
-            var ret = await AddServerCommon(config, profile, true);
+            var ret = await AddServerCommon(profile, true);
             if (ret == 0)
             {
                 indexIdList.Add(indexId);
@@ -1641,56 +1334,15 @@ public static class ConfigHandler
     }
 
     /// <summary>
-    /// Get a SOCKS server profile for pre-SOCKS functionality
-    /// Used when TUN mode is enabled or when a custom config has a pre-SOCKS port
-    /// </summary>
-    /// <param name="config">Current configuration</param>
-    /// <param name="node">Server node that might need pre-SOCKS</param>
-    /// <param name="coreType">Core type being used</param>
-    /// <returns>A SOCKS profile item or null if not needed</returns>
-    public static ProfileItem? GetPreSocksItem(Config config, ProfileItem node, ECoreType coreType)
-    {
-        ProfileItem? itemSocks = null;
-        var enableLegacyProtect = config.TunModeItem.EnableLegacyProtect;
-        if (node.ConfigType != EConfigType.Custom
-            && coreType != ECoreType.sing_box
-            && config.TunModeItem.EnableTun
-            && enableLegacyProtect)
-        {
-            itemSocks = new ProfileItem()
-            {
-                CoreType = ECoreType.sing_box,
-                ConfigType = EConfigType.SOCKS,
-                Address = Global.Loopback,
-                Port = AppManager.Instance.GetLocalPort(EInboundProtocol.socks)
-            };
-        }
-        else if (node.ConfigType == EConfigType.Custom
-            && node.PreSocksPort is > 0 and <= 65535)
-        {
-            var customPreCoreType = AppManager.Instance.GetCoreType(null, EConfigType.Custom);
-            var preCoreType = (enableLegacyProtect && config.TunModeItem.EnableTun) ? ECoreType.sing_box : customPreCoreType;
-            itemSocks = new ProfileItem()
-            {
-                CoreType = preCoreType,
-                ConfigType = EConfigType.SOCKS,
-                Address = Global.Loopback,
-                Port = node.PreSocksPort.Value,
-            };
-        }
-        return itemSocks;
-    }
-
-    /// <summary>
     /// Remove servers with invalid test results (timeout)
     /// Useful for cleaning up subscription lists
     /// </summary>
     /// <param name="config">Current configuration</param>
     /// <param name="subid">Subscription ID to filter servers</param>
     /// <returns>Number of removed servers or -1 if failed</returns>
-    public static async Task<int> RemoveInvalidServerResult(Config config, string subid)
+    public static async Task<int> RemoveInvalidServerResult(string subid)
     {
-        var lstModel = await AppManager.Instance.ProfileModels(subid, "");
+        var lstModel = await ConfigDbQuery.ProfileModels(subid, "");
         lstModel.RemoveAll(t => t.ConfigType.IsComplexType());
         if (lstModel is { Count: <= 0 })
         {
@@ -1702,7 +1354,7 @@ public static class ConfigHandler
                           where t2.Delay == -1
                           select t).ToList();
 
-        await RemoveServers(config, JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(lstProfile)));
+        await RemoveServers(JsonUtils.Deserialize<List<ProfileItem>>(JsonUtils.Serialize(lstProfile)));
 
         return lstProfile.Count;
     }
@@ -1720,7 +1372,7 @@ public static class ConfigHandler
     /// <param name="subid">Subscription ID to associate with the servers</param>
     /// <param name="isSub">Whether this is from a subscription</param>
     /// <returns>Number of successfully imported servers or -1 if failed</returns>
-    private static async Task<int> AddBatchServersCommon(Config config, string strData, string subid, bool isSub)
+    private static async Task<int> AddBatchServersCommon(string strData, string subid, bool isSub)
     {
         if (strData.IsNullOrEmpty())
         {
@@ -1731,8 +1383,8 @@ public static class ConfigHandler
         var preResolver = string.Empty;
         if (isSub && subid.IsNotEmpty())
         {
-            subFilter = (await AppManager.Instance.GetSubItem(subid))?.Filter ?? "";
-            preResolver = (await AppManager.Instance.GetSubItem(subid))?.PreResolver ?? "";
+            subFilter = (await ConfigDbQuery.GetSubItem(subid))?.Filter ?? "";
+            preResolver = (await ConfigDbQuery.GetSubItem(subid))?.PreResolver ?? "";
         }
 
         var dnsClient = preResolver.IsNullOrEmpty() ? null : EndpointResolveManager.BuildDnsClient(preResolver);
@@ -1750,7 +1402,7 @@ public static class ConfigHandler
             //maybe sub
             if (!isSub && (str.StartsWith(Global.HttpsProtocol) || str.StartsWith(Global.HttpProtocol)))
             {
-                if (await AddSubItem(config, str) == 0)
+                if (await AddSubItem(str) == 0)
                 {
                     countServers++;
                 }
@@ -1790,17 +1442,17 @@ public static class ConfigHandler
 
             var addStatus = profileItem.ConfigType switch
             {
-                EConfigType.VMess => await AddVMessServer(config, profileItem, false),
-                EConfigType.Shadowsocks => await AddShadowsocksServer(config, profileItem, false),
-                EConfigType.SOCKS => await AddSocksServer(config, profileItem, false),
-                EConfigType.Trojan => await AddTrojanServer(config, profileItem, false),
-                EConfigType.VLESS => await AddVlessServer(config, profileItem, false),
-                EConfigType.Hysteria2 => await AddHysteria2Server(config, profileItem, false),
-                EConfigType.TUIC => await AddTuicServer(config, profileItem, false),
-                EConfigType.WireGuard => await AddWireguardServer(config, profileItem, false),
-                EConfigType.Anytls => await AddAnytlsServer(config, profileItem, false),
-                EConfigType.Naive => await AddNaiveServer(config, profileItem, false),
-                EConfigType.MASQUE => await AddMasqueServer(config, profileItem, false),
+                EConfigType.VMess => await AddVMessServer(profileItem, false),
+                EConfigType.Shadowsocks => await AddShadowsocksServer(profileItem, false),
+                EConfigType.SOCKS => await AddSocksServer(profileItem, false),
+                EConfigType.Trojan => await AddTrojanServer(profileItem, false),
+                EConfigType.VLESS => await AddVlessServer(profileItem, false),
+                EConfigType.Hysteria2 => await AddHysteria2Server(profileItem, false),
+                EConfigType.TUIC => await AddTuicServer(profileItem, false),
+                EConfigType.WireGuard => await AddWireguardServer(profileItem, false),
+                EConfigType.Anytls => await AddAnytlsServer(profileItem, false),
+                EConfigType.Naive => await AddNaiveServer(profileItem, false),
+                EConfigType.MASQUE => await AddMasqueServer(profileItem, false),
                 _ => -1,
             };
 
@@ -1816,7 +1468,7 @@ public static class ConfigHandler
             await SQLiteHelper.Instance.InsertAllAsync(lstAdd);
         }
 
-        await SaveConfig(config);
+        await SaveConfig();
         return countServers;
     }
 
@@ -1829,25 +1481,24 @@ public static class ConfigHandler
     /// <param name="subid">Subscription ID to associate with the servers</param>
     /// <param name="isSub">Whether this is from a subscription</param>
     /// <returns>Number of successfully imported servers or -1 if failed</returns>
-    private static async Task<int> AddBatchServers4Custom(Config config, string strData, string subid, bool isSub)
+    private static async Task<int> AddBatchServers4Custom(string strData, string subid, bool isSub)
     {
         if (strData.IsNullOrEmpty())
         {
             return -1;
         }
 
-        var subItem = await AppManager.Instance.GetSubItem(subid);
+        var subItem = await ConfigDbQuery.GetSubItem(subid);
 
         if (subItem?.CustomCoreType is null)
         {
-            return await AddBatchServersDefaultCustom(config, strData, subid, isSub, subItem);
+            return await AddBatchServersDefaultCustom(strData, subid, isSub, subItem);
         }
 
-        return await AddBatchServersSpecificCustom(config, strData, subid, isSub, subItem);
+        return await AddBatchServersSpecificCustom(strData, subid, isSub, subItem);
     }
 
     private static async Task<int> AddBatchServersDefaultCustom(
-        Config config,
         string strData,
         string subid,
         bool isSub,
@@ -1870,7 +1521,7 @@ public static class ConfigHandler
         }
         if (lstProfiles.Count > 0)
         {
-            var count = await AddBatchCustomServers(config, lstProfiles, subid, isSub, subItem);
+            var count = await AddBatchCustomServers(lstProfiles, subid, isSub, subItem);
             if (count > 0)
             {
                 return count;
@@ -1894,11 +1545,10 @@ public static class ConfigHandler
         profileItem.IsSub = isSub;
         profileItem.PreSocksPort = subItem?.PreSocksPort;
 
-        return await AddCustomServer(config, profileItem, true) == 0 ? 1 : -1;
+        return await AddCustomServer(profileItem, true) == 0 ? 1 : -1;
     }
 
     private static async Task<int> AddBatchServersSpecificCustom(
-        Config config,
         string strData,
         string subid,
         bool isSub,
@@ -1916,18 +1566,17 @@ public static class ConfigHandler
 
         if (lstProfiles?.Count > 0)
         {
-            var count = await AddBatchCustomServers(config, lstProfiles, subid, isSub, subItem);
+            var count = await AddBatchCustomServers(lstProfiles, subid, isSub, subItem);
             if (count > 0)
             {
                 return count;
             }
         }
 
-        return await SaveCustomRawFileServer(config, strData, subid, isSub, subItem, customCoreType);
+        return await SaveCustomRawFileServer(strData, subid, isSub, subItem, customCoreType);
     }
 
     private static async Task<int> AddBatchCustomServers(
-        Config config,
         List<ProfileItem> lstProfiles,
         string subid,
         bool isSub,
@@ -1942,14 +1591,14 @@ public static class ConfigHandler
             if (it.ConfigType == EConfigType.Custom)
             {
                 it.PreSocksPort = subItem?.PreSocksPort;
-                if (await AddCustomServer(config, it, true) == 0)
+                if (await AddCustomServer(it, true) == 0)
                 {
                     count++;
                 }
             }
             else
             {
-                if (await AddCustomOutboundServer(config, it, true) == 0)
+                if (await AddCustomOutboundServer(it, true) == 0)
                 {
                     count++;
                 }
@@ -1959,7 +1608,6 @@ public static class ConfigHandler
     }
 
     private static async Task<int> SaveCustomRawFileServer(
-        Config config,
         string strData,
         string subid,
         bool isSub,
@@ -1981,7 +1629,7 @@ public static class ConfigHandler
             PreSocksPort = subItem.PreSocksPort,
         };
 
-        return await AddCustomServer(config, profileItem, true) == 0 ? 1 : -1;
+        return await AddCustomServer(profileItem, true) == 0 ? 1 : -1;
 
         static string DetectFileExtension(string data)
         {
@@ -2036,7 +1684,7 @@ public static class ConfigHandler
     /// <param name="subid">Subscription ID to associate with the servers</param>
     /// <param name="isSub">Whether this is from a subscription</param>
     /// <returns>Number of successfully imported servers or -1 if failed</returns>
-    private static async Task<int> AddBatchServers4SsSIP008(Config config, string strData, string subid, bool isSub)
+    private static async Task<int> AddBatchServers4SsSIP008(string strData, string subid, bool isSub)
     {
         if (strData.IsNullOrEmpty())
         {
@@ -2051,19 +1699,19 @@ public static class ConfigHandler
             {
                 ssItem.Subid = subid;
                 ssItem.IsSub = isSub;
-                if (await AddShadowsocksServer(config, ssItem) == 0)
+                if (await AddShadowsocksServer(ssItem) == 0)
                 {
                     counter++;
                 }
             }
-            await SaveConfig(config);
+            await SaveConfig();
             return counter;
         }
 
         return -1;
     }
 
-    private static async Task<int> AddBatchServers4Wireguard(Config config, string strData, string subid, bool isSub)
+    private static async Task<int> AddBatchServers4Wireguard(string strData, string subid, bool isSub)
     {
         if (strData.IsNullOrEmpty())
         {
@@ -2082,18 +1730,18 @@ public static class ConfigHandler
             {
                 item.Subid = subid;
                 item.IsSub = isSub;
-                if (await AddWireguardServer(config, item) == 0)
+                if (await AddWireguardServer(item) == 0)
                 {
                     counter++;
                 }
             }
-            await SaveConfig(config);
+            await SaveConfig();
             return counter;
         }
         return -1;
     }
 
-    private static async Task<int> AddBatchServers4InnerUri(Config config, string strData, string subid, bool isSub)
+    private static async Task<int> AddBatchServers4InnerUri(string strData, string subid, bool isSub)
     {
         if (strData.IsNullOrEmpty())
         {
@@ -2112,19 +1760,19 @@ public static class ConfigHandler
 
                 var addStatus = profileItem.ConfigType switch
                 {
-                    EConfigType.VMess => await AddVMessServer(config, profileItem, false),
-                    EConfigType.Shadowsocks => await AddShadowsocksServer(config, profileItem, false),
-                    EConfigType.HTTP => await AddHttpServer(config, profileItem, false),
-                    EConfigType.SOCKS => await AddSocksServer(config, profileItem, false),
-                    EConfigType.Trojan => await AddTrojanServer(config, profileItem, false),
-                    EConfigType.VLESS => await AddVlessServer(config, profileItem, false),
-                    EConfigType.Hysteria2 => await AddHysteria2Server(config, profileItem, false),
-                    EConfigType.TUIC => await AddTuicServer(config, profileItem, false),
-                    EConfigType.WireGuard => await AddWireguardServer(config, profileItem, false),
-                    EConfigType.Anytls => await AddAnytlsServer(config, profileItem, false),
-                    EConfigType.Naive => await AddNaiveServer(config, profileItem, false),
-                    EConfigType.PolicyGroup or EConfigType.ProxyChain => await AddServerCommon(config, profileItem, false),
-                    EConfigType.Outbound => await AddCustomOutboundServer(config, profileItem, true, false),
+                    EConfigType.VMess => await AddVMessServer(profileItem, false),
+                    EConfigType.Shadowsocks => await AddShadowsocksServer(profileItem, false),
+                    EConfigType.HTTP => await AddHttpServer(profileItem, false),
+                    EConfigType.SOCKS => await AddSocksServer(profileItem, false),
+                    EConfigType.Trojan => await AddTrojanServer(profileItem, false),
+                    EConfigType.VLESS => await AddVlessServer(profileItem, false),
+                    EConfigType.Hysteria2 => await AddHysteria2Server(profileItem, false),
+                    EConfigType.TUIC => await AddTuicServer(profileItem, false),
+                    EConfigType.WireGuard => await AddWireguardServer(profileItem, false),
+                    EConfigType.Anytls => await AddAnytlsServer(profileItem, false),
+                    EConfigType.Naive => await AddNaiveServer(profileItem, false),
+                    EConfigType.PolicyGroup or EConfigType.ProxyChain => await AddServerCommon(profileItem, false),
+                    EConfigType.Outbound => await AddCustomOutboundServer(profileItem, true, false),
                     _ => -1,
                 };
                 if (addStatus == 0)
@@ -2137,7 +1785,7 @@ public static class ConfigHandler
             {
                 await SQLiteHelper.Instance.InsertAllAsync(lstAdd);
             }
-            await SaveConfig(config);
+            await SaveConfig();
             return counter;
         }
 
@@ -2153,7 +1801,7 @@ public static class ConfigHandler
     /// <param name="subid">Subscription ID to associate with the servers</param>
     /// <param name="isSub">Whether this is from a subscription</param>
     /// <returns>Number of successfully imported servers or -1 if failed</returns>
-    public static async Task<int> AddBatchServers(Config config, string strData, string subid, bool isSub)
+    public static async Task<int> AddBatchServers(string strData, string subid, bool isSub)
     {
         if (strData.IsNullOrEmpty())
         {
@@ -2163,48 +1811,48 @@ public static class ConfigHandler
         ProfileItem? activeProfile = null;
         if (isSub && subid.IsNotEmpty())
         {
-            lstOriSub = await AppManager.Instance.ProfileItems(subid);
-            activeProfile = lstOriSub?.FirstOrDefault(t => t.IndexId == config.IndexId);
+            lstOriSub = await ConfigDbQuery.ProfileItems(subid);
+            activeProfile = lstOriSub?.FirstOrDefault(t => t.IndexId == CurrentConfig.IndexId);
         }
 
         var counter = 0;
         if (Utils.IsBase64String(strData))
         {
-            counter = await AddBatchServersCommon(config, Utils.Base64Decode(strData), subid, isSub);
+            counter = await AddBatchServersCommon(Utils.Base64Decode(strData), subid, isSub);
         }
         if (counter < 1)
         {
-            counter = await AddBatchServersCommon(config, strData, subid, isSub);
+            counter = await AddBatchServersCommon(strData, subid, isSub);
         }
         if (counter < 1)
         {
-            counter = await AddBatchServersCommon(config, Utils.Base64Decode(strData), subid, isSub);
+            counter = await AddBatchServersCommon(Utils.Base64Decode(strData), subid, isSub);
         }
 
         if (counter < 1)
         {
-            counter = await AddBatchServers4SsSIP008(config, strData, subid, isSub);
+            counter = await AddBatchServers4SsSIP008(strData, subid, isSub);
         }
 
         //maybe wireguard config
         if (counter < 1)
         {
-            counter = await AddBatchServers4Wireguard(config, strData, subid, isSub);
+            counter = await AddBatchServers4Wireguard(strData, subid, isSub);
         }
 
         //May be standard uri mixed with internal uri
         var innerUriCount = 0;
         if (Utils.IsBase64String(strData))
         {
-            innerUriCount = await AddBatchServers4InnerUri(config, Utils.Base64Decode(strData), subid, isSub);
+            innerUriCount = await AddBatchServers4InnerUri(Utils.Base64Decode(strData), subid, isSub);
         }
         if (innerUriCount < 1)
         {
-            innerUriCount = await AddBatchServers4InnerUri(config, strData, subid, isSub);
+            innerUriCount = await AddBatchServers4InnerUri(strData, subid, isSub);
         }
         if (innerUriCount < 1)
         {
-            innerUriCount = await AddBatchServers4InnerUri(config, Utils.Base64Decode(strData), subid, isSub);
+            innerUriCount = await AddBatchServers4InnerUri(Utils.Base64Decode(strData), subid, isSub);
         }
         if (innerUriCount > 0)
         {
@@ -2221,29 +1869,29 @@ public static class ConfigHandler
         //maybe other sub
         if (counter < 1)
         {
-            counter = await AddBatchServers4Custom(config, strData, subid, isSub);
+            counter = await AddBatchServers4Custom(strData, subid, isSub);
         }
 
         if (counter > 0 && lstOriSub is { Count: > 0 })
         {
-            await RemoveServers(config, lstOriSub.Where(item => item.IsSub).ToList());
+            await RemoveServers(lstOriSub.Where(item => item.IsSub).ToList());
         }
 
         //Select active node
         if (activeProfile != null)
         {
-            var lstSub = await AppManager.Instance.ProfileItems(subid);
+            var lstSub = await ConfigDbQuery.ProfileItems(subid);
             var existItem = FindMatchedProfileItem(lstSub, activeProfile);
             if (existItem != null)
             {
-                await ConfigHandler.SetDefaultServerIndex(config, existItem.IndexId);
+                await ConfigTextHandler.SetDefaultServerIndex(existItem.IndexId);
             }
         }
 
         //Keep the last traffic statistics
         if (lstOriSub != null)
         {
-            var lstSub = await AppManager.Instance.ProfileItems(subid);
+            var lstSub = await ConfigDbQuery.ProfileItems(subid);
             foreach (var item in lstSub)
             {
                 var existItem = FindMatchedProfileItem(lstOriSub, item);
@@ -2268,7 +1916,7 @@ public static class ConfigHandler
     /// <param name="config">Current configuration</param>
     /// <param name="url">Subscription URL</param>
     /// <returns>0 if successful, -1 if failed</returns>
-    public static async Task<int> AddSubItem(Config config, string url)
+    public static async Task<int> AddSubItem(string url)
     {
         //already exists
         var count = await SQLiteHelper.Instance.TableAsync<SubItem>().CountAsync(e => e.Url == url);
@@ -2298,7 +1946,7 @@ public static class ConfigHandler
         var queryVars = Utils.ParseQueryString(uri.Query);
         subItem.Remarks = queryVars["remarks"] ?? "import_sub";
 
-        return await AddSubItem(config, subItem);
+        return await AddSubItem(subItem);
     }
 
     /// <summary>
@@ -2307,9 +1955,9 @@ public static class ConfigHandler
     /// <param name="config">Current configuration</param>
     /// <param name="subItem">Subscription item to add or update</param>
     /// <returns>0 if successful, -1 if failed</returns>
-    public static async Task<int> AddSubItem(Config config, SubItem subItem)
+    public static async Task<int> AddSubItem(SubItem subItem)
     {
-        var item = await AppManager.Instance.GetSubItem(subItem.Id);
+        var item = await ConfigDbQuery.GetSubItem(subItem.Id);
         if (item is null)
         {
             item = subItem;
@@ -2344,7 +1992,7 @@ public static class ConfigHandler
                 var maxSort = 0;
                 if (await SQLiteHelper.Instance.TableAsync<SubItem>().CountAsync() > 0)
                 {
-                    var lstSubs = await AppManager.Instance.SubItems();
+                    var lstSubs = await ConfigDbQuery.SubItems();
                     maxSort = lstSubs.LastOrDefault()?.Sort ?? 0;
                 }
                 item.Sort = maxSort + 1;
@@ -2367,7 +2015,7 @@ public static class ConfigHandler
     /// <param name="subid">Subscription ID</param>
     /// <param name="isSub">Whether to only remove servers marked as subscription items</param>
     /// <returns>0 if successful, -1 if failed</returns>
-    public static async Task<int> RemoveServersViaSubid(Config config, string subid, bool isSub)
+    public static async Task<int> RemoveServersViaSubid(string subid, bool isSub)
     {
         if (subid.IsNullOrEmpty())
         {
@@ -2396,20 +2044,20 @@ public static class ConfigHandler
     /// <param name="config">Current configuration</param>
     /// <param name="id">Subscription ID to delete</param>
     /// <returns>0 if successful</returns>
-    public static async Task<int> DeleteSubItem(Config config, string id)
+    public static async Task<int> DeleteSubItem(string id)
     {
-        var item = await AppManager.Instance.GetSubItem(id);
+        var item = await ConfigDbQuery.GetSubItem(id);
         if (item is null)
         {
             return 0;
         }
         await SQLiteHelper.Instance.DeleteAsync(item);
-        await RemoveServersViaSubid(config, id, false);
+        await RemoveServersViaSubid(id, false);
 
-        if (item.Id == config.SubIndexId)
+        if (item.Id == CurrentConfig.SubIndexId)
         {
-            var subs = await AppManager.Instance.SubItems();
-            config.SubIndexId = subs.LastOrDefault()?.Id;
+            var subs = await ConfigDbQuery.SubItems();
+            CurrentConfig.SubIndexId = subs.LastOrDefault()?.Id;
         }
 
         return 0;
@@ -2422,7 +2070,7 @@ public static class ConfigHandler
     /// <param name="lstProfile">List of profiles to move</param>
     /// <param name="subid">Target subscription ID</param>
     /// <returns>0 if successful</returns>
-    public static async Task<int> MoveToGroup(Config config, List<ProfileItem> lstProfile, string subid)
+    public static async Task<int> MoveToGroup(List<ProfileItem> lstProfile, string subid)
     {
         foreach (var item in lstProfile)
         {
@@ -2443,7 +2091,7 @@ public static class ConfigHandler
     /// <param name="config">Current configuration</param>
     /// <param name="item">Routing item to save</param>
     /// <returns>0 if successful, -1 if failed</returns>
-    public static async Task<int> SaveRoutingItem(Config config, RoutingItem item)
+    public static async Task<int> SaveRoutingItem(RoutingItem item)
     {
         if (item.Id.IsNullOrEmpty())
         {
@@ -2586,9 +2234,9 @@ public static class ConfigHandler
     /// <param name="config">Current configuration</param>
     /// <param name="routingItem">Routing item to set as default</param>
     /// <returns>0 if successful</returns>
-    public static async Task<int> SetDefaultRouting(Config config, RoutingItem routingItem)
+    public static async Task<int> SetDefaultRouting(RoutingItem routingItem)
     {
-        var items = await AppManager.Instance.RoutingItems();
+        var items = await ConfigDbQuery.RoutingItems();
         if (items.Any(t => t.Id == routingItem.Id && t.IsActive == true))
         {
             return -1;
@@ -2617,13 +2265,13 @@ public static class ConfigHandler
     /// </summary>
     /// <param name="config">Current configuration</param>
     /// <returns>The default routing item</returns>
-    public static async Task<RoutingItem> GetDefaultRouting(Config config)
+    public static async Task<RoutingItem> GetDefaultRouting()
     {
         var item = await SQLiteHelper.Instance.TableAsync<RoutingItem>().FirstOrDefaultAsync(it => it.IsActive == true);
         if (item is null)
         {
             var item2 = await SQLiteHelper.Instance.TableAsync<RoutingItem>().FirstOrDefaultAsync();
-            await SetDefaultRouting(config, item2);
+            await SetDefaultRouting(item2);
             return item2;
         }
 
@@ -2636,15 +2284,15 @@ public static class ConfigHandler
     /// <param name="config">Current configuration</param>
     /// <param name="blImportAdvancedRules">Whether to import advanced rules</param>
     /// <returns>0 if successful</returns>
-    public static async Task<int> InitRouting(Config config, bool blImportAdvancedRules = false)
+    public static async Task<int> InitRouting(bool blImportAdvancedRules = false)
     {
-        if (config.ConstItem.RouteRulesTemplateSourceUrl.IsNullOrEmpty())
+        if (CurrentConfig.ConstItem.RouteRulesTemplateSourceUrl.IsNullOrEmpty())
         {
-            await InitBuiltinRouting(config, blImportAdvancedRules);
+            await InitBuiltinRouting(blImportAdvancedRules);
         }
         else
         {
-            await InitExternalRouting(config, blImportAdvancedRules);
+            await InitExternalRouting(blImportAdvancedRules);
         }
 
         return 0;
@@ -2657,22 +2305,22 @@ public static class ConfigHandler
     /// <param name="config">Current configuration</param>
     /// <param name="blImportAdvancedRules">Whether to import advanced rules</param>
     /// <returns>0 if successful</returns>
-    public static async Task<int> InitExternalRouting(Config config, bool blImportAdvancedRules = false)
+    public static async Task<int> InitExternalRouting(bool blImportAdvancedRules = false)
     {
         using var downloadHandle = await DownloadService.CreateDownloadServiceWithCheck();
-        var templateContent = await downloadHandle.TryDownloadString(config.ConstItem.RouteRulesTemplateSourceUrl);
+        var templateContent = await downloadHandle.TryDownloadString(CurrentConfig.ConstItem.RouteRulesTemplateSourceUrl);
         if (templateContent.IsNullOrEmpty())
         {
-            return await InitBuiltinRouting(config, blImportAdvancedRules); // fallback
+            return await InitBuiltinRouting(blImportAdvancedRules); // fallback
         }
 
         var template = JsonUtils.Deserialize<RoutingTemplate>(templateContent);
         if (template == null)
         {
-            return await InitBuiltinRouting(config, blImportAdvancedRules); // fallback
+            return await InitBuiltinRouting(blImportAdvancedRules); // fallback
         }
 
-        var items = await AppManager.Instance.RoutingItems();
+        var items = await ConfigDbQuery.RoutingItems();
         var maxSort = items.Count;
         if (!blImportAdvancedRules && items.Where(t => t.Remarks.StartsWith(template.Version)).ToList().Count > 0)
         {
@@ -2706,7 +2354,7 @@ public static class ConfigHandler
             //first rule as default at first startup
             if (!blImportAdvancedRules && i == 0)
             {
-                await SetDefaultRouting(config, item);
+                await SetDefaultRouting(item);
             }
         }
 
@@ -2720,31 +2368,31 @@ public static class ConfigHandler
     /// <param name="config">Current configuration</param>
     /// <param name="blImportAdvancedRules">Whether to import advanced rules</param>
     /// <returns>0 if successful</returns>
-    public static async Task<int> InitBuiltinRouting(Config config, bool blImportAdvancedRules = false)
+    public static async Task<int> InitBuiltinRouting(bool blImportAdvancedRules = false)
     {
         var ver = "V4-";
-        var items = await AppManager.Instance.RoutingItems();
+        var items = await ConfigDbQuery.RoutingItems();
 
         //TODO Temporary code to be removed later
         var lockItem = items?.FirstOrDefault(t => t.Locked == true);
         if (lockItem != null)
         {
-            await ConfigHandler.RemoveRoutingItem(lockItem);
-            items = await AppManager.Instance.RoutingItems();
+            await ConfigDbHandler.RemoveRoutingItem(lockItem);
+            items = await ConfigDbQuery.RoutingItems();
         }
 
         if (!blImportAdvancedRules && items.Count() > 0) // items.Count(u => u.Remarks.StartsWith(ver)) > 0)
         {
             //migrate
             //TODO Temporary code to be removed later
-            if (config.RoutingBasicItem.RoutingIndexId.IsNotEmpty())
+            if (CurrentConfig.RoutingBasicItem.RoutingIndexId.IsNotEmpty())
             {
-                var item = items.FirstOrDefault(t => t.Id == config.RoutingBasicItem.RoutingIndexId);
+                var item = items.FirstOrDefault(t => t.Id == CurrentConfig.RoutingBasicItem.RoutingIndexId);
                 if (item != null)
                 {
-                    await SetDefaultRouting(config, item);
+                    await SetDefaultRouting(item);
                 }
-                config.RoutingBasicItem.RoutingIndexId = string.Empty;
+                CurrentConfig.RoutingBasicItem.RoutingIndexId = string.Empty;
             }
 
             return 0;
@@ -2780,7 +2428,7 @@ public static class ConfigHandler
 
         if (!blImportAdvancedRules)
         {
-            await SetDefaultRouting(config, item2);
+            await SetDefaultRouting(item2);
         }
         return 0;
     }
@@ -2805,9 +2453,9 @@ public static class ConfigHandler
     /// </summary>
     /// <param name="config">Current configuration</param>
     /// <returns>0 if successful</returns>
-    public static async Task<int> InitBuiltinDNS(Config config)
+    public static async Task<int> InitBuiltinDNS()
     {
-        var items = await AppManager.Instance.DNSItems();
+        var items = await ConfigDbQuery.DNSItems();
 
         // Check existing DNS items and disable those with empty NormalDNS
         var needsUpdate = false;
@@ -2834,7 +2482,7 @@ public static class ConfigHandler
                 CoreType = ECoreType.Xray,
                 Enabled = false,
             };
-            await SaveDNSItems(config, item);
+            await SaveDNSItems(item);
 
             var item2 = new DNSItem()
             {
@@ -2842,7 +2490,7 @@ public static class ConfigHandler
                 CoreType = ECoreType.sing_box,
                 Enabled = false,
             };
-            await SaveDNSItems(config, item2);
+            await SaveDNSItems(item2);
         }
 
         return 0;
@@ -2854,7 +2502,7 @@ public static class ConfigHandler
     /// <param name="config">Current configuration</param>
     /// <param name="item">DNS item to save</param>
     /// <returns>0 if successful, -1 if failed</returns>
-    public static async Task<int> SaveDNSItems(Config config, DNSItem item)
+    public static async Task<int> SaveDNSItems(DNSItem item)
     {
         if (item == null)
         {
@@ -2885,7 +2533,7 @@ public static class ConfigHandler
     /// <returns>DNS item with configuration from the URL</returns>
     public static async Task<DNSItem> GetExternalDNSItem(ECoreType type, string url)
     {
-        var currentItem = await AppManager.Instance.GetDNSItem(type);
+        var currentItem = await ConfigDbQuery.GetDNSItem(type);
 
         using var downloadHandle = await DownloadService.CreateDownloadServiceWithCheck();
         var templateContent = await downloadHandle.TryDownloadString(url);
@@ -2955,9 +2603,9 @@ public static class ConfigHandler
 
     #region Custom Config
 
-    public static async Task<int> InitBuiltinFullConfigTemplate(Config config)
+    public static async Task<int> InitBuiltinFullConfigTemplate()
     {
-        var items = await AppManager.Instance.FullConfigTemplateItem();
+        var items = await ConfigDbQuery.FullConfigTemplateItem();
         if (items.Count <= 0)
         {
             var item = new FullConfigTemplateItem()
@@ -2965,20 +2613,20 @@ public static class ConfigHandler
                 Remarks = "V2ray",
                 CoreType = ECoreType.Xray,
             };
-            await SaveFullConfigTemplate(config, item);
+            await SaveFullConfigTemplate(item);
 
             var item2 = new FullConfigTemplateItem()
             {
                 Remarks = "sing-box",
                 CoreType = ECoreType.sing_box,
             };
-            await SaveFullConfigTemplate(config, item2);
+            await SaveFullConfigTemplate(item2);
         }
 
         return 0;
     }
 
-    public static async Task<int> SaveFullConfigTemplate(Config config, FullConfigTemplateItem item)
+    public static async Task<int> SaveFullConfigTemplate(FullConfigTemplateItem item)
     {
         if (item == null)
         {
@@ -3011,25 +2659,25 @@ public static class ConfigHandler
     /// <param name="config">Current configuration</param>
     /// <param name="type">Type of preset (Default, Russia, Iran)</param>
     /// <returns>True if successful</returns>
-    public static async Task<bool> ApplyRegionalPreset(Config config, EPresetType type)
+    public static async Task<bool> ApplyRegionalPreset(EPresetType type)
     {
         switch (type)
         {
             case EPresetType.Default:
-                config.ConstItem.GeoSourceUrl = "";
-                config.ConstItem.SrsSourceUrl = "";
-                config.ConstItem.RouteRulesTemplateSourceUrl = "";
+                CurrentConfig.ConstItem.GeoSourceUrl = "";
+                CurrentConfig.ConstItem.SrsSourceUrl = "";
+                CurrentConfig.ConstItem.RouteRulesTemplateSourceUrl = "";
 
                 await SQLiteHelper.Instance.DeleteAllAsync<DNSItem>();
-                await InitBuiltinDNS(config);
+                await InitBuiltinDNS();
 
-                config.SimpleDNSItem = InitBuiltinSimpleDNS();
+                CurrentConfig.SimpleDNSItem = InitBuiltinSimpleDNS();
                 break;
 
             case EPresetType.Russia:
-                config.ConstItem.GeoSourceUrl = Global.GeoFilesSources[1];
-                config.ConstItem.SrsSourceUrl = Global.SingboxRulesetSources[1];
-                config.ConstItem.RouteRulesTemplateSourceUrl = Global.RoutingRulesSources[1];
+                CurrentConfig.ConstItem.GeoSourceUrl = Global.GeoFilesSources[1];
+                CurrentConfig.ConstItem.SrsSourceUrl = Global.SingboxRulesetSources[1];
+                CurrentConfig.ConstItem.RouteRulesTemplateSourceUrl = Global.RoutingRulesSources[1];
 
                 var xrayDnsRussia = await GetExternalDNSItem(ECoreType.Xray, Global.DNSTemplateSources[1] + "v2ray.json");
                 var singboxDnsRussia = await GetExternalDNSItem(ECoreType.sing_box, Global.DNSTemplateSources[1] + "sing_box.json");
@@ -3039,20 +2687,20 @@ public static class ConfigHandler
                 {
                     xrayDnsRussia.Enabled = true;
                     singboxDnsRussia.Enabled = true;
-                    config.SimpleDNSItem = InitBuiltinSimpleDNS();
+                    CurrentConfig.SimpleDNSItem = InitBuiltinSimpleDNS();
                 }
                 else
                 {
-                    config.SimpleDNSItem = simpleDnsRussia;
+                    CurrentConfig.SimpleDNSItem = simpleDnsRussia;
                 }
-                await SaveDNSItems(config, xrayDnsRussia);
-                await SaveDNSItems(config, singboxDnsRussia);
+                await SaveDNSItems(xrayDnsRussia);
+                await SaveDNSItems(singboxDnsRussia);
                 break;
 
             case EPresetType.Iran:
-                config.ConstItem.GeoSourceUrl = Global.GeoFilesSources[2];
-                config.ConstItem.SrsSourceUrl = Global.SingboxRulesetSources[2];
-                config.ConstItem.RouteRulesTemplateSourceUrl = Global.RoutingRulesSources[2];
+                CurrentConfig.ConstItem.GeoSourceUrl = Global.GeoFilesSources[2];
+                CurrentConfig.ConstItem.SrsSourceUrl = Global.SingboxRulesetSources[2];
+                CurrentConfig.ConstItem.RouteRulesTemplateSourceUrl = Global.RoutingRulesSources[2];
 
                 var xrayDnsIran = await GetExternalDNSItem(ECoreType.Xray, Global.DNSTemplateSources[2] + "v2ray.json");
                 var singboxDnsIran = await GetExternalDNSItem(ECoreType.sing_box, Global.DNSTemplateSources[2] + "sing_box.json");
@@ -3062,14 +2710,14 @@ public static class ConfigHandler
                 {
                     xrayDnsIran.Enabled = true;
                     singboxDnsIran.Enabled = true;
-                    config.SimpleDNSItem = InitBuiltinSimpleDNS();
+                    CurrentConfig.SimpleDNSItem = InitBuiltinSimpleDNS();
                 }
                 else
                 {
-                    config.SimpleDNSItem = simpleDnsIran;
+                    CurrentConfig.SimpleDNSItem = simpleDnsIran;
                 }
-                await SaveDNSItems(config, xrayDnsIran);
-                await SaveDNSItems(config, singboxDnsIran);
+                await SaveDNSItems(xrayDnsIran);
+                await SaveDNSItems(singboxDnsIran);
                 break;
         }
 
@@ -3078,43 +2726,326 @@ public static class ConfigHandler
 
     #endregion Regional Presets
 
-    #region UIItem
+    #region SqliteHelper
 
-    public static WindowSizeItem? GetWindowSizeItem(Config config, string typeName)
+#pragma warning disable CS0618
+
+    public static async Task MigrateProfileExtra()
     {
-        var sizeItem = config?.UiItem?.WindowSizeItem?.FirstOrDefault(t => t.TypeName == typeName);
-        if (sizeItem == null || sizeItem.Width <= 0 || sizeItem.Height <= 0)
+        await MigrateProfileExtraGroupV2ToV3();
+
+        await MigrateProfileExtraV2ToV3();
+
+        await MigrateProfileTransportV3ToV4();
+    }
+
+    private static async Task MigrateProfileExtraV2ToV3()
+    {
+        const int pageSize = 100;
+        var offset = 0;
+
+        while (true)
         {
-            return null;
+            var sql = $"SELECT * FROM ProfileItem " +
+                $"WHERE ConfigVersion < 3 " +
+                $"AND ConfigType NOT IN ({(int)EConfigType.PolicyGroup}, {(int)EConfigType.ProxyChain}) " +
+                $"LIMIT {pageSize} OFFSET {offset}";
+            var batch = await SQLiteHelper.Instance.QueryAsync<ProfileItem>(sql);
+            if (batch is null || batch.Count == 0)
+            {
+                break;
+            }
+
+            var batchSuccessCount = await MigrateProfileExtraV2ToV3Sub(batch);
+
+            // Only increment offset by the number of failed items that remain in the result set
+            // Successfully updated items are automatically excluded from future queries due to ConfigVersion = 3
+            offset += batch.Count - batchSuccessCount;
         }
 
-        return sizeItem;
+        //await ProfileGroupItemManager.Instance.ClearAll();
     }
 
-    public static int SaveWindowSizeItem(Config config, string typeName, double width, double height)
+    private static async Task MigrateProfileTransportV3ToV4()
     {
-        var sizeItem = config?.UiItem?.WindowSizeItem?.FirstOrDefault(t => t.TypeName == typeName);
-        if (sizeItem == null)
+        const int pageSize = 100;
+        var offset = 0;
+
+        while (true)
         {
-            sizeItem = new WindowSizeItem { TypeName = typeName };
-            config.UiItem.WindowSizeItem.Add(sizeItem);
+            var sql = $"SELECT * FROM ProfileItem WHERE ConfigVersion = 3 LIMIT {pageSize} OFFSET {offset}";
+            var batch = await SQLiteHelper.Instance.QueryAsync<ProfileItem>(sql);
+            if (batch is null || batch.Count == 0)
+            {
+                break;
+            }
+
+            var updateProfileItems = new List<ProfileItem>();
+            foreach (var item in batch)
+            {
+                try
+                {
+                    if (item.Network == Global.RawNetworkAlias)
+                    {
+                        item.Network = nameof(ETransport.raw);
+                    }
+                    var transport = item.GetTransportExtra();
+                    var network = item.GetNetwork();
+
+                    switch (network)
+                    {
+                        case nameof(ETransport.raw):
+                            transport = transport with
+                            {
+                                RawHeaderType = item.HeaderType.NullIfEmpty(),
+                                Host = item.RequestHost.NullIfEmpty(),
+                                Path = item.Path.NullIfEmpty(),
+                            };
+                            break;
+
+                        case nameof(ETransport.ws):
+                        case nameof(ETransport.httpupgrade):
+                            transport = transport with
+                            {
+                                Host = item.RequestHost.NullIfEmpty(),
+                                Path = item.Path.NullIfEmpty(),
+                            };
+                            break;
+
+                        case nameof(ETransport.xhttp):
+                            transport = transport with
+                            {
+                                Host = item.RequestHost.NullIfEmpty(),
+                                Path = item.Path.NullIfEmpty(),
+                                XhttpMode = item.HeaderType.NullIfEmpty(),
+                                XhttpExtra = item.Extra.NullIfEmpty(),
+                            };
+                            break;
+
+                        case nameof(ETransport.grpc):
+                            transport = transport with
+                            {
+                                GrpcAuthority = item.RequestHost.NullIfEmpty(),
+                                GrpcServiceName = item.Path.NullIfEmpty(),
+                                GrpcMode = item.HeaderType.NullIfEmpty(),
+                            };
+                            break;
+
+                        case nameof(ETransport.kcp):
+                            transport = transport with
+                            {
+                                KcpHeaderType = item.HeaderType.NullIfEmpty(),
+                                KcpSeed = item.Path.NullIfEmpty(),
+                            };
+                            break;
+
+                        default:
+                            item.Network = Global.DefaultNetwork;
+                            transport = transport with
+                            {
+                                RawHeaderType = item.HeaderType.NullIfEmpty(),
+                                Host = item.RequestHost.NullIfEmpty(),
+                            };
+                            break;
+                    }
+
+                    item.SetTransportExtra(transport);
+                    item.ConfigVersion = 4;
+                    updateProfileItems.Add(item);
+                }
+                catch (Exception ex)
+                {
+                    Logging.SaveLog($"MigrateProfileTransportV3ToV4 Error: {ex}");
+                }
+            }
+
+            if (updateProfileItems.Count > 0)
+            {
+                try
+                {
+                    var count = await SQLiteHelper.Instance.UpdateAllAsync(updateProfileItems);
+                    offset += batch.Count - count;
+                }
+                catch (Exception ex)
+                {
+                    Logging.SaveLog($"MigrateProfileTransportV3ToV4 update error: {ex}");
+                    offset += batch.Count;
+                }
+            }
+            else
+            {
+                offset += batch.Count;
+            }
+        }
+    }
+
+    private static async Task<int> MigrateProfileExtraV2ToV3Sub(List<ProfileItem> batch)
+    {
+        var updateProfileItems = new List<ProfileItem>();
+
+        foreach (var item in batch)
+        {
+            try
+            {
+                var extra = item.GetProtocolExtra();
+                switch (item.ConfigType)
+                {
+                    case EConfigType.Shadowsocks:
+                        extra = extra with { SsMethod = item.Security.NullIfEmpty() };
+                        break;
+
+                    case EConfigType.VMess:
+                        extra = extra with
+                        {
+                            AlterId = item.AlterId.ToString(),
+                            VmessSecurity = item.Security.NullIfEmpty(),
+                        };
+                        break;
+
+                    case EConfigType.VLESS:
+                        extra = extra with
+                        {
+                            Flow = item.Flow.NullIfEmpty(),
+                            VlessEncryption = item.Security,
+                        };
+                        break;
+
+                    case EConfigType.Hysteria2:
+                        extra = extra with
+                        {
+                            SalamanderPass = item.Path.NullIfEmpty(),
+                            Ports = item.Ports.NullIfEmpty(),
+                            UpMbps = CurrentConfig.HysteriaItem.UpMbps,
+                            DownMbps = CurrentConfig.HysteriaItem.DownMbps,
+                            HopInterval = CurrentConfig.HysteriaItem.HopInterval.ToString(),
+                        };
+                        break;
+
+                    case EConfigType.TUIC:
+                        extra = extra with { CongestionControl = item.HeaderType.NullIfEmpty(), };
+                        item.Username = item.Id;
+                        item.Id = item.Security;
+                        item.Password = item.Security;
+                        break;
+
+                    case EConfigType.HTTP:
+                    case EConfigType.SOCKS:
+                        item.Username = item.Security;
+                        break;
+
+                    case EConfigType.WireGuard:
+                        extra = extra with
+                        {
+                            WgPublicKey = item.PublicKey.NullIfEmpty(),
+                            WgInterfaceAddress = item.RequestHost.NullIfEmpty(),
+                            WgReserved = item.Path.NullIfEmpty(),
+                            WgMtu = int.TryParse(item.ShortId, out var mtu) ? mtu : 1280
+                        };
+                        break;
+                }
+
+                item.SetProtocolExtra(extra);
+
+                item.Password = item.Id;
+
+                item.ConfigVersion = 3;
+
+                updateProfileItems.Add(item);
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog($"MigrateProfileExtra Error: {ex}");
+            }
         }
 
-        sizeItem.Width = (int)width;
-        sizeItem.Height = (int)height;
-
-        return 0;
+        if (updateProfileItems.Count > 0)
+        {
+            try
+            {
+                var count = await SQLiteHelper.Instance.UpdateAllAsync(updateProfileItems);
+                return count;
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog($"MigrateProfileExtraGroup update error: {ex}");
+                return 0;
+            }
+        }
+        else
+        {
+            return 0;
+        }
     }
 
-    public static int SaveMainGirdHeight(Config config, double height1, double height2)
+    private static async Task<bool> MigrateProfileExtraGroupV2ToV3()
     {
-        var uiItem = config.UiItem ?? new();
+        var list = await SQLiteHelper.Instance.TableAsync<ProfileGroupItem>().ToListAsync();
+        var groupItems = new ConcurrentDictionary<string, ProfileGroupItem>(list.Where(t => !string.IsNullOrEmpty(t.IndexId)).ToDictionary(t => t.IndexId!));
 
-        uiItem.MainGirdHeight1 = (int)(height1 + 0.1);
-        uiItem.MainGirdHeight2 = (int)(height2 + 0.1);
+        var sql = $"SELECT * FROM ProfileItem WHERE ConfigVersion < 3 AND ConfigType IN ({(int)EConfigType.PolicyGroup}, {(int)EConfigType.ProxyChain})";
+        var items = await SQLiteHelper.Instance.QueryAsync<ProfileItem>(sql);
 
-        return 0;
+        if (items is null || items.Count == 0)
+        {
+            Logging.SaveLog("MigrateProfileExtraGroup: No items to migrate.");
+            return true;
+        }
+
+        Logging.SaveLog($"MigrateProfileExtraGroup: Found {items.Count} group items to migrate.");
+
+        var updateProfileItems = new List<ProfileItem>();
+
+        foreach (var item in items)
+        {
+            try
+            {
+                var extra = item.GetProtocolExtra();
+
+                extra = extra with { GroupType = nameof(item.ConfigType) };
+                groupItems.TryGetValue(item.IndexId, out var groupItem);
+                if (groupItem != null && !groupItem.NotHasChild())
+                {
+                    extra = extra with
+                    {
+                        ChildItems = groupItem.ChildItems,
+                        SubChildItems = groupItem.SubChildItems,
+                        Filter = groupItem.Filter,
+                        MultipleLoad = groupItem.MultipleLoad,
+                    };
+                }
+
+                item.SetProtocolExtra(extra);
+
+                item.ConfigVersion = 3;
+                updateProfileItems.Add(item);
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog($"MigrateProfileExtraGroup item error [{item.IndexId}]: {ex}");
+            }
+        }
+
+        if (updateProfileItems.Count > 0)
+        {
+            try
+            {
+                var count = await SQLiteHelper.Instance.UpdateAllAsync(updateProfileItems);
+                Logging.SaveLog($"MigrateProfileExtraGroup: Successfully updated {updateProfileItems.Count} items.");
+                return updateProfileItems.Count == count;
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog($"MigrateProfileExtraGroup update error: {ex}");
+                return false;
+            }
+        }
+
+        return true;
+
+        //await ProfileGroupItemManager.Instance.ClearAll();
     }
 
-    #endregion UIItem
+#pragma warning restore CS0618
+
+    #endregion SqliteHelper
 }

@@ -37,7 +37,7 @@ public partial class RoutingSettingWindow
                 interaction.SetOutput(result);
             }).DisposeWith(disposables);
         });
-        WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
+        WindowsUtils.SetDarkBorder(this, ConfigTextHandler.Config.UiItem.CurrentTheme);
     }
 
     private void RoutingSettingWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)

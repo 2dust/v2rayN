@@ -12,7 +12,11 @@ public sealed class WebCorsPolicy
     public WebCorsPolicy(string? configuration)
     {
         _origins = new HashSet<string>(StringComparer.Ordinal);
-        if (string.IsNullOrWhiteSpace(configuration)) return;
+        if (string.IsNullOrWhiteSpace(configuration))
+        {
+            return;
+        }
+
         foreach (var item in configuration.Split(','))
         {
             _origins.Add(NormalizeOrigin(item.Trim()));
@@ -46,7 +50,11 @@ public sealed class WebCorsPolicy
     {
         if (request.Headers["Sec-Fetch-Site"].Count != 1
             || request.Headers["Sec-Fetch-Site"] != "same-origin"
-            || request.Headers.Origin.Count != 1) return false;
+            || request.Headers.Origin.Count != 1)
+        {
+            return false;
+        }
+
         try
         {
             var origin = request.Headers.Origin.ToString();
@@ -57,8 +65,16 @@ public sealed class WebCorsPolicy
 
     public static bool IsSameOriginRequest(HttpRequest request)
     {
-        if (!request.Headers.ContainsKey("Origin")) return true; // Native clients.
-        if (request.Headers.Origin.Count != 1) return false;
+        if (!request.Headers.ContainsKey("Origin"))
+        {
+            return true; // Native clients.
+        }
+
+        if (request.Headers.Origin.Count != 1)
+        {
+            return false;
+        }
+
         try
         {
             return string.Equals(request.Headers.Origin.ToString(),

@@ -19,14 +19,21 @@ internal static partial class WebReleaseChannel
     public static string BuildReleaseIndexUrl(string repository)
     {
         if (!IsValidRepository(repository))
+        {
             throw new ArgumentException("The release repository identifier is invalid.", nameof(repository));
+        }
+
         return $"{ApiBase}/{repository}/releases?per_page=100";
     }
 
     public static bool TryParseReleaseTag(string? tag, out string version)
     {
         version = string.Empty;
-        if (string.IsNullOrWhiteSpace(tag) || !ReleaseTagPattern().IsMatch(tag)) return false;
+        if (string.IsNullOrWhiteSpace(tag) || !ReleaseTagPattern().IsMatch(tag))
+        {
+            return false;
+        }
+
         version = tag;
         return true;
     }

@@ -17,7 +17,7 @@ public partial class ProfilesView
         InitializeComponent();
         lstGroup.MaxHeight = Math.Floor(SystemParameters.WorkArea.Height * 0.20 / 40) * 40;
 
-        _config = AppManager.Instance.Config;
+        _config = ConfigTextHandler.Config;
 
         btnAutofitColumnWidth.Click += BtnAutofitColumnWidth_Click;
         txtServerFilter.PreviewKeyDown += TxtServerFilter_PreviewKeyDown;

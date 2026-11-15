@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Configuration;
 using v2rayN.WebAPI.Contracts;
 
 namespace v2rayN.WebAPI.Launcher;

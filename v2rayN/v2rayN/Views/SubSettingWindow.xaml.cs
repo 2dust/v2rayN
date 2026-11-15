@@ -47,7 +47,7 @@ public partial class SubSettingWindow
                 interaction.SetOutput(RxVoid.Default);
             }).DisposeWith(disposables);
         });
-        WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
+        WindowsUtils.SetDarkBorder(this, ConfigTextHandler.Config.UiItem.CurrentTheme);
     }
 
     private async Task ShareSub(string url)

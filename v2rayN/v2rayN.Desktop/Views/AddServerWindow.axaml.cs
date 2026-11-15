@@ -195,8 +195,8 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
             this.Bind(ViewModel, vm => vm.SelectedSource.StreamSecurity, v => v.cmbStreamSecurity.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.Sni, v => v.txtSNI.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.AllowInsecure, v => v.togAllowInsecure.IsChecked).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.SelectedSource.Fingerprint, v => v.cmbFingerprint.SelectedValue).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.SelectedSource.Alpn, v => v.cmbAlpn.SelectedValue).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SelectedSource.Fingerprint, v => v.cmbFingerprint.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SelectedSource.Alpn, v => v.cmbAlpn.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.CertSha, v => v.txtCertSha256Pinning.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.CertTip, v => v.labCertPinning.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.Cert, v => v.txtCert.Text).DisposeWith(disposables);
@@ -205,7 +205,7 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
 
             //reality
             this.Bind(ViewModel, vm => vm.SelectedSource.Sni, v => v.txtSNI2.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.SelectedSource.Fingerprint, v => v.cmbFingerprint2.SelectedValue).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SelectedSource.Fingerprint, v => v.cmbFingerprint2.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.PublicKey, v => v.txtPublicKey.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.ShortId, v => v.txtShortId.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.SpiderX, v => v.txtSpiderX.Text).DisposeWith(disposables);
@@ -311,6 +311,11 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
                 gridMasque.IsVisible = true;
                 sepa2.IsVisible = false;
                 gridTransport.IsVisible = false;
+                lstStreamSecurity.Remove(string.Empty);
+                if (string.IsNullOrEmpty(profileItem.StreamSecurity))
+                {
+                    profileItem.StreamSecurity = lstStreamSecurity.First();
+                }
                 break;
         }
         cmbStreamSecurity.ItemsSource = lstStreamSecurity;
@@ -334,7 +339,7 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
 
     private void CmbStreamSecurity_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        var security = cmbStreamSecurity.SelectedItem.ToString();
+        var security = cmbStreamSecurity.SelectedItem?.ToString();
         if (security == Global.StreamSecurityReality)
         {
             gridRealityMore.IsVisible = true;

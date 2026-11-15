@@ -36,7 +36,10 @@ public class LogBufferTests
     {
         var logs = new LogBuffer();
         var message = new string('x', 10_000);
-        for (var index = 0; index < 300; index++) logs.Add("core", message);
+        for (var index = 0; index < 300; index++)
+        {
+            logs.Add("core", message);
+        }
 
         var retained = logs.Recent(2000);
         await retained.Count.Should().BeLessThan(2000);

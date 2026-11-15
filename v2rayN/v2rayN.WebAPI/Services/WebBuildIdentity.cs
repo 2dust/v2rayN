@@ -15,7 +15,10 @@ public sealed record WebBuildIdentity(string Version, string Commit, string Buil
             ?? new Dictionary<string, string?>(StringComparer.Ordinal);
         var repository = metadata.GetValueOrDefault("WebRepository");
         if (!WebReleaseChannel.IsValidRepository(repository))
+        {
             repository = WebReleaseChannel.DefaultRepository;
+        }
+
         return new WebBuildIdentity(
             metadata.GetValueOrDefault("WebVersion") ?? "0.0.0-dev",
             metadata.GetValueOrDefault("WebCommit") ?? "unknown",

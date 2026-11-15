@@ -26,7 +26,9 @@ public class WebCorsTests
             "https://good.example.com?", "https://good.example.com#", "https://user:password@good.example.com", "https://good.example.com,", "https://good.example.com\\evil", "https://good.example.com/other/..", "https://good.example.com/%2e" })
         {
             var rejected = false;
-            try { _ = new WebCorsPolicy(invalid); } catch (ArgumentException) { rejected = true; }
+            try
+            { _ = new WebCorsPolicy(invalid); }
+            catch (ArgumentException) { rejected = true; }
             await rejected.Should().BeTrue();
         }
         var policy = new WebCorsPolicy(" HTTPS://GOOD.EXAMPLE.COM:443, http://localhost:5173 ");
@@ -196,8 +198,16 @@ public class WebCorsTests
     private static HttpRequestMessage Request(HttpMethod method, string path, string? origin, string? token = null)
     {
         var request = new HttpRequestMessage(method, path);
-        if (origin is not null) request.Headers.Add("Origin", origin);
-        if (token is not null) request.Headers.Authorization = new("Bearer", token);
+        if (origin is not null)
+        {
+            request.Headers.Add("Origin", origin);
+        }
+
+        if (token is not null)
+        {
+            request.Headers.Authorization = new("Bearer", token);
+        }
+
         return request;
     }
 

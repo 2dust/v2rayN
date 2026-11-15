@@ -137,7 +137,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             && (it.ConfigType.IsComplexType() || it.Port > 0))
             .Select(it => it.IndexId)
             .ToList();
-        var profileMap = await AppManager.Instance.GetProfileItemsByIndexIdsAsMap(ids);
+        var profileMap = await ConfigDbQuery.GetProfileItemsByIndexIdsAsMap(ids);
         for (var i = 0; i < selecteds.Count; i++)
         {
             var it = selecteds[i];

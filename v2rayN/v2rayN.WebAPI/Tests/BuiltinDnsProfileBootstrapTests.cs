@@ -1,6 +1,3 @@
-using ServiceLib.Enums;
-using ServiceLib.Models.Configs;
-using ServiceLib.Models.Entities;
 using v2rayN.WebAPI.Services;
 
 namespace v2rayN.WebAPI.Tests;
@@ -60,9 +57,8 @@ public class BuiltinDnsProfileBootstrapTests
         var rows = new List<DNSItem>(initial);
         var savedTypes = new List<ECoreType>();
         await BuiltinDnsProfileBootstrap.EnsureAsync(
-            new Config(),
             () => Task.FromResult<IReadOnlyList<DNSItem>>(rows.ToArray()),
-            (_, item) =>
+            (item) =>
             {
                 rows.Add(item);
                 savedTypes.Add(item.CoreType);

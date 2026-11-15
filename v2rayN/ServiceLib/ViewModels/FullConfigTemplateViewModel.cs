@@ -1,3 +1,5 @@
+
+
 namespace ServiceLib.ViewModels;
 
 public partial class FullConfigTemplateViewModel : MyReactiveObject, ICloseable
@@ -42,7 +44,7 @@ public partial class FullConfigTemplateViewModel : MyReactiveObject, ICloseable
 
     public FullConfigTemplateViewModel()
     {
-        _config = AppManager.Instance.Config;
+        _config = ConfigTextHandler.Config;
         SaveCmd = ReactiveCommand.CreateFromTask(async () =>
         {
             await SaveSettingAsync();
@@ -53,7 +55,7 @@ public partial class FullConfigTemplateViewModel : MyReactiveObject, ICloseable
 
     private async Task Init()
     {
-        var item = await AppManager.Instance.GetFullConfigTemplateItem(ECoreType.Xray);
+        var item = await ConfigDbQuery.GetFullConfigTemplateItem(ECoreType.Xray);
         if (item == null)
         {
             return;
@@ -64,7 +66,7 @@ public partial class FullConfigTemplateViewModel : MyReactiveObject, ICloseable
         AddProxyOnly4Ray = item.AddProxyOnly ?? false;
         ProxyDetour4Ray = item.ProxyDetour ?? string.Empty;
 
-        var item2 = await AppManager.Instance.GetFullConfigTemplateItem(ECoreType.sing_box);
+        var item2 = await ConfigDbQuery.GetFullConfigTemplateItem(ECoreType.sing_box);
         EnableFullConfigTemplate4Singbox = item2?.Enabled ?? false;
         FullConfigTemplate4Singbox = item2?.Config ?? string.Empty;
         FullTunConfigTemplate4Singbox = item2?.TunConfig ?? string.Empty;
@@ -90,7 +92,7 @@ public partial class FullConfigTemplateViewModel : MyReactiveObject, ICloseable
 
     private async Task<bool> SaveXrayConfigAsync()
     {
-        var item = await AppManager.Instance.GetFullConfigTemplateItem(ECoreType.Xray);
+        var item = await ConfigDbQuery.GetFullConfigTemplateItem(ECoreType.Xray);
         if (item == null)
         {
             return false;
@@ -102,13 +104,13 @@ public partial class FullConfigTemplateViewModel : MyReactiveObject, ICloseable
         item.AddProxyOnly = AddProxyOnly4Ray;
         item.ProxyDetour = ProxyDetour4Ray;
 
-        await ConfigHandler.SaveFullConfigTemplate(_config, item);
+        await ConfigDbHandler.SaveFullConfigTemplate(item);
         return true;
     }
 
     private async Task<bool> SaveSingboxConfigAsync()
     {
-        var item = await AppManager.Instance.GetFullConfigTemplateItem(ECoreType.sing_box);
+        var item = await ConfigDbQuery.GetFullConfigTemplateItem(ECoreType.sing_box);
         if (item == null)
         {
             return false;
@@ -120,7 +122,7 @@ public partial class FullConfigTemplateViewModel : MyReactiveObject, ICloseable
         item.AddProxyOnly = AddProxyOnly4Singbox;
         item.ProxyDetour = ProxyDetour4Singbox;
 
-        await ConfigHandler.SaveFullConfigTemplate(_config, item);
+        await ConfigDbHandler.SaveFullConfigTemplate(item);
         return true;
     }
 }

@@ -22,7 +22,7 @@ public sealed partial class HotkeyManager
     private void Init()
     {
         _hotkeyTriggerDic.Clear();
-        foreach (var item in AppManager.Instance.Config.GlobalHotkeys)
+        foreach (var item in ConfigTextHandler.Config.GlobalHotkeys)
         {
             if (item.KeyCode != null && (Key)item.KeyCode != Key.None)
             {

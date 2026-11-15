@@ -52,7 +52,7 @@ public class GroupProfileManager
                 return false;
             }
 
-            var childItems = await AppManager.Instance.GetProfileItemsByIndexIds(childIds);
+            var childItems = await ConfigDbQuery.GetProfileItemsByIndexIds(childIds);
             foreach (var childItem in childItems)
             {
                 if (await HasCycle(childItem.IndexId, childItem.GetProtocolExtra(), visited, stack))
@@ -103,7 +103,7 @@ public class GroupProfileManager
             return [];
         }
 
-        var ordered = await AppManager.Instance.GetProfileItemsOrderedByIndexIds(childProfileIds);
+        var ordered = await ConfigDbQuery.GetProfileItemsOrderedByIndexIds(childProfileIds);
         return ordered;
     }
 
@@ -113,7 +113,7 @@ public class GroupProfileManager
         {
             return [];
         }
-        var childProfiles = await AppManager.Instance.ProfileItems(extra.SubChildItems ?? string.Empty);
+        var childProfiles = await ConfigDbQuery.ProfileItems(extra.SubChildItems ?? string.Empty);
 
         return childProfiles?.Where(p =>
                 p != null &&

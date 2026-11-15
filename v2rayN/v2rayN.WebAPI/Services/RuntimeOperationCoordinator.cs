@@ -18,11 +18,15 @@ public sealed class RuntimeOperationCoordinator
     private bool _stopping;
 
     public CancellationToken ShutdownToken => _shutdown.Token;
+
     public bool IsStopping
     {
         get
         {
-            lock (_sync) return _stopping;
+            lock (_sync)
+            {
+                return _stopping;
+            }
         }
     }
 
