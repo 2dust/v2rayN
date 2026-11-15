@@ -6,6 +6,9 @@ internal static class CoreConfigTestFactory
     {
         var field = typeof(AppManager).GetField("_config", BindingFlags.Instance | BindingFlags.NonPublic);
         field?.SetValue(AppManager.Instance, config);
+
+        var field2 = typeof(ConfigState).GetField("_current", BindingFlags.Instance | BindingFlags.NonPublic);
+        field2?.SetValue(ConfigState.Instance, config);
     }
 
     public static Config CreateConfig(ECoreType vmessCoreType = ECoreType.Xray)
