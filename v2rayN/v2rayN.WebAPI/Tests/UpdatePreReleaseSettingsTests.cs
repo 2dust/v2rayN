@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Text.Json;
+using ServiceLib.Handler.Data;
 using v2rayN.WebAPI.Contracts;
 using v2rayN.WebAPI.Services;
 
@@ -152,9 +153,9 @@ public class UpdatePreReleaseSettingsTests
 
     private sealed class RuntimeFixture : IDisposable
     {
-        private readonly FieldInfo _configField = typeof(AppManager)
-            .GetField("_config", BindingFlags.Instance | BindingFlags.NonPublic)
-            ?? throw new MissingFieldException(typeof(AppManager).FullName, "_config");
+        private readonly FieldInfo _configField = typeof(ConfigState)
+            .GetField("_current", BindingFlags.Instance | BindingFlags.NonPublic)
+            ?? throw new MissingFieldException(typeof(ConfigState).FullName, "_current");
         private readonly object? _previousConfig;
         private readonly string? _previousLocalData;
         private readonly string _configPath;
@@ -166,7 +167,7 @@ public class UpdatePreReleaseSettingsTests
 
         public RuntimeFixture()
         {
-            _previousConfig = _configField.GetValue(AppManager.Instance);
+            _previousConfig = _configField.GetValue(ConfigState.Instance);
             _previousLocalData = Environment.GetEnvironmentVariable(Global.LocalAppData);
             // ConfigHandler writes only into the test build directory, never user data.
             _configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "guiConfigs", Global.ConfigFileName);
@@ -179,7 +180,7 @@ public class UpdatePreReleaseSettingsTests
                 }
             }
             Environment.SetEnvironmentVariable(Global.LocalAppData, "0");
-            _configField.SetValue(AppManager.Instance, Config);
+            _configField.SetValue(ConfigState.Instance, Config);
         }
 
         public async Task<Config> ReadSavedConfigAsync() =>
@@ -208,7 +209,7 @@ public class UpdatePreReleaseSettingsTests
             }
             finally
             {
-                _configField.SetValue(AppManager.Instance, _previousConfig);
+                _configField.SetValue(ConfigState.Instance, _previousConfig);
                 Environment.SetEnvironmentVariable(Global.LocalAppData, _previousLocalData);
             }
         }
