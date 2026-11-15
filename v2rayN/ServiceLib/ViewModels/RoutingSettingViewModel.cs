@@ -77,7 +77,7 @@ public partial class RoutingSettingViewModel : MyReactiveObject
         DomainStrategy = _config.RoutingBasicItem.DomainStrategy;
         DomainStrategy4Singbox = _config.RoutingBasicItem.DomainStrategy4Singbox;
 
-        await ConfigDbHandler.InitBuiltinRouting(_config);
+        await ConfigDbHandler.InitBuiltinRouting();
         await RefreshRoutingItems();
     }
 
@@ -174,7 +174,7 @@ public partial class RoutingSettingViewModel : MyReactiveObject
             return;
         }
 
-        if (await ConfigDbHandler.SetDefaultRouting(_config, item) == 0)
+        if (await ConfigDbHandler.SetDefaultRouting( item) == 0)
         {
             await RefreshRoutingItems();
             IsModified = true;
@@ -183,7 +183,7 @@ public partial class RoutingSettingViewModel : MyReactiveObject
 
     private async Task RoutingAdvancedImportRules()
     {
-        if (await ConfigDbHandler.InitRouting(_config, true) == 0)
+        if (await ConfigDbHandler.InitRouting(true) == 0)
         {
             await RefreshRoutingItems();
             IsModified = true;

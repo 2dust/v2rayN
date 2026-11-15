@@ -563,7 +563,7 @@ public sealed partial class V2rayRuntime
                 || current.DomainDNSAddress != input.DomainDNSAddress
                 || current.Remarks != (input.Remarks ?? current.Remarks);
             var item = ApplyDnsProfileInput(current, coreType, input);
-            return (Result: await ConfigDbHandler.SaveDNSItems(Config, item), Changed: changed);
+            return (Result: await ConfigDbHandler.SaveDNSItems( item), Changed: changed);
         });
         if (result.Result == -2)
         {
@@ -696,7 +696,7 @@ public sealed partial class V2rayRuntime
                 item.RuleNum = parsedRules.Count;
             }
             var result = parsedRules.Count == 0
-                ? await ConfigDbHandler.SaveRoutingItem(Config, item)
+                ? await ConfigDbHandler.SaveRoutingItem( item)
                 : await ConfigDbHandler.AddBatchRoutingRules(item, JsonUtils.Serialize(parsedRules, false));
             return (Result: result, Item: (RoutingItem?)item, Changed: changed);
         });
@@ -735,7 +735,7 @@ public sealed partial class V2rayRuntime
                 var fallback = remaining.FirstOrDefault();
                 if (fallback is not null)
                 {
-                    if (await ConfigDbHandler.SetDefaultRouting(Config, fallback) != 0)
+                    if (await ConfigDbHandler.SetDefaultRouting( fallback) != 0)
                     {
                         throw new IOException("ServiceLib could not select the fallback routing profile.");
                     }
@@ -772,7 +772,7 @@ public sealed partial class V2rayRuntime
                 return (Result: -2, Changed: false);
             }
             var changed = !item.IsActive;
-            return (Result: changed ? await ConfigDbHandler.SetDefaultRouting(Config, item) : 0, Changed: changed);
+            return (Result: changed ? await ConfigDbHandler.SetDefaultRouting( item) : 0, Changed: changed);
         });
         if (result.Result == -2)
         {
@@ -993,7 +993,7 @@ public sealed partial class V2rayRuntime
         }
 
         var before = await GetActiveRoutingSignatureAsync();
-        var result = await _mutations.RunAsync(() => ConfigDbHandler.InitRouting(Config, true));
+        var result = await _mutations.RunAsync(() => ConfigDbHandler.InitRouting( true));
         if (result != 0)
         {
             return OperationView.Fail("routing_import_failed", ApiMessageKeys.RoutingSaveFailed);
@@ -1048,7 +1048,7 @@ public sealed partial class V2rayRuntime
                 return -2;
             }
             var item = ApplyCoreConfigTemplateInput(current, coreType, input);
-            return await ConfigDbHandler.SaveFullConfigTemplate(Config, item);
+            return await ConfigDbHandler.SaveFullConfigTemplate( item);
         });
         if (result == -2)
         {
@@ -1160,7 +1160,7 @@ public sealed partial class V2rayRuntime
                                 await SQLiteHelper.Instance.DeleteAllAsync<DNSItem>();
                                 foreach (var item in stage.DnsItems)
                                 {
-                                    if (await ConfigDbHandler.SaveDNSItems(Config, item) != 0)
+                                    if (await ConfigDbHandler.SaveDNSItems( item) != 0)
                                     {
                                         throw new IOException($"The {item.CoreType} DNS profile could not be saved.");
                                     }
@@ -1168,7 +1168,7 @@ public sealed partial class V2rayRuntime
 
                                 // Default routing uses embedded data only; this call performs no network I/O
                                 // because the route template source was cleared in the staged plan.
-                                if (await ConfigDbHandler.InitRouting(Config, false) != 0)
+                                if (await ConfigDbHandler.InitRouting( false) != 0)
                                 {
                                     throw new IOException("The built-in routing profiles could not be initialized.");
                                 }
@@ -1177,7 +1177,7 @@ public sealed partial class V2rayRuntime
                             {
                                 foreach (var item in stage.DnsItems)
                                 {
-                                    if (await ConfigDbHandler.SaveDNSItems(Config, item) != 0)
+                                    if (await ConfigDbHandler.SaveDNSItems( item) != 0)
                                     {
                                         throw new IOException($"The {item.CoreType} DNS profile could not be saved.");
                                     }
@@ -1216,7 +1216,7 @@ public sealed partial class V2rayRuntime
                                     var defaultItem = stage.Routing.DefaultRemarks is { } remarks
                                         ? stage.Routing.Items.FirstOrDefault(item => item.Remarks == remarks)
                                         : null;
-                                    if (defaultItem is not null && await ConfigDbHandler.SetDefaultRouting(Config, defaultItem) != 0)
+                                    if (defaultItem is not null && await ConfigDbHandler.SetDefaultRouting( defaultItem) != 0)
                                     {
                                         throw new IOException("The first staged routing profile could not be activated.");
                                     }
@@ -1226,7 +1226,7 @@ public sealed partial class V2rayRuntime
                                 {
                                     var existingDefault = currentRoutes.FirstOrDefault(item => item.Id == existingDefaultId);
                                     if (existingDefault is not null && !existingDefault.IsActive
-                                        && await ConfigDbHandler.SetDefaultRouting(Config, existingDefault) != 0)
+                                        && await ConfigDbHandler.SetDefaultRouting( existingDefault) != 0)
                                     {
                                         throw new IOException("The migrated default routing profile could not be activated.");
                                     }

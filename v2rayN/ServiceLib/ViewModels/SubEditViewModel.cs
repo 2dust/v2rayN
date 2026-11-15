@@ -89,7 +89,7 @@ public partial class SubEditViewModel : MyReactiveObject, ICloseable
         SelectedSource.PrevProfile = PrevProfile;
         SelectedSource.NextProfile = NextProfile;
 
-        if (await ConfigDbHandler.AddSubItem(_config, SelectedSource) == 0)
+        if (await ConfigDbHandler.AddSubItem( SelectedSource) == 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
             RequestClose?.Invoke(this, EventArgs.Empty);

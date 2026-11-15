@@ -104,7 +104,7 @@ public partial class FullConfigTemplateViewModel : MyReactiveObject, ICloseable
         item.AddProxyOnly = AddProxyOnly4Ray;
         item.ProxyDetour = ProxyDetour4Ray;
 
-        await ConfigDbHandler.SaveFullConfigTemplate(_config, item);
+        await ConfigDbHandler.SaveFullConfigTemplate(item);
         return true;
     }
 
@@ -122,7 +122,7 @@ public partial class FullConfigTemplateViewModel : MyReactiveObject, ICloseable
         item.AddProxyOnly = AddProxyOnly4Singbox;
         item.ProxyDetour = ProxyDetour4Singbox;
 
-        await ConfigDbHandler.SaveFullConfigTemplate(_config, item);
+        await ConfigDbHandler.SaveFullConfigTemplate(item);
         return true;
     }
 }

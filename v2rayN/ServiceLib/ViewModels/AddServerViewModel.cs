@@ -1,5 +1,3 @@
-
-
 namespace ServiceLib.ViewModels;
 
 public partial class AddServerViewModel : MyReactiveObject, ICloseable
@@ -594,7 +592,7 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
         });
         SelectedSource.SetTransportExtra(transport);
 
-        if (await ConfigDbHandler.AddServer(_config, SelectedSource) == 0)
+        if (await ConfigDbHandler.AddServer(SelectedSource) == 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
             RequestClose?.Invoke(this, EventArgs.Empty);
@@ -625,6 +623,7 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
 
                 XdriveS3PathStyle = true;
                 break;
+
             case "Google Drive":
                 XdriveService = "google-drive";
                 SelectedSource.StreamSecurity = Global.StreamSecurity;
@@ -649,6 +648,7 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
                 }
 
                 break;
+
             case "AWS S3 (Global)":
                 XdriveService = "s3";
                 if (XdriveS3Region.IsNullOrEmpty())
@@ -658,6 +658,7 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
 
                 XdriveS3PathStyle = false;
                 break;
+
             case "Yandex Cloud S3":
                 XdriveService = "s3";
                 if (XdriveS3Region.IsNullOrEmpty())
@@ -667,6 +668,7 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
 
                 XdriveS3PathStyle = true;
                 break;
+
             case "ArvanCloud S3":
                 XdriveService = "s3";
                 if (XdriveS3Region.IsNullOrEmpty())
@@ -676,6 +678,7 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
 
                 XdriveS3PathStyle = true;
                 break;
+
             case "Custom S3":
                 XdriveService = "s3";
                 break;

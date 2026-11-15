@@ -60,7 +60,7 @@ public sealed partial class V2rayRuntime
 
         var count = await _mutations.RunAsync(async () =>
         {
-            var imported = await ConfigDbHandler.AddBatchServers(Config, request.Content, groupId, request.IsSubscription);
+            var imported = await ConfigDbHandler.AddBatchServers(request.Content, groupId, request.IsSubscription);
             if (imported > 0)
             {
                 await EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig());
@@ -160,13 +160,13 @@ public sealed partial class V2rayRuntime
         try
         {
             result = await _mutations.RunAsync(() => profile.ConfigType.IsGroupType()
-                ? ConfigDbHandler.AddServerCommon(Config, profile)
+                ? ConfigDbHandler.AddServerCommon(profile)
                 : profile.ConfigType switch
                 {
-                    EConfigType.Custom when isNew => ConfigDbHandler.AddCustomServer(Config, profile, blDelete: false),
-                    EConfigType.Outbound when isNew => ConfigDbHandler.AddCustomOutboundServer(Config, profile, blDelete: false, toFile: true),
-                    EConfigType.Custom or EConfigType.Outbound => ConfigDbHandler.EditCustomServer(Config, profile),
-                    _ => ConfigDbHandler.AddServer(Config, profile),
+                    EConfigType.Custom when isNew => ConfigDbHandler.AddCustomServer(profile, blDelete: false),
+                    EConfigType.Outbound when isNew => ConfigDbHandler.AddCustomOutboundServer(profile, blDelete: false, toFile: true),
+                    EConfigType.Custom or EConfigType.Outbound => ConfigDbHandler.EditCustomServer(profile),
+                    _ => ConfigDbHandler.AddServer(profile),
                 });
         }
         catch (Exception exception)
@@ -263,7 +263,7 @@ public sealed partial class V2rayRuntime
 
         await _mutations.RunAsync(async () =>
         {
-            if (await ConfigDbHandler.RemoveServers(Config, selected) != 0)
+            if (await ConfigDbHandler.RemoveServers(selected) != 0)
             {
                 throw new IOException("ServiceLib could not remove the selected profiles.");
             }
@@ -297,7 +297,7 @@ public sealed partial class V2rayRuntime
             return OperationView.Fail("profile_not_found", ApiMessageKeys.ProfileNotFound);
         }
 
-        if (await _mutations.RunAsync(() => ConfigDbHandler.CopyServer(Config, items)) != 0)
+        if (await _mutations.RunAsync(() => ConfigDbHandler.CopyServer(items)) != 0)
         {
             return OperationView.Fail("profile_copy_failed", ApiMessageKeys.CommonInvalidInput);
         }
@@ -319,7 +319,7 @@ public sealed partial class V2rayRuntime
             return OperationView.Fail("profile_not_found", ApiMessageKeys.ProfileNotFound);
         }
 
-        if (await _mutations.RunAsync(() => ConfigDbHandler.MoveToGroup(Config, items, request.SubscriptionId ?? string.Empty)) != 0)
+        if (await _mutations.RunAsync(() => ConfigDbHandler.MoveToGroup(items, request.SubscriptionId ?? string.Empty)) != 0)
         {
             return OperationView.Fail("profile_move_failed", ApiMessageKeys.CommonInvalidInput);
         }
@@ -338,7 +338,7 @@ public sealed partial class V2rayRuntime
             return OperationView.Fail("profile_not_in_group", ApiMessageKeys.ProfileNotInGroup);
         }
 
-        var result = await _mutations.RunAsync(() => ConfigDbHandler.MoveServer(Config, orderedIds, index, request.Direction, request.Position));
+        var result = await _mutations.RunAsync(() => ConfigDbHandler.MoveServer(orderedIds, index, request.Direction, request.Position));
         _events.Publish("profiles-changed", new { subscriptionId = groupId });
         return result == 0
             ? OperationView.Ok(ApiMessageKeys.ProfileOrderSaved)
@@ -353,7 +353,7 @@ public sealed partial class V2rayRuntime
             return OperationView.Fail("profile_sort_column_invalid", ApiMessageKeys.CommonInvalidInput);
         }
 
-        var result = await _mutations.RunAsync(() => ConfigDbHandler.SortServers(Config, groupId, request.Column, request.Ascending));
+        var result = await _mutations.RunAsync(() => ConfigDbHandler.SortServers(groupId, request.Column, request.Ascending));
         _events.Publish("profiles-changed", new { subscriptionId = groupId });
         return result == 0
             ? OperationView.Ok(ApiMessageKeys.ProfileOrderSaved)
@@ -362,14 +362,14 @@ public sealed partial class V2rayRuntime
 
     public async Task<OperationView> RemoveDuplicateProfilesAsync(string? subscriptionId)
     {
-        var result = await _mutations.RunAsync(() => ConfigDbHandler.DedupServerList(Config, subscriptionId ?? Config.SubIndexId ?? string.Empty));
+        var result = await _mutations.RunAsync(() => ConfigDbHandler.DedupServerList(subscriptionId ?? Config.SubIndexId ?? string.Empty));
         _events.Publish("profiles-changed", new { subscriptionId = subscriptionId ?? Config.SubIndexId });
         return OperationView.Ok(ApiMessageKeys.ProfileDeduplicated, new { removed = result.Item1 - result.Item2 });
     }
 
     public async Task<OperationView> RemoveInvalidProfilesAsync(string? subscriptionId)
     {
-        var count = await _mutations.RunAsync(() => ConfigDbHandler.RemoveInvalidServerResult(Config, subscriptionId ?? Config.SubIndexId ?? string.Empty));
+        var count = await _mutations.RunAsync(() => ConfigDbHandler.RemoveInvalidServerResult(subscriptionId ?? Config.SubIndexId ?? string.Empty));
         _events.Publish("profiles-changed", new { subscriptionId = subscriptionId ?? Config.SubIndexId });
         return count < 0
             ? OperationView.Ok(ApiMessageKeys.CommonCompleted, new { removed = 0 })
@@ -389,8 +389,8 @@ public sealed partial class V2rayRuntime
         }
 
         var result = await _mutations.RunAsync(() => byRegion
-            ? ConfigDbHandler.AddGroupRegionServer(Config, subscription)
-            : ConfigDbHandler.AddGroupAllServer(Config, subscription));
+            ? ConfigDbHandler.AddGroupRegionServer(subscription)
+            : ConfigDbHandler.AddGroupAllServer(subscription));
         if (!result.Success)
         {
             return OperationView.Fail("profile_group_empty", ApiMessageKeys.ProfileGrouped, result.Data);

@@ -113,7 +113,7 @@ public class TaskManager
             });
             await handler.UpdateProcess(item.Id);
             item.UpdateTime = updateTime;
-            await ConfigDbHandler.AddSubItem(_config, item);
+            await ConfigDbHandler.AddSubItem(item);
             await Task.Delay(1000);
         }
     }

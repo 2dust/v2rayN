@@ -247,17 +247,16 @@ public sealed partial class V2rayRuntime(
             }
             await EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig());
         });
-        await ConfigDbHandler.InitBuiltinDNS(Config);
+        await ConfigDbHandler.InitBuiltinDNS();
         await BuiltinDnsProfileBootstrap.EnsureAsync(
-            Config,
             async () => await ConfigDbQuery.DNSItems() ?? [],
             ConfigDbHandler.SaveDNSItems);
-        await ConfigDbHandler.InitBuiltinFullConfigTemplate(Config);
+        await ConfigDbHandler.InitBuiltinFullConfigTemplate();
         // Keep startup aligned with Desktop's StatusBarViewModel. In particular,
         // InitBuiltinRouting owns the RoutingIndexId -> IsActive migration and must
         // run even when a restored Desktop database already has routing rows.
-        await ConfigDbHandler.InitBuiltinRouting(Config);
-        _ = await ConfigDbHandler.GetDefaultRouting(Config);
+        await ConfigDbHandler.InitBuiltinRouting();
+        _ = await ConfigDbHandler.GetDefaultRouting();
         var restoredSubscriptions = await ConfigDbQuery.SubItems() ?? [];
         var normalizedSubIndexId = NormalizeSelectedSubscriptionId(
             Config.SubIndexId,
@@ -437,7 +436,7 @@ public sealed partial class V2rayRuntime(
         }
 
         var item = ToSubItem(input, null);
-        var result = await _mutations.RunAsync(() => ConfigDbHandler.AddSubItem(Config, item));
+        var result = await _mutations.RunAsync(() => ConfigDbHandler.AddSubItem(item));
         if (result != 0)
         {
             return new(false, "subscription_save_failed", ApiMessageKeys.SubscriptionSaveFailed, null);
@@ -466,7 +465,7 @@ public sealed partial class V2rayRuntime(
 
             var item = ToSubItem(input, existing);
             item.Id = id;
-            var result = await ConfigDbHandler.AddSubItem(Config, item);
+            var result = await ConfigDbHandler.AddSubItem(item);
             if (result != 0)
             {
                 return new SubscriptionMutationResult(false, "subscription_save_failed", ApiMessageKeys.SubscriptionSaveFailed, null);
@@ -496,7 +495,7 @@ public sealed partial class V2rayRuntime(
 
         await _mutations.RunAsync(async () =>
         {
-            if (await ConfigDbHandler.DeleteSubItem(Config, id) != 0)
+            if (await ConfigDbHandler.DeleteSubItem(id) != 0)
             {
                 throw new IOException("ServiceLib could not delete the subscription.");
             }
@@ -1178,7 +1177,7 @@ public sealed partial class V2rayRuntime(
             if (item is not null)
             {
                 item.UpdateTime = updateTime;
-                if (await ConfigDbHandler.AddSubItem(Config, item) != 0)
+                if (await ConfigDbHandler.AddSubItem(item) != 0)
                 {
                     throw new IOException("ServiceLib could not save the subscription timestamp.");
                 }
@@ -1191,7 +1190,7 @@ public sealed partial class V2rayRuntime(
             if (item.Enabled)
             {
                 item.UpdateTime = updateTime;
-                if (await ConfigDbHandler.AddSubItem(Config, item) != 0)
+                if (await ConfigDbHandler.AddSubItem(item) != 0)
                 {
                     throw new IOException("ServiceLib could not save the subscription timestamp.");
                 }

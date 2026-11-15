@@ -46,7 +46,7 @@ public class CoreConfigContextBuilder
             SimpleDnsItem = config.SimpleDNSItem,
             ProtectDomainList = [],
             RawDnsItem = await ConfigDbQuery.GetDNSItem(coreType),
-            RoutingItem = await ConfigDbHandler.GetDefaultRouting(config),
+            RoutingItem = await ConfigDbHandler.GetDefaultRouting(),
             IsWindows = Utils.IsWindows(),
             IsMacOS = Utils.IsMacOS(),
             IsLinux = Utils.IsLinux(),

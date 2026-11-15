@@ -207,7 +207,7 @@ public partial class DNSSettingViewModel : MyReactiveObject, ICloseable
         item1.UseSystemHosts = UseSystemHostsCompatible;
         item1.NormalDNS = NormalDNSCompatible;
         item1.TunDNS = TunDNSCompatible;
-        await ConfigDbHandler.SaveDNSItems(_config, item1);
+        await ConfigDbHandler.SaveDNSItems(item1);
 
         var item2 = await ConfigDbQuery.GetDNSItem(ECoreType.sing_box);
         item2.Enabled = SBCustomDNSEnableCompatible;
@@ -215,7 +215,7 @@ public partial class DNSSettingViewModel : MyReactiveObject, ICloseable
         item2.DomainDNSAddress = DomainDNSAddress2Compatible;
         item2.NormalDNS = JsonUtils.Serialize(JsonUtils.Deserialize<Dns4Sbox>(NormalDNS2Compatible));
         item2.TunDNS = JsonUtils.Serialize(JsonUtils.Deserialize<Dns4Sbox>(TunDNS2Compatible));
-        await ConfigDbHandler.SaveDNSItems(_config, item2);
+        await ConfigDbHandler.SaveDNSItems(item2);
 
         await ConfigTextHandler.SaveConfig();
         RequestClose?.Invoke(this, EventArgs.Empty);

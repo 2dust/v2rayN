@@ -92,7 +92,7 @@ public partial class SubSettingViewModel : MyReactiveObject
 
         foreach (var it in SelectedSources ?? [SelectedSource])
         {
-            await ConfigDbHandler.DeleteSubItem(_config, it.Id);
+            await ConfigDbHandler.DeleteSubItem( it.Id);
         }
         await RefreshSubItems();
         NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);

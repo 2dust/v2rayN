@@ -331,8 +331,8 @@ public partial class MainWindowViewModel : MyReactiveObject
         }
 
         //await ConfigHandler.InitBuiltinRouting(_config);
-        await ConfigDbHandler.InitBuiltinDNS(_config);
-        await ConfigDbHandler.InitBuiltinFullConfigTemplate(_config);
+        await ConfigDbHandler.InitBuiltinDNS();
+        await ConfigDbHandler.InitBuiltinFullConfigTemplate();
         await ProfileExManager.Instance.Init();
         await CoreManager.Instance.Init(_config, UpdateHandler);
         await CertPemManager.Instance.Init(_config);
@@ -499,7 +499,7 @@ public partial class MainWindowViewModel : MyReactiveObject
             }
             stringData = result;
         }
-        var ret = await ConfigDbHandler.AddBatchServers(_config, stringData, _config.SubIndexId, false);
+        var ret = await ConfigDbHandler.AddBatchServers(stringData, _config.SubIndexId, false);
         if (ret > 0)
         {
             await RefreshSubscriptions();
@@ -549,7 +549,7 @@ public partial class MainWindowViewModel : MyReactiveObject
         }
         else
         {
-            var ret = await ConfigDbHandler.AddBatchServers(_config, result, _config.SubIndexId, false);
+            var ret = await ConfigDbHandler.AddBatchServers(result, _config.SubIndexId, false);
             if (ret > 0)
             {
                 await RefreshSubscriptions();
@@ -610,7 +610,7 @@ public partial class MainWindowViewModel : MyReactiveObject
         var ret = await AppManager.Instance.WindowDialog.ShowDialogAsync(routingSettingViewModel);
         if (ret == true)
         {
-            await ConfigDbHandler.InitBuiltinRouting(_config);
+            await ConfigDbHandler.InitBuiltinRouting();
             RxSchedulers.MainThreadScheduler.Schedule(async () =>
             {
                 await StatusBarViewModel.RefreshRoutingsMenu();
@@ -788,8 +788,8 @@ public partial class MainWindowViewModel : MyReactiveObject
 
     public async Task ApplyRegionalPreset(EPresetType type)
     {
-        await ConfigDbHandler.ApplyRegionalPreset(_config, type);
-        await ConfigDbHandler.InitRouting(_config);
+        await ConfigDbHandler.ApplyRegionalPreset(type);
+        await ConfigDbHandler.InitRouting();
         RxSchedulers.MainThreadScheduler.Schedule(async () =>
         {
             await StatusBarViewModel.RefreshRoutingsMenu();
