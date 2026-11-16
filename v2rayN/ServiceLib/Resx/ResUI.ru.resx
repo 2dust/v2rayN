@@ -1974,4 +1974,10 @@
   <data name="TransportPathTip6" xml:space="preserve">
     <value>Удаленная папка XDRIVE</value>
   </data>
+  <data name="TbDisableFallbackIfMatch" xml:space="preserve">
+    <value>Ограничить резервные DNS при совпадении домена (Xray)</value>
+  </data>
+  <data name="TbDisableFallbackIfMatchTip" xml:space="preserve">
+    <value>Только DNS с совпавшими доменными правилами, включая bootstrap. Если все они не сработают, разрешение завершится ошибкой. Для остальных доменов — DNS по умолчанию.</value>
+  </data>
 </root>

@@ -3637,6 +3637,24 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   Looks up the localized DNS fallback setting label.
+        /// </summary>
+        public static string TbDisableFallbackIfMatch {
+            get {
+                return ResourceManager.GetString("TbDisableFallbackIfMatch", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up the localized DNS fallback setting explanation.
+        /// </summary>
+        public static string TbDisableFallbackIfMatchTip {
+            get {
+                return ResourceManager.GetString("TbDisableFallbackIfMatchTip", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   查找类似 Parallel Query 的本地化字符串。
         /// </summary>
         public static string TbParallelQuery {
