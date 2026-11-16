@@ -203,7 +203,6 @@ public class Dns4Ray
     public List<JsonNode> servers { get; set; }
     public bool? serveStale { get; set; }
     public bool? enableParallelQuery { get; set; }
-    public bool? disableFallbackIfMatch { get; set; }
     public string? queryStrategy { get; set; }
     public string? tag { get; set; }
 }

@@ -81,7 +81,6 @@ public partial class CoreConfigV2rayService
 
             dnsItem.serveStale = simpleDnsItem?.ServeStale is true ? true : null;
             dnsItem.enableParallelQuery = simpleDnsItem?.ParallelQuery is true ? true : null;
-            dnsItem.disableFallbackIfMatch = simpleDnsItem?.DisableFallbackIfMatch is true ? true : null;
 
             if (simpleDnsItem.BlockAAAAQuery == true)
             {
