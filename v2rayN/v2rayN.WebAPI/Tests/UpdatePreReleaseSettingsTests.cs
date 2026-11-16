@@ -179,7 +179,7 @@ public class UpdatePreReleaseSettingsTests
                 }
             }
             Environment.SetEnvironmentVariable(Global.LocalAppData, "0");
-            _configField.SetValue(ConfigState.Instance, Config);
+            ConfigState.Instance.SetCurrent(Config);
         }
 
         public async Task<Config> ReadSavedConfigAsync() =>
