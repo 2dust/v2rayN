@@ -206,7 +206,7 @@ public partial class UpdateService(DownloadService downloadService, Config confi
         else
         {
             var url = Path.Combine(coreInfo.Url, "latest");
-            var lastUrl = await downloadService.UrlRedirectAsync(url, cancellationToken);
+            var lastUrl = await downloadService.GetFinalUrlAsync(url, cancellationToken);
             if (lastUrl == null)
             {
                 return new UpdateResult(false, "");
