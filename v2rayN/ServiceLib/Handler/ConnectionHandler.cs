@@ -133,7 +133,7 @@ public static class ConnectionHandler
             }
 
             var ip = ipInfo.ip ?? ipInfo.clientIp ?? ipInfo.ip_addr ?? ipInfo.query;
-            var country = ipInfo.country_code ?? ipInfo.country ?? ipInfo.countryCode ?? ipInfo.location?.country_code ?? "unknown";
+            var country = ipInfo.country_code ?? ipInfo.country ?? ipInfo.countryCode ?? ipInfo.location?.country_code ?? ipInfo.location?.country ?? "unknown";
 
             return new IpInfoResult(country, ip);
         }

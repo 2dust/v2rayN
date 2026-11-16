@@ -724,6 +724,7 @@ public class Global
         @"https://api-ipv4.ip.sb/geoip",
         @"https://api-ipv6.ip.sb/geoip",
         @"https://api.ipapi.is",
+        @"https://api.internetdata.io/myip",
         @""
     ];
 
