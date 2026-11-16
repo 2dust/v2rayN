@@ -41,20 +41,29 @@ public partial class CoreConfigV2rayService
             customOutboundContent = customOutboundContent.Replace("{{interface}}", outboundBindInterface);
             var customOutboundNode = JsonUtils.ParseJson(customOutboundContent);
 
-            JsonObject customOutboundObj = null!;
+            JsonObject customOutboundObj;
+            JsonObject customOutboundDialingObj;
             if (customOutboundNode is JsonArray jsonArray)
             {
-                if (jsonArray.Count == 0 || jsonArray[0] is not JsonObject firstObj)
+                // NOTE: When the custom outbound definition is an array,
+                // treat it as an outbound proxy chain:
+                // apply outbound-level settings (such as the tag) to the first element,
+                // and apply dialing settings (such as the detour) to the last element.
+                if (jsonArray.Count == 0
+                    || jsonArray[0] is not JsonObject firstObj
+                    || jsonArray[^1] is not JsonObject lastObj)
                 {
                     continue;
                 }
                 customOutboundObj = firstObj;
+                customOutboundDialingObj = lastObj;
             }
             else if (customOutboundNode is JsonObject jsonObject)
             {
                 customOutboundObj = jsonObject;
+                customOutboundDialingObj = jsonObject;
             }
-            if (customOutboundObj == null)
+            else
             {
                 continue;
             }
@@ -63,18 +72,17 @@ public partial class CoreConfigV2rayService
             {
                 customOutboundObj["tag"] = outboundTag;
             }
-            if (customOutboundObj is not null
-                && customOutboundObj["targetStrategy"] is null
+            if (customOutboundObj["targetStrategy"] is null
                 && !outboundTargetStrategy.IsNullOrEmpty())
             {
                 customOutboundObj["targetStrategy"] = outboundTargetStrategy;
             }
             if (!containDetourPlaceholder && !outboundDetour.IsNullOrEmpty())
             {
-                customOutboundObj["streamSettings"] ??= new JsonObject();
-                customOutboundObj["streamSettings"]["sockopt"] ??= new JsonObject();
-                customOutboundObj["streamSettings"]["sockopt"]["dialerProxy"] = outboundDetour;
-                if (customOutboundObj["streamSettings"]?["xhttpSettings"]?["extra"]?["downloadSettings"] is JsonObject downloadSettings)
+                customOutboundDialingObj["streamSettings"] ??= new JsonObject();
+                customOutboundDialingObj["streamSettings"]["sockopt"] ??= new JsonObject();
+                customOutboundDialingObj["streamSettings"]["sockopt"]["dialerProxy"] = outboundDetour;
+                if (customOutboundDialingObj["streamSettings"]?["xhttpSettings"]?["extra"]?["downloadSettings"] is JsonObject downloadSettings)
                 {
                     downloadSettings["sockopt"] ??= new JsonObject();
                     downloadSettings["sockopt"]["dialerProxy"] = outboundDetour;
@@ -82,10 +90,10 @@ public partial class CoreConfigV2rayService
             }
             if (!containBindInterfacePlaceholder && !outboundBindInterface.IsNullOrEmpty())
             {
-                customOutboundObj["streamSettings"] ??= new JsonObject();
-                customOutboundObj["streamSettings"]["sockopt"] ??= new JsonObject();
-                customOutboundObj["streamSettings"]["sockopt"]["interface"] = outboundBindInterface;
-                if (customOutboundObj["streamSettings"]?["xhttpSettings"]?["extra"]?["downloadSettings"] is JsonObject downloadSettings)
+                customOutboundDialingObj["streamSettings"] ??= new JsonObject();
+                customOutboundDialingObj["streamSettings"]["sockopt"] ??= new JsonObject();
+                customOutboundDialingObj["streamSettings"]["sockopt"]["interface"] = outboundBindInterface;
+                if (customOutboundDialingObj["streamSettings"]?["xhttpSettings"]?["extra"]?["downloadSettings"] is JsonObject downloadSettings)
                 {
                     downloadSettings["sockopt"] ??= new JsonObject();
                     downloadSettings["sockopt"]["interface"] = outboundBindInterface;
