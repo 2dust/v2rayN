@@ -8,7 +8,7 @@ namespace v2rayN.WebAPI.Services;
 public sealed class RuntimeOperationCoordinator
 {
     private static readonly TimeSpan DefaultDrainTimeout = TimeSpan.FromSeconds(10);
-    private readonly object _sync = new();
+    private readonly Lock _sync = new();
     private readonly CancellationTokenSource _shutdown = new();
     private TaskCompletionSource _changed = NewSignal();
     private int _activeOperations;

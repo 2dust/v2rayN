@@ -7,7 +7,7 @@ public sealed class LogBuffer
     private const int Capacity = 2000;
     private const int MaximumMessageCharacters = 16 * 1024;
     private const int MaximumRetainedCharacters = 1_000_000;
-    private readonly object _gate = new();
+    private readonly Lock _gate = new();
     private readonly Queue<LogView> _items = new();
     private int _retainedCharacters;
     private long _generation;
