@@ -29,7 +29,7 @@ public sealed partial class V2rayRuntime(
     private readonly SemaphoreSlim _regionalPresetGate = new(1, 1);
     private readonly SemaphoreSlim _coreMonitorGate = new(1, 1);
     private readonly Lock _subscriptionGate = new();
-    private readonly object _speedtestGate = new();
+    private readonly Lock _speedtestGate = new();
     private readonly Dictionary<string, Task> _subscriptionTasks = new(StringComparer.Ordinal);
     private SpeedtestService? _speedtestService;
     private Task? _speedtestTask;
