@@ -1771,6 +1771,7 @@ public static class ConfigDbHandler
                     EConfigType.WireGuard => await AddWireguardServer(profileItem, false),
                     EConfigType.Anytls => await AddAnytlsServer(profileItem, false),
                     EConfigType.Naive => await AddNaiveServer(profileItem, false),
+                    EConfigType.MASQUE => await AddMasqueServer(profileItem, false),
                     EConfigType.PolicyGroup or EConfigType.ProxyChain => await AddServerCommon(profileItem, false),
                     EConfigType.Outbound => await AddCustomOutboundServer(profileItem, true, false),
                     _ => -1,
