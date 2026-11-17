@@ -1450,11 +1450,31 @@ public static class ConfigDbHandler
                             var ipList = await dnsClient.TryResolveIpv46Async(key, cancellationToken);
                             return ipList.FirstOrDefault()?.ToString() ?? key;
                         })).Value;
-                    if (resolvedAddress.IsNotEmpty())
+                    if (!string.IsNullOrEmpty(resolvedAddress))
                     {
                         profileItem.Address = resolvedAddress;
                     }
-                    // TODO: Override the host and sni if empty
+                    // host -> serverName -> address
+                    if (!profileItem.StreamSecurity.IsNullOrEmpty()
+                        && profileItem.Sni.IsNullOrEmpty())
+                    {
+                        profileItem.Sni = profileItem.Address;
+                    }
+                    var requestHostTransport = new HashSet<string>
+                    {
+                        nameof(ETransport.ws),
+                        nameof(ETransport.httpupgrade),
+                        nameof(ETransport.xhttp),
+                        //nameof(ETransport.grpc),
+                    };
+                    if (requestHostTransport.Contains(profileItem.GetNetwork())
+                        && profileItem.GetTransportExtra().Host.IsNullOrEmpty())
+                    {
+                        profileItem.SetTransportExtra(profileItem.GetTransportExtra() with
+                        {
+                            Host = profileItem.Sni,
+                        });
+                    }
                 }
 
                 profileItems[index] = profileItem;
