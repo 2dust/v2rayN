@@ -203,6 +203,7 @@ public class Dns4Ray
     public List<JsonNode> servers { get; set; }
     public bool? serveStale { get; set; }
     public bool? enableParallelQuery { get; set; }
+    public bool? disableFallbackIfMatch { get; set; }
     public string? queryStrategy { get; set; }
     public string? tag { get; set; }
 }
@@ -511,7 +512,9 @@ public class MaskSettings4Ray
 
     // udphop
     public string? mode { get; set; }
+
     public string? interval { get; set; }
+
     // public List<string>? remoteIPs { get; set; }
     public string? remotePorts { get; set; }
 

@@ -741,9 +741,6 @@
   <data name="TbSettingsSystemproxy" xml:space="preserve">
     <value>Rendszerproxy beállítások</value>
   </data>
-  <data name="TbSettingsTrayMenuServersLimit" xml:space="preserve">
-    <value>Tálca jobb egérgombos menü konfigurációk megjelenítési limitje</value>
-  </data>
   <data name="TbSettingsUdpEnabled" xml:space="preserve">
     <value>UDP engedélyezése</value>
   </data>

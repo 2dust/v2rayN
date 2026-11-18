@@ -4,6 +4,7 @@ public class Config
 {
     #region property
 
+    public string PreIndexId { get; set; }
     public string IndexId { get; set; }
     public string SubIndexId { get; set; }
 

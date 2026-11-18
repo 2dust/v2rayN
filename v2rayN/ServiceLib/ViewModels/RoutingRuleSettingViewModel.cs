@@ -1,5 +1,3 @@
-
-
 namespace ServiceLib.ViewModels;
 
 public partial class RoutingRuleSettingViewModel : MyReactiveObject, ICloseable
@@ -233,7 +231,7 @@ public partial class RoutingRuleSettingViewModel : MyReactiveObject, ICloseable
         item.RuleNum = _rules.Count;
         item.RuleSet = JsonUtils.Serialize(_rules, false);
 
-        if (await ConfigDbHandler.SaveRoutingItem( item) == 0)
+        if (await ConfigDbHandler.SaveRoutingItem(item) == 0)
         {
             NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);
             RequestClose?.Invoke(this, EventArgs.Empty);

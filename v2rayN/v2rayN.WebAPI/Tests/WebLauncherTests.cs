@@ -6,6 +6,7 @@ public class WebLauncherTests
 {
     // Keep fixture PIDs outside Linux's assignable range so host services cannot affect stop tests.
     private const int FakeOwnerProcessId = int.MaxValue - 1;
+
     private const int OtherProcessId = int.MaxValue;
 
     [Test]

@@ -16,6 +16,7 @@ internal class IPAPIInfo
 public class LocationInfo
 {
     public string? country_code { get; set; }
+    public string? country { get; set; }
 }
 
 public readonly record struct IpInfoResult(string Country, string? Ip)

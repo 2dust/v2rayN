@@ -110,18 +110,19 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
             this.Bind(ViewModel, vm => vm.DoubleClick2Activate, v => v.togDoubleClick2Activate.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.AutoUpdateInterval, v => v.txtautoUpdateInterval.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.CurrentFontFamily, v => v.cmbcurrentFontFamily.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.SpeedTestTimeout, v => v.cmbSpeedTestTimeout.SelectedValue).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.SpeedTestUrl, v => v.cmbSpeedTestUrl.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.SpeedPingTestUrl, v => v.cmbSpeedPingTestUrl.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.UdpTestTarget, v => v.cmbUdpTestTarget.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.MixedConcurrencyCount, v => v.cmbMixedConcurrencyCount.SelectedValue).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SubConvertUrl, v => v.cmbSubConvertUrl.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.MainGirdOrientation, view => view.cmbMainGirdOrientation.SelectedIndex).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.GeoFileSourceUrl, v => v.cmbGetFilesSourceUrl.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SrsFileSourceUrl, v => v.cmbSrsFilesSourceUrl.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.RoutingRulesSourceUrl, v => v.cmbRoutingRulesSourceUrl.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.IPAPIUrl, v => v.cmbIPAPIUrl.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.RootCertProvider, v => v.cmbRootCertificateProvider.SelectedValue).DisposeWith(disposables);
+
+            this.Bind(ViewModel, vm => vm.SpeedTestTimeout, v => v.cmbSpeedTestTimeout.SelectedValue).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SpeedTestUrl, v => v.cmbSpeedTestUrl.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.SpeedPingTestUrl, v => v.cmbSpeedPingTestUrl.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.UdpTestTarget, v => v.cmbUdpTestTarget.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.MixedConcurrencyCount, v => v.cmbMixedConcurrencyCount.SelectedValue).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.IPAPIUrl, v => v.cmbIPAPIUrl.Text).DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.NotProxyLocalAddress, v => v.tognotProxyLocalAddress.IsChecked).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SystemProxyAdvancedProtocol, v => v.cmbsystemProxyAdvancedProtocol.SelectedValue).DisposeWith(disposables);

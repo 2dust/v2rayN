@@ -1,5 +1,3 @@
-
-
 namespace ServiceLib.Handler;
 
 public class SubscriptionHandler(
@@ -21,6 +19,7 @@ public class SubscriptionHandler(
             return;
         }
 
+        await ConfigTextHandler.ResetDefaultServer();
         var successCount = 0;
         foreach (var item in subItem)
         {

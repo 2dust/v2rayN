@@ -204,15 +204,18 @@ public class DownloadService : IDisposable
     /// <summary>
     ///     Gets redirect target URL without following redirects automatically.
     /// </summary>
-    public async Task<string?> UrlRedirectAsync(string url, CancellationToken cancellationToken = default)
+    public async Task<string?> GetFinalUrlAsync(string url, CancellationToken cancellationToken = default)
     {
         using var client = new HttpClient(GetHandler(), false);
+        using var response = await client.GetAsync(url, cancellationToken);
 
-        var response = await client.GetAsync(url, cancellationToken);
-        if (response.StatusCode == HttpStatusCode.Redirect && response.Headers.Location is not null)
+        var originalUri = new Uri(url);
+        var finalUri = response.RequestMessage?.RequestUri;
+        if (finalUri is not null && !Uri.Equals(originalUri, finalUri))
         {
-            return response.Headers.Location.ToString();
+            return finalUri.ToString();
         }
+
         Error?.Invoke(this, new ErrorEventArgs(new Exception("StatusCode error: " + response.StatusCode)));
         Logging.SaveLog("StatusCode error: " + url);
         return null;

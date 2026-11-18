@@ -747,9 +747,6 @@
   <data name="TbSettingsSystemproxy" xml:space="preserve">
     <value>系统代理设置</value>
   </data>
-  <data name="TbSettingsTrayMenuServersLimit" xml:space="preserve">
-    <value>托盘右键菜单配置展示数量限制</value>
-  </data>
   <data name="TbSettingsUdpEnabled" xml:space="preserve">
     <value>开启 UDP</value>
   </data>
@@ -1965,5 +1962,8 @@
   </data>
   <data name="TransportPathTip6" xml:space="preserve">
     <value>XDRIVE 远端目录</value>
+  </data>
+  <data name="TbSpeedtestSettings" xml:space="preserve">
+    <value>测速设置</value>
   </data>
 </root>

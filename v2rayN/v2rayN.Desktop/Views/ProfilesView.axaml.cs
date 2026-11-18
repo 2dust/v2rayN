@@ -317,7 +317,6 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         }
     }
 
-
     private void BtnAutofitColumnWidth_Click(object? sender, RoutedEventArgs e)
     {
         AutofitColumnWidth();

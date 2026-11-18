@@ -1388,56 +1388,104 @@ public static class ConfigDbHandler
         }
 
         var dnsClient = preResolver.IsNullOrEmpty() ? null : EndpointResolveManager.BuildDnsClient(preResolver);
-        var dnsCache = new Dictionary<string, string>();
+        var dnsCache = new ConcurrentDictionary<string, Lazy<Task<string>>>();
 
         var countServers = 0;
         List<ProfileItem> lstAdd = [];
-        var arrData = strData.Split(Environment.NewLine.ToCharArray()).Where(t => !t.IsNullOrEmpty());
+        var arrData = strData.Split(Environment.NewLine.ToCharArray()).Where(t => !t.IsNullOrEmpty()).ToList();
         if (isSub)
         {
-            arrData = arrData.Distinct();
+            arrData = arrData.Distinct().ToList();
         }
-        foreach (var str in arrData)
+
+        // Subscriptions are added sequentially because they write to the database.
+        if (!isSub)
         {
-            //maybe sub
-            if (!isSub && (str.StartsWith(Global.HttpsProtocol) || str.StartsWith(Global.HttpProtocol)))
+            foreach (var str in arrData.Where(t => t.StartsWith(Global.HttpsProtocol) || t.StartsWith(Global.HttpProtocol)))
             {
                 if (await AddSubItem(str) == 0)
                 {
                     countServers++;
                 }
-                continue;
             }
-            var profileItem = FmtHandler.ResolveConfig(str, out var msg);
+        }
+
+        var profileItems = new ProfileItem?[arrData.Count];
+        await Parallel.ForEachAsync(
+            Enumerable.Range(0, arrData.Count),
+            new ParallelOptions { MaxDegreeOfParallelism = 8 },
+            async (index, cancellationToken) =>
+            {
+                var str = arrData[index];
+                //maybe sub
+                if (!isSub && (str.StartsWith(Global.HttpsProtocol) || str.StartsWith(Global.HttpProtocol)))
+                {
+                    return;
+                }
+
+                var profileItem = FmtHandler.ResolveConfig(str, out _);
+                if (profileItem is null)
+                {
+                    return;
+                }
+
+                //exist sub items //filter
+                if (isSub && subid.IsNotEmpty() && subFilter.IsNotEmpty())
+                {
+                    if (!Utils.IsRegexMatch(profileItem.Remarks, subFilter))
+                    {
+                        return;
+                    }
+                }
+                profileItem.Subid = subid;
+                profileItem.IsSub = isSub;
+
+                if (dnsClient is not null && profileItem.Address.IsNotEmpty() && !Utils.IsIpAddress(profileItem.Address))
+                {
+                    var address = profileItem.Address;
+                    var resolvedAddress = await dnsCache.GetOrAdd(
+                        address,
+                        key => new Lazy<Task<string>>(async () =>
+                        {
+                            var ipList = await dnsClient.TryResolveIpv46Async(key, cancellationToken);
+                            return ipList.FirstOrDefault()?.ToString() ?? key;
+                        })).Value;
+                    if (!string.IsNullOrEmpty(resolvedAddress))
+                    {
+                        profileItem.Address = resolvedAddress;
+                    }
+                    // host -> serverName -> address
+                    if (!profileItem.StreamSecurity.IsNullOrEmpty()
+                        && profileItem.Sni.IsNullOrEmpty())
+                    {
+                        profileItem.Sni = profileItem.Address;
+                    }
+                    var requestHostTransport = new HashSet<string>
+                    {
+                        nameof(ETransport.ws),
+                        nameof(ETransport.httpupgrade),
+                        nameof(ETransport.xhttp),
+                        //nameof(ETransport.grpc),
+                    };
+                    if (requestHostTransport.Contains(profileItem.GetNetwork())
+                        && profileItem.GetTransportExtra().Host.IsNullOrEmpty())
+                    {
+                        profileItem.SetTransportExtra(profileItem.GetTransportExtra() with
+                        {
+                            Host = profileItem.Sni,
+                        });
+                    }
+                }
+
+                profileItems[index] = profileItem;
+            });
+
+        // Profile validation and sorting mutate shared state, so they stay sequential.
+        foreach (var profileItem in profileItems)
+        {
             if (profileItem is null)
             {
                 continue;
-            }
-
-            //exist sub items //filter
-            if (isSub && subid.IsNotEmpty() && subFilter.IsNotEmpty())
-            {
-                if (!Utils.IsRegexMatch(profileItem.Remarks, subFilter))
-                {
-                    continue;
-                }
-            }
-            profileItem.Subid = subid;
-            profileItem.IsSub = isSub;
-
-            if (dnsClient is not null && profileItem.Address.IsNotEmpty() && !Utils.IsIpAddress(profileItem.Address))
-            {
-                if (!dnsCache.TryGetValue(profileItem.Address, out var resolvedAddress))
-                {
-                    var ipList = await dnsClient.ResolveIpv46Async(profileItem.Address);
-                    resolvedAddress = ipList.FirstOrDefault()?.ToString() ?? profileItem.Address;
-                    dnsCache[profileItem.Address] = resolvedAddress;
-                }
-                if (!resolvedAddress.IsNullOrEmpty())
-                {
-                    profileItem.Address = resolvedAddress;
-                }
-                // TODO: Override the host and sni if empty
             }
 
             var addStatus = profileItem.ConfigType switch
@@ -1771,6 +1819,7 @@ public static class ConfigDbHandler
                     EConfigType.WireGuard => await AddWireguardServer(profileItem, false),
                     EConfigType.Anytls => await AddAnytlsServer(profileItem, false),
                     EConfigType.Naive => await AddNaiveServer(profileItem, false),
+                    EConfigType.MASQUE => await AddMasqueServer(profileItem, false),
                     EConfigType.PolicyGroup or EConfigType.ProxyChain => await AddServerCommon(profileItem, false),
                     EConfigType.Outbound => await AddCustomOutboundServer(profileItem, true, false),
                     _ => -1,

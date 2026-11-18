@@ -4,13 +4,43 @@ namespace ServiceLib.Manager;
 
 public class EndpointResolveManager
 {
-    public static IDnsResolver BuildDnsClient(string dnsServer)
+    /// <summary>
+    ///     Builds a resolver from one or more DNS servers separated by commas.
+    ///     Multiple servers are queried concurrently; the first successful response wins.
+    ///     Invalid entries are skipped, and null is returned when no valid server remains.
+    /// </summary>
+    public static IDnsResolver? BuildDnsClient(string dnsServer)
     {
-        if (string.IsNullOrEmpty(dnsServer))
+        if (string.IsNullOrWhiteSpace(dnsServer))
         {
-            throw new ArgumentNullException(nameof(dnsServer));
+            return null;
         }
 
+        var resolvers = new List<IDnsResolver>();
+        foreach (var server in dnsServer
+                     .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                     .Distinct(StringComparer.OrdinalIgnoreCase))
+        {
+            try
+            {
+                resolvers.Add(BuildSingleDnsClient(server));
+            }
+            catch
+            {
+                // Skip invalid DNS server entries.
+            }
+        }
+
+        return resolvers.Count switch
+        {
+            0 => null,
+            1 => resolvers[0],
+            _ => new MultiDnsResolver(resolvers),
+        };
+    }
+
+    private static IDnsResolver BuildSingleDnsClient(string dnsServer)
+    {
         if (dnsServer is "local" or "localhost" or "system" or "dhcp" ||
             dnsServer.StartsWith("127.0.0.1") ||
             dnsServer.StartsWith("::1"))
@@ -122,7 +152,7 @@ public class EndpointResolveManager
             stream.WriteByte((byte)(value & 0xFF));
         }
 
-        #endregion
+        #endregion Build DNS Query
 
         #region Parse DNS Response
 
@@ -161,7 +191,14 @@ public class EndpointResolveManager
             var rcode = flags & 0x000F;
             if (rcode != 0)
             {
-                return new DnsResponse([], null);
+                // NXDOMAIN is a definitive answer; other codes (SERVFAIL, REFUSED, ...)
+                // mean the server failed or rejected the query, e.g. anti-abuse/rate limiting.
+                if (rcode == 3)
+                {
+                    return new DnsResponse([], null);
+                }
+
+                throw new DnsResolveException($"DNS server returned rcode {rcode}.");
             }
 
             var offset = 12;
@@ -390,7 +427,7 @@ public class EndpointResolveManager
                 data[offset + 1]);
         }
 
-        #endregion
+        #endregion Parse DNS Response
     }
 
     public interface IDnsResolver
@@ -408,6 +445,107 @@ public class EndpointResolveManager
             var ipv6Task = ResolveAsync(host, true, cancellationToken);
             var results = await Task.WhenAll(ipv4Task, ipv6Task);
             return results.SelectMany(x => x).ToList();
+        }
+
+        /// <summary>
+        ///     Resolves without throwing; returns an empty list if all servers fail.
+        /// </summary>
+        public async Task<List<IPAddress>> TryResolveIpv46Async(
+            string host,
+            CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                return await ResolveIpv46Async(host, cancellationToken);
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                throw;
+            }
+            catch
+            {
+                return [];
+            }
+        }
+    }
+
+    public class DnsResolveException(string message) : Exception(message);
+
+    public class MultiDnsResolver(IReadOnlyList<IDnsResolver> resolvers) : IDnsResolver
+    {
+        public Task<List<IPAddress>> ResolveAsync(
+            string host,
+            bool ipv6,
+            CancellationToken cancellationToken = default)
+        {
+            return ResolveCoreAsync((resolver, ct) => resolver.ResolveAsync(host, ipv6, ct), cancellationToken);
+        }
+
+        public Task<List<IPAddress>> ResolveIpv46Async(
+            string host,
+            CancellationToken cancellationToken = default)
+        {
+            return ResolveCoreAsync((resolver, ct) => resolver.ResolveIpv46Async(host, ct), cancellationToken);
+        }
+
+        private async Task<List<IPAddress>> ResolveCoreAsync(
+            Func<IDnsResolver, CancellationToken, Task<List<IPAddress>>> queryAsync,
+            CancellationToken cancellationToken)
+        {
+            using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            var tasks = resolvers
+                .Select(resolver => queryAsync(resolver, linkedCts.Token))
+                .ToList();
+
+            try
+            {
+                var errors = new List<Exception>();
+                var hasResponse = false;
+
+                await foreach (var task in Task.WhenEach(tasks).WithCancellation(linkedCts.Token))
+                {
+                    try
+                    {
+                        var addresses = await task;
+                        hasResponse = true;
+
+                        if (addresses.Count > 0)
+                        {
+                            return addresses;
+                        }
+                    }
+                    catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
+                    {
+                        // Ignore cancellation of the queries that lost the race.
+                    }
+                    catch (Exception ex)
+                    {
+                        errors.Add(ex);
+                    }
+                }
+
+                cancellationToken.ThrowIfCancellationRequested();
+
+                if (!hasResponse && errors.Count > 0)
+                {
+                    throw new AggregateException("All DNS servers failed to resolve the endpoint.", errors);
+                }
+
+                return [];
+            }
+            finally
+            {
+                await linkedCts.CancelAsync();
+
+                try
+                {
+                    await Task.WhenAll(tasks);
+                }
+                catch
+                {
+                    // Results and errors were already handled above.
+                }
+            }
         }
     }
 
@@ -466,36 +604,52 @@ public class EndpointResolveManager
 
     public class DohDnsResolver(HttpClient httpClient, Uri dohServer) : IDnsResolver
     {
+        private const int MaxAttempts = 2;
+        private static readonly TimeSpan DefaultRetryDelay = TimeSpan.FromSeconds(1);
+
         public async Task<List<IPAddress>> ResolveAsync(
             string host,
             bool ipv6,
             CancellationToken cancellationToken = default)
         {
-            return await DnsWire.ResolveWithCnameAsync(
-                host,
-                ipv6,
-                async (name, queryType, ct) =>
+            return await DnsWire.ResolveWithCnameAsync(host, ipv6, SendQueryAsync, cancellationToken);
+        }
+
+        private async Task<byte[]> SendQueryAsync(
+            string name,
+            ushort queryType,
+            CancellationToken cancellationToken)
+        {
+            for (var attempt = 1; ; attempt++)
+            {
+                var query = DnsWire.BuildQuery(name, queryType);
+
+                using var request = new HttpRequestMessage(HttpMethod.Post, dohServer);
+                request.Version = HttpVersion.Version20;
+                request.VersionPolicy = HttpVersionPolicy.RequestVersionOrLower;
+                request.Content = new ByteArrayContent(query)
                 {
-                    var query = DnsWire.BuildQuery(name, queryType);
-
-                    using var request = new HttpRequestMessage(HttpMethod.Post, dohServer);
-                    request.Content = new ByteArrayContent(query)
+                    Headers =
                     {
-                        Headers =
-                        {
-                            ContentType = new MediaTypeHeaderValue("application/dns-message"),
-                        },
-                    };
+                        ContentType = new MediaTypeHeaderValue("application/dns-message"),
+                    },
+                };
 
-                    request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/dns-message"));
+                request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/dns-message"));
 
-                    using var response =
-                        await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct);
-                    response.EnsureSuccessStatusCode();
+                using var response =
+                    await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
 
-                    return await response.Content.ReadAsByteArrayAsync(ct);
-                },
-                cancellationToken);
+                if (response.StatusCode == HttpStatusCode.TooManyRequests && attempt < MaxAttempts)
+                {
+                    await Task.Delay(DefaultRetryDelay, cancellationToken);
+                    continue;
+                }
+
+                response.EnsureSuccessStatusCode();
+
+                return await response.Content.ReadAsByteArrayAsync(cancellationToken);
+            }
         }
     }
 

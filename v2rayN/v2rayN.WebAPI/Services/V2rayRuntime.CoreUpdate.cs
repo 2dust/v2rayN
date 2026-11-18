@@ -16,7 +16,7 @@ public sealed partial class V2rayRuntime
     internal static List<string>? NormalizeWebUpdateTargets(IEnumerable<string>? targets) =>
         targets?.Select(NormalizeWebUpdateTarget).Distinct(StringComparer.Ordinal).ToList();
 
-    private readonly object _updateTaskGate = new();
+    private readonly Lock _updateTaskGate = new();
     private readonly GeoFilesUpdateGate _geoUpdateGate = new();
     private readonly ConcurrentDictionary<ECoreType, Task> _coreUpdateTasks = new();
     private readonly ConcurrentDictionary<string, CoreUpdateProgressView> _updateProgress = new(StringComparer.Ordinal);

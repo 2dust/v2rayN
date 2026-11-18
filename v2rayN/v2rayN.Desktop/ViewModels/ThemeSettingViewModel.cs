@@ -1,6 +1,5 @@
 using Semi.Avalonia;
 
-
 namespace v2rayN.Desktop.ViewModels;
 
 public partial class ThemeSettingViewModel : MyReactiveObject
