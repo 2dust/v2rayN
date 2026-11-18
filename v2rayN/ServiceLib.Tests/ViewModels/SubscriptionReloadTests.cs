@@ -7,6 +7,29 @@ namespace ServiceLib.Tests.ViewModels;
 public class SubscriptionReloadTests
 {
     [Test]
+    [Arguments(true, false, false)]
+    [Arguments(true, true, false)]
+    [Arguments(false, false, null)]
+    [Arguments(false, true, true)]
+    public async Task UpdateCompletionUsesProfileIdForGenericReloadsOnly(
+        bool isSubscription, bool profileIdChanged, bool? expectedForceRestart)
+    {
+        var config = new Config { PreIndexId = "selected", IndexId = profileIdChanged ? "replacement" : "selected" };
+        var requestedReloads = new List<bool>();
+        await MainWindowViewModel.ReloadAfterUpdateAsync(config, forceRestart: !isSubscription, reload: force =>
+        {
+            requestedReloads.Add(force);
+            return Task.CompletedTask;
+        });
+
+        await requestedReloads.Count.Should().BeEqualTo(expectedForceRestart.HasValue ? 1 : 0);
+        if (expectedForceRestart.HasValue)
+        {
+            await requestedReloads[0].Should().BeEqualTo(expectedForceRestart.Value);
+        }
+    }
+
+    [Test]
     public async Task ReusedConfigurationDoesNotReapplyTheSystemProxy()
     {
         await MainWindowViewModel.RunCoreReloadAsync(

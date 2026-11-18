@@ -365,11 +365,7 @@ public partial class MainWindowViewModel : MyReactiveObject
         {
             await RefreshServersDispatcherAsync();
 
-            // Subscription refreshes compare the running configuration regardless of profile ID.
-            if (!forceRestart || _config.IndexId != _config.PreIndexId)
-            {
-                await Reload(forceRestart);
-            }
+            await ReloadAfterUpdateAsync(_config, forceRestart, Reload);
 
             if (_config.UiItem.EnableAutoAdjustMainLvColWidth)
             {
@@ -655,6 +651,11 @@ public partial class MainWindowViewModel : MyReactiveObject
     #region core job
 
     private readonly PendingCoreReload _pendingReload = new();
+
+    // Subscription refreshes compare the running configuration regardless of profile ID.
+    internal static Task ReloadAfterUpdateAsync(Config config, bool forceRestart, Func<bool, Task> reload) =>
+        !forceRestart || config.IndexId != config.PreIndexId ? reload(forceRestart) : Task.CompletedTask;
+
     public Task Reload(bool forceRestart = true)
     {
         if (DesignMode || !_pendingReload.TryStart(forceRestart)) return Task.CompletedTask;
