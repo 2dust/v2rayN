@@ -1971,4 +1971,7 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TransportPathTip6" xml:space="preserve">
     <value>XDRIVE remote folder</value>
   </data>
+  <data name="TbSpeedtestSettings" xml:space="preserve">
+    <value>Speedtest Settings</value>
+  </data>
 </root>

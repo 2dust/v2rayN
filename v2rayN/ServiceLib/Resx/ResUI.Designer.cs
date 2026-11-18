@@ -5167,6 +5167,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Speedtest Settings 的本地化字符串。
+        /// </summary>
+        public static string TbSpeedtestSettings {
+            get {
+                return ResourceManager.GetString("TbSpeedtestSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Spider X 的本地化字符串。
         /// </summary>
         public static string TbSpiderX {

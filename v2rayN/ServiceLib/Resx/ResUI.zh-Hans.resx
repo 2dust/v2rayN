@@ -1963,4 +1963,7 @@
   <data name="TransportPathTip6" xml:space="preserve">
     <value>XDRIVE 远端目录</value>
   </data>
+  <data name="TbSpeedtestSettings" xml:space="preserve">
+    <value>测速设置</value>
+  </data>
 </root>
