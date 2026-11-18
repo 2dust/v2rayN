@@ -170,24 +170,6 @@
                             </StackPanel>
                         </MenuItem.Header>
                     </MenuItem>
-                    <Separator x:Name="sepRoutings" />
-                    <MenuItem
-                        x:Name="menuRoutings"
-                        Height="Auto"
-                        AutomationProperties.Name="{x:Static resx:ResUI.menuRouting}">
-                        <MenuItem.Header>
-                            <DockPanel>
-                                <ComboBox
-                                    x:Name="cmbRoutings"
-                                    MaxWidth="300"
-                                    materialDesign:HintAssist.Hint="{x:Static resx:ResUI.menuRouting}"
-                                    AutomationProperties.Name="{x:Static resx:ResUI.menuRouting}"
-                                    DisplayMemberPath="Remarks"
-                                    FontSize="{DynamicResource StdFontSize}"
-                                    Style="{StaticResource MaterialDesignFilledComboBox}" />
-                            </DockPanel>
-                        </MenuItem.Header>
-                    </MenuItem>
                     <Separator />
                     <MenuItem
                         x:Name="menuAddServerViaClipboard2"

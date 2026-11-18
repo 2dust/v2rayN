@@ -51,10 +51,7 @@ public partial class StatusBarViewModel : MyReactiveObject
     public ReactiveCommand<RxVoid, RxVoid> SystemProxySetCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> SystemProxyNothingCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> SystemProxyPacCmd { get; }
-
-    [Reactive]
-    public partial bool BlRouting { get; set; }
-
+     
     [Reactive]
     public partial int SystemProxySelected { get; set; }
 
@@ -207,8 +204,6 @@ public partial class StatusBarViewModel : MyReactiveObject
         await InboundDisplayStatus();
         // The view refreshes its icon on initialization; interaction handlers are not registered yet.
         await ChangeSystemProxyAsync(_config.SystemProxyItem.SysProxyType, false);
-
-        BlRouting = true;
     }
 
     private async Task CopyProxyCmdToClipboard()
