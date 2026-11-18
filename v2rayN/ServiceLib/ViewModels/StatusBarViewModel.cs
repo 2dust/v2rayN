@@ -1,5 +1,3 @@
-
-
 namespace ServiceLib.ViewModels;
 
 public partial class StatusBarViewModel : MyReactiveObject
@@ -13,7 +11,6 @@ public partial class StatusBarViewModel : MyReactiveObject
     private static readonly Lazy<StatusBarViewModel> _instance = new(() => new());
     public static StatusBarViewModel Instance => _instance.Value;
 
-    public EventChannel<string> SetDefaultServerRequested { get; } = new();
     public EventChannel<RxVoid> ReloadRequested { get; } = new();
     public EventChannel<RxVoid> AddServerViaScanRequested { get; } = new();
     public EventChannel<RxVoid> AddServerViaClipboardRequested { get; } = new();
@@ -22,16 +19,8 @@ public partial class StatusBarViewModel : MyReactiveObject
 
     public BulkObservableCollection<RoutingItem> RoutingItems { get; } = [];
 
-    public BulkObservableCollection<ComboItem> Servers { get; } = [];
-
     [Reactive]
     public partial RoutingItem SelectedRouting { get; set; }
-
-    [Reactive]
-    public partial ComboItem SelectedServer { get; set; }
-
-    [Reactive]
-    public partial bool BlServers { get; set; }
 
     #endregion ObservableCollection
 
@@ -109,7 +98,6 @@ public partial class StatusBarViewModel : MyReactiveObject
     {
         _config = ConfigTextHandler.Config;
         SelectedRouting = new();
-        SelectedServer = new();
         RunningServerToolTipText = GetRunningServerToolTipText("-");
         BlSystemProxyPacVisible = Utils.IsWindows();
         BlIsNonWindows = Utils.IsNonWindows();
@@ -128,10 +116,6 @@ public partial class StatusBarViewModel : MyReactiveObject
         this.WhenAnyValue(x => x.SelectedRouting)
             .Where(y => y != null && !y.Remarks.IsNullOrEmpty())
             .SubscribeAsync(async _ => await RoutingSelectedChangedAsync());
-
-        this.WhenAnyValue(x => x.SelectedServer)
-            .Where(y => y != null && !y.Text.IsNullOrEmpty())
-            .Subscribe(_ => ServerSelectedChanged());
 
         SystemProxySelected = (int)_config.SystemProxyItem.SysProxyType;
         this.WhenAnyValue(x => x.SystemProxySelected)
@@ -264,8 +248,6 @@ public partial class StatusBarViewModel : MyReactiveObject
 
     public async Task RefreshServersBiz()
     {
-        await RefreshServersMenu();
-
         //display running server
         var running = await ConfigTextHandler.GetDefaultServer();
         if (running != null)
@@ -283,38 +265,6 @@ public partial class StatusBarViewModel : MyReactiveObject
     private string GetRunningServerToolTipText(string serverInfo)
     {
         return Utils.IsLinux() ? Global.AppName : serverInfo;
-    }
-
-    private async Task RefreshServersMenu()
-    {
-        var lstModel = await ConfigDbQuery.ProfileModels(_config.SubIndexId, "");
-
-        if (lstModel?.Count > _config.GuiItem.TrayMenuServersLimit)
-        {
-            BlServers = false;
-            return;
-        }
-
-        var models = lstModel.Select(it => new ComboItem { ID = it.IndexId, Text = it.GetSummary() }).ToList();
-
-        BlServers = true;
-        Servers.ReplaceRange(models);
-
-        // Update the ItemsSource before SelectedItem so a collection reset does not clear the tray selection.
-        SelectedServer = models.FirstOrDefault(it => it.ID == _config.IndexId) ?? new();
-    }
-
-    private void ServerSelectedChanged()
-    {
-        if (SelectedServer == null)
-        {
-            return;
-        }
-        if (SelectedServer.ID.IsNullOrEmpty())
-        {
-            return;
-        }
-        SetDefaultServerRequested.Publish(SelectedServer.ID);
     }
 
     public async Task<AvailabilityCheckResult?> TestServerAvailability()

@@ -308,11 +308,6 @@ public partial class MainWindowViewModel : MyReactiveObject
                 await ShowHideWindowInteraction.HandleSafe(blShow);
             });
 
-        StatusBarViewModel.SetDefaultServerRequested
-            .AsObservable()
-            .ObserveOn(RxSchedulers.MainThreadScheduler)
-            .SubscribeAsync(async indexId => await ProfilesViewModel.SetDefaultServer(indexId));
-
         StatusBarViewModel.SubscriptionsUpdateRequested
             .AsObservable()
             .ObserveOn(RxSchedulers.MainThreadScheduler)

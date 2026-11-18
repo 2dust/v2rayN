@@ -741,9 +741,6 @@
   <data name="TbSettingsSystemproxy" xml:space="preserve">
     <value>Paramètres du proxy système</value>
   </data>
-  <data name="TbSettingsTrayMenuServersLimit" xml:space="preserve">
-    <value>Limite du nombre de configurations affichées dans le menu du plateau</value>
-  </data>
   <data name="TbSettingsUdpEnabled" xml:space="preserve">
     <value>Activer l’UDP</value>
   </data>

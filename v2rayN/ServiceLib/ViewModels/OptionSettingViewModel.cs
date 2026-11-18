@@ -53,7 +53,6 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
     [Reactive] public partial bool EnableDragDropSort { get; set; }
     [Reactive] public partial bool DoubleClick2Activate { get; set; }
     [Reactive] public partial int AutoUpdateInterval { get; set; }
-    [Reactive] public partial int TrayMenuServersLimit { get; set; }
     [Reactive] public partial string CurrentFontFamily { get; set; }
     [Reactive] public partial int SpeedTestTimeout { get; set; }
     [Reactive] public partial string SpeedTestUrl { get; set; }
@@ -188,7 +187,6 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         EnableDragDropSort = _config.UiItem.EnableDragDropSort;
         DoubleClick2Activate = _config.UiItem.DoubleClick2Activate;
         AutoUpdateInterval = _config.GuiItem.AutoUpdateInterval;
-        TrayMenuServersLimit = _config.GuiItem.TrayMenuServersLimit;
         CurrentFontFamily = _config.UiItem.CurrentFontFamily;
         SpeedTestTimeout = _config.SpeedTestItem.SpeedTestTimeout;
         SpeedTestUrl = _config.SpeedTestItem.SpeedTestUrl;
@@ -368,7 +366,6 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         _config.GuiItem.AutoUpdateInterval = AutoUpdateInterval;
         _config.UiItem.EnableDragDropSort = EnableDragDropSort;
         _config.UiItem.DoubleClick2Activate = DoubleClick2Activate;
-        _config.GuiItem.TrayMenuServersLimit = TrayMenuServersLimit;
         _config.UiItem.CurrentFontFamily = CurrentFontFamily;
         _config.SpeedTestItem.SpeedTestTimeout = SpeedTestTimeout;
         _config.SpeedTestItem.MixedConcurrencyCount = MixedConcurrencyCount;

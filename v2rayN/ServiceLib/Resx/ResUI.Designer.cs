@@ -4933,15 +4933,6 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Tray right-click menu display limit 的本地化字符串。
-        /// </summary>
-        public static string TbSettingsTrayMenuServersLimit {
-            get {
-                return ResourceManager.GetString("TbSettingsTrayMenuServersLimit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Auto Route 的本地化字符串。
         /// </summary>
         public static string TbSettingsTunAutoRoute {
