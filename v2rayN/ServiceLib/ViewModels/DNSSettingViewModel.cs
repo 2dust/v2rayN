@@ -1,5 +1,3 @@
-
-
 namespace ServiceLib.ViewModels;
 
 public partial class DNSSettingViewModel : MyReactiveObject, ICloseable

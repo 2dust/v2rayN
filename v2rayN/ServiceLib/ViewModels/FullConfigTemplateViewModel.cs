@@ -1,5 +1,3 @@
-
-
 namespace ServiceLib.ViewModels;
 
 public partial class FullConfigTemplateViewModel : MyReactiveObject, ICloseable

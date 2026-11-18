@@ -1138,7 +1138,6 @@
                                 Style="{StaticResource DefTextBox}" />
                         </StackPanel>
                     </materialDesign:PopupBox>
-
                 </Grid>
 
                 <Separator

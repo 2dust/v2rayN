@@ -152,7 +152,7 @@ public class EndpointResolveManager
             stream.WriteByte((byte)(value & 0xFF));
         }
 
-        #endregion
+        #endregion Build DNS Query
 
         #region Parse DNS Response
 
@@ -427,7 +427,7 @@ public class EndpointResolveManager
                 data[offset + 1]);
         }
 
-        #endregion
+        #endregion Parse DNS Response
     }
 
     public interface IDnsResolver
@@ -620,7 +620,7 @@ public class EndpointResolveManager
             ushort queryType,
             CancellationToken cancellationToken)
         {
-            for (var attempt = 1;; attempt++)
+            for (var attempt = 1; ; attempt++)
             {
                 var query = DnsWire.BuildQuery(name, queryType);
 

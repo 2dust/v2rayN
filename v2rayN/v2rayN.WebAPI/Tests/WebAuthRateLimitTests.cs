@@ -146,6 +146,7 @@ public class WebAuthRateLimitTests
             await proxy.StopAsync();
         }
     }
+
     private static WebApplication CreatePartitionTestApp()
     {
         var builder = WebApplication.CreateBuilder();
@@ -198,9 +199,12 @@ public class WebAuthRateLimitTests
     private sealed class FixedProxy(Uri address) : IWebProxy
     {
         public ICredentials? Credentials { get; set; }
+
         public Uri GetProxy(Uri destination) => address;
+
         public bool IsBypassed(Uri host) => false;
     }
+
     private sealed class TemporaryDirectory : IDisposable
     {
         public TemporaryDirectory()

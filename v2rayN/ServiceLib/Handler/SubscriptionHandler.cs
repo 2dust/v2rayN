@@ -1,5 +1,3 @@
-
-
 namespace ServiceLib.Handler;
 
 public class SubscriptionHandler(

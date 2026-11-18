@@ -351,7 +351,9 @@ public class WebRestartCoordinatorTests
         public bool HasExited { get; } = hasExited;
         public bool Killed { get; private set; }
         public bool Disposed { get; private set; }
+
         public void KillTree() => Killed = true;
+
         public void Dispose() => Disposed = true;
     }
 

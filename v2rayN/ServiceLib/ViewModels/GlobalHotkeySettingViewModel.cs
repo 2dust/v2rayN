@@ -1,5 +1,3 @@
-
-
 namespace ServiceLib.ViewModels;
 
 public class GlobalHotkeySettingViewModel : MyReactiveObject, ICloseable

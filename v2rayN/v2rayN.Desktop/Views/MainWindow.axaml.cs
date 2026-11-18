@@ -574,7 +574,6 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                         };
                     }).DisposeWith(currentLayoutDisposables);
                 break;
-
         }
 
         RestoreUI();

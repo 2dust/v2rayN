@@ -51,7 +51,7 @@ public partial class StatusBarViewModel : MyReactiveObject
     public ReactiveCommand<RxVoid, RxVoid> SystemProxySetCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> SystemProxyNothingCmd { get; }
     public ReactiveCommand<RxVoid, RxVoid> SystemProxyPacCmd { get; }
-     
+
     [Reactive]
     public partial int SystemProxySelected { get; set; }
 
