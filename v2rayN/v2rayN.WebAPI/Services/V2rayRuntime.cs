@@ -28,8 +28,8 @@ public sealed partial class V2rayRuntime(
     private readonly SemaphoreSlim _coreGate = new(1, 1);
     private readonly SemaphoreSlim _regionalPresetGate = new(1, 1);
     private readonly SemaphoreSlim _coreMonitorGate = new(1, 1);
-    private readonly object _subscriptionGate = new();
-    private readonly object _speedtestGate = new();
+    private readonly Lock _subscriptionGate = new();
+    private readonly Lock _speedtestGate = new();
     private readonly Dictionary<string, Task> _subscriptionTasks = new(StringComparer.Ordinal);
     private SpeedtestService? _speedtestService;
     private Task? _speedtestTask;
@@ -246,7 +246,7 @@ public sealed partial class V2rayRuntime(
                 Config.Inbound[0].AllowLANConn = allowProxyFromLan;
             }
             await EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig());
-        });
+        }, cancellationToken);
         await ConfigDbHandler.InitBuiltinDNS();
         await BuiltinDnsProfileBootstrap.EnsureAsync(
             async () => await ConfigDbQuery.DNSItems() ?? [],
@@ -268,7 +268,7 @@ public sealed partial class V2rayRuntime(
         }
         var selectedProfileId = Config.IndexId;
         var defaultProfile = await ConfigTextHandler.GetDefaultServer();
-        await _mutations.RunAsync(() => EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig()));
+        await _mutations.RunAsync(() => EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig()), cancellationToken);
         await ProfileExManager.Instance.Init();
         await CertPemManager.Instance.Init(Config);
         // The Web frontend owns its runtime and rejects generated launch contexts that enable TUN.
@@ -780,7 +780,7 @@ public sealed partial class V2rayRuntime(
             {
                 Config.IndexId = profile.IndexId;
                 await EnsureConfigSaveSucceededAsync(() => ConfigTextHandler.SaveConfig());
-            });
+            }, cancellationToken);
         }
 
         return await LaunchPreflightedCoreLockedAsync(preflight, cancellationToken);
