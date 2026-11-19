@@ -22,6 +22,7 @@ public class Config
     public UIItem UiItem { get; set; }
     public ConstItem ConstItem { get; set; }
     public SpeedTestItem SpeedTestItem { get; set; }
+    public AutoSwitchItem AutoSwitchItem { get; set; }
     public Mux4RayItem Mux4RayItem { get; set; }
     public Mux4SboxItem Mux4SboxItem { get; set; }
     public HysteriaItem HysteriaItem { get; set; }

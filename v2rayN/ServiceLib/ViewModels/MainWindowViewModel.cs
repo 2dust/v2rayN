@@ -281,6 +281,7 @@ public partial class MainWindowViewModel : MyReactiveObject
             ProfilesViewModel.ReloadRequested.AsObservable(),
             StatusBarViewModel.ReloadRequested.AsObservable(),
             CheckUpdateViewModel.ReloadRequested.AsObservable(),
+            AutoSwitchManager.Instance.ReloadRequested.AsObservable(),
         };
 
         foreach (var reloadRequested in vmReloadRequestedList)
@@ -332,6 +333,7 @@ public partial class MainWindowViewModel : MyReactiveObject
         await CoreManager.Instance.Init(_config, UpdateHandler);
         await CertPemManager.Instance.Init(_config);
         TaskManager.Instance.RegUpdateTask(_config, UpdateTaskHandler);
+        await AutoSwitchManager.Instance.Init(_config);
 
         if (_config.GuiItem.EnableStatistics || _config.GuiItem.DisplayRealTimeSpeed)
         {

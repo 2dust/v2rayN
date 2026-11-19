@@ -70,6 +70,8 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
     [Reactive] public partial string UdpTestTarget { get; set; }
     [Reactive] public partial int MixedConcurrencyCount { get; set; }
     [Reactive] public partial string IPAPIUrl { get; set; }
+    [Reactive] public partial bool EnableAutoSwitch { get; set; }
+    [Reactive] public partial int AutoSwitchInterval { get; set; }
 
     #endregion SpeedTest
 
@@ -209,6 +211,8 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         SpeedPingTestUrl = _config.SpeedTestItem.SpeedPingTestUrl;
         UdpTestTarget = _config.SpeedTestItem.UdpTestTarget;
         IPAPIUrl = _config.SpeedTestItem.IPAPIUrl;
+        EnableAutoSwitch = _config.AutoSwitchItem.EnableAutoSwitch;
+        AutoSwitchInterval = _config.AutoSwitchItem.AutoSwitchInterval;
 
         #endregion SpeedTest
 
@@ -390,6 +394,8 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         _config.SpeedTestItem.SpeedPingTestUrl = SpeedPingTestUrl;
         _config.SpeedTestItem.UdpTestTarget = UdpTestTarget;
         _config.SpeedTestItem.IPAPIUrl = IPAPIUrl;
+        _config.AutoSwitchItem.EnableAutoSwitch = EnableAutoSwitch;
+        _config.AutoSwitchItem.AutoSwitchInterval = Math.Max(AutoSwitchInterval, 3);
 
         //systemProxy
         _config.SystemProxyItem.SystemProxyExceptions = SystemProxyExceptions;

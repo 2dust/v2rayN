@@ -4852,6 +4852,24 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Auto Switch Test Interval (min) 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsAutoSwitchInterval {
+            get {
+                return ResourceManager.GetString("TbSettingsAutoSwitchInterval", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Auto Switch to Lowest Latency Server 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsEnableAutoSwitch {
+            get {
+                return ResourceManager.GetString("TbSettingsEnableAutoSwitch", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   查找类似 Speed Test Single Timeout Value 的本地化字符串。
         /// </summary>
         public static string TbSettingsSpeedTestTimeout {

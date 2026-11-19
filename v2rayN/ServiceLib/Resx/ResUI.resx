@@ -951,6 +951,12 @@
   <data name="TbSettingsFontSize" xml:space="preserve">
     <value>Font Size</value>
   </data>
+  <data name="TbSettingsAutoSwitchInterval" xml:space="preserve">
+    <value>Auto Switch Test Interval (min)</value>
+  </data>
+  <data name="TbSettingsEnableAutoSwitch" xml:space="preserve">
+    <value>Auto Switch to Lowest Latency Server</value>
+  </data>
   <data name="TbSettingsSpeedTestTimeout" xml:space="preserve">
     <value>Speed Test Single Timeout Value</value>
   </data>

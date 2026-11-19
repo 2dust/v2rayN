@@ -118,6 +118,8 @@ public partial class OptionSettingWindow
             this.Bind(ViewModel, vm => vm.SpeedPingTestUrl, v => v.cmbSpeedPingTestUrl.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.UdpTestTarget, v => v.cmbUdpTestTarget.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.MixedConcurrencyCount, v => v.cmbMixedConcurrencyCount.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.EnableAutoSwitch, v => v.togEnableAutoSwitch.IsChecked).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.AutoSwitchInterval, v => v.txtAutoSwitchInterval.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.IPAPIUrl, v => v.cmbIPAPIUrl.Text).DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.NotProxyLocalAddress, v => v.tognotProxyLocalAddress.IsChecked).DisposeWith(disposables);

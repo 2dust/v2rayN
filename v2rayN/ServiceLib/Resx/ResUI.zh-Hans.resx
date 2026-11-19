@@ -951,6 +951,12 @@
   <data name="TbSettingsFontSize" xml:space="preserve">
     <value>字体大小</value>
   </data>
+  <data name="TbSettingsAutoSwitchInterval" xml:space="preserve">
+    <value>自动测速切换间隔（分钟）</value>
+  </data>
+  <data name="TbSettingsEnableAutoSwitch" xml:space="preserve">
+    <value>自动切换到最低延迟节点</value>
+  </data>
   <data name="TbSettingsSpeedTestTimeout" xml:space="preserve">
     <value>测速单个超时值</value>
   </data>

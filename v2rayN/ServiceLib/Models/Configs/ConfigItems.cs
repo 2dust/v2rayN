@@ -155,6 +155,12 @@ public class SpeedTestItem
     public int? SpeedTestDelayInterval { get; set; }
 }
 
+public class AutoSwitchItem
+{
+    public bool EnableAutoSwitch { get; set; }
+    public int AutoSwitchInterval { get; set; } = 10;
+}
+
 public class RoutingBasicItem
 {
     public string DomainStrategy { get; set; }

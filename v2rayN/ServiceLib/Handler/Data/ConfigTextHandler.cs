@@ -175,6 +175,16 @@ public static class ConfigTextHandler
             config.SpeedTestItem.UdpTestTarget = Global.UdpTestTargets.First();
         }
 
+        config.AutoSwitchItem ??= new();
+        if (config.AutoSwitchItem.AutoSwitchInterval <= 0)
+        {
+            config.AutoSwitchItem.AutoSwitchInterval = 10;
+        }
+        else if (config.AutoSwitchItem.AutoSwitchInterval < 3)
+        {
+            config.AutoSwitchItem.AutoSwitchInterval = 3;
+        }
+
         config.Mux4RayItem ??= new()
         {
             Concurrency = 8,
