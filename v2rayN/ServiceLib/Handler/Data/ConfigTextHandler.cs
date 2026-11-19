@@ -176,6 +176,21 @@ public static class ConfigTextHandler
         }
 
         config.AutoSwitchItem ??= new();
+        if (config.AutoSwitchItem.Strategy is null)
+        {
+            // Migrate configs written before the strategy existed: the legacy
+            // enable flag mapped to the global-fastest behavior.
+            config.AutoSwitchItem.Strategy = (int)config.AutoSwitchItem.GetStrategy();
+        }
+        else
+        {
+            if (config.AutoSwitchItem.Strategy is < (int)EAutoSwitchStrategy.Off or > (int)EAutoSwitchStrategy.Global)
+            {
+                config.AutoSwitchItem.Strategy = (int)EAutoSwitchStrategy.Off;
+            }
+            // Keep the legacy flag in sync for anything still reading it.
+            config.AutoSwitchItem.EnableAutoSwitch = config.AutoSwitchItem.Strategy != (int)EAutoSwitchStrategy.Off;
+        }
         if (config.AutoSwitchItem.AutoSwitchInterval <= 0)
         {
             config.AutoSwitchItem.AutoSwitchInterval = 10;

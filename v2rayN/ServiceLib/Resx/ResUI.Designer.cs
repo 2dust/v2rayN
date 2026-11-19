@@ -4861,11 +4861,11 @@ namespace ServiceLib.Resx {
         }
 
         /// <summary>
-        ///   查找类似 Auto Switch to Lowest Latency Server 的本地化字符串。
+        ///   查找类似 Auto Switch Strategy 的本地化字符串。
         /// </summary>
-        public static string TbSettingsEnableAutoSwitch {
+        public static string TbSettingsAutoSwitchStrategy {
             get {
-                return ResourceManager.GetString("TbSettingsEnableAutoSwitch", resourceCulture);
+                return ResourceManager.GetString("TbSettingsAutoSwitchStrategy", resourceCulture);
             }
         }
 

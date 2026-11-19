@@ -1072,13 +1072,15 @@
                             Margin="{StaticResource Margin8}"
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsEnableAutoSwitch}" />
-                        <ToggleButton
-                            x:Name="togEnableAutoSwitch"
+                            Text="{x:Static resx:ResUI.TbSettingsAutoSwitchStrategy}" />
+                        <ComboBox
+                            x:Name="cmbAutoSwitchStrategy"
                             Grid.Row="7"
                             Grid.Column="1"
+                            Width="200"
                             Margin="{StaticResource Margin8}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            Style="{StaticResource DefComboBox}" />
 
                         <TextBlock
                             Grid.Row="8"

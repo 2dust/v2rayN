@@ -158,7 +158,30 @@ public class SpeedTestItem
 public class AutoSwitchItem
 {
     public bool EnableAutoSwitch { get; set; }
+
+    /// <summary>
+    /// Switch strategy as <see cref="EAutoSwitchStrategy"/> value. Nullable so
+    /// that configs written before the strategy existed can be told apart and
+    /// migrated from <see cref="EnableAutoSwitch"/> on load.
+    /// </summary>
+    public int? Strategy { get; set; }
+
     public int AutoSwitchInterval { get; set; } = 10;
+
+    /// <summary>
+    /// Resolves the effective strategy: the stored <see cref="Strategy"/> when
+    /// present and valid, otherwise the legacy <see cref="EnableAutoSwitch"/>
+    /// flag (enabled meant the global-fastest behavior).
+    /// </summary>
+    public EAutoSwitchStrategy GetStrategy()
+    {
+        if (Strategy is { } value && value is >= (int)EAutoSwitchStrategy.Off and <= (int)EAutoSwitchStrategy.Global)
+        {
+            return (EAutoSwitchStrategy)value;
+        }
+
+        return EnableAutoSwitch ? EAutoSwitchStrategy.Global : EAutoSwitchStrategy.Off;
+    }
 }
 
 public class RoutingBasicItem

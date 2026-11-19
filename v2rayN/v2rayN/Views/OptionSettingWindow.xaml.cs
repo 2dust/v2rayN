@@ -59,6 +59,7 @@ public partial class OptionSettingWindow
         txtbindInterface.ItemsSource = NetworkUtils.GetBindInterfaceNames();
 
         cmbMainGirdOrientation.ItemsSource = Utils.GetEnumNames<EGirdOrientation>();
+        cmbAutoSwitchStrategy.ItemsSource = new[] { "Off", "Failover only", "Same region fastest", "Global fastest" };
 
         _ = InitSettingFont();
 
@@ -118,7 +119,7 @@ public partial class OptionSettingWindow
             this.Bind(ViewModel, vm => vm.SpeedPingTestUrl, v => v.cmbSpeedPingTestUrl.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.UdpTestTarget, v => v.cmbUdpTestTarget.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.MixedConcurrencyCount, v => v.cmbMixedConcurrencyCount.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, vm => vm.EnableAutoSwitch, v => v.togEnableAutoSwitch.IsChecked).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.AutoSwitchStrategy, v => v.cmbAutoSwitchStrategy.SelectedIndex).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.AutoSwitchInterval, v => v.txtAutoSwitchInterval.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.IPAPIUrl, v => v.cmbIPAPIUrl.Text).DisposeWith(disposables);
 

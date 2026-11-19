@@ -954,8 +954,8 @@
   <data name="TbSettingsAutoSwitchInterval" xml:space="preserve">
     <value>Auto Switch Test Interval (min)</value>
   </data>
-  <data name="TbSettingsEnableAutoSwitch" xml:space="preserve">
-    <value>Auto Switch to Lowest Latency Server</value>
+  <data name="TbSettingsAutoSwitchStrategy" xml:space="preserve">
+    <value>Auto Switch Strategy</value>
   </data>
   <data name="TbSettingsSpeedTestTimeout" xml:space="preserve">
     <value>Speed Test Single Timeout Value</value>
