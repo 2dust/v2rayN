@@ -535,8 +535,8 @@ try {
         Download-RuleAssets $binSource
         foreach ($flavor in $flavors) {
             $script:Stage = "Publishing $flavor $arch"
-            $project = if ($flavor -eq 'wpf') { 'v2rayN/v2rayN/v2rayN.csproj' } else { 'v2rayN/v2rayN.Desktop/v2rayN.Desktop.csproj' }
-            $iconSource = if ($flavor -eq 'wpf') { 'v2rayN/v2rayN/Resources/v2rayN.ico' } else { 'v2rayN/v2rayN.Desktop/Assets/v2rayN.ico' }
+            $project = if ($flavor -eq 'wpf') { 'v2rayN/v2rayN.Windows/v2rayN.Windows.csproj' } else { 'v2rayN/v2rayN.Desktop/v2rayN.Desktop.csproj' }
+            $iconSource = if ($flavor -eq 'wpf') { 'v2rayN/v2rayN.Windows/Resources/v2rayN.ico' } else { 'v2rayN/v2rayN.Desktop/Assets/v2rayN.ico' }
             $out = Join-Path $work "publish-$flavor-$arch"
             if (Test-Path $out) { Remove-Item -LiteralPath $out -Recurse -Force }
             New-Item -ItemType Directory -Force -Path $out | Out-Null

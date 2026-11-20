@@ -113,7 +113,7 @@ jobs:
 
     - name: Build v2rayN WPF
       shell: bash
-      if: inputs.project == './v2rayN/v2rayN.csproj'
+      if: inputs.project == './v2rayN.Windows/v2rayN.Windows.csproj'
       working-directory: ./v2rayN
       run: dotnet publish $Project -c Release -r $RID -p:SelfContained=true $ExtOpt -o ${{ env.OUTPUT }}
 

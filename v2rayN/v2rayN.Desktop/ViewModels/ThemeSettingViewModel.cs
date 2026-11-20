@@ -119,7 +119,7 @@ public partial class ThemeSettingViewModel : MyReactiveObject
 
         try
         {
-            Application.Current!.Resources["AppFontFamily"] = new FontFamily(currentFontFamily);;
+            Application.Current!.Resources["AppFontFamily"] = new FontFamily(currentFontFamily);
         }
         catch (Exception ex)
         {

@@ -19,7 +19,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       target: windows
-      project: ./v2rayN/v2rayN.csproj
+      project: ./v2rayN.Windows/v2rayN.Windows.csproj
 
   release-zip:
     if: inputs.release_tag != ''
