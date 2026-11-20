@@ -325,6 +325,11 @@ public partial class MainWindowViewModel : MyReactiveObject
             return;
         }
 
+        if (Utils.IsWindows())
+        {
+            _ = Task.Run(() => AutoStartupHandler.CleanupDuplicateAutoRun(_config));
+        }
+
         //await ConfigHandler.InitBuiltinRouting(_config);
         await ConfigDbHandler.InitBuiltinDNS();
         await ConfigDbHandler.InitBuiltinFullConfigTemplate();

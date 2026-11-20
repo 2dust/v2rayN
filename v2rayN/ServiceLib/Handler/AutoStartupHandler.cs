@@ -1,3 +1,5 @@
+using Microsoft.Win32;
+
 namespace ServiceLib.Handler;
 
 public static class AutoStartupHandler
@@ -8,7 +10,7 @@ public static class AutoStartupHandler
     {
         if (Utils.IsWindows())
         {
-            await ClearTaskWindows();
+            await ClearTaskWindows(config.GuiItem.AutoRun);
 
             if (config.GuiItem.AutoRun)
             {
@@ -39,17 +41,116 @@ public static class AutoStartupHandler
 
     #region Windows
 
-    [SupportedOSPlatform("windows")]
-    private static async Task ClearTaskWindows()
+    /// <summary>
+    /// Remove duplicate auto-start entries for this installation. Two entries would launch two
+    /// instances at logon; the second instance then activates the first one and defeats the
+    /// "auto hide on startup" option.
+    /// </summary>
+    public static async Task CleanupDuplicateAutoRun(Config config)
     {
+        if (!Utils.IsWindows())
+        {
+            return;
+        }
+
+        try
+        {
+            var count = GetCurrentAutoRunRegistryValueNames().Count;
+            if (ScheduledTaskExists(GetAutoRunNameWindows()))
+            {
+                count++;
+            }
+            if (config.GuiItem.AutoRun ? count > 1 : count > 0)
+            {
+                await UpdateTask(config);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+    }
+
+    [SupportedOSPlatform("windows")]
+    private static async Task ClearTaskWindows(bool autoRun)
+    {
+        ClearAutoRunRegistryValues();
+
         var autoRunName = GetAutoRunNameWindows();
-        WindowsUtils.RegWriteValue(Global.AutoRunRegPath, autoRunName, "");
-        if (Utils.IsAdministrator())
+        if (!autoRun && ScheduledTaskExists(autoRunName))
         {
             AutoStartTaskService(autoRunName, "", "");
         }
 
         await Task.CompletedTask;
+    }
+
+    [SupportedOSPlatform("windows")]
+    private static List<string> GetCurrentAutoRunRegistryValueNames()
+    {
+        var lst = new List<string>();
+        try
+        {
+            var currentName = GetAutoRunNameWindows();
+            var exePath = Utils.GetExePath();
+            using var regKey = Registry.CurrentUser.OpenSubKey(Global.AutoRunRegPath, false);
+            if (regKey == null)
+            {
+                return lst;
+            }
+
+            foreach (var valueName in regKey.GetValueNames())
+            {
+                if (!valueName.StartsWith($"{Global.AutoRunName}_", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                var value = regKey.GetValue(valueName) as string;
+                if (valueName.Equals(currentName, StringComparison.OrdinalIgnoreCase)
+                    || IsSameExe(value, exePath))
+                {
+                    lst.Add(valueName);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
+        return lst;
+    }
+
+    private static bool IsSameExe(string? commandLine, string exePath)
+    {
+        if (commandLine.IsNullOrEmpty())
+        {
+            return false;
+        }
+        return commandLine.Trim().Trim('"').Equals(exePath, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [SupportedOSPlatform("windows")]
+    private static void ClearAutoRunRegistryValues()
+    {
+        try
+        {
+            var valueNames = GetCurrentAutoRunRegistryValueNames();
+            using var regKey = Registry.CurrentUser.OpenSubKey(Global.AutoRunRegPath, true);
+            if (regKey == null)
+            {
+                return;
+            }
+
+            foreach (var valueName in valueNames)
+            {
+                regKey.DeleteValue(valueName, false);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logging.SaveLog(_tag, ex);
+        }
     }
 
     [SupportedOSPlatform("windows")]
@@ -63,8 +164,9 @@ public static class AutoStartupHandler
             {
                 AutoStartTaskService(autoRunName, exePath, "");
             }
-            else
+            else if (!ScheduledTaskExists(autoRunName))
             {
+                // If an elevated task already exists, adding a Run entry would start the app twice at logon.
                 WindowsUtils.RegWriteValue(Global.AutoRunRegPath, autoRunName, exePath.AppendQuotes());
             }
         }
@@ -122,10 +224,9 @@ public static class AutoStartupHandler
             return;
         }
 
-        RunSchtasks($"/Delete /TN \"{taskName}\" /F");
-
         if (string.IsNullOrEmpty(fileName))
         {
+            RunSchtasks("/Delete", "/TN", taskName, "/F");
             return;
         }
 
@@ -153,6 +254,11 @@ public static class AutoStartupHandler
 
     private static bool RunSchtasks(params string[] arguments)
     {
+        return RunSchtasks(true, arguments);
+    }
+
+    private static bool RunSchtasks(bool logError, params string[] arguments)
+    {
         var psi = new ProcessStartInfo
         {
             FileName = "schtasks.exe",
@@ -174,20 +280,31 @@ public static class AutoStartupHandler
             return false;
         }
 
+        var outputTask = process.StandardOutput.ReadToEndAsync();
+        var errorTask = process.StandardError.ReadToEndAsync();
         process.WaitForExit();
 
-        var output = process.StandardOutput.ReadToEnd();
-        var error = process.StandardError.ReadToEnd();
-        if (!string.IsNullOrEmpty(output))
+        var output = outputTask.GetAwaiter().GetResult();
+        var error = errorTask.GetAwaiter().GetResult();
+        if (logError)
         {
-            Logging.SaveLog($"RunSchtasks output: {output}");
-        }
-        if (!string.IsNullOrEmpty(error))
-        {
-            Logging.SaveLog($"RunSchtasks error: {error}");
+            if (!string.IsNullOrEmpty(output))
+            {
+                Logging.SaveLog($"RunSchtasks output: {output}");
+            }
+            if (!string.IsNullOrEmpty(error))
+            {
+                Logging.SaveLog($"RunSchtasks error: {error}");
+            }
         }
 
         return process.ExitCode == 0;
+    }
+
+    [SupportedOSPlatform("windows")]
+    private static bool ScheduledTaskExists(string taskName)
+    {
+        return RunSchtasks(false, "/Query", "/TN", taskName, "/FO", "CSV", "/NH");
     }
 
     private static string GetAutoRunNameWindows()
