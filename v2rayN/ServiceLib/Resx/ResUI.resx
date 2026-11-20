@@ -957,6 +957,18 @@
   <data name="TbSettingsAutoSwitchStrategy" xml:space="preserve">
     <value>Auto Switch Strategy</value>
   </data>
+  <data name="AutoSwitchStrategyOff" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="AutoSwitchStrategyFailoverOnly" xml:space="preserve">
+    <value>Failover only</value>
+  </data>
+  <data name="AutoSwitchStrategySameRegion" xml:space="preserve">
+    <value>Same region fastest</value>
+  </data>
+  <data name="AutoSwitchStrategyGlobal" xml:space="preserve">
+    <value>Global fastest</value>
+  </data>
   <data name="TbSettingsSpeedTestTimeout" xml:space="preserve">
     <value>Speed Test Single Timeout Value</value>
   </data>

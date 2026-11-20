@@ -59,7 +59,7 @@ public partial class OptionSettingWindow
         txtbindInterface.ItemsSource = NetworkUtils.GetBindInterfaceNames();
 
         cmbMainGirdOrientation.ItemsSource = Utils.GetEnumNames<EGirdOrientation>();
-        cmbAutoSwitchStrategy.ItemsSource = new[] { "Off", "Failover only", "Same region fastest", "Global fastest" };
+        cmbAutoSwitchStrategy.ItemsSource = new[] { ResUI.AutoSwitchStrategyOff, ResUI.AutoSwitchStrategyFailoverOnly, ResUI.AutoSwitchStrategySameRegion, ResUI.AutoSwitchStrategyGlobal };
 
         _ = InitSettingFont();
 

@@ -4852,6 +4852,42 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Off 的本地化字符串。
+        /// </summary>
+        public static string AutoSwitchStrategyOff {
+            get {
+                return ResourceManager.GetString("AutoSwitchStrategyOff", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Failover only 的本地化字符串。
+        /// </summary>
+        public static string AutoSwitchStrategyFailoverOnly {
+            get {
+                return ResourceManager.GetString("AutoSwitchStrategyFailoverOnly", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Same region fastest 的本地化字符串。
+        /// </summary>
+        public static string AutoSwitchStrategySameRegion {
+            get {
+                return ResourceManager.GetString("AutoSwitchStrategySameRegion", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   查找类似 Global fastest 的本地化字符串。
+        /// </summary>
+        public static string AutoSwitchStrategyGlobal {
+            get {
+                return ResourceManager.GetString("AutoSwitchStrategyGlobal", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   查找类似 Auto Switch Test Interval (min) 的本地化字符串。
         /// </summary>
         public static string TbSettingsAutoSwitchInterval {

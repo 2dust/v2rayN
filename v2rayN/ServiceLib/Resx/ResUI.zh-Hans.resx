@@ -957,6 +957,18 @@
   <data name="TbSettingsAutoSwitchStrategy" xml:space="preserve">
     <value>自动切换策略</value>
   </data>
+  <data name="AutoSwitchStrategyOff" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="AutoSwitchStrategyFailoverOnly" xml:space="preserve">
+    <value>仅故障时切换</value>
+  </data>
+  <data name="AutoSwitchStrategySameRegion" xml:space="preserve">
+    <value>同地区最快</value>
+  </data>
+  <data name="AutoSwitchStrategyGlobal" xml:space="preserve">
+    <value>全局最快</value>
+  </data>
   <data name="TbSettingsSpeedTestTimeout" xml:space="preserve">
     <value>测速单个超时值</value>
   </data>

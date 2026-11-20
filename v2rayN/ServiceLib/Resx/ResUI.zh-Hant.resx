@@ -1975,4 +1975,16 @@
   <data name="TbSpeedtestSettings" xml:space="preserve">
     <value>測速設定</value>
   </data>
+  <data name="AutoSwitchStrategyOff" xml:space="preserve">
+    <value>關閉</value>
+  </data>
+  <data name="AutoSwitchStrategyFailoverOnly" xml:space="preserve">
+    <value>僅故障時切換</value>
+  </data>
+  <data name="AutoSwitchStrategySameRegion" xml:space="preserve">
+    <value>同地區最快</value>
+  </data>
+  <data name="AutoSwitchStrategyGlobal" xml:space="preserve">
+    <value>全域最快</value>
+  </data>
 </root>
