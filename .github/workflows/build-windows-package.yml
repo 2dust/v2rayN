@@ -7,9 +7,6 @@ on:
         description: 'Existing Git tag to publish the installers to (leave blank to build only)'
         required: false
         type: string
-  push:
-    branches:
-      - master
 
 permissions:
   contents: write
