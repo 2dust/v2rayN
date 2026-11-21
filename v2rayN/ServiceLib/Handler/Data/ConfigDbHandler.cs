@@ -1105,12 +1105,24 @@ public static class ConfigDbHandler
     /// null if no match is found or if either parameter is null.</returns>
     private static ProfileItem? FindMatchedProfileItem(IEnumerable<ProfileItem>? source, ProfileItem? target)
     {
-        if (source == null || target == null)
+        return FindMatchedProfileItem(source, source, target);
+    }
+
+    /// <summary>
+    /// Same as <see cref="FindMatchedProfileItem(IEnumerable{ProfileItem}?, ProfileItem?)"/>, with the source already
+    /// narrowed to the items each step can match, so that matching a whole list does not scan the source for every item.
+    /// </summary>
+    /// <param name="sameRemarks">Source items whose remarks equal the target's (null counts as empty), in source order.</param>
+    /// <param name="sameAddress">Source items whose trimmed address equals the target's, ignoring case, in source order.</param>
+    /// <param name="target">The profile item to match.</param>
+    private static ProfileItem? FindMatchedProfileItem(IEnumerable<ProfileItem>? sameRemarks, IEnumerable<ProfileItem>? sameAddress, ProfileItem? target)
+    {
+        if (sameRemarks == null || sameAddress == null || target == null)
         {
             return null;
         }
 
-        var matchedItem = source.FirstOrDefault(t => CompareProfileItem(t, target, true));
+        var matchedItem = sameRemarks.FirstOrDefault(t => CompareProfileItem(t, target, true));
         if (matchedItem != null)
         {
             return matchedItem;
@@ -1118,7 +1130,7 @@ public static class ConfigDbHandler
 
         if (target.Remarks.IsNotEmpty())
         {
-            matchedItem = source.FirstOrDefault(t => t.Remarks == target.Remarks);
+            matchedItem = sameRemarks.FirstOrDefault(t => t.Remarks == target.Remarks);
             if (matchedItem != null)
             {
                 return matchedItem;
@@ -1127,7 +1139,7 @@ public static class ConfigDbHandler
 
         if (target.Address.IsNotEmpty() && target.Port > 0 && target.Password.IsNotEmpty())
         {
-            matchedItem = source.FirstOrDefault(t =>
+            matchedItem = sameAddress.FirstOrDefault(t =>
                 IsSameText(t.Address, target.Address) &&
                 t.Port == target.Port &&
                 IsSameText(t.Password, target.Password));
@@ -1139,7 +1151,7 @@ public static class ConfigDbHandler
 
         if (target.Address.IsNotEmpty() && target.Port > 0)
         {
-            matchedItem = source.FirstOrDefault(t =>
+            matchedItem = sameAddress.FirstOrDefault(t =>
                 IsSameText(t.Address, target.Address) &&
                 t.Port == target.Port);
             if (matchedItem != null)
@@ -1150,7 +1162,7 @@ public static class ConfigDbHandler
 
         if (target.Address.IsNotEmpty())
         {
-            matchedItem = source.FirstOrDefault(t => IsSameText(t.Address, target.Address));
+            matchedItem = sameAddress.FirstOrDefault(t => IsSameText(t.Address, target.Address));
             if (matchedItem != null)
             {
                 return matchedItem;
@@ -1940,10 +1952,13 @@ public static class ConfigDbHandler
         //Keep the last traffic statistics
         if (lstOriSub != null)
         {
+            //Group the old servers once, instead of scanning all of them for every new server
+            var oriByRemarks = lstOriSub.ToLookup(t => t.Remarks ?? string.Empty);
+            var oriByAddress = lstOriSub.Where(t => t.Address.IsNotEmpty()).ToLookup(t => t.Address.TrimEx(), StringComparer.OrdinalIgnoreCase);
             var lstSub = await ConfigDbQuery.ProfileItems(subid);
             foreach (var item in lstSub)
             {
-                var existItem = FindMatchedProfileItem(lstOriSub, item);
+                var existItem = FindMatchedProfileItem(oriByRemarks[item.Remarks ?? string.Empty], oriByAddress[item.Address.TrimEx()], item);
                 if (existItem != null)
                 {
                     await StatisticsManager.Instance.CloneServerStatItem(existItem.IndexId, item.IndexId);
