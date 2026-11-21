@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux" />
         <PackageReference Include="TUnit" />
         <PackageReference Include="TUnit.Assertions.Should" />
     </ItemGroup>
