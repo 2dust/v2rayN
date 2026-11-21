@@ -23,6 +23,7 @@ public sealed class SQLiteHelper
             .UseGeneratedMaterializers()
             .Build();
         _db = new SQLiteDatabase(options);
+        _db.Pragmas.BusyTimeout = 1000;
     }
 
     public int CreateTable<[DynamicallyAccessedMembers(
