@@ -190,8 +190,23 @@ public sealed class AppManager
             return (ECoreType)profileItem.CoreType;
         }
 
-        var item = CurrentConfig.CoreTypeItem?.FirstOrDefault(it => it.ConfigType == eConfigType);
-        return item?.CoreType ?? ECoreType.Xray;
+        var coreType = CurrentConfig.CoreTypeItem?.FirstOrDefault(it => it.ConfigType == eConfigType)?.CoreType
+                       ?? ECoreType.Xray;
+
+        // Recent Xray versions cannot honor a request to skip TLS verification.
+        // Keep Xray when the profile specifies certificate verification or a custom Finalmask.
+        if (coreType == ECoreType.Xray
+            && eConfigType == EConfigType.Hysteria2
+            && profileItem is { StreamSecurity: Global.StreamSecurity }
+            && profileItem.GetAllowInsecure()
+            && profileItem.Cert.IsNullOrEmpty()
+            && profileItem.CertSha.IsNullOrEmpty()
+            && profileItem.VerifyPeerCertByName.IsNullOrEmpty()
+            && profileItem.Finalmask.IsNullOrEmpty())
+        {
+            return ECoreType.sing_box;
+        }
+        return coreType;
     }
 
     #endregion Core Type
