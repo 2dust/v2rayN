@@ -464,8 +464,11 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                         }
                         else
                         {
-                            tabStripH.IsVisible = false;
-                            tabStripH.ItemsSource = new List<string>();
+                            tabStripH.ItemsSource = new List<string>
+                            {
+                                ResUI.MsgInformationTitle,
+                            };
+                            tabStripH.IsVisible = true;
                         }
                     }).DisposeWith(currentLayoutDisposables);
                 tabStripH.GetObservable(SelectingItemsControl.SelectedIndexProperty)
@@ -511,8 +514,11 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                         }
                         else
                         {
-                            tabStripV.IsVisible = false;
-                            tabStripV.ItemsSource = new List<string>();
+                            tabStripV.ItemsSource = new List<string>
+                            {
+                                ResUI.MsgInformationTitle,
+                            };
+                            tabStripV.IsVisible = true;
                         }
                     }).DisposeWith(currentLayoutDisposables);
                 tabStripV.GetObservable(SelectingItemsControl.SelectedIndexProperty)
@@ -558,8 +564,12 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
                         }
                         else
                         {
-                            tabStripV.IsVisible = false;
-                            tabStripV.ItemsSource = new List<string>();
+                            tabStripV.ItemsSource = new List<string>
+                            {
+                                ResUI.menuServers,
+                                ResUI.MsgInformationTitle,
+                            };
+                            tabStripV.IsVisible = true;
                         }
                     }).DisposeWith(currentLayoutDisposables);
                 tabStripV.GetObservable(SelectingItemsControl.SelectedIndexProperty)
