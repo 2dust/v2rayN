@@ -398,16 +398,6 @@ public class Global
 
     public static readonly HashSet<EConfigType> SingboxOnlyConfigType = SingboxSupportConfigType.Except(XraySupportConfigType).ToHashSet();
 
-    // Protocols that no core other than sing-box can run. The Xray config service keeps a
-    // v2ray-style branch for some of them, so they cannot be derived from XraySupportConfigType.
-    public static readonly HashSet<EConfigType> SingboxRequiredConfigType =
-    [
-        EConfigType.Hysteria2,
-        EConfigType.TUIC,
-        EConfigType.Anytls,
-        EConfigType.Naive,
-    ];
-
     public static readonly List<string> DomainStrategies =
     [
         AsIs,

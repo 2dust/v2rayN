@@ -193,12 +193,18 @@ public sealed class AppManager
         var coreType = CurrentConfig.CoreTypeItem?.FirstOrDefault(it => it.ConfigType == eConfigType)?.CoreType
                        ?? ECoreType.Xray;
 
-        // Older builds filled every CoreTypeItem entry with Xray, and a node imported without a
-        // core type falls back to Xray as well. Xray cannot run these protocols, which left the
-        // core unable to start and the local port closed.
-        if (coreType == ECoreType.Xray && Global.SingboxRequiredConfigType.Contains(eConfigType))
+        // Recent Xray versions cannot honor a request to skip TLS verification.
+        // Keep Xray when the profile specifies certificate verification or a custom Finalmask.
+        if (coreType == ECoreType.Xray
+            && eConfigType == EConfigType.Hysteria2
+            && profileItem is { StreamSecurity: Global.StreamSecurity }
+            && profileItem.GetAllowInsecure()
+            && profileItem.Cert.IsNullOrEmpty()
+            && profileItem.CertSha.IsNullOrEmpty()
+            && profileItem.VerifyPeerCertByName.IsNullOrEmpty()
+            && profileItem.Finalmask.IsNullOrEmpty())
         {
-            coreType = ECoreType.sing_box;
+            return ECoreType.sing_box;
         }
         return coreType;
     }
