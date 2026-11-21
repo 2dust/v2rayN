@@ -534,7 +534,6 @@ public static class ConfigDbHandler
     /// <summary>
     /// Add or edit a Hysteria2 server
     /// Validates and processes Hysteria2-specific settings
-    /// Sets the core type to sing_box as required by Hysteria2
     /// </summary>
     /// <param name="config">Current configuration</param>
     /// <param name="profileItem">Hysteria2 profile to add</param>

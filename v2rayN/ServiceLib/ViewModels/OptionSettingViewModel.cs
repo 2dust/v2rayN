@@ -255,7 +255,7 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
             _config.CoreTypeItem.Add(new CoreTypeItem()
             {
                 ConfigType = it,
-                CoreType = ECoreType.Xray
+                CoreType = Global.SingboxRequiredConfigType.Contains(it) ? ECoreType.sing_box : ECoreType.Xray
             });
         }
         _config.CoreTypeItem.ForEach(it =>

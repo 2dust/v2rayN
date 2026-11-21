@@ -190,8 +190,17 @@ public sealed class AppManager
             return (ECoreType)profileItem.CoreType;
         }
 
-        var item = CurrentConfig.CoreTypeItem?.FirstOrDefault(it => it.ConfigType == eConfigType);
-        return item?.CoreType ?? ECoreType.Xray;
+        var coreType = CurrentConfig.CoreTypeItem?.FirstOrDefault(it => it.ConfigType == eConfigType)?.CoreType
+                       ?? ECoreType.Xray;
+
+        // Older builds filled every CoreTypeItem entry with Xray, and a node imported without a
+        // core type falls back to Xray as well. Xray cannot run these protocols, which left the
+        // core unable to start and the local port closed.
+        if (coreType == ECoreType.Xray && Global.SingboxRequiredConfigType.Contains(eConfigType))
+        {
+            coreType = ECoreType.sing_box;
+        }
+        return coreType;
     }
 
     #endregion Core Type
