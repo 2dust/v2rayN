@@ -2,7 +2,7 @@ namespace ServiceLib.Models.Entities;
 
 public class SubItem
 {
-    [PrimaryKey]
+    [Key]
     public string Id { get; set; }
 
     public string Remarks { get; set; }

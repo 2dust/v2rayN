@@ -1,4 +1,7 @@
-using SQLite;
+using System.ComponentModel.DataAnnotations.Schema;
+using SQLite.Framework;
+using SQLite.Framework.Enums;
+using SQLitePCL;
 
 namespace v2rayN.WebAPI.Services;
 
@@ -20,7 +23,12 @@ internal static class BackupDatabaseCompatibility
     {
         try
         {
-            using var database = new SQLiteConnection(databasePath, SQLiteOpenFlags.ReadOnly, false);
+            raw.SetProvider(new SQLite3Provider_e_sqlite3());
+            var options = new SQLiteOptionsBuilder(databasePath)
+                .UseOpenFlags(SQLiteOpenFlags.ReadOnly)
+                .UseDateTimeStorage(DateTimeStorageMode.TextFormatted)
+                .Build();
+            using var database = new SQLiteDatabase(options);
             if (!string.Equals(database.ExecuteScalar<string>("PRAGMA quick_check;"), "ok", StringComparison.OrdinalIgnoreCase))
             {
                 error = "SQLite quick_check did not return ok.";

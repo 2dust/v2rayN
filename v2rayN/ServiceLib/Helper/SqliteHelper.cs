@@ -1,4 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
+using SQLite.Framework;
+using SQLite.Framework.Extensions;
+using SQLite.Framework.Generated;
+using SQLitePCL;
 
 namespace ServiceLib.Helper;
 
@@ -7,101 +12,217 @@ public sealed class SQLiteHelper
     private static readonly Lazy<SQLiteHelper> _instance = new(() => new());
     public static SQLiteHelper Instance => _instance.Value;
     private readonly string _connstr;
-    private SQLiteConnection _db;
-    private SQLiteAsyncConnection _dbAsync;
+    private SQLiteDatabase _db;
     private readonly string _configDB = "guiNDB.db";
 
     public SQLiteHelper()
     {
+        raw.SetProvider(new SQLite3Provider_e_sqlite3());
         _connstr = Utils.GetConfigPath(_configDB);
-        _db = new SQLiteConnection(_connstr, false);
-        _dbAsync = new SQLiteAsyncConnection(_connstr, false);
+        var options = new SQLiteOptionsBuilder(_connstr)
+            .UseGeneratedMaterializers()
+            .Build();
+        _db = new SQLiteDatabase(options);
+        _db.Pragmas.BusyTimeout = 1000;
     }
 
-    public CreateTableResult CreateTable<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>()
+    public int CreateTable<[DynamicallyAccessedMembers(
+        DynamicallyAccessedMemberTypes.PublicConstructors |
+        DynamicallyAccessedMemberTypes.PublicProperties)] T>()
     {
-        return _db.CreateTable<T>();
+        return _db.Schema.CreateTable<T>();
     }
 
-    public async Task<int> InsertAllAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(IEnumerable<T> models)
+    public Task<int> CreateTableAsync<[DynamicallyAccessedMembers(
+        DynamicallyAccessedMemberTypes.PublicConstructors |
+        DynamicallyAccessedMemberTypes.PublicProperties)] T>()
     {
-        var count = 0;
-        await _dbAsync.RunInTransactionAsync(connection =>
+        return _db.Schema.CreateTableAsync<T>();
+    }
+
+    public Task<int> InsertAllAsync<[DynamicallyAccessedMembers(
+        DynamicallyAccessedMemberTypes.PublicConstructors |
+        DynamicallyAccessedMemberTypes.PublicProperties)] T>(IEnumerable<T> models)
+    {
+        return _db.Table<T>().AddRangeAsync(models, runInTransaction: true);
+    }
+
+    public Task<int> InsertAsync<[DynamicallyAccessedMembers(
+        DynamicallyAccessedMemberTypes.PublicConstructors |
+        DynamicallyAccessedMemberTypes.PublicProperties)] T>(T model)
+    {
+        return _db.Table<T>().AddAsync(model);
+    }
+
+    public Task<int> ReplaceAsync<[DynamicallyAccessedMembers(
+        DynamicallyAccessedMemberTypes.PublicConstructors |
+        DynamicallyAccessedMemberTypes.PublicProperties)] T>(T model)
+    {
+        return _db.Table<T>().AddOrUpdateAsync(model);
+    }
+
+    public Task<int> ReplaceAllAsync<[DynamicallyAccessedMembers(
+        DynamicallyAccessedMemberTypes.PublicConstructors |
+        DynamicallyAccessedMemberTypes.PublicProperties)] T>(IEnumerable<T> models)
+    {
+        return _db.Table<T>().AddOrUpdateRangeAsync(models, runInTransaction: true);
+    }
+
+    public Task<int> UpdateAsync<[DynamicallyAccessedMembers(
+        DynamicallyAccessedMemberTypes.PublicConstructors |
+        DynamicallyAccessedMemberTypes.PublicProperties)] T>(T model)
+    {
+        return _db.Table<T>().UpdateAsync(model);
+    }
+
+    public Task<int> UpdateAllAsync<[DynamicallyAccessedMembers(
+        DynamicallyAccessedMemberTypes.PublicConstructors |
+        DynamicallyAccessedMemberTypes.PublicProperties)] T>(IEnumerable<T> models)
+    {
+        return _db.Table<T>().UpdateRangeAsync(models, runInTransaction: true);
+    }
+
+    public Task<int> DeleteAsync<[DynamicallyAccessedMembers(
+        DynamicallyAccessedMemberTypes.PublicConstructors |
+        DynamicallyAccessedMemberTypes.PublicProperties)] T>(T model)
+    {
+        return _db.Table<T>().RemoveAsync(model);
+    }
+
+    public Task<int> DeleteAllAsync<[DynamicallyAccessedMembers(
+        DynamicallyAccessedMemberTypes.PublicConstructors |
+        DynamicallyAccessedMemberTypes.PublicProperties)] T>()
+    {
+        return _db.Table<T>().ClearAsync();
+        // return _db.Schema.DropTableAsync<T>();
+    }
+
+    /// <summary>
+    /// Projects the profile list together with its subscription remarks.
+    /// Written as raw SQL rather than a LINQ projection: <c>select new ProfileItemModel { ... }</c>
+    /// makes the compiler emit <c>Expression.New</c>/<c>Expression.Bind</c>, which are
+    /// <c>[RequiresUnreferencedCode]</c> and warn IL2026 under AOT.
+    /// </summary>
+    public Task<List<ProfileItemModel>> FetchProfileModelsAsync(string subid, string filter)
+    {
+        const string sql = """
+            select a.IndexId
+                  ,a.ConfigType
+                  ,a.Remarks
+                  ,a.Address
+                  ,a.Port
+                  ,a.Network
+                  ,a.StreamSecurity
+                  ,a.Subid
+                  ,b.Remarks as SubRemarks
+              from ProfileItem a
+              left join SubItem b on a.Subid = b.Id
+             where (@subid is null or a.Subid = @subid)
+               and (@filter is null or instr(a.Remarks, @filter) > 0 or instr(a.Address, @filter) > 0)
+            """;
+
+        var parameters = new[]
         {
-            foreach (var model in models)
-            {
-                count += connection.Insert(model, typeof(T));
-            }
-        }).ConfigureAwait(false);
-        return count;
+            new SQLiteParameter { Name = "@subid", Value = subid.IsNullOrEmpty() ? null : subid },
+            new SQLiteParameter { Name = "@filter", Value = filter.IsNullOrEmpty() ? null : filter },
+        };
+
+        return _db.QueryAsync<ProfileItemModel>(sql, parameters);
     }
 
-    public async Task<int> ReplaceAllAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(IEnumerable<T> models)
+    public Task<int> ResetServerStatTodayAsync(long dateNow)
     {
-        var count = 0;
-        await _dbAsync.RunInTransactionAsync(connection =>
+        const string sql = @"UPDATE ServerStatItem 
+        SET TodayUp = 0, TodayDown = 0, DateNow = @dateNow
+        WHERE DateNow <> @dateNow";
+
+        return _db.ExecuteAsync(sql, new[] { new SQLiteParameter { Name = "@dateNow", Value = dateNow } });
+    }
+
+    public Task<T?> FirstOrDefaultAsync<[DynamicallyAccessedMembers(
+        DynamicallyAccessedMemberTypes.PublicConstructors |
+        DynamicallyAccessedMemberTypes.PublicProperties)] T>()
+    {
+        return _db.Table<T>().FirstOrDefaultAsync();
+    }
+
+    public Task<T?> FirstOrDefaultAsync<[DynamicallyAccessedMembers(
+        DynamicallyAccessedMemberTypes.PublicConstructors |
+        DynamicallyAccessedMemberTypes.PublicProperties)] T>(Expression<Func<T, bool>> predicate)
+    {
+        return _db.Table<T>().FirstOrDefaultAsync(predicate);
+    }
+
+    public Task<List<T>> FetchAllAsync<[DynamicallyAccessedMembers(
+        DynamicallyAccessedMemberTypes.PublicConstructors |
+        DynamicallyAccessedMemberTypes.PublicProperties)] T>()
+    {
+        return _db.Table<T>().ToListAsync();
+    }
+
+    public Task<List<T>> FetchOrderedAsync<[DynamicallyAccessedMembers(
+        DynamicallyAccessedMemberTypes.PublicConstructors |
+        DynamicallyAccessedMemberTypes.PublicProperties)] T>(Expression<Func<T, object>> orderBy, bool ascending = true)
+    {
+        return _db.Table<T>().OrderBy(orderBy).ToListAsync();
+    }
+
+    public Task<List<T>> FetchAsync<[DynamicallyAccessedMembers(
+        DynamicallyAccessedMemberTypes.PublicConstructors |
+        DynamicallyAccessedMemberTypes.PublicProperties)] T>(Expression<Func<T, bool>> predicate)
+    {
+        return _db.Table<T>().Where(predicate).ToListAsync();
+    }
+
+    public Task<List<T>> FetchPagedAsync<[DynamicallyAccessedMembers(
+        DynamicallyAccessedMemberTypes.PublicConstructors |
+        DynamicallyAccessedMemberTypes.PublicProperties)] T>(
+        Expression<Func<T, bool>> predicate,
+        int? take = null,
+        int? offset = null)
+    {
+        var query = _db.Table<T>().Where(predicate);
+        if (offset.HasValue)
         {
-            foreach (var model in models)
-            {
-                count += connection.InsertOrReplace(model, typeof(T));
-            }
-        }).ConfigureAwait(false);
-        return count;
-    }
-
-    public async Task<int> InsertAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(T model)
-    {
-        return await _dbAsync.InsertAsync(model, typeof(T));
-    }
-
-    public async Task<int> ReplaceAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(T model)
-    {
-        return await _dbAsync.InsertOrReplaceAsync(model, typeof(T));
-    }
-
-    public async Task<int> UpdateAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(T model)
-    {
-        return await _dbAsync.UpdateAsync(model, typeof(T));
-    }
-
-    public async Task<int> UpdateAllAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(IEnumerable<T> models)
-    {
-        var count = 0;
-        await _dbAsync.RunInTransactionAsync(connection =>
+            query = query.Skip(offset.Value);
+        }
+        if (take.HasValue)
         {
-            foreach (var model in models)
-            {
-                count += connection.Update(model, typeof(T));
-            }
-        }).ConfigureAwait(false);
-        return count;
+            query = query.Take(take.Value);
+        }
+        return query.ToListAsync();
     }
 
-    public async Task<int> DeleteAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(T model)
+    public Task<int> DeleteWhereAsync<[DynamicallyAccessedMembers(
+        DynamicallyAccessedMemberTypes.PublicConstructors |
+        DynamicallyAccessedMemberTypes.PublicProperties)] T>(Expression<Func<T, bool>> predicate)
     {
-        var mapping = await _dbAsync.GetMappingAsync(typeof(T));
-        var primaryKey = mapping.PK ?? throw new NotSupportedException($"Cannot delete {mapping.TableName}: it has no PK");
-        return await _dbAsync.DeleteAsync(primaryKey.GetValue(model), mapping);
+        return _db.Table<T>()
+            .Where(predicate)
+            .ExecuteDeleteAsync();
     }
 
-    public async Task<int> DeleteAllAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>()
+    public Task<int> DeleteOrphanServerStatsAsync()
     {
-        return await _dbAsync.DeleteAllAsync<T>();
+        const string sql = @"
+        DELETE FROM ServerStatItem 
+        WHERE IndexId NOT IN (SELECT IndexId FROM ProfileItem)";
+
+        return _db.ExecuteAsync(sql, Array.Empty<object>());
     }
 
-    public async Task<int> ExecuteAsync(string sql)
+    public Task<int> CountAsync<[DynamicallyAccessedMembers(
+        DynamicallyAccessedMemberTypes.PublicConstructors |
+        DynamicallyAccessedMemberTypes.PublicProperties)] T>()
     {
-        return await _dbAsync.ExecuteAsync(sql);
+        return _db.Table<T>().CountAsync();
     }
 
-    public async Task<List<T>> QueryAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(string sql) where T : new()
+    public Task<int> CountAsync<[DynamicallyAccessedMembers(
+        DynamicallyAccessedMemberTypes.PublicConstructors |
+        DynamicallyAccessedMemberTypes.PublicProperties)] T>(Expression<Func<T, bool>> predicate)
     {
-        return await _dbAsync.QueryAsync<T>(sql);
-    }
-
-    public AsyncTableQuery<T> TableAsync<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>() where T : new()
-    {
-        return _dbAsync.Table<T>();
+        return _db.Table<T>().Where(predicate).CountAsync();
     }
 
     public async Task DisposeDbConnectionAsync()
@@ -110,23 +231,12 @@ public sealed class SQLiteHelper
         {
             try
             {
-                _db?.Close();
+                //_db?.Close();
                 _db?.Dispose();
             }
             finally
             {
                 _db = null;
-            }
-
-            try
-            {
-                var conn = _dbAsync?.GetConnection();
-                conn?.Close();
-                conn?.Dispose();
-            }
-            finally
-            {
-                _dbAsync = null;
             }
         });
     }

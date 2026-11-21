@@ -2,7 +2,7 @@ namespace ServiceLib.Models.Entities;
 
 public class ServerStatItem
 {
-    [PrimaryKey]
+    [Key]
     public string IndexId { get; set; }
 
     public long TotalUp { get; set; }

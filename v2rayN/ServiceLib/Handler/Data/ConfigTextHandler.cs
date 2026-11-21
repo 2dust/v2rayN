@@ -345,7 +345,7 @@ public static class ConfigTextHandler
             return 0;
         }
 
-        if (await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(t => t.IndexId == Config.IndexId) != null)
+        if (await SQLiteHelper.Instance.FirstOrDefaultAsync<ProfileItem>(t => t.IndexId == Config.IndexId) != null)
         {
             return 0;
         }
@@ -354,7 +354,7 @@ public static class ConfigTextHandler
             return await SetDefaultServerIndex(lstProfile.FirstOrDefault(t => t.Port > 0)?.IndexId);
         }
 
-        var item = await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync(t => t.Port > 0);
+        var item = await SQLiteHelper.Instance.FirstOrDefaultAsync<ProfileItem>(t => t.Port > 0);
         return await SetDefaultServerIndex(item?.IndexId);
     }
 
@@ -368,7 +368,7 @@ public static class ConfigTextHandler
         var item = await ConfigDbQuery.GetProfileItem(Config.IndexId);
         if (item is null)
         {
-            var item2 = await SQLiteHelper.Instance.TableAsync<ProfileItem>().FirstOrDefaultAsync();
+            var item2 = await SQLiteHelper.Instance.FirstOrDefaultAsync<ProfileItem>();
             await SetDefaultServerIndex(item2?.IndexId);
             return item2;
         }

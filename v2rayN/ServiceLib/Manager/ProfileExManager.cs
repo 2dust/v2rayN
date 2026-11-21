@@ -27,10 +27,11 @@ public class ProfileExManager
 
     private async Task InitData()
     {
-        await SQLiteHelper.Instance.ExecuteAsync($"delete from ProfileExItem where indexId not in ( select indexId from ProfileItem )");
+        //await SQLiteHelper.Instance.ExecuteAsync($"delete from ProfileExItem where indexId not in ( select indexId from ProfileItem )");
 
+        await SQLiteHelper.Instance.DeleteOrphanServerStatsAsync();
         var dicProfileEx = new ConcurrentDictionary<string, ProfileExItem>();
-        foreach (var item in await SQLiteHelper.Instance.TableAsync<ProfileExItem>().ToListAsync())
+        foreach (var item in await SQLiteHelper.Instance.FetchAllAsync<ProfileExItem>())
         {
             dicProfileEx[item.IndexId] = item;
         }
@@ -118,7 +119,8 @@ public class ProfileExManager
 
     public async Task ClearAll()
     {
-        await SQLiteHelper.Instance.ExecuteAsync($"delete from ProfileExItem ");
+        //await SQLiteHelper.Instance.ExecuteAsync($"delete from ProfileExItem ");
+        await SQLiteHelper.Instance.DeleteAllAsync<ProfileExItem>();
         lock (_profileExLock)
         {
             _dicProfileEx = new();
