@@ -14,7 +14,7 @@ public class NodeValidator
 {
     // Static validator rules
     private static readonly HashSet<string> SingboxUnsupportedTransports =
-        [nameof(ETransport.kcp), nameof(ETransport.xhttp)];
+        [nameof(ETransport.kcp), nameof(ETransport.xhttp), nameof(ETransport.xdrive)];
 
     private static readonly HashSet<EConfigType> SingboxTransportSupportedProtocols =
         [EConfigType.VMess, EConfigType.VLESS, EConfigType.Trojan, EConfigType.Shadowsocks];
@@ -172,7 +172,7 @@ public class NodeValidator
 
     private static string? ValidateSingboxTransport(EConfigType configType, string net)
     {
-        // sing-box does not support xhttp / kcp transports
+        // sing-box does not support xhttp / kcp / xdrive transports
         if (SingboxUnsupportedTransports.Contains(net))
         {
             return string.Format(ResUI.MsgCoreNotSupportNetwork, nameof(ECoreType.sing_box), net);
