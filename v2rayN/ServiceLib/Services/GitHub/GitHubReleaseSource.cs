@@ -3,21 +3,48 @@ namespace ServiceLib.Services.GitHub;
 /// <summary>
 ///     Discovers the latest release tag of a core on GitHub: releases/latest redirect, releases API or the git references.
 /// </summary>
-public class GitHubReleaseSource(DownloadService downloadService)
+public class GitHubReleaseSource(DownloadService downloadService, Func<GitHubReleaseProgress, Task>? progressFunc = null)
 {
     public async Task<string?> GetLatestTag(CoreInfo coreInfo, bool preRelease, CancellationToken cancellationToken = default)
     {
         if (preRelease || coreInfo.LockedMaxVersion != null)
         {
+            await Report(coreInfo, EGitHubReleaseStage.ReleasesApi);
+
             var tagName = await GetTagViaReleasesApi(coreInfo, preRelease, cancellationToken);
-            if (string.IsNullOrEmpty(tagName) && preRelease)
+            if (!string.IsNullOrEmpty(tagName))
             {
-                tagName = await GetTagViaGitRefs(coreInfo, cancellationToken);
+                return tagName;
             }
-            return string.IsNullOrEmpty(tagName) ? null : tagName;
+
+            await Report(coreInfo, EGitHubReleaseStage.ReleasesApiFailed);
+            if (!preRelease)
+            {
+                return null;
+            }
+
+            await Report(coreInfo, EGitHubReleaseStage.GitRefs);
+
+            tagName = await GetTagViaGitRefs(coreInfo, cancellationToken);
+            if (string.IsNullOrEmpty(tagName))
+            {
+                await Report(coreInfo, EGitHubReleaseStage.GitRefsFailed);
+                return null;
+            }
+            return tagName;
         }
 
+        await Report(coreInfo, EGitHubReleaseStage.LatestRedirect);
         return await GetTagViaLatestRedirect(coreInfo, cancellationToken);
+    }
+
+    private async Task Report(CoreInfo coreInfo, EGitHubReleaseStage stage)
+    {
+        if (progressFunc == null)
+        {
+            return;
+        }
+        await progressFunc(new GitHubReleaseProgress { CoreType = coreInfo.CoreType, Stage = stage });
     }
 
     private async Task<string?> GetTagViaLatestRedirect(CoreInfo coreInfo, CancellationToken cancellationToken)

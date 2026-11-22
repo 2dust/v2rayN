@@ -1974,4 +1974,19 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="TbSpeedtestSettings" xml:space="preserve">
     <value>Speedtest Settings</value>
   </data>
+  <data name="MsgCheckUpdateViaLatest" xml:space="preserve">
+    <value>Checking {0} updates via release redirect...</value>
+  </data>
+  <data name="MsgCheckUpdateViaApi" xml:space="preserve">
+    <value>Checking {0} updates via GitHub API...</value>
+  </data>
+  <data name="MsgCheckUpdateViaApiFailed" xml:space="preserve">
+    <value>GitHub API for {0} is unavailable</value>
+  </data>
+  <data name="MsgCheckUpdateViaGitRefs" xml:space="preserve">
+    <value>Checking {0} updates via git references...</value>
+  </data>
+  <data name="MsgCheckUpdateViaGitRefsFailed" xml:space="preserve">
+    <value>Git references for {0} are unavailable</value>
+  </data>
 </root>

@@ -4,8 +4,9 @@ public partial class UpdateService(DownloadService downloadService, Config confi
 {
     private readonly Config? _config = config;
     private readonly Func<bool, string, Task>? _updateFunc = updateFunc;
-    private readonly GitHubReleaseSource _gitHubReleaseSource = new(downloadService);
     private static readonly string _tag = "UpdateService";
+
+    private GitHubReleaseSource ReleaseSource => field ??= new(downloadService, progress => UpdateFunc(false, GetProgressMsg(progress)));
 
     public async Task CheckUpdateGuiN(bool preRelease, CancellationToken cancellationToken = default)
     {
@@ -188,12 +189,31 @@ public partial class UpdateService(DownloadService downloadService, Config confi
             return new UpdateResult(false, "");
         }
 
-        var tagName = await _gitHubReleaseSource.GetLatestTag(coreInfo, preRelease, cancellationToken);
+        var tagName = await ReleaseSource.GetLatestTag(coreInfo, preRelease, cancellationToken);
         if (string.IsNullOrEmpty(tagName))
         {
             return new UpdateResult(false, "");
         }
         return new UpdateResult(true, new SemanticVersion(tagName));
+    }
+
+    private static string GetProgressMsg(GitHubReleaseProgress progress)
+    {
+        switch (progress.Stage)
+        {
+            case EGitHubReleaseStage.LatestRedirect:
+                return string.Format(ResUI.MsgCheckUpdateViaLatest, progress.CoreType);
+            case EGitHubReleaseStage.ReleasesApi:
+                return string.Format(ResUI.MsgCheckUpdateViaApi, progress.CoreType);
+            case EGitHubReleaseStage.ReleasesApiFailed:
+                return string.Format(ResUI.MsgCheckUpdateViaApiFailed, progress.CoreType);
+            case EGitHubReleaseStage.GitRefs:
+                return string.Format(ResUI.MsgCheckUpdateViaGitRefs, progress.CoreType);
+            case EGitHubReleaseStage.GitRefsFailed:
+                return string.Format(ResUI.MsgCheckUpdateViaGitRefsFailed, progress.CoreType);
+            default:
+                return string.Empty;
+        }
     }
 
     [GeneratedRegex(@"v?(?<version>\d+\.\d+\.\d+(?:-[0-9a-zA-Z.-]+)?(?:\+[0-9a-zA-Z.-]+)?)", RegexOptions.IgnoreCase)]
