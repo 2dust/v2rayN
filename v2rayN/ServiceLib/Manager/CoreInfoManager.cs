@@ -108,6 +108,7 @@ public sealed class CoreInfoManager
                     CoreType = ECoreType.v2rayN,
                     Url = GetCoreUrl(ECoreType.v2rayN),
                     ReleaseApiUrl = urlN.Replace(Global.GithubUrl, Global.GithubApiUrl),
+                    GitInfoRefsUrl = GetGitInfoRefsUrl(ECoreType.v2rayN),
                     DownloadUrlWin64 = urlN + "/download/{0}/v2rayN-windows-64.zip",
                     DownloadUrlWinArm64 = urlN + "/download/{0}/v2rayN-windows-arm64.zip",
                     DownloadUrlLinux64 = urlN + "/download/{0}/v2rayN-linux-64.zip",
@@ -153,6 +154,7 @@ public sealed class CoreInfoManager
                     Arguments = "run -c {0}",
                     Url = GetCoreUrl(ECoreType.Xray),
                     ReleaseApiUrl = urlXray.Replace(Global.GithubUrl, Global.GithubApiUrl),
+                    GitInfoRefsUrl = GetGitInfoRefsUrl(ECoreType.Xray),
                     DownloadUrlWin64 = urlXray + "/download/{0}/Xray-windows-64.zip",
                     DownloadUrlWinArm64 = urlXray + "/download/{0}/Xray-windows-arm64-v8a.zip",
                     DownloadUrlLinux64 = urlXray + "/download/{0}/Xray-linux-64.zip",
@@ -177,6 +179,7 @@ public sealed class CoreInfoManager
                     Arguments = "-f {0}" + PortableMode(),
                     Url = GetCoreUrl(ECoreType.mihomo),
                     ReleaseApiUrl = urlMihomo.Replace(Global.GithubUrl, Global.GithubApiUrl),
+                    GitInfoRefsUrl = GetGitInfoRefsUrl(ECoreType.mihomo),
                     DownloadUrlWin64 = urlMihomo + "/download/{0}/mihomo-windows-amd64-v1-{0}.zip",
                     DownloadUrlWinArm64 = urlMihomo + "/download/{0}/mihomo-windows-arm64-{0}.zip",
                     DownloadUrlLinux64 = urlMihomo + "/download/{0}/mihomo-linux-amd64-v1-{0}.gz",
@@ -221,6 +224,7 @@ public sealed class CoreInfoManager
                     Url = GetCoreUrl(ECoreType.sing_box),
 
                     ReleaseApiUrl = urlSingbox.Replace(Global.GithubUrl, Global.GithubApiUrl),
+                    GitInfoRefsUrl = GetGitInfoRefsUrl(ECoreType.sing_box),
                     DownloadUrlWin64 = urlSingbox + "/download/{0}/sing-box-{1}-windows-amd64.zip",
                     DownloadUrlWinArm64 = urlSingbox + "/download/{0}/sing-box-{1}-windows-arm64.zip",
                     DownloadUrlLinux64 = urlSingbox + "/download/{0}/sing-box-{1}-linux-amd64.tar.gz",
@@ -300,6 +304,11 @@ public sealed class CoreInfoManager
     private static string GetCoreUrl(ECoreType eCoreType)
     {
         return $"{Global.GithubUrl}/{Global.CoreUrls[eCoreType]}/releases";
+    }
+
+    private static string GetGitInfoRefsUrl(ECoreType eCoreType)
+    {
+        return $"{Global.GithubUrl}/{Global.CoreUrls[eCoreType]}.git/info/refs?service=git-upload-pack";
     }
 
     private static List<string>? GetMihomoCoreExes()

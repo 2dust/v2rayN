@@ -185,34 +185,14 @@ public partial class UpdateService(DownloadService downloadService, Config confi
         var tagName = string.Empty;
         if (preRelease || coreInfo?.LockedMaxVersion != null)
         {
-            var url = coreInfo?.ReleaseApiUrl;
-            var result = await downloadService.TryDownloadString(url, cancellationToken);
-            if (result.IsNullOrEmpty())
+            tagName = await GetRemoteVersionViaApi(type, preRelease, cancellationToken);
+            if (string.IsNullOrEmpty(tagName) && preRelease)
+            {
+                tagName = await GetRemoteVersionViaGitRefs(type, cancellationToken);
+            }
+            if (string.IsNullOrEmpty(tagName))
             {
                 return new UpdateResult(false, "");
-            }
-
-            var gitHubReleases = JsonUtils.Deserialize<List<GitHubRelease>>(result);
-            var gitHubRelease = preRelease ? gitHubReleases?.First() : gitHubReleases?.First(r => r.Prerelease == false);
-            tagName = gitHubRelease?.TagName;
-            //var body = gitHubRelease?.Body;
-
-            if (coreInfo?.LockedMaxVersion != null)
-            {
-                var lockedMaxVersion = coreInfo.LockedMaxVersion;
-                var remoteVersion = new SemanticVersion(tagName);
-                if (remoteVersion > lockedMaxVersion)
-                {
-                    var fallbackRelease = gitHubReleases?
-                        .Where(r => preRelease || !r.Prerelease)
-                        .Select(r => new { Release = r, IsValid = SemanticVersion.TryParse(r.TagName, out var v), Version = v })
-                        .Where(x => x.IsValid && x.Version <= coreInfo.LockedMaxVersion)
-                        .MaxBy(x => x.Version)?
-                        .Release;
-
-                    gitHubRelease = fallbackRelease;
-                    tagName = gitHubRelease?.TagName;
-                }
             }
         }
         else
@@ -227,6 +207,143 @@ public partial class UpdateService(DownloadService downloadService, Config confi
             tagName = lastUrl?.Split("/tag/").LastOrDefault();
         }
         return new UpdateResult(true, new SemanticVersion(tagName));
+    }
+
+    private async Task<string?> GetRemoteVersionViaApi(ECoreType type, bool preRelease, CancellationToken cancellationToken = default)
+    {
+        var coreInfo = CoreInfoManager.Instance.GetCoreInfo(type);
+        var url = coreInfo?.ReleaseApiUrl;
+        var result = await downloadService.TryDownloadString(url, cancellationToken);
+        if (result.IsNullOrEmpty())
+        {
+            return null;
+        }
+        var gitHubReleases = JsonUtils.Deserialize<List<GitHubRelease>>(result);
+        var gitHubRelease = preRelease
+            ? gitHubReleases?.FirstOrDefault()
+            : gitHubReleases?.FirstOrDefault(r => r.Prerelease == false);
+        var tagName = gitHubRelease?.TagName;
+        if (coreInfo?.LockedMaxVersion == null)
+        {
+            return tagName;
+        }
+        var lockedMaxVersion = coreInfo.LockedMaxVersion;
+        var remoteVersion = new SemanticVersion(tagName);
+        if (remoteVersion <= lockedMaxVersion)
+        {
+            return tagName;
+        }
+        var fallbackRelease = gitHubReleases?
+            .Where(r => preRelease || !r.Prerelease)
+            .Select(r => new { Release = r, IsValid = SemanticVersion.TryParse(r.TagName, out var v), Version = v })
+            .Where(x => x.IsValid && x.Version <= coreInfo.LockedMaxVersion)
+            .MaxBy(x => x.Version)?
+            .Release;
+
+        return fallbackRelease?.TagName;
+    }
+
+    private async Task<string?> GetRemoteVersionViaGitRefs(ECoreType type, CancellationToken cancellationToken = default)
+    {
+        var coreInfo = CoreInfoManager.Instance.GetCoreInfo(type);
+        var url = coreInfo?.GitInfoRefsUrl;
+        var result = await downloadService.TryDownloadString(url, cancellationToken);
+        if (result.IsNullOrEmpty())
+        {
+            return null;
+        }
+        const string targetRefPrefix = "refs/tags/";
+        var tags = new List<string>();
+
+        var remaining = result.AsSpan();
+        ReadOnlySpan<char> targetRefSpan = targetRefPrefix;
+
+        while (!remaining.IsEmpty)
+        {
+            var newlineIndex = remaining.IndexOf('\n');
+            var line = newlineIndex >= 0
+                ? remaining[..newlineIndex]
+                : remaining;
+
+            remaining = newlineIndex >= 0
+                ? remaining[(newlineIndex + 1)..]
+                : ReadOnlySpan<char>.Empty;
+
+            line = line.TrimEnd('\r');
+
+            // flush packet "0000" has no trailing newline, so the next pkt length is glued to this line
+            if (line.StartsWith("0000", StringComparison.Ordinal))
+            {
+                line = line[4..];
+            }
+
+            // Remove pkt-line length prefix (4 hex digits)
+            if (line.Length <= 4)
+            {
+                continue;
+            }
+
+            var payload = line[4..];
+            var spaceIndex = payload.IndexOf(' ');
+            if (spaceIndex <= 0)
+            {
+                continue;
+            }
+
+            var refSpan = payload[(spaceIndex + 1)..].Trim();
+
+            // strip the capability list and skip peeled annotated tags
+            var nulIndex = refSpan.IndexOf('\0');
+            if (nulIndex >= 0)
+            {
+                refSpan = refSpan[..nulIndex].TrimEnd();
+            }
+            if (refSpan.EndsWith("^{}", StringComparison.Ordinal))
+            {
+                continue;
+            }
+
+            if (refSpan.StartsWith(targetRefSpan, StringComparison.Ordinal))
+            {
+                var tag = refSpan[targetRefSpan.Length..].ToString();
+                tags.Add(tag);
+            }
+        }
+        var lockedMaxVersion = coreInfo?.LockedMaxVersion ?? new SemanticVersion(int.MaxValue, int.MaxValue, int.MaxValue);
+        // Verify and filter
+        var tagsVersions = tags
+            .Select(tag => new { Tag = tag, IsValid = SemanticVersion.TryParse(tag, out var v), Version = v })
+            .Where(x => x.IsValid && x.Version <= lockedMaxVersion)
+            .ToList();
+        // Sort by version descending
+        var sortedTags = tagsVersions
+            .OrderByDescending(x => x.Version)
+            .Select(x => x.Tag)
+            .ToList();
+        // Check is there is a valid release
+        // TODO: anit-pattern for now
+        using var httpClient = new HttpClient(downloadService.Handler, false);
+        foreach (var tag in sortedTags)
+        {
+            try
+            {
+                using var request = new HttpRequestMessage(HttpMethod.Head, $"{coreInfo?.Url}/tag/{tag}");
+                using var response = await httpClient.SendAsync(request, cancellationToken);
+                if (response.IsSuccessStatusCode)
+                {
+                    return tag;
+                }
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                throw;
+            }
+            catch
+            {
+                // Ignore
+            }
+        }
+        return null;
     }
 
     [GeneratedRegex(@"v?(?<version>\d+\.\d+\.\d+(?:-[0-9a-zA-Z.-]+)?(?:\+[0-9a-zA-Z.-]+)?)", RegexOptions.IgnoreCase)]
