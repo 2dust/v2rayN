@@ -25,7 +25,13 @@ public partial class UpdateService(DownloadService downloadService, Config confi
         };
         downloadService.Error += (sender2, args) =>
         {
-            _ = UpdateFunc(false, args.GetException().Message);
+            var ex = args.GetException();
+            var message = ex.Message;
+            if (ex.InnerException != null)
+            {
+                message += " | " + ex.InnerException.Message;
+            }
+            _ = UpdateFunc(false, message);
         };
 
         await UpdateFunc(false, string.Format(ResUI.MsgStartUpdating, ECoreType.v2rayN));
@@ -73,7 +79,13 @@ public partial class UpdateService(DownloadService downloadService, Config confi
         };
         downloadService.Error += (sender2, args) =>
         {
-            _ = UpdateFunc(false, args.GetException().Message);
+            var ex = args.GetException();
+            var message = ex.Message;
+            if (ex.InnerException != null)
+            {
+                message += " | " + ex.InnerException.Message;
+            }
+            _ = UpdateFunc(false, message);
         };
 
         await UpdateFunc(false, string.Format(ResUI.MsgStartUpdating, type));
@@ -583,7 +595,13 @@ public partial class UpdateService(DownloadService downloadService, Config confi
         };
         downloadService.Error += (sender2, args) =>
         {
-            _ = UpdateFunc(false, args.GetException().Message);
+            var ex = args.GetException();
+            var message = ex.Message;
+            if (ex.InnerException != null)
+            {
+                message += " | " + ex.InnerException.Message;
+            }
+            _ = UpdateFunc(false, message);
         };
 
         await downloadService.DownloadSmallFilesAsync(tmpFileRequests, cancellationToken);
