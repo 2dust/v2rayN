@@ -99,17 +99,36 @@ public class DownloadService : IDisposable
         {
             UpdateCompleted?.Invoke(this, new UpdateResult(false, $"{ResUI.Downloading}   {request.FileUrl}"));
 
+            Exception? downloadError = null;
+
             await DownloaderHelper.DownloadFileAsync(
                 request,
                 OnProgress,
                 cancellationToken);
 
+            if (downloadError != null)
+            {
+                Logging.SaveLog(_tag, downloadError);
+                Error?.Invoke(this, new ErrorEventArgs(downloadError));
+            }
+
             void OnProgress(FileDownloadState state)
             {
-                cancellationToken.ThrowIfCancellationRequested();
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    return;
+                }
+                if (state.Error != null)
+                {
+                    downloadError = state.Error;
+                    return;
+                }
+
+                var speedText = $"{Utils.HumanFy((long)state.SpeedBytesPerSecond / 1024)}/s";
+                var progressText = $"{Utils.HumanFy(state.DownloadedBytes / 1024)}/{Utils.HumanFy(state.TotalBytes / 1024)}";
+
                 UpdateCompleted?.Invoke(this,
-                    new UpdateResult(state.Completed,
-                        $"{Utils.HumanFy((long)state.SpeedBytesPerSecond / 1024)}/s | {Utils.HumanFy(state.DownloadedBytes / 1024)}/{Utils.HumanFy(state.TotalBytes / 1024)}"));
+                    new UpdateResult(state.Completed, $"{speedText} | {progressText}"));
             }
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
@@ -119,18 +138,16 @@ public class DownloadService : IDisposable
         catch (Exception ex)
         {
             Logging.SaveLog(_tag, ex);
-
             Error?.Invoke(this, new ErrorEventArgs(ex));
-            if (ex.InnerException != null)
-            {
-                Error?.Invoke(this, new ErrorEventArgs(ex.InnerException));
-            }
         }
     }
 
     public async Task DownloadSmallFilesAsync(List<FileDownloadRequest> requests,
         CancellationToken cancellationToken = default)
     {
+        using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        Exception? firstError = null;
+
         try
         {
             UpdateCompleted?.Invoke(this, new UpdateResult(false, $"{ResUI.Downloading} 0/{requests.Count}"));
@@ -138,66 +155,73 @@ public class DownloadService : IDisposable
             await DownloaderHelper.DownloadSmallFilesAsync(
                 requests,
                 OnProgress,
-                cancellationToken);
+                linkedCts.Token);
+
+            if (firstError != null)
+            {
+                Logging.SaveLog(_tag, firstError);
+                Error?.Invoke(this, new ErrorEventArgs(firstError));
+            }
 
             void OnProgress(ReadOnlyMemory<FileDownloadState> states)
             {
-                cancellationToken.ThrowIfCancellationRequested();
+                if (cancellationToken.IsCancellationRequested || linkedCts.IsCancellationRequested)
+                {
+                    return;
+                }
                 var span = states.Span;
-                var completedCount = 0;
-                var downloadingStates = new List<FileDownloadState>();
+                var successCount = 0;
+                double totalSpeed = 0;
+                long totalDownloadedBytes = 0;
+                long totalTotalBytes = 0;
+                List<string>? downloadingNames = null;
+
                 foreach (ref readonly var item in span)
                 {
+                    if (item.Error != null)
+                    {
+                        if (Interlocked.CompareExchange(ref firstError, item.Error, null) == null)
+                        {
+                            linkedCts.Cancel();
+                        }
+                        continue;
+                    }
+
                     if (item.Completed)
                     {
-                        completedCount++;
+                        successCount++;
                     }
                     else if (item.TotalBytes > 0)
                     {
-                        downloadingStates.Add(item);
+                        totalSpeed += item.SpeedBytesPerSecond;
+                        totalDownloadedBytes += item.DownloadedBytes;
+                        totalTotalBytes += item.TotalBytes;
+                        downloadingNames ??= new List<string>(span.Length);
+                        downloadingNames.Add(item.Request.FileName);
                     }
                 }
-                var totalSpeed = downloadingStates.Sum(x => x.SpeedBytesPerSecond);
-                var totalDownloadedBytes = downloadingStates.Sum(x => x.DownloadedBytes);
-                var totalTotalBytes = downloadingStates.Sum(x => x.TotalBytes);
-                var downloadingFileName = string.Join(", ", downloadingStates.Select(x => x.Request.FileName));
-                var allCompleted = completedCount == span.Length;
-                if (allCompleted)
-                {
-                    // check and throw errors if any
-                    FileDownloadState? failedState = null;
-                    foreach (ref readonly var item in span)
-                    {
-                        if (!item.IsFailed)
-                        {
-                            continue;
-                        }
-                        failedState = item;
-                        break;
-                    }
-                    if (failedState?.Error != null)
-                    {
-                        throw failedState.Error;
-                    }
-                }
+
+                var allSuccess = successCount == span.Length;
+                var downloadingFileName = downloadingNames != null ? string.Join(", ", downloadingNames) : string.Empty;
+
                 UpdateCompleted?.Invoke(this,
-                    new UpdateResult(allCompleted,
-                        $"{completedCount}/{span.Length} | {Utils.HumanFy((long)totalSpeed / 1024)}/s {Utils.HumanFy(totalDownloadedBytes / 1024)}/{Utils.HumanFy(totalTotalBytes / 1024)} {downloadingFileName}"));
+                    new UpdateResult(allSuccess,
+                        $"{successCount}/{span.Length} | {Utils.HumanFy((long)totalSpeed / 1024)}/s {Utils.HumanFy(totalDownloadedBytes / 1024)}/{Utils.HumanFy(totalTotalBytes / 1024)} {downloadingFileName}"));
             }
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
             throw;
         }
+        catch (OperationCanceledException) when (linkedCts.IsCancellationRequested && firstError != null)
+        {
+            Logging.SaveLog(_tag, firstError);
+            Error?.Invoke(this, new ErrorEventArgs(firstError));
+        }
         catch (Exception ex)
         {
             Logging.SaveLog(_tag, ex);
-
             Error?.Invoke(this, new ErrorEventArgs(ex));
-            if (ex.InnerException != null)
-            {
-                Error?.Invoke(this, new ErrorEventArgs(ex.InnerException));
-            }
         }
     }
 
