@@ -117,8 +117,8 @@ public class CoreConfigV2rayServiceTests
         await request.Should().NotBeNull();
         var hosts = request!["headers"]!["Host"]!.AsArray().Select(h => h!.GetValue<string>()).ToList();
         var paths = request["path"]!.AsArray().Select(p => p!.GetValue<string>()).ToList();
-        await hosts.Should().BeEquivalentTo(["a.example.com", "b.example.com"]);
-        await paths.Should().BeEquivalentTo(["/p1", "/p2"]);
+        await hosts.Order(StringComparer.Ordinal).SequenceEqual(["a.example.com", "b.example.com"], StringComparer.Ordinal).Should().BeTrue();
+        await paths.Order(StringComparer.Ordinal).SequenceEqual(["/p1", "/p2"], StringComparer.Ordinal).Should().BeTrue();
     }
 
     [Test]
