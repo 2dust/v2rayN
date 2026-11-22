@@ -91,6 +91,37 @@ public class CoreConfigV2rayServiceTests
     }
 
     [Test]
+    public async Task GenerateClientConfigContent_RawHttpHeader_ShouldEmitRequestWithHostAndPath()
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+        var node = CoreConfigTestFactory.CreateVmessNode(ECoreType.Xray);
+        node.SetTransportExtra(new TransportExtraItem
+        {
+            RawHeaderType = Global.RawHeaderHttp,
+            Host = "a.example.com,b.example.com",
+            Path = "/p1,/p2",
+        });
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray);
+
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue();
+        var generatedConfig = JsonNode.Parse(result.Data!.ToString()!)!;
+        var proxy = generatedConfig["outbounds"]!.AsArray()
+            .First(outbound => outbound!["tag"]!.GetValue<string>() == Global.ProxyTag)!;
+        var header = proxy["streamSettings"]!["rawSettings"]!["header"]!;
+        await header["type"]!.GetValue<string>().Should().BeEqualTo(Global.RawHeaderHttp);
+
+        var request = header["request"];
+        await request.Should().NotBeNull();
+        var hosts = request!["headers"]!["Host"]!.AsArray().Select(h => h!.GetValue<string>()).ToList();
+        var paths = request["path"]!.AsArray().Select(p => p!.GetValue<string>()).ToList();
+        await hosts.Should().BeEquivalentTo(["a.example.com", "b.example.com"]);
+        await paths.Should().BeEquivalentTo(["/p1", "/p2"]);
+    }
+
+    [Test]
     public async Task GenerateClientConfigContent_RealityFragment_ShouldUsePacketRangeOnlyForReality()
     {
         static ProfileItem CreateVlessNode(string indexId, string streamSecurity)
