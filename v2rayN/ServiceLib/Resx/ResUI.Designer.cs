@@ -2059,6 +2059,51 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Checking {0} updates via GitHub API... 的本地化字符串。
+        /// </summary>
+        public static string MsgCheckUpdateViaApi {
+            get {
+                return ResourceManager.GetString("MsgCheckUpdateViaApi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 GitHub API for {0} is unavailable 的本地化字符串。
+        /// </summary>
+        public static string MsgCheckUpdateViaApiFailed {
+            get {
+                return ResourceManager.GetString("MsgCheckUpdateViaApiFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Checking {0} updates via git references... 的本地化字符串。
+        /// </summary>
+        public static string MsgCheckUpdateViaGitRefs {
+            get {
+                return ResourceManager.GetString("MsgCheckUpdateViaGitRefs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Git references for {0} are unavailable 的本地化字符串。
+        /// </summary>
+        public static string MsgCheckUpdateViaGitRefsFailed {
+            get {
+                return ResourceManager.GetString("MsgCheckUpdateViaGitRefsFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Checking {0} updates via release redirect... 的本地化字符串。
+        /// </summary>
+        public static string MsgCheckUpdateViaLatest {
+            get {
+                return ResourceManager.GetString("MsgCheckUpdateViaLatest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Core &apos;{0}&apos; does not support network type &apos;{1}&apos; 的本地化字符串。
         /// </summary>
         public static string MsgCoreNotSupportNetwork {
