@@ -895,6 +895,7 @@ jobs:
             WEB_REPOSITORY=${{ github.repository }}
             WEB_COMMIT=${{ github.sha }}
             WEB_BUILD_DATE=${{ needs.identity.outputs.build_date }}
+          outputs: type=cacheonly
           push: false
 
   release-assets:
