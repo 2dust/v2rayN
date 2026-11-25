@@ -9,7 +9,17 @@ command -v python3 >/dev/null
 
 temporary="$(mktemp -d)"
 web_pid=""
+background_data_home=""
+background_url=""
 cleanup() {
+  if [[ -n "$background_data_home" ]] && [[ -n "${executable:-}" ]]; then
+    # A detached instance has no pid we can signal directly; stop it the same way a
+    # user would so a failed assertion cannot leave it running.
+    env -u INVOCATION_ID -u JOURNAL_STREAM -u NOTIFY_SOCKET \
+      -u DOTNET_RUNNING_IN_CONTAINER -u container -u V2RAYN_WEB_API_KEY \
+      V2RAYN_DATA_HOME="$background_data_home" ASPNETCORE_URLS="$background_url" \
+      "$executable" --stop >/dev/null 2>&1 || true
+  fi
   if [[ -n "$web_pid" ]] && kill -0 "$web_pid" 2>/dev/null; then
     kill -TERM "$web_pid" 2>/dev/null || true
     for _ in {1..20}; do
@@ -63,7 +73,7 @@ assert_rejected_without_key() {
       -u INVOCATION_ID -u JOURNAL_STREAM -u NOTIFY_SOCKET \
       -u DOTNET_RUNNING_IN_CONTAINER -u container \
       "${markers[@]}" V2RAYN_DATA_HOME="$data_home" \
-      "$executable" --foreground --no-open
+      "$executable" --foreground
   ) >"$output" 2>&1; then
     status=0
   else
@@ -79,7 +89,8 @@ assert_rejected_without_key() {
 wait_for_health() {
   local base_url="$1" output="$2" healthy=false
   for _ in {1..60}; do
-    if ! kill -0 "$web_pid" 2>/dev/null; then
+    # A detached background instance has no pid of ours to watch; the probe alone decides.
+    if [[ -n "$web_pid" ]] && ! kill -0 "$web_pid" 2>/dev/null; then
       cat "$output" >&2
       echo "Web process exited before becoming healthy." >&2
       exit 1
@@ -155,7 +166,7 @@ assert_remote_listener_rejected() {
       -u INVOCATION_ID -u JOURNAL_STREAM -u NOTIFY_SOCKET \
       -u DOTNET_RUNNING_IN_CONTAINER -u container \
       "${settings[@]}" V2RAYN_DATA_HOME="$temporary/listener-$source-data" \
-      "$executable" --foreground --no-open "${arguments[@]}" >"$output" 2>&1; then
+      "$executable" --foreground "${arguments[@]}" >"$output" 2>&1; then
     status=0
   else
     status=$?
@@ -174,7 +185,7 @@ assert_malformed_configuration_fails() {
   if (
     cd "$temporary/other-working-directory"
     exec env -u V2RAYN_WEB_API_KEY -u INVOCATION_ID -u JOURNAL_STREAM -u NOTIFY_SOCKET \
-      -u DOTNET_RUNNING_IN_CONTAINER -u container "$executable" --foreground --no-open
+      -u DOTNET_RUNNING_IN_CONTAINER -u container "$executable" --foreground
   ) >"$output" 2>&1; then
     status=0
   else
@@ -206,12 +217,12 @@ assert_invalid_management_key_fails() {
       exec env -u INVOCATION_ID -u JOURNAL_STREAM -u NOTIFY_SOCKET \
         -u DOTNET_RUNNING_IN_CONTAINER -u container \
         "V2RAYN_WEB_API_KEY=$key" V2RAYN_DATA_HOME="$data_home" \
-        "$executable" --foreground --no-open
+        "$executable" --foreground
     else
       exec env -u V2RAYN_WEB_API_KEY \
         -u INVOCATION_ID -u JOURNAL_STREAM -u NOTIFY_SOCKET \
         -u DOTNET_RUNNING_IN_CONTAINER -u container \
-        V2RAYN_DATA_HOME="$data_home" "$executable" --foreground --no-open
+        V2RAYN_DATA_HOME="$data_home" "$executable" --foreground
     fi
   ) >"$output" 2>&1; then
     status=0
@@ -252,7 +263,7 @@ start_with_valid_management_key_boundary() {
       -u ASPNETCORE_URLS -u ASPNETCORE_HTTP_PORTS -u ASPNETCORE_HTTPS_PORTS \
       "${key_settings[@]}" \
       V2RAYN_DATA_HOME="$data_home" V2RAYN_WEB_AUTOSTART=false ASPNETCORE_URLS="$url" \
-      "$executable" --foreground --no-open
+      "$executable" --foreground
   ) >"$output" 2>&1 &
   web_pid=$!
   wait_for_health "$url" "$output"
@@ -282,7 +293,7 @@ native_key="first-run-$(python3 -c 'import secrets; print(secrets.token_hex(24))
     V2RAYN_WEB_AUTOSTART=true \
     ASPNETCORE_URLS="$native_url" \
     DOTNET_BUNDLE_EXTRACT_BASE_DIR="$temporary/native-bundle" \
-    "$executable" --foreground --no-open
+    "$executable" --foreground
 ) >"$native_log" 2>&1 &
 web_pid=$!
 wait_for_health "$native_url" "$native_log"
@@ -345,7 +356,7 @@ start_managed_with_key() {
     "${markers[@]}" V2RAYN_WEB_API_KEY="$key" \
     V2RAYN_DATA_HOME="$data_home" V2RAYN_WEB_AUTOSTART=false \
     ASPNETCORE_URLS="$url" DOTNET_BUNDLE_EXTRACT_BASE_DIR="$temporary/$deployment-bundle" \
-    "$executable" --foreground --no-open >"$output" 2>&1 &
+    "$executable" --foreground >"$output" 2>&1 &
   web_pid=$!
   wait_for_health "$url" "$output"
   stop_instance "$output"
@@ -371,7 +382,7 @@ start_managed_with_dotenv_key() {
       -u DOTNET_RUNNING_IN_CONTAINER -u container \
       "${markers[@]}" V2RAYN_DATA_HOME="$data_home" \
       DOTNET_BUNDLE_EXTRACT_BASE_DIR="$temporary/$deployment-dotenv-bundle" \
-      "$executable" --foreground --no-open
+      "$executable" --foreground
   ) >"$output" 2>&1 &
   web_pid=$!
   wait_for_health "$url" "$output"
@@ -426,7 +437,7 @@ start_managed_with_process_environment_precedence() {
       V2RAYN_WEB_AUTOSTART=false ASPNETCORE_URLS="$url" \
       V2RAYN_DATA_HOME="$data_home" \
       DOTNET_BUNDLE_EXTRACT_BASE_DIR="$temporary/systemd-priority-bundle" \
-      "$executable" --foreground --no-open
+      "$executable" --foreground
   ) >"$output" 2>&1 &
   web_pid=$!
   wait_for_health "$url" "$output"
@@ -469,4 +480,75 @@ start_managed_with_process_environment_precedence "$(new_port)"
 start_managed_with_key systemd "$(new_port)"
 start_managed_with_key container "$(new_port)"
 
-echo "Startup security tests passed (loopback first-run, remote listeners fail-closed across configuration sources, malformed .env rejection, systemd/container keys from .env or process environment)."
+# The launcher prints localized text; these are the only phrases each locale used for
+# the removed browser-opening branch, so their absence proves no opener was attempted.
+assert_no_browser_opening_message() {
+  local output="$1"
+  if grep -Eqi 'Opening the API health endpoint|正在打开 API 健康端点|正在開啟 API 健康端點' "$output"; then
+    cat "$output" >&2
+    echo "Launcher reported opening a browser." >&2
+    exit 1
+  fi
+}
+
+# The default terminal launch detaches into the background, reports the resolved
+# health endpoint, and never opens a browser: a browser opener would need a graphical
+# session and would also make the launcher depend on the stale root path.
+assert_background_launch_stays_headless() {
+  local port output status
+  port="$(new_port)"
+  background_data_home="$temporary/background-data"
+  background_url="http://127.0.0.1:$port"
+  output="$temporary/background-launch.log"
+
+  # No DISPLAY/WAYLAND_DISPLAY: a graphical-session probe would be the only way an
+  # opener could have run, so the launch must still succeed on a headless host.
+  set +e
+  timeout 60 env -u V2RAYN_WEB_API_KEY -u DISPLAY -u WAYLAND_DISPLAY \
+    -u INVOCATION_ID -u JOURNAL_STREAM -u NOTIFY_SOCKET \
+    -u DOTNET_RUNNING_IN_CONTAINER -u container \
+    V2RAYN_DATA_HOME="$background_data_home" \
+    V2RAYN_WEB_AUTOSTART=false \
+    ASPNETCORE_URLS="$background_url" \
+    DOTNET_BUNDLE_EXTRACT_BASE_DIR="$temporary/background-bundle" \
+    "$executable" >"$output" 2>&1
+  status=$?
+  set -e
+  [[ "$status" -eq 0 ]] || { cat "$output" >&2; echo "Background launch exited with status $status." >&2; exit 1; }
+
+  # The launcher output is localized; assert the resolved endpoint appears verbatim
+  # instead of relying on an English sentence.
+  grep -Fq "$background_url/api/health" "$output" \
+    || { cat "$output" >&2; echo "Background launch did not report the resolved health endpoint." >&2; exit 1; }
+  assert_no_browser_opening_message "$output"
+  wait_for_health "$background_url" "$output"
+
+  # A second launch of the same data directory reuses the healthy instance, prints its
+  # state, and must not print any browser-opening message either.
+  set +e
+  timeout 60 env -u V2RAYN_WEB_API_KEY -u DISPLAY -u WAYLAND_DISPLAY \
+    -u INVOCATION_ID -u JOURNAL_STREAM -u NOTIFY_SOCKET \
+    -u DOTNET_RUNNING_IN_CONTAINER -u container \
+    V2RAYN_DATA_HOME="$background_data_home" \
+    V2RAYN_WEB_AUTOSTART=false \
+    ASPNETCORE_URLS="$background_url" \
+    DOTNET_BUNDLE_EXTRACT_BASE_DIR="$temporary/background-bundle" \
+    "$executable" >"$temporary/background-relaunch.log" 2>&1
+  status=$?
+  set -e
+  [[ "$status" -eq 0 ]] || { cat "$temporary/background-relaunch.log" >&2; echo "Repeated background launch exited with status $status." >&2; exit 1; }
+  grep -Fq "$background_url/api/health" "$temporary/background-relaunch.log" \
+    || { cat "$temporary/background-relaunch.log" >&2; echo "Repeated background launch did not report the existing instance health endpoint." >&2; exit 1; }
+  assert_no_browser_opening_message "$temporary/background-relaunch.log"
+
+  env -u INVOCATION_ID -u JOURNAL_STREAM -u NOTIFY_SOCKET \
+    -u DOTNET_RUNNING_IN_CONTAINER -u container -u V2RAYN_WEB_API_KEY \
+    V2RAYN_DATA_HOME="$background_data_home" ASPNETCORE_URLS="$background_url" \
+    "$executable" --stop >"$temporary/background-stop.log" 2>&1 \
+    || { cat "$temporary/background-stop.log" >&2; echo "Could not stop the background instance." >&2; exit 1; }
+  background_data_home=""
+}
+
+assert_background_launch_stays_headless
+
+echo "Startup security tests passed (loopback first-run, remote listeners fail-closed across configuration sources, malformed .env rejection, systemd/container keys from .env or process environment, headless background launch without browser startup)."
