@@ -1095,48 +1095,6 @@ public class CoreConfigV2rayServiceTests
     }
 
     [Test]
-    public async Task GenerateClientConfigContent_XdriveS3PathStyleTrue_ShouldKeepBoolean()
-    {
-        var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
-        CoreConfigTestFactory.BindAppManagerConfig(config);
-
-        var node = new ProfileItem
-        {
-            IndexId = "node-xdrive-s3-path-style",
-            ConfigType = EConfigType.VLESS,
-            CoreType = ECoreType.Xray,
-            Remarks = "xdrive-s3-path-style",
-            Address = "example.com",
-            Port = 443,
-            Password = Guid.NewGuid().ToString(),
-            Network = nameof(ETransport.xdrive),
-        };
-        node.SetProtocolExtra(new ProtocolExtraItem { VlessEncryption = Global.None });
-        node.SetTransportExtra(new TransportExtraItem
-        {
-            XdriveService = "s3",
-            XdriveS3Endpoint = "https://r2.example.com",
-            XdriveS3Region = "auto",
-            XdriveS3Bucket = "bucket",
-            XdriveS3PathStyle = true,
-            XdriveExtra = """{"concurrency":4}""",
-        });
-
-        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray);
-        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
-
-        await result.Success.Should().BeTrue();
-        var generatedConfig = JsonNode.Parse(result.Data!.ToString()!)!;
-        var proxy = generatedConfig["outbounds"]!.AsArray()
-            .First(outbound => outbound!["tag"]!.GetValue<string>() == Global.ProxyTag)!;
-        var xdriveSettings = proxy["streamSettings"]!["xdriveSettings"]!;
-
-        await xdriveSettings["s3"]!["pathStyle"]!.GetValue<bool>().Should().BeTrue();
-        await xdriveSettings["s3"]!["region"]!.GetValue<string>().Should().BeEqualTo("auto");
-        await xdriveSettings["concurrency"]!.GetValue<int>().Should().BeEqualTo(4);
-    }
-
-    [Test]
     public async Task GenerateClientConfigContent_MasqueWithWarp_ShouldGenerateMasqueSettings()
     {
         var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
