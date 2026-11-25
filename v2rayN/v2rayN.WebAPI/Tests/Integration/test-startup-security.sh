@@ -11,14 +11,16 @@ temporary="$(mktemp -d)"
 web_pid=""
 background_data_home=""
 background_url=""
+background_port=""
+background_output=""
 cleanup() {
   if [[ -n "$background_data_home" ]] && [[ -n "${executable:-}" ]]; then
-    # A detached instance has no pid we can signal directly; stop it the same way a
-    # user would so a failed assertion cannot leave it running.
-    env -u INVOCATION_ID -u JOURNAL_STREAM -u NOTIFY_SOCKET \
-      -u DOTNET_RUNNING_IN_CONTAINER -u container -u V2RAYN_WEB_API_KEY \
-      V2RAYN_DATA_HOME="$background_data_home" ASPNETCORE_URLS="$background_url" \
-      "$executable" --stop >/dev/null 2>&1 || true
+    # A CI runner itself runs under systemd, so the detached child inherits a
+    # system.slice/*.service cgroup and --stop correctly refuses to compete with a
+    # supervisor. Signal the verified child directly instead.
+    stop_background_instance \
+      "$background_data_home" "$background_url" "$background_port" "$background_output" \
+      >/dev/null 2>&1 || true
   fi
   if [[ -n "$web_pid" ]] && kill -0 "$web_pid" 2>/dev/null; then
     kill -TERM "$web_pid" 2>/dev/null || true
@@ -55,6 +57,99 @@ with socket.socket() as sock:
     sock.bind(("127.0.0.1", 0))
     print(sock.getsockname()[1])
 PY
+}
+
+# The instance lock is flock-exclusive and holds the PID its owner wrote, so it is the
+# authoritative identity even when the instance never became healthy. The health header
+# reports the PID the server believes it has; when the server is up, both must agree.
+background_instance_pid() {
+  local base_url="$1" data_home="$2" header_pid lock_pid
+  lock_pid="$(head -n 1 "$data_home/v2rayN/v2rayN.WebAPI.instance.lock" 2>/dev/null | tr -cd '0-9' || true)"
+  [[ -n "$lock_pid" ]] || return 1
+  header_pid="$(curl --silent --show-error --fail --max-time 5 \
+    --dump-header - --output /dev/null "$base_url/api/health" 2>/dev/null \
+    | tr -d '\r' \
+    | awk 'tolower($1) == "x-v2rayn-webapi-instance-pid:" { print $2; exit }')"
+  if [[ -n "$header_pid" && "$header_pid" != "$lock_pid" ]]; then
+    return 1
+  fi
+  printf '%s\n' "$lock_pid"
+}
+
+# The verified child also has to be this test's own executable copy, otherwise the
+# PID/lock agreement could still name an unrelated process on a busy host.
+assert_instance_belongs_to_test() {
+  local process_id="$1"
+  local expected_executable expected_command actual_executable actual_command
+  expected_executable="$(readlink -f "$executable")"
+  expected_command="$executable"
+  actual_executable="$(readlink -f "/proc/$process_id/exe" 2>/dev/null || true)"
+  actual_command="$(tr '\0' '\n' < "/proc/$process_id/cmdline" 2>/dev/null | head -n 1 || true)"
+  [[ "$actual_executable" = "$expected_executable" && "$actual_command" = "$expected_command" ]]
+}
+
+port_is_listening() {
+  python3 - "$1" <<'PY'
+import socket
+import sys
+
+with socket.socket() as sock:
+    sock.settimeout(0.5)
+    sys.exit(0 if sock.connect_ex(("127.0.0.1", int(sys.argv[1]))) == 0 else 1)
+PY
+}
+
+# TERM the verified instance, wait for it to exit, then confirm the port and the
+# instance lock were released. Never falls back to a process-name-wide kill.
+stop_background_instance() {
+  local data_home="$1" base_url="$2" port="$3" output="$4" process_id waited
+  if ! process_id="$(background_instance_pid "$base_url" "$data_home")"; then
+    echo "Could not read a verified instance PID for the background launch." >&2
+    return 1
+  fi
+  if kill -0 "$process_id" 2>/dev/null && ! assert_instance_belongs_to_test "$process_id"; then
+    echo "Refusing to signal PID $process_id: it is not this test's v2rayN.WebAPI." >&2
+    return 1
+  fi
+
+  kill -TERM "$process_id" 2>/dev/null || true
+  for waited in {1..160}; do
+    kill -0 "$process_id" 2>/dev/null || break
+    sleep 0.25
+  done
+  if kill -0 "$process_id" 2>/dev/null; then
+    cat "$output" >&2 2>/dev/null || true
+    echo "Background instance $process_id did not stop after SIGTERM." >&2
+    return 1
+  fi
+
+  for waited in {1..40}; do
+    port_is_listening "$port" || break
+    sleep 0.25
+  done
+  if port_is_listening "$port"; then
+    echo "Background instance kept listening on 127.0.0.1:$port after exit." >&2
+    return 1
+  fi
+
+  for waited in {1..40}; do
+    [[ -e "$data_home/v2rayN/v2rayN.WebAPI.instance.lock" ]] || return 0
+    if python3 - "$data_home/v2rayN/v2rayN.WebAPI.instance.lock" <<'PY'
+import fcntl
+import sys
+
+# A released instance lock is unlocked even though the file remains on disk, so
+# taking the lock here proves no owner still holds it.
+with open(sys.argv[1], "rb") as handle:
+    fcntl.flock(handle, fcntl.LOCK_EX | fcntl.LOCK_NB)
+PY
+    then
+      return 0
+    fi
+    sleep 0.25
+  done
+  echo "Background instance kept holding its instance lock after exit." >&2
+  return 1
 }
 
 assert_rejected_without_key() {
@@ -499,7 +594,9 @@ assert_background_launch_stays_headless() {
   port="$(new_port)"
   background_data_home="$temporary/background-data"
   background_url="http://127.0.0.1:$port"
+  background_port="$port"
   output="$temporary/background-launch.log"
+  background_output="$output"
 
   # No DISPLAY/WAYLAND_DISPLAY: a graphical-session probe would be the only way an
   # opener could have run, so the launch must still succeed on a headless host.
@@ -541,11 +638,10 @@ assert_background_launch_stays_headless() {
     || { cat "$temporary/background-relaunch.log" >&2; echo "Repeated background launch did not report the existing instance health endpoint." >&2; exit 1; }
   assert_no_browser_opening_message "$temporary/background-relaunch.log"
 
-  env -u INVOCATION_ID -u JOURNAL_STREAM -u NOTIFY_SOCKET \
-    -u DOTNET_RUNNING_IN_CONTAINER -u container -u V2RAYN_WEB_API_KEY \
-    V2RAYN_DATA_HOME="$background_data_home" ASPNETCORE_URLS="$background_url" \
-    "$executable" --stop >"$temporary/background-stop.log" 2>&1 \
-    || { cat "$temporary/background-stop.log" >&2; echo "Could not stop the background instance." >&2; exit 1; }
+  # The runner may be a systemd service, where --stop intentionally defers to the
+  # supervisor; stop the verified test instance directly instead.
+  stop_background_instance "$background_data_home" "$background_url" "$port" "$output" \
+    || exit 1
   background_data_home=""
 }
 
