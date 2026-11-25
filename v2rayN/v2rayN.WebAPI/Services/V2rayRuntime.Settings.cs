@@ -19,6 +19,7 @@ public sealed partial class V2rayRuntime
         EConfigType.Trojan,
         EConfigType.Hysteria2,
         EConfigType.WireGuard,
+        EConfigType.MASQUE,
     ];
 
     public Task<WebSettingsView> GetSettingsAsync()
@@ -111,7 +112,8 @@ public sealed partial class V2rayRuntime
     public static WebEditorOptionsView GetEditorOptions() => new(
         new SubscriptionEditorOptionsView(
             Global.SubConvertTargets.ToArray(),
-            Enum.GetValues<ECoreType>().Where(coreType => coreType != ECoreType.v2rayN).Select(coreType => coreType.ToString()).ToArray()),
+            Enum.GetValues<ECoreType>().Where(coreType => coreType != ECoreType.v2rayN).Select(coreType => coreType.ToString()).ToArray(),
+            Global.DomainDNS4PreResolveAddress.ToArray()),
         ProfileEditorOptionsValue.Value,
         GetDnsEditorOptions());
 
@@ -153,7 +155,9 @@ public sealed partial class V2rayRuntime
             Global.Alpns.ToArray(),
             shadowsocksMethods,
             [string.Empty, Global.StreamSecurity, Global.StreamSecurityReality],
-            Enum.GetNames<EMultipleLoad>());
+            Enum.GetNames<EMultipleLoad>(),
+            Global.XdriveProviders.ToArray(),
+            Global.XdriveServices.ToArray());
     }
 
     public static DnsEditorOptionsView GetDnsEditorOptions() => new(
