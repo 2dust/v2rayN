@@ -2266,6 +2266,51 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 MUX uses max_connections mode, max_streams ({0}) will be ignored 的本地化字符串。
+        /// </summary>
+        public static string MsgMuxMaxStreamsIgnored {
+            get {
+                return ResourceManager.GetString("MsgMuxMaxStreamsIgnored", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 MUX uses max_streams mode, min_streams ({0}) will be ignored 的本地化字符串。
+        /// </summary>
+        public static string MsgMuxMinStreamsIgnored {
+            get {
+                return ResourceManager.GetString("MsgMuxMinStreamsIgnored", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 MUX min_streams ({0}) requires max_connections &gt; 0, it will be ignored 的本地化字符串。
+        /// </summary>
+        public static string MsgMuxMinStreamsRequiresMaxConnections {
+            get {
+                return ResourceManager.GetString("MsgMuxMinStreamsRequiresMaxConnections", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {0} does not support MUX in Xray, fallback to using ordinary connections 的本地化字符串。
+        /// </summary>
+        public static string MsgMuxNotSupport4Ray {
+            get {
+                return ResourceManager.GetString("MsgMuxNotSupport4Ray", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {0} does not support MUX in sing-box, fallback to using ordinary connections 的本地化字符串。
+        /// </summary>
+        public static string MsgMuxNotSupport4Sbox {
+            get {
+                return ResourceManager.GetString("MsgMuxNotSupport4Sbox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Please enter the URL 的本地化字符串。
         /// </summary>
         public static string MsgNeedUrl {
@@ -4749,6 +4794,51 @@ namespace ServiceLib.Resx {
         public static string TbSettingsMux4RayXudpProxyUDP443 {
             get {
                 return ResourceManager.GetString("TbSettingsMux4RayXudpProxyUDP443", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 sing-box Mux setting 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsMux4Sbox {
+            get {
+                return ResourceManager.GetString("TbSettingsMux4Sbox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Max connections 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsMux4SboxMaxConnections {
+            get {
+                return ResourceManager.GetString("TbSettingsMux4SboxMaxConnections", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Max streams 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsMux4SboxMaxStreams {
+            get {
+                return ResourceManager.GetString("TbSettingsMux4SboxMaxStreams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Min streams 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsMux4SboxMinStreams {
+            get {
+                return ResourceManager.GetString("TbSettingsMux4SboxMinStreams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Padding 的本地化字符串。
+        /// </summary>
+        public static string TbSettingsMux4SboxPadding {
+            get {
+                return ResourceManager.GetString("TbSettingsMux4SboxPadding", resourceCulture);
             }
         }
         

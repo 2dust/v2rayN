@@ -30,7 +30,7 @@ public partial class OptionSettingWindow : WindowBase<OptionSettingViewModel>
         cmbdefFingerprint.ItemsSource = Global.Fingerprints;
         cmbdefUserAgent.ItemsSource = Global.UserAgent;
         cmbmux4SboxProtocol.ItemsSource = Global.SingboxMuxs;
-        cmbmux4RayXudpProxyUDP443.ItemsSource = new[] { "reject", "skip" };
+        cmbmux4RayXudpProxyUDP443.ItemsSource = Global.XudpProxyUDP443Options;
         cmbMtu.ItemsSource = Global.TunMtus;
         cmbStack.ItemsSource = Global.TunStacks;
         cmbDnsMode.ItemsSource = Global.TunDnsModes;

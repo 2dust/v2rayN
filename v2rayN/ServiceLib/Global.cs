@@ -648,7 +648,13 @@ public class Global
         "h2mux",
         "smux",
         "yamux",
-        ""
+    ];
+
+    public static readonly List<string> XudpProxyUDP443Options =
+    [
+        "reject",
+        "allow",
+        "skip",
     ];
 
     public static readonly List<string> TuicCongestionControls =

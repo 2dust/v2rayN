@@ -161,8 +161,6 @@ public class InnerFmt : BaseFmt
             return null;
         }
         // flatten
-        // move jsonObj.ProtoExtraObj to jsonObj.ProtoExtra (string)
-        // move jsonObj.TransportExtraObj to jsonObj.TransportExtra (string)
         if (jsonObj.TryGetPropertyValue("ProtoExtraObj", out var protoExtraNode)
             && protoExtraNode is JsonObject protoExtraObj)
         {
@@ -174,6 +172,12 @@ public class InnerFmt : BaseFmt
         {
             jsonObj["TransportExtra"] = JsonUtils.Serialize(transportExtraObj, false);
             jsonObj.Remove("TransportExtraObj");
+        }
+        if (jsonObj.TryGetPropertyValue("MuxExtraObj", out var muxExtraNode)
+            && muxExtraNode is JsonObject muxExtraObj)
+        {
+            jsonObj["MuxExtra"] = JsonUtils.Serialize(muxExtraObj, false);
+            jsonObj.Remove("MuxExtraObj");
         }
         var customOutboundFilePath = string.Empty;
         if (jsonObj.TryGetPropertyValue("CustomOutboundObj", out var customOutboundNode)
@@ -265,6 +269,15 @@ public class InnerFmt : BaseFmt
         {
             jsonObj["TransportExtraObj"] = transportExtraObj;
             jsonObj.Remove("TransportExtra");
+        }
+        if (jsonObj.TryGetPropertyValue("MuxExtra", out var muxExtraNode)
+            && muxExtraNode is JsonValue muxExtraValue
+            && muxExtraValue.TryGetValue<string>(out var muxExtraStr)
+            && !muxExtraStr.IsNullOrEmpty()
+            && JsonUtils.ParseJson(muxExtraStr) is JsonObject muxExtraObj)
+        {
+            jsonObj["MuxExtraObj"] = muxExtraObj;
+            jsonObj.Remove("MuxExtra");
         }
         // remove subid and isSub
         jsonObj.Remove("Subid");

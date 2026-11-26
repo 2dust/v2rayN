@@ -77,9 +77,52 @@ public class NodeValidator
                 v.Error(string.Format(ResUI.MsgCoreNotSupportProtocol, nameof(ECoreType.Xray), item.ConfigType));
             }
         }
+        var muxExtra = item.GetMuxExtra();
+        var protocolExtra = item.GetProtocolExtra();
+
+        // MUX Specifics
+        if (coreType == ECoreType.Xray && muxExtra.Xray?.Enabled == true)
+        {
+            if (item.ConfigType is not (EConfigType.VMess or EConfigType.VLESS))
+            {
+                v.Warning(string.Format(ResUI.MsgMuxNotSupport4Ray, item.ConfigType));
+            }
+            if ((protocolExtra.Flow ?? string.Empty).StartsWith("xtls", StringComparison.OrdinalIgnoreCase))
+            {
+                v.Warning(string.Format(ResUI.MsgOptionsConflict, "XTLS", "MUX"));
+            }
+        }
+        if (coreType == ECoreType.sing_box && muxExtra.SingBox?.Enabled == true)
+        {
+            if (item.ConfigType is not (EConfigType.VMess or EConfigType.VLESS or EConfigType.Trojan or EConfigType.Shadowsocks))
+            {
+                v.Warning(string.Format(ResUI.MsgMuxNotSupport4Sbox, item.ConfigType));
+            }
+            var profileMux = muxExtra.SingBox;
+            var connectionsMode = profileMux?.MaxConnections is > 0 || profileMux?.MaxStreams is not > 0;
+            if (connectionsMode)
+            {
+                if (profileMux?.MaxStreams is > 0)
+                {
+                    v.Warning(string.Format(ResUI.MsgMuxMaxStreamsIgnored, profileMux.MaxStreams));
+                }
+
+                var maxConnections = profileMux?.MaxConnections;
+                if (profileMux?.MinStreams is > 0 && maxConnections is not > 0)
+                {
+                    v.Warning(string.Format(ResUI.MsgMuxMinStreamsRequiresMaxConnections, profileMux.MinStreams));
+                }
+            }
+            else
+            {
+                if (profileMux?.MinStreams is > 0)
+                {
+                    v.Warning(string.Format(ResUI.MsgMuxMinStreamsIgnored, profileMux.MinStreams));
+                }
+            }
+        }
 
         // Protocol Specifics
-        var protocolExtra = item.GetProtocolExtra();
         switch (item.ConfigType)
         {
             case EConfigType.VMess:
@@ -104,13 +147,6 @@ public class NodeValidator
                     Global.SsSecuritiesInSingbox.Contains(protocolExtra.SsMethod),
                     string.Format(ResUI.MsgInvalidProperty, ResUI.TbSecurity3));
                 break;
-        }
-
-        if (coreType is ECoreType.Xray
-            && (protocolExtra.Flow ?? string.Empty).StartsWith("xtls", StringComparison.OrdinalIgnoreCase)
-            && item.MuxEnabled == true)
-        {
-            v.Warning(string.Format(ResUI.MsgOptionsConflict, "XTLS", "Mux.Cool"));
         }
 
         if (item.GetNetwork() is nameof(ETransport.ws)

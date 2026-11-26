@@ -406,18 +406,34 @@ public partial class CoreConfigSingboxService
     {
         try
         {
-            var muxEnabled = _node.MuxEnabled ?? false;
-            if (muxEnabled && _config.Mux4SboxItem.Protocol.IsNotEmpty())
+            var muxItem = _node.GetMuxExtra()?.SingBox ?? new();
+            var muxEnabled = muxItem.Enabled ?? false;
+            if (!muxEnabled)
             {
-                var mux = new Multiplex4Sbox()
-                {
-                    enabled = true,
-                    protocol = _config.Mux4SboxItem.Protocol,
-                    max_connections = _config.Mux4SboxItem.MaxConnections,
-                    padding = _config.Mux4SboxItem.Padding,
-                };
-                outbound.multiplex = mux;
+                return;
             }
+            var muxProtocol = muxItem.Protocol;
+            if (!Global.SingboxMuxs.Contains(muxProtocol))
+            {
+                muxProtocol = Global.SingboxMuxs.First();
+            }
+            var connectionsMode = muxItem?.MaxConnections is > 0 || muxItem?.MaxStreams is not > 0;
+            var mux = new Multiplex4Sbox()
+            {
+                enabled = true,
+                protocol = muxProtocol!,
+                padding = muxItem.Padding,
+            };
+            if (connectionsMode)
+            {
+                mux.max_connections = muxItem.MaxConnections;
+                mux.min_streams = muxItem.MinStreams;
+            }
+            else
+            {
+                mux.max_streams = muxItem.MaxStreams;
+            }
+            outbound.multiplex = mux;
         }
         catch (Exception ex)
         {

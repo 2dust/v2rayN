@@ -1990,4 +1990,34 @@
   <data name="MsgCheckUpdateViaGitRefsFailed" xml:space="preserve">
     <value>{0} 的 git 參照無法使用</value>
   </data>
+  <data name="TbSettingsMux4Sbox" xml:space="preserve">
+    <value>sing-box Mux 設定</value>
+  </data>
+  <data name="TbSettingsMux4SboxMaxConnections" xml:space="preserve">
+    <value>最大連線數</value>
+  </data>
+  <data name="TbSettingsMux4SboxMinStreams" xml:space="preserve">
+    <value>最小串流數量</value>
+  </data>
+  <data name="TbSettingsMux4SboxMaxStreams" xml:space="preserve">
+    <value>最大串流數量</value>
+  </data>
+  <data name="TbSettingsMux4SboxPadding" xml:space="preserve">
+    <value>填充</value>
+  </data>
+  <data name="MsgMuxNotSupport4Ray" xml:space="preserve">
+    <value>{0} 在 Xray 下不支援 Mux，將回退為一般連線</value>
+  </data>
+  <data name="MsgMuxNotSupport4Sbox" xml:space="preserve">
+    <value>{0} 在 sing-box 下不支援 Mux，將回退為一般連線</value>
+  </data>
+  <data name="MsgMuxMaxStreamsIgnored" xml:space="preserve">
+    <value>Mux 使用最大連線數模式，最大串流數量 ({0}) 將被忽略</value>
+  </data>
+  <data name="MsgMuxMinStreamsRequiresMaxConnections" xml:space="preserve">
+    <value>Mux 的最小串流數量 ({0}) 需要最大連線數大於 0，將被忽略</value>
+  </data>
+  <data name="MsgMuxMinStreamsIgnored" xml:space="preserve">
+    <value>Mux 使用最大串流數量模式，最小串流數量 ({0}) 將被忽略</value>
+  </data>
 </root>

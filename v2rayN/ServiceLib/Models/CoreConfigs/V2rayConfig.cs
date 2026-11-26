@@ -118,8 +118,6 @@ public class Outbounds4Ray
     public Outboundsettings4Ray settings { get; set; }
 
     public StreamSettings4Ray streamSettings { get; set; }
-
-    public Mux4Ray mux { get; set; }
 }
 
 public class Outboundsettings4Ray
@@ -175,6 +173,8 @@ public class Outboundsettings4Ray
     public string? password { get; set; }
 
     public bool? uot { get; set; }
+
+    public Mux4Ray? multiplex { get; set; }
 }
 
 public class WireguardPeer4Ray

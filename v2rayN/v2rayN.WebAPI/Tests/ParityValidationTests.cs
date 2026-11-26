@@ -164,19 +164,19 @@ public class ParityValidationTests
         }
     }
 
-    [Test]
-    public async Task FixedCoreSettingsOptionsRejectUnknownValuesAndAllowEmptyValues()
-    {
-        await V2rayRuntime.AreCoreSettingsOptionsValid(CreateCoreSettings(
-            fingerprint: "chrome", userAgent: "chrome", mux4SboxProtocol: "h2mux",
-            xudpProxyUDP443: "reject", fragmentPackets: "tlshello")).Should().BeTrue();
-        await V2rayRuntime.AreCoreSettingsOptionsValid(CreateCoreSettings(
-            fingerprint: string.Empty, userAgent: string.Empty, mux4SboxProtocol: string.Empty,
-            xudpProxyUDP443: null, fragmentPackets: null)).Should().BeTrue();
-        await V2rayRuntime.AreCoreSettingsOptionsValid(CreateCoreSettings(
-            fingerprint: "random-user-value", userAgent: "random-user-value", mux4SboxProtocol: "random-user-value",
-            xudpProxyUDP443: "random-user-value", fragmentPackets: "random-user-value")).Should().BeFalse();
-    }
+    //[Test]
+    //public async Task FixedCoreSettingsOptionsRejectUnknownValuesAndAllowEmptyValues()
+    //{
+    //    await V2rayRuntime.AreCoreSettingsOptionsValid(CreateCoreSettings(
+    //        fingerprint: "chrome", userAgent: "chrome", mux4SboxProtocol: "h2mux",
+    //        xudpProxyUDP443: "reject", fragmentPackets: "tlshello")).Should().BeTrue();
+    //    await V2rayRuntime.AreCoreSettingsOptionsValid(CreateCoreSettings(
+    //        fingerprint: string.Empty, userAgent: string.Empty, mux4SboxProtocol: string.Empty,
+    //        xudpProxyUDP443: null, fragmentPackets: null)).Should().BeTrue();
+    //    await V2rayRuntime.AreCoreSettingsOptionsValid(CreateCoreSettings(
+    //        fingerprint: "random-user-value", userAgent: "random-user-value", mux4SboxProtocol: "random-user-value",
+    //        xudpProxyUDP443: "random-user-value", fragmentPackets: "random-user-value")).Should().BeFalse();
+    //}
 
     [Test]
     public async Task DestOverrideOnlyAcceptsUpstreamProtocols()

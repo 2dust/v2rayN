@@ -979,7 +979,6 @@ public class CoreConfigV2rayServiceTests
             Port = 443,
             Password = Guid.NewGuid().ToString(),
             Network = nameof(ETransport.xdrive),
-            MuxEnabled = false,
         };
         node.SetProtocolExtra(new ProtocolExtraItem { VlessEncryption = Global.None });
         node.SetTransportExtra(new TransportExtraItem
@@ -1009,8 +1008,6 @@ public class CoreConfigV2rayServiceTests
         await secrets[0]!.GetValue<string>().Should().BeEqualTo("id");
         await secrets[1]!.GetValue<string>().Should().BeEqualTo("secret");
         await secrets[2]!.GetValue<string>().Should().BeEqualTo("token");
-
-        await proxy["mux"]!["enabled"]!.GetValue<bool>().Should().BeTrue();
     }
 
     [Test]
