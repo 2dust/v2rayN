@@ -845,6 +845,42 @@ public class CoreConfigSingboxServiceTests
     }
 
     [Test]
+    public async Task GenerateClientConfigContent_CustomOutboundArray_ShouldReplaceWithOrderedOutbounds()
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.sing_box);
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var customNode = CoreConfigTestFactory.CreateCustomOutboundNode(ECoreType.sing_box, "n-custom-array", "custom-array");
+        var customJsonContent = """
+        [
+          {
+            "type": "socks",
+            "server": "1.2.3.4",
+            "server_port": 1080
+          },
+          {
+            "type": "direct",
+            "tag": "custom-direct-hop"
+          }
+        ]
+        """;
+
+        var context = CoreConfigTestFactory.CreateContext(config, customNode, ECoreType.sing_box);
+        context.CustomOutboundContent[customNode.IndexId] = customJsonContent;
+
+        var result = new CoreConfigSingboxService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue().Because($"ret msg: {result.Msg}");
+        var generatedConfig = JsonNode.Parse(result.Data!.ToString()!)!;
+        var outbounds = generatedConfig["outbounds"]!.AsArray();
+        var proxyIndex = outbounds.Select((outbound, index) => new { outbound, index })
+            .First(entry => entry.outbound!["tag"]!.GetValue<string>() == Global.ProxyTag).index;
+        await outbounds[proxyIndex]!["type"]!.GetValue<string>().Should().BeEqualTo("socks");
+        await outbounds[proxyIndex + 1]!["type"]!.GetValue<string>().Should().BeEqualTo("direct");
+        await outbounds[proxyIndex + 1]!["tag"]!.GetValue<string>().Should().BeEqualTo("custom-direct-hop");
+    }
+
+    [Test]
     [Arguments("/ws?ed=2048", "/ws")]
     [Arguments("/ws?ed=2048&key=value", "/ws?key=value")]
     [Arguments("/ws?key=value&ed=2048", "/ws?key=value")]

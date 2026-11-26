@@ -1093,4 +1093,124 @@ public class CoreConfigV2rayServiceTests
         await xdriveSettings["eagerWindowMs"]!.GetValue<int>().Should().BeEqualTo(1000);
         await xdriveSettings["concurrency"]!.GetValue<int>().Should().BeEqualTo(4);
     }
+
+    [Test]
+    public async Task GenerateClientConfigContent_MasqueWithWarp_ShouldGenerateMasqueSettings()
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var node = new ProfileItem
+        {
+            IndexId = "node-masque-warp",
+            ConfigType = EConfigType.MASQUE,
+            CoreType = ECoreType.Xray,
+            Remarks = "masque-warp",
+            Address = "masque.example.com",
+            Port = 443,
+            Username = "user",
+            Password = string.Empty,
+        };
+        node.SetProtocolExtra(new ProtocolExtraItem
+        {
+            MasquePath = "/tunnel",
+            MasqueHeaders = "X-Test: value",
+            WarpPublicKey = "public-key",
+            WarpPrivateKey = "private-key",
+            WarpAddress = "172.16.0.2/32, 2606:4700::2/128",
+        });
+
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray);
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue();
+        var generatedConfig = JsonNode.Parse(result.Data!.ToString()!)!;
+        var proxy = generatedConfig["outbounds"]!.AsArray()
+            .First(outbound => outbound!["tag"]!.GetValue<string>() == Global.ProxyTag)!;
+
+        await proxy["protocol"]!.GetValue<string>().Should().BeEqualTo("masque");
+        await proxy["settings"]!["address"]!.GetValue<string>().Should().BeEqualTo("masque.example.com");
+        await proxy["settings"]!["port"]!.GetValue<int>().Should().BeEqualTo(443);
+        await proxy["streamSettings"]!["network"]!.GetValue<string>().Should().BeEqualTo("masque");
+
+        var masque = proxy["streamSettings"]!["masqueSettings"]!;
+        await masque["path"]!.GetValue<string>().Should().BeEqualTo("/tunnel");
+        // Custom headers replace the generated Basic Authorization header, matching desktop behavior.
+        await masque["headers"]!["X-Test"]!.GetValue<string>().Should().BeEqualTo("value");
+        await (masque["headers"]!["Authorization"] is null).Should().BeTrue();
+
+        var warp = masque["warp"]!;
+        await warp["publicKey"]!.GetValue<string>().Should().BeEqualTo("public-key");
+        await warp["privateKey"]!.GetValue<string>().Should().BeEqualTo("private-key");
+        var addresses = warp["address"]!.AsArray().Select(item => item!.GetValue<string>()).ToArray();
+        await addresses.SequenceEqual(["172.16.0.2/32", "2606:4700::2/128"]).Should().BeTrue();
+    }
+
+    [Test]
+    public async Task GenerateClientConfigContent_MasqueWithoutHeaders_ShouldGenerateBasicAuthorization()
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var node = new ProfileItem
+        {
+            IndexId = "node-masque-basic",
+            ConfigType = EConfigType.MASQUE,
+            CoreType = ECoreType.Xray,
+            Remarks = "masque-basic",
+            Address = "masque.example.com",
+            Port = 443,
+            Username = "user",
+            Password = string.Empty,
+        };
+        node.SetProtocolExtra(new ProtocolExtraItem { MasquePath = "/tunnel" });
+
+        var context = CoreConfigTestFactory.CreateContext(config, node, ECoreType.Xray);
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue();
+        var generatedConfig = JsonNode.Parse(result.Data!.ToString()!)!;
+        var proxy = generatedConfig["outbounds"]!.AsArray()
+            .First(outbound => outbound!["tag"]!.GetValue<string>() == Global.ProxyTag)!;
+        var masque = proxy["streamSettings"]!["masqueSettings"]!;
+
+        await masque["headers"]!["Authorization"]!.GetValue<string>()
+            .Should().BeEqualTo($"Basic {Utils.Base64Encode("user:")}");
+        await (masque["warp"] is null).Should().BeTrue();
+    }
+
+    [Test]
+    public async Task GenerateClientConfigContent_CustomOutboundArray_ShouldReplaceWithOrderedOutbounds()
+    {
+        var config = CoreConfigTestFactory.CreateConfig(ECoreType.Xray);
+        CoreConfigTestFactory.BindAppManagerConfig(config);
+
+        var customNode = CoreConfigTestFactory.CreateCustomOutboundNode(ECoreType.Xray, "n-custom-array", "custom-array");
+        var customJsonContent = """
+        [
+          {
+            "protocol": "socks",
+            "settings": { "servers": [{ "address": "1.2.3.4", "port": 1080 }] }
+          },
+          {
+            "protocol": "freedom",
+            "tag": "custom-direct-hop"
+          }
+        ]
+        """;
+
+        var context = CoreConfigTestFactory.CreateContext(config, customNode, ECoreType.Xray);
+        context.CustomOutboundContent[customNode.IndexId] = customJsonContent;
+
+        var result = new CoreConfigV2rayService(context).GenerateClientConfigContent();
+
+        await result.Success.Should().BeTrue().Because($"ret msg: {result.Msg}");
+        var generatedConfig = JsonNode.Parse(result.Data!.ToString()!)!;
+        var outbounds = generatedConfig["outbounds"]!.AsArray();
+        var proxyIndex = outbounds.Select((outbound, index) => new { outbound, index })
+            .First(entry => entry.outbound!["tag"]!.GetValue<string>() == Global.ProxyTag).index;
+        await outbounds[proxyIndex]!["protocol"]!.GetValue<string>().Should().BeEqualTo("socks");
+        await outbounds[proxyIndex + 1]!["protocol"]!.GetValue<string>().Should().BeEqualTo("freedom");
+        await outbounds[proxyIndex + 1]!["tag"]!.GetValue<string>().Should().BeEqualTo("custom-direct-hop");
+    }
 }

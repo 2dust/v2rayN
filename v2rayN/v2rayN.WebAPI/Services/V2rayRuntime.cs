@@ -1245,6 +1245,8 @@ public sealed partial class V2rayRuntime(
         NextProfile = input.NextProfile ?? existing?.NextProfile,
         PreSocksPort = input.PreSocksPort,
         CustomCoreType = input.CustomCoreType,
+        // Omitted preResolver keeps the stored value; an explicit empty string clears it.
+        PreResolver = input.PreResolver ?? existing?.PreResolver,
     };
 
     internal static SubscriptionView ToSubscriptionView(SubItem item) => new(
@@ -1264,7 +1266,8 @@ public sealed partial class V2rayRuntime(
         item.PrevProfile,
         item.NextProfile,
         item.PreSocksPort,
-        item.CustomCoreType is null ? null : System.Text.Json.JsonNamingPolicy.CamelCase.ConvertName(item.CustomCoreType.Value.ToString()));
+        item.CustomCoreType is null ? null : System.Text.Json.JsonNamingPolicy.CamelCase.ConvertName(item.CustomCoreType.Value.ToString()),
+        item.PreResolver);
 
     private static void EnsureInboundDefaults(Config config)
     {

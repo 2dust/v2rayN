@@ -202,7 +202,7 @@ public sealed partial class V2rayRuntime
             || string.IsNullOrEmpty(profile.Address)
             || profile.Port <= 0
             || profile.Port >= Global.MaxPort
-            || (profile.ConfigType is not EConfigType.SOCKS and not EConfigType.HTTP
+            || (profile.ConfigType is not EConfigType.SOCKS and not EConfigType.HTTP and not EConfigType.MASQUE
                 && string.IsNullOrEmpty(profile.Password)))
         {
             code = "profile_validation_failed";
