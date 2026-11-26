@@ -91,7 +91,7 @@ public sealed partial class V2rayRuntime
         Global.Fingerprints.ToArray(),
         Global.UserAgent.ToArray(),
         Global.SingboxMuxs.ToArray(),
-        ["reject", "skip"],
+        Global.XudpProxyUDP443Options.ToArray(),
         Global.FragmentPacketsOptions.ToArray(),
         Global.destOverrideProtocols.ToArray(),
         Global.DomainStrategies.ToArray(),
@@ -1452,7 +1452,7 @@ public sealed partial class V2rayRuntime
         && (string.IsNullOrEmpty(input.DefUserAgent) || Global.UserAgent.Contains(input.DefUserAgent))
         && Global.SingboxMuxs.Contains(input.Mux4SboxProtocol ?? string.Empty)
         && (string.IsNullOrEmpty(input.Mux4RayXudpProxyUDP443)
-            || input.Mux4RayXudpProxyUDP443 is "reject" or "skip")
+            || Global.XudpProxyUDP443Options.Contains(input.Mux4RayXudpProxyUDP443))
         && (string.IsNullOrEmpty(input.FragmentPackets)
             || Global.FragmentPacketsOptions.Contains(input.FragmentPackets));
 

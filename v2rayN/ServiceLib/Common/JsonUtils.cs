@@ -220,6 +220,7 @@ public class JsonUtils
 [JsonSerializable(typeof(ClashConnections))]
 [JsonSerializable(typeof(ProtocolExtraItem))]
 [JsonSerializable(typeof(TransportExtraItem))]
+[JsonSerializable(typeof(MuxExtraItem))]
 [JsonSerializable(typeof(TrafficItem))]
 [JsonSerializable(typeof(V2rayMetricsVars))]
 [JsonSerializable(typeof(V2rayMetricsVarsLink))]

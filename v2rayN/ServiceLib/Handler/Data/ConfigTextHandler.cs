@@ -187,6 +187,10 @@ public static class ConfigTextHandler
             Protocol = Global.SingboxMuxs.First(),
             MaxConnections = 8
         };
+        if (!Global.SingboxMuxs.Contains(config.Mux4SboxItem.Protocol))
+        {
+            config.Mux4SboxItem.Protocol = Global.SingboxMuxs.First();
+        }
 
         config.HysteriaItem ??= new()
         {

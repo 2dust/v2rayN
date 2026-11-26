@@ -49,7 +49,6 @@ public static class ConfigDbHandler
             item.ShortId = profileItem.ShortId;
             item.SpiderX = profileItem.SpiderX;
             item.Mldsa65Verify = profileItem.Mldsa65Verify;
-            item.MuxEnabled = profileItem.MuxEnabled;
             item.Cert = profileItem.Cert;
             item.CertSha = profileItem.CertSha;
             item.EchConfigList = profileItem.EchConfigList;
@@ -57,6 +56,7 @@ public static class ConfigDbHandler
             item.Finalmask = profileItem.Finalmask;
             item.ProtoExtra = profileItem.ProtoExtra;
             item.TransportExtra = profileItem.TransportExtra;
+            item.MuxExtra = profileItem.MuxExtra;
         }
 
         var ret = item.ConfigType switch
@@ -2786,6 +2786,8 @@ public static class ConfigDbHandler
         await MigrateProfileExtraV2ToV3();
 
         await MigrateProfileTransportV3ToV4();
+
+        await MigrateProfileMuxExtra();
     }
 
     private static async Task MigrateProfileExtraV2ToV3()
@@ -2800,7 +2802,7 @@ public static class ConfigDbHandler
                 $"AND ConfigType NOT IN ({(int)EConfigType.PolicyGroup}, {(int)EConfigType.ProxyChain}) " +
                 $"LIMIT {pageSize} OFFSET {offset}";
             var batch = await SQLiteHelper.Instance.QueryAsync<ProfileItem>(sql);
-            if (batch is null || batch.Count == 0)
+            if (batch is not { Count: > 0 })
             {
                 break;
             }
@@ -3092,6 +3094,87 @@ public static class ConfigDbHandler
         return true;
 
         //await ProfileGroupItemManager.Instance.ClearAll();
+    }
+
+    private static async Task MigrateProfileMuxExtra()
+    {
+        const int pageSize = 100;
+        var offset = 0;
+
+        while (true)
+        {
+            var sql = $"SELECT * FROM ProfileItem " +
+                      $"WHERE MuxEnabled = 1 " +
+                      $"LIMIT {pageSize} OFFSET {offset}";
+            var batch = await SQLiteHelper.Instance.QueryAsync<ProfileItem>(sql);
+            if (batch is not { Count: > 0 })
+            {
+                break;
+            }
+
+            var batchSuccessCount = await MigrateProfileMuxExtraSub(batch);
+
+            offset += batch.Count - batchSuccessCount;
+        }
+    }
+
+    private static async Task<int> MigrateProfileMuxExtraSub(List<ProfileItem> batch)
+    {
+        var config = CurrentConfig;
+        var updateProfileItems = new List<ProfileItem>();
+        foreach (var item in batch)
+        {
+            try
+            {
+                if (item.MuxEnabled != true)
+                {
+                    continue;
+                }
+                var muxExtra = new MuxExtraItem
+                {
+                    Xray = new()
+                    {
+                        Enabled = true,
+                        Concurrency = config.Mux4RayItem.Concurrency,
+                        XudpConcurrency = config.Mux4RayItem.XudpConcurrency,
+                        XudpProxyUDP443 = config.Mux4RayItem.XudpProxyUDP443,
+                    },
+                    SingBox = new()
+                    {
+                        Enabled = true,
+                        Protocol = config.Mux4SboxItem.Protocol,
+                        MaxConnections = config.Mux4SboxItem.MaxConnections,
+                        MinStreams = config.Mux4SboxItem.MinStreams,
+                        MaxStreams = config.Mux4SboxItem.MaxStreams,
+                        Padding = config.Mux4SboxItem.Padding,
+                    },
+                };
+                item.SetMuxExtra(muxExtra);
+                item.MuxEnabled = null;
+                updateProfileItems.Add(item);
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog($"MigrateProfileMuxExtra Error: {ex}");
+            }
+        }
+        if (updateProfileItems.Count > 0)
+        {
+            try
+            {
+                var count = await SQLiteHelper.Instance.UpdateAllAsync(updateProfileItems);
+                return count;
+            }
+            catch (Exception ex)
+            {
+                Logging.SaveLog($"MigrateProfileMuxExtra update error: {ex}");
+                return 0;
+            }
+        }
+        else
+        {
+            return 0;
+        }
     }
 
 #pragma warning restore CS0618

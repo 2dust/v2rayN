@@ -6,9 +6,6 @@
 		"port": 10086
 	},
 	"streamSettings": {
-		"network": "tcp"
-	},
-	"mux": {
-		"enabled": false
+		"network": "raw"
 	}
 }

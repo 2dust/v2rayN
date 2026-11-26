@@ -4,6 +4,7 @@ public class ProfileItem
 {
     private ProtocolExtraItem? _protocolExtraCache;
     private TransportExtraItem? _transportExtraCache;
+    private MuxExtraItem? _muxExtraCache;
 
     public ProfileItem()
     {
@@ -145,6 +146,17 @@ public class ProfileItem
         TransportExtra = JsonUtils.Serialize(transportExtra, false);
     }
 
+    public MuxExtraItem GetMuxExtra()
+    {
+        return _muxExtraCache ??= JsonUtils.Deserialize<MuxExtraItem>(MuxExtra) ?? new MuxExtraItem();
+    }
+
+    public void SetMuxExtra(MuxExtraItem muxExtra)
+    {
+        _muxExtraCache = muxExtra;
+        MuxExtra = JsonUtils.Serialize(muxExtra, false);
+    }
+
     public bool GetAllowInsecure()
     {
         return AllowInsecure == Global.StringTrue;
@@ -191,6 +203,7 @@ public class ProfileItem
     [Obsolete("Use TransportExtra.XhttpExtra instead.")]
     public string Extra { get; set; }
 
+    [Obsolete("Use MuxExtraItem.Xray(/SingBox).Enabled instead.")]
     public bool? MuxEnabled { get; set; }
     public string Cert { get; set; }
     public string CertSha { get; set; }
@@ -200,6 +213,7 @@ public class ProfileItem
 
     public string ProtoExtra { get; set; }
     public string TransportExtra { get; set; }
+    public string MuxExtra { get; set; }
 
     [Obsolete("Use ProtocolExtraItem.Ports instead.")]
     public string Ports { get; set; }

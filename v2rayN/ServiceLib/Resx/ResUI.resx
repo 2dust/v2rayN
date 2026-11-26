@@ -1989,4 +1989,34 @@ The "Get Certificate" action may fail if a self-signed certificate is used or if
   <data name="MsgCheckUpdateViaGitRefsFailed" xml:space="preserve">
     <value>Git references for {0} are unavailable</value>
   </data>
+  <data name="TbSettingsMux4Sbox" xml:space="preserve">
+    <value>sing-box Mux setting</value>
+  </data>
+  <data name="TbSettingsMux4SboxMaxConnections" xml:space="preserve">
+    <value>Max connections</value>
+  </data>
+  <data name="TbSettingsMux4SboxMinStreams" xml:space="preserve">
+    <value>Min streams</value>
+  </data>
+  <data name="TbSettingsMux4SboxMaxStreams" xml:space="preserve">
+    <value>Max streams</value>
+  </data>
+  <data name="TbSettingsMux4SboxPadding" xml:space="preserve">
+    <value>Padding</value>
+  </data>
+  <data name="MsgMuxNotSupport4Ray" xml:space="preserve">
+    <value>{0} does not support MUX in Xray, fallback to using ordinary connections</value>
+  </data>
+  <data name="MsgMuxNotSupport4Sbox" xml:space="preserve">
+    <value>{0} does not support MUX in sing-box, fallback to using ordinary connections</value>
+  </data>
+  <data name="MsgMuxMaxStreamsIgnored" xml:space="preserve">
+    <value>MUX uses max_connections mode, max_streams ({0}) will be ignored</value>
+  </data>
+  <data name="MsgMuxMinStreamsRequiresMaxConnections" xml:space="preserve">
+    <value>MUX min_streams ({0}) requires max_connections &gt; 0, it will be ignored</value>
+  </data>
+  <data name="MsgMuxMinStreamsIgnored" xml:space="preserve">
+    <value>MUX uses max_streams mode, min_streams ({0}) will be ignored</value>
+  </data>
 </root>

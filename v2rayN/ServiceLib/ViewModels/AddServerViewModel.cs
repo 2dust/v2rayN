@@ -14,9 +14,6 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
     public partial bool AllowInsecure { get; set; }
 
     [Reactive]
-    public partial bool MuxEnabled { get; set; }
-
-    [Reactive]
     public partial string Cert { get; set; }
 
     [Reactive]
@@ -174,6 +171,36 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
 
     [Reactive]
     public partial string XdriveExtra { get; set; }
+
+    [Reactive]
+    public partial bool MuxEnabled4Ray { get; set; }
+
+    [Reactive]
+    public partial int? MuxConcurrency4Ray { get; set; }
+
+    [Reactive]
+    public partial int? MuxXudpConcurrency4Ray { get; set; }
+
+    [Reactive]
+    public partial string? MuxXudpProxyUDP4434Ray { get; set; }
+
+    [Reactive]
+    public partial bool MuxEnabled4Box { get; set; }
+
+    [Reactive]
+    public partial string? MuxProtocol4Box { get; set; }
+
+    [Reactive]
+    public partial int? MuxMaxConnections4Box { get; set; }
+
+    [Reactive]
+    public partial int? MuxMinStreams4Box { get; set; }
+
+    [Reactive]
+    public partial int? MuxMaxStreams4Box { get; set; }
+
+    [Reactive]
+    public partial bool MuxPadding4Box { get; set; }
 
     public string TransportHeaderType
     {
@@ -346,7 +373,7 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
                 }
                 if (network == nameof(ETransport.xdrive))
                 {
-                    MuxEnabled = true;
+                    MuxEnabled4Ray = true;
                 }
                 this.RaisePropertyChanged(nameof(TransportHeaderType));
                 this.RaisePropertyChanged(nameof(TransportHost));
@@ -376,13 +403,11 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
         }
         CoreType = SelectedSource?.CoreType?.ToString();
         AllowInsecure = SelectedSource?.GetAllowInsecure() == true;
-        MuxEnabled = SelectedSource?.MuxEnabled == true;
         Network = SelectedSource?.Network ?? Global.DefaultNetwork;
         Cert = SelectedSource?.Cert ?? string.Empty;
         CertSha = SelectedSource?.CertSha ?? string.Empty;
 
         var protocolExtra = SelectedSource?.GetProtocolExtra() ?? new();
-        var transport = SelectedSource?.GetTransportExtra() ?? new();
         Ports = protocolExtra.Ports ?? string.Empty;
         AlterId = int.TryParse(protocolExtra.AlterId, out var result) ? result : 0;
         Flow = protocolExtra.Flow ?? string.Empty;
@@ -413,6 +438,7 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
         WarpPrivateKey = protocolExtra.WarpPrivateKey ?? string.Empty;
         WarpAddress = protocolExtra.WarpAddress ?? string.Empty;
 
+        var transport = SelectedSource?.GetTransportExtra() ?? new();
         RawHeaderType = transport.RawHeaderType ?? Global.None;
         Host = transport.Host ?? string.Empty;
         Path = transport.Path ?? string.Empty;
@@ -466,6 +492,18 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
         {
             XdriveProvider = "Cloudflare R2";
         }
+
+        var muxExtra = SelectedSource?.GetMuxExtra() ?? new();
+        MuxEnabled4Ray = muxExtra.Xray?.Enabled ?? false;
+        MuxConcurrency4Ray = muxExtra.Xray?.Concurrency ?? _config.Mux4RayItem?.Concurrency;
+        MuxXudpConcurrency4Ray = muxExtra.Xray?.XudpConcurrency ?? _config.Mux4RayItem?.XudpConcurrency;
+        MuxXudpProxyUDP4434Ray = muxExtra.Xray?.XudpProxyUDP443 ?? _config.Mux4RayItem?.XudpProxyUDP443;
+        MuxEnabled4Box = muxExtra.SingBox?.Enabled ?? false;
+        MuxProtocol4Box = muxExtra.SingBox?.Protocol ?? _config.Mux4SboxItem?.Protocol;
+        MuxMaxConnections4Box = muxExtra.SingBox?.MaxConnections ?? _config.Mux4SboxItem?.MaxConnections;
+        MuxMinStreams4Box = muxExtra.SingBox?.MinStreams ?? _config.Mux4SboxItem?.MinStreams;
+        MuxMaxStreams4Box = muxExtra.SingBox?.MaxStreams ?? _config.Mux4SboxItem?.MaxStreams;
+        MuxPadding4Box = muxExtra.SingBox?.Padding ?? _config.Mux4SboxItem?.Padding ?? false;
     }
 
     private async Task SaveServerAsync()
@@ -526,7 +564,6 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
         }
         SelectedSource.CoreType = CoreType.IsNullOrEmpty() ? null : Enum.Parse<ECoreType>(CoreType);
         SelectedSource.AllowInsecure = AllowInsecure ? Global.StringTrue : Global.StringFalse;
-        SelectedSource.MuxEnabled = MuxEnabled;
         SelectedSource.Cert = Cert.IsNullOrEmpty() ? string.Empty : Cert;
         SelectedSource.CertSha = CertSha.IsNullOrEmpty() ? string.Empty : CertSha;
         if (!Global.Networks.Contains(Network))
@@ -534,29 +571,6 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
             Network = Global.DefaultNetwork;
         }
         SelectedSource.Network = Network;
-
-        var transport = new TransportExtraItem
-        {
-            RawHeaderType = RawHeaderType.NullIfEmpty(),
-            Host = Host.NullIfEmpty(),
-            Path = Path.NullIfEmpty(),
-            XhttpMode = XhttpMode.NullIfEmpty(),
-            XhttpExtra = XhttpExtra.NullIfEmpty(),
-            GrpcAuthority = GrpcAuthority.NullIfEmpty(),
-            GrpcServiceName = GrpcServiceName.NullIfEmpty(),
-            GrpcMode = GrpcMode.NullIfEmpty(),
-            KcpHeaderType = KcpHeaderType.NullIfEmpty(),
-            KcpSeed = KcpSeed.NullIfEmpty(),
-            KcpMtu = KcpMtu > 0 ? KcpMtu : null,
-            XdriveService = XdriveService.NullIfEmpty(),
-            XdriveRemoteFolder = XdriveRemoteFolder.NullIfEmpty(),
-            XdriveSecrets = XdriveSecrets.NullIfEmpty(),
-            XdriveS3Endpoint = XdriveS3Endpoint.NullIfEmpty(),
-            XdriveS3Region = XdriveS3Region.NullIfEmpty(),
-            XdriveS3Bucket = XdriveS3Bucket.NullIfEmpty(),
-            XdriveS3PathStyle = XdriveS3PathStyle,
-            XdriveExtra = XdriveExtra.NullIfEmpty(),
-        };
 
         SelectedSource.SetProtocolExtra(SelectedSource.GetProtocolExtra() with
         {
@@ -590,7 +604,47 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
             WarpPrivateKey = WarpPrivateKey.NullIfEmpty(),
             WarpAddress = WarpAddress.NullIfEmpty(),
         });
-        SelectedSource.SetTransportExtra(transport);
+        SelectedSource.SetTransportExtra(new TransportExtraItem
+        {
+            RawHeaderType = RawHeaderType.NullIfEmpty(),
+            Host = Host.NullIfEmpty(),
+            Path = Path.NullIfEmpty(),
+            XhttpMode = XhttpMode.NullIfEmpty(),
+            XhttpExtra = XhttpExtra.NullIfEmpty(),
+            GrpcAuthority = GrpcAuthority.NullIfEmpty(),
+            GrpcServiceName = GrpcServiceName.NullIfEmpty(),
+            GrpcMode = GrpcMode.NullIfEmpty(),
+            KcpHeaderType = KcpHeaderType.NullIfEmpty(),
+            KcpSeed = KcpSeed.NullIfEmpty(),
+            KcpMtu = KcpMtu > 0 ? KcpMtu : null,
+            XdriveService = XdriveService.NullIfEmpty(),
+            XdriveRemoteFolder = XdriveRemoteFolder.NullIfEmpty(),
+            XdriveSecrets = XdriveSecrets.NullIfEmpty(),
+            XdriveS3Endpoint = XdriveS3Endpoint.NullIfEmpty(),
+            XdriveS3Region = XdriveS3Region.NullIfEmpty(),
+            XdriveS3Bucket = XdriveS3Bucket.NullIfEmpty(),
+            XdriveS3PathStyle = XdriveS3PathStyle,
+            XdriveExtra = XdriveExtra.NullIfEmpty()
+        });
+        SelectedSource.SetMuxExtra(new()
+        {
+            Xray = new()
+            {
+                Enabled = MuxEnabled4Ray,
+                Concurrency = MuxConcurrency4Ray,
+                XudpConcurrency = MuxXudpConcurrency4Ray,
+                XudpProxyUDP443 = MuxXudpProxyUDP4434Ray.NullIfEmpty(),
+            },
+            SingBox = new()
+            {
+                Enabled = MuxEnabled4Box,
+                Protocol = MuxProtocol4Box.NullIfEmpty(),
+                MaxConnections = MuxMaxConnections4Box,
+                MinStreams = MuxMinStreams4Box,
+                MaxStreams = MuxMaxStreams4Box,
+                Padding = MuxPadding4Box,
+            }
+        });
 
         if (await ConfigDbHandler.AddServer(SelectedSource) == 0)
         {

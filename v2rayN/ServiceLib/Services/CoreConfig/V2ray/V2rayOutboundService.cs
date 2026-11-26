@@ -68,7 +68,8 @@ public partial class CoreConfigV2rayService
         try
         {
             var protocolExtra = _node.GetProtocolExtra();
-            var muxEnabled = _node.MuxEnabled ?? false;
+            var muxItem = _node.GetMuxExtra()?.Xray ?? new();
+            var muxEnabled = muxItem.Enabled ?? false;
             var outboundSettings = outbound.settings;
             switch (_node.ConfigType)
             {
@@ -88,7 +89,7 @@ public partial class CoreConfigV2rayService
                             outboundSettings.security = Global.DefaultSecurity;
                         }
 
-                        FillOutboundMux(outbound, muxEnabled, muxEnabled);
+                        FillOutboundMux(outboundSettings, muxEnabled, muxEnabled);
                         break;
                     }
                 case EConfigType.Shadowsocks:
@@ -102,8 +103,6 @@ public partial class CoreConfigV2rayService
 
                         outboundSettings.ota = false;
                         outboundSettings.level = 1;
-
-                        FillOutboundMux(outbound);
                         break;
                     }
                 case EConfigType.SOCKS:
@@ -118,8 +117,6 @@ public partial class CoreConfigV2rayService
                             outboundSettings.level = 1;
                             outboundSettings.email = Global.UserEMail;
                         }
-
-                        FillOutboundMux(outbound);
                         break;
                     }
                 case EConfigType.HTTP:
@@ -140,8 +137,6 @@ public partial class CoreConfigV2rayService
                             outboundSettings.level = 1;
                             outboundSettings.email = Global.UserEMail;
                         }
-
-                        FillOutboundMux(outbound);
                         break;
                     }
                 case EConfigType.VLESS:
@@ -154,12 +149,12 @@ public partial class CoreConfigV2rayService
 
                         if (protocolExtra.Flow.IsNullOrEmpty())
                         {
-                            FillOutboundMux(outbound, muxEnabled, muxEnabled);
+                            FillOutboundMux(outboundSettings, muxEnabled, muxEnabled);
                         }
                         else
                         {
                             outboundSettings.flow = protocolExtra.Flow;
-                            FillOutboundMux(outbound, false, muxEnabled);
+                            FillOutboundMux(outboundSettings, false, muxEnabled);
                         }
                         break;
                     }
@@ -171,8 +166,6 @@ public partial class CoreConfigV2rayService
 
                         outboundSettings.ota = false;
                         outboundSettings.level = 1;
-
-                        FillOutboundMux(outbound);
                         break;
                     }
                 case EConfigType.Hysteria2:
@@ -228,23 +221,25 @@ public partial class CoreConfigV2rayService
         }
     }
 
-    private void FillOutboundMux(Outbounds4Ray outbound, bool enabledTCP = false, bool enabledUDP = false)
+    private void FillOutboundMux(Outboundsettings4Ray setting, bool enabledTCP = false, bool enabledUDP = false)
     {
         try
         {
-            outbound.mux.enabled = false;
-            outbound.mux.concurrency = -1;
+            setting.multiplex ??= new();
+            setting.multiplex.enabled = false;
+            setting.multiplex.concurrency = -1;
 
+            var muxItem = _node.GetMuxExtra()?.Xray ?? new();
             if (enabledTCP)
             {
-                outbound.mux.enabled = true;
-                outbound.mux.concurrency = _config.Mux4RayItem.Concurrency;
+                setting.multiplex.enabled = true;
+                setting.multiplex.concurrency = muxItem.Concurrency;
             }
             else if (enabledUDP)
             {
-                outbound.mux.enabled = true;
-                outbound.mux.xudpConcurrency = _config.Mux4RayItem.XudpConcurrency;
-                outbound.mux.xudpProxyUDP443 = _config.Mux4RayItem.XudpProxyUDP443;
+                setting.multiplex.enabled = true;
+                setting.multiplex.xudpConcurrency = muxItem.XudpConcurrency;
+                setting.multiplex.xudpProxyUDP443 = muxItem.XudpProxyUDP443;
             }
         }
         catch (Exception ex)
@@ -484,7 +479,6 @@ public partial class CoreConfigV2rayService
                     }
 
                     streamSettings.xhttpSettings = xhttpSettings;
-                    FillOutboundMux(outbound);
 
                     break;
 
@@ -575,7 +569,6 @@ public partial class CoreConfigV2rayService
                     }
 
                     streamSettings.xdriveSettings = xdriveSettings;
-                    FillOutboundMux(outbound, true, true);
                     break;
 
                 case "hysteria":

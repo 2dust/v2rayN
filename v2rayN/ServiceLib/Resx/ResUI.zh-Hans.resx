@@ -1020,6 +1020,15 @@
   <data name="TbSettingsMux4SboxProtocol" xml:space="preserve">
     <value>sing-box Mux 多路复用协议</value>
   </data>
+  <data name="TbSettingsMux4RayConcurrency" xml:space="preserve">
+    <value>Xray Mux 并发数</value>
+  </data>
+  <data name="TbSettingsMux4RayXudpConcurrency" xml:space="preserve">
+    <value>Xray Mux XUDP 并发数</value>
+  </data>
+  <data name="TbSettingsMux4RayXudpProxyUDP443" xml:space="preserve">
+    <value>Xray Mux XUDP proxy UDP443</value>
+  </data>
   <data name="TbRoutingRuleProcess" xml:space="preserve">
     <value>进程 (Linux/Windows)</value>
   </data>
@@ -1980,5 +1989,35 @@
   </data>
   <data name="MsgCheckUpdateViaGitRefsFailed" xml:space="preserve">
     <value>{0} 的 git 引用不可用</value>
+  </data>
+  <data name="TbSettingsMux4Sbox" xml:space="preserve">
+    <value>sing-box Mux 设置</value>
+  </data>
+  <data name="TbSettingsMux4SboxMaxConnections" xml:space="preserve">
+    <value>最大连接数</value>
+  </data>
+  <data name="TbSettingsMux4SboxMinStreams" xml:space="preserve">
+    <value>最小流数量</value>
+  </data>
+  <data name="TbSettingsMux4SboxMaxStreams" xml:space="preserve">
+    <value>最大流数量</value>
+  </data>
+  <data name="TbSettingsMux4SboxPadding" xml:space="preserve">
+    <value>填充</value>
+  </data>
+  <data name="MsgMuxNotSupport4Ray" xml:space="preserve">
+    <value>{0} 在 Xray 下不支持 Mux，将回退为普通连接</value>
+  </data>
+  <data name="MsgMuxNotSupport4Sbox" xml:space="preserve">
+    <value>{0} 在 sing-box 下不支持 Mux，将回退为普通连接</value>
+  </data>
+  <data name="MsgMuxMaxStreamsIgnored" xml:space="preserve">
+    <value>Mux 使用最大连接数模式，最大流数量 ({0}) 将被忽略</value>
+  </data>
+  <data name="MsgMuxMinStreamsRequiresMaxConnections" xml:space="preserve">
+    <value>Mux 的最小流数量 ({0}) 需要最大连接数大于 0，将被忽略</value>
+  </data>
+  <data name="MsgMuxMinStreamsIgnored" xml:space="preserve">
+    <value>Mux 使用最大流数量模式，最小流数量 ({0}) 将被忽略</value>
   </data>
 </root>

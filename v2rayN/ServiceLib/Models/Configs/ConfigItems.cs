@@ -178,8 +178,10 @@ public class Mux4RayItem
 
 public class Mux4SboxItem
 {
-    public string Protocol { get; set; }
-    public int MaxConnections { get; set; }
+    public string? Protocol { get; set; }
+    public int? MaxConnections { get; set; }
+    public int? MinStreams { get; set; }
+    public int? MaxStreams { get; set; }
     public bool? Padding { get; set; }
 }
 
