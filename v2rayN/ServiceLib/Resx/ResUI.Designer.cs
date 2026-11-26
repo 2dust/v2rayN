@@ -2363,6 +2363,15 @@ namespace ServiceLib.Resx {
                 return ResourceManager.GetString("MsgServerTitle", resourceCulture);
             }
         }
+                
+        /// <summary>
+        ///   查找类似 Filter nodes (applied automatically) 的本地化字符串。
+        /// </summary>
+        public static string MsgServerFilterTip {
+            get {
+                return ResourceManager.GetString("MsgServerFilterTip", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   查找类似 Updates are not enabled, skip this subscription 的本地化字符串。

@@ -1,4 +1,5 @@
 using Avalonia.Controls.DataGridDragDrop;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 using DialogHostAvalonia;
 using v2rayN.Desktop.Common;
@@ -10,6 +11,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
     private static Config _config;
     private static readonly string _tag = "ProfilesView";
     private bool _isDndRegistered = false;
+    private readonly DispatcherTimer _filterTimer = new() { Interval = TimeSpan.FromMilliseconds(300) };
 
     public ProfilesView()
     {
@@ -20,6 +22,8 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         menuSelectAll.Click += menuSelectAll_Click;
         btnAutofitColumnWidth.Click += BtnAutofitColumnWidth_Click;
         txtServerFilter.KeyDown += TxtServerFilter_KeyDown;
+        txtServerFilter.TextChanged += TxtServerFilter_TextChanged;
+        _filterTimer.Tick += FilterTimer_Tick;
         lstProfiles.KeyDown += LstProfiles_KeyDown;
         lstProfiles.SelectionChanged += lstProfiles_SelectionChanged;
         lstProfiles.DoubleTapped += LstProfiles_DoubleTapped;
@@ -359,8 +363,24 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
     {
         if (e.Key is Key.Enter or Key.Return)
         {
+            _filterTimer.Stop();
             ViewModel?.RefreshServers();
         }
+    }
+
+    /// <summary>
+    /// Apply the filter automatically after the user stops typing (debounced).
+    /// </summary>
+    private void TxtServerFilter_TextChanged(object? sender, TextChangedEventArgs e)
+    {
+        _filterTimer.Stop();
+        _filterTimer.Start();
+    }
+
+    private void FilterTimer_Tick(object? sender, EventArgs e)
+    {
+        _filterTimer.Stop();
+        ViewModel?.RefreshServers();
     }
 
     #endregion Event
