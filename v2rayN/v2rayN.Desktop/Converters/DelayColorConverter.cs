@@ -17,8 +17,10 @@ namespace v2rayN.Desktop.Converters;
 /// SemiColorSuccess reaches only ~2.7:1 against the white row background of the light
 /// theme variants, which is too low for a value that is read as text. The token color
 /// is therefore darkened on light themes until it clears the WCAG AA contrast ratio
-/// (4.5:1) for body text. On the dark variants the token colors already reach 5.7:1 to
-/// 8.4:1 and are used unchanged.
+/// (4.5:1) for body text. Because the value is rendered at a small font size, where
+/// most glyph pixels are antialiased blends, the light theme variants are calibrated
+/// to AAA (7:1) instead, so the hue stays recognizable. On the dark variants the token
+/// colors already reach 5.7:1 to 8.4:1 and are used unchanged.
 /// </summary>
 public class DelayColorConverter : IValueConverter
 {
@@ -26,6 +28,25 @@ public class DelayColorConverter : IValueConverter
     private static readonly SolidColorBrush Success = new(Colors.Green);
     private static readonly SolidColorBrush Warning = new(Colors.Goldenrod);
     private static bool _subscribed;
+
+    /// <summary>
+    /// Minimum contrast ratio for the latency text. On the dark theme variants the
+    /// Semi palette already reaches 5.7:1 to 8.4:1, so the token colors are kept
+    /// as they are.
+    /// </summary>
+    private const double MinContrast = 4.5;
+
+    /// <summary>
+    /// Contrast ratio used on the light theme variants.
+    ///
+    /// The value is a small number rendered on an 11px font: most of the glyph
+    /// pixels are antialiased blends of the text color and the row background.
+    /// A color that only just clears AA (4.5:1) is therefore washed out by the
+    /// blending and reads as pale grey instead of green / amber / red. Calibrating
+    /// to AAA (7:1) on the light variants keeps the hue recognizable even after
+    /// the antialiasing.
+    /// </summary>
+    private const double LightThemeContrast = 7.0;
 
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
@@ -83,8 +104,8 @@ public class DelayColorConverter : IValueConverter
         var color = themed.Color;
         var rowBackground = ThemeHelper.GetRowBackground();
         color = isDark
-            ? LightenUntilContrast(color, rowBackground)
-            : DarkenUntilContrast(color, rowBackground);
+            ? LightenUntilContrast(color, rowBackground, MinContrast)
+            : DarkenUntilContrast(color, rowBackground, LightThemeContrast);
 
         if (color != brush.Color)
         {
@@ -95,7 +116,7 @@ public class DelayColorConverter : IValueConverter
     /// <summary>
     /// Scales the color down until it contrasts sufficiently with the given background.
     /// </summary>
-    private static Color DarkenUntilContrast(Color color, Color background)
+    private static Color DarkenUntilContrast(Color color, Color background, double target)
     {
         var factor = 1.0;
         while (factor > 0.25)
@@ -105,7 +126,7 @@ public class DelayColorConverter : IValueConverter
                 (byte)Math.Clamp(color.G * factor, 0, 255),
                 (byte)Math.Clamp(color.B * factor, 0, 255));
 
-            if (ContrastRatio(candidate, background) >= 4.5)
+            if (ContrastRatio(candidate, background) >= target)
             {
                 return candidate;
             }
@@ -119,7 +140,7 @@ public class DelayColorConverter : IValueConverter
     /// <summary>
     /// Scales the color up until it contrasts sufficiently with the given background.
     /// </summary>
-    private static Color LightenUntilContrast(Color color, Color background)
+    private static Color LightenUntilContrast(Color color, Color background, double target)
     {
         var factor = 1.0;
         while (factor < 2.0)
@@ -129,7 +150,7 @@ public class DelayColorConverter : IValueConverter
                 (byte)Math.Clamp(color.G * factor, 0, 255),
                 (byte)Math.Clamp(color.B * factor, 0, 255));
 
-            if (ContrastRatio(candidate, background) >= 4.5)
+            if (ContrastRatio(candidate, background) >= target)
             {
                 return candidate;
             }
