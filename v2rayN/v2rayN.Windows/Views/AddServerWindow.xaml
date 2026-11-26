@@ -62,6 +62,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0">
@@ -217,19 +218,6 @@
                         Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefComboBox}" />
 
-                    <TextBlock
-                        Grid.Row="4"
-                        Grid.Column="0"
-                        Margin="{StaticResource Margin4}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsMuxEnabled}" />
-                    <ToggleButton
-                        x:Name="togmuxEnabled"
-                        Grid.Row="4"
-                        Grid.Column="1"
-                        Margin="{StaticResource Margin4}"
-                        HorizontalAlignment="Left" />
                 </Grid>
                 <Grid
                     x:Name="gridSs"
@@ -291,19 +279,6 @@
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Left" />
 
-                    <TextBlock
-                        Grid.Row="4"
-                        Grid.Column="0"
-                        Margin="{StaticResource Margin4}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsMuxEnabled}" />
-                    <ToggleButton
-                        x:Name="togmuxEnabled3"
-                        Grid.Row="4"
-                        Grid.Column="1"
-                        Margin="{StaticResource Margin4}"
-                        HorizontalAlignment="Left" />
                 </Grid>
                 <Grid
                     x:Name="gridSocks"
@@ -445,19 +420,6 @@
                         HorizontalAlignment="Left"
                         Style="{StaticResource DefTextBox}" />
 
-                    <TextBlock
-                        Grid.Row="4"
-                        Grid.Column="0"
-                        Margin="{StaticResource Margin4}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsMuxEnabled}" />
-                    <ToggleButton
-                        x:Name="togmuxEnabled5"
-                        Grid.Row="4"
-                        Grid.Column="1"
-                        Margin="{StaticResource Margin4}"
-                        HorizontalAlignment="Left" />
                 </Grid>
                 <Grid
                     x:Name="gridTrojan"
@@ -505,19 +467,6 @@
                         Margin="{StaticResource Margin4}"
                         Style="{StaticResource DefComboBox}" />
 
-                    <TextBlock
-                        Grid.Row="4"
-                        Grid.Column="0"
-                        Margin="{StaticResource Margin4}"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.TbSettingsMuxEnabled}" />
-                    <ToggleButton
-                        x:Name="togmuxEnabled6"
-                        Grid.Row="4"
-                        Grid.Column="1"
-                        Margin="{StaticResource Margin4}"
-                        HorizontalAlignment="Left" />
                 </Grid>
                 <Grid
                     x:Name="gridHysteria2"
@@ -1140,13 +1089,244 @@
                     </materialDesign:PopupBox>
                 </Grid>
 
+                <Grid x:Name="gridMux" Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        Grid.Column="0"
+                        Margin="{StaticResource Margin4}"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource ToolbarTextBlock}"
+                        Text="{x:Static resx:ResUI.TbSettingsMuxEnabled}" />
+
+                    <StackPanel
+                        x:Name="stkMux4Ray"
+                        Grid.Column="1"
+                        Margin="{StaticResource MarginLeftRight4}"
+                        Orientation="Horizontal">
+                        <TextBlock
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="Xray" />
+                        <ToggleButton
+                            x:Name="togMux4Ray"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center" />
+                    </StackPanel>
+
+                    <StackPanel
+                        x:Name="stkMux4Box"
+                        Grid.Column="2"
+                        Orientation="Horizontal">
+                        <TextBlock
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="sing-box" />
+                        <ToggleButton
+                            x:Name="togMux4Box"
+                            Margin="{StaticResource Margin4}"
+                            VerticalAlignment="Center" />
+                    </StackPanel>
+
+                    <materialDesign:PopupBox
+                        Grid.Column="3"
+                        Margin="{StaticResource MarginLeftRight4}"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        StaysOpen="True"
+                        Style="{StaticResource MaterialDesignToolForegroundPopupBox}">
+                        <StackPanel Margin="{StaticResource Margin8}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel x:Name="stkMuxSetting4Ray" Grid.Column="0">
+                                    <TextBlock
+                                        Margin="{StaticResource Margin4}"
+                                        VerticalAlignment="Center"
+                                        FontWeight="Bold"
+                                        Style="{StaticResource ToolbarTextBlock}"
+                                        Text="{x:Static resx:ResUI.TbSettingsMux4Ray}" />
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="160" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock
+                                            Grid.Row="0"
+                                            Grid.Column="0"
+                                            Margin="{StaticResource Margin4}"
+                                            VerticalAlignment="Center"
+                                            Style="{StaticResource ToolbarTextBlock}"
+                                            Text="{x:Static resx:ResUI.TbSettingsMux4RayConcurrency}"
+                                            TextWrapping="Wrap" />
+                                        <TextBox
+                                            x:Name="txtMuxConcurrency4Ray"
+                                            Grid.Row="0"
+                                            Grid.Column="1"
+                                            Margin="{StaticResource Margin4}"
+                                            materialDesign:HintAssist.Hint="8"
+                                            Style="{StaticResource DefTextBox}" />
+
+                                        <TextBlock
+                                            Grid.Row="1"
+                                            Grid.Column="0"
+                                            Margin="{StaticResource Margin4}"
+                                            VerticalAlignment="Center"
+                                            Style="{StaticResource ToolbarTextBlock}"
+                                            Text="{x:Static resx:ResUI.TbSettingsMux4RayXudpConcurrency}"
+                                            TextWrapping="Wrap" />
+                                        <TextBox
+                                            x:Name="txtMuxXudpConcurrency4Ray"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            Margin="{StaticResource Margin4}"
+                                            materialDesign:HintAssist.Hint="16"
+                                            Style="{StaticResource DefTextBox}" />
+
+                                        <TextBlock
+                                            Grid.Row="2"
+                                            Grid.Column="0"
+                                            Margin="{StaticResource Margin4}"
+                                            VerticalAlignment="Center"
+                                            Style="{StaticResource ToolbarTextBlock}"
+                                            Text="{x:Static resx:ResUI.TbSettingsMux4RayXudpProxyUDP443}"
+                                            TextWrapping="Wrap" />
+                                        <ComboBox
+                                            x:Name="cmbMuxXudpProxyUDP4434Ray"
+                                            Grid.Row="2"
+                                            Grid.Column="1"
+                                            Margin="{StaticResource Margin4}"
+                                            Style="{StaticResource DefComboBox}" />
+                                    </Grid>
+                                </StackPanel>
+
+                                <StackPanel
+                                    x:Name="stkMuxSetting4Box"
+                                    Grid.Column="1"
+                                    Margin="{StaticResource MarginLeftRight8}">
+                                    <TextBlock
+                                        Margin="{StaticResource Margin4}"
+                                        VerticalAlignment="Center"
+                                        FontWeight="Bold"
+                                        Style="{StaticResource ToolbarTextBlock}"
+                                        Text="{x:Static resx:ResUI.TbSettingsMux4Sbox}" />
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="160" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock
+                                            Grid.Row="0"
+                                            Grid.Column="0"
+                                            Margin="{StaticResource Margin4}"
+                                            VerticalAlignment="Center"
+                                            Style="{StaticResource ToolbarTextBlock}"
+                                            Text="{x:Static resx:ResUI.TbSettingsMux4SboxProtocol}"
+                                            TextWrapping="Wrap" />
+                                        <ComboBox
+                                            x:Name="cmbMuxProtocol4Box"
+                                            Grid.Row="0"
+                                            Grid.Column="1"
+                                            Margin="{StaticResource Margin4}"
+                                            Style="{StaticResource DefComboBox}" />
+
+                                        <TextBlock
+                                            Grid.Row="1"
+                                            Grid.Column="0"
+                                            Margin="{StaticResource Margin4}"
+                                            VerticalAlignment="Center"
+                                            Style="{StaticResource ToolbarTextBlock}"
+                                            Text="{x:Static resx:ResUI.TbSettingsMux4SboxMaxConnections}"
+                                            TextWrapping="Wrap" />
+                                        <TextBox
+                                            x:Name="txtMuxMaxConnections4Box"
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            Margin="{StaticResource Margin4}"
+                                            Style="{StaticResource DefTextBox}" />
+
+                                        <TextBlock
+                                            Grid.Row="2"
+                                            Grid.Column="0"
+                                            Margin="{StaticResource Margin4}"
+                                            VerticalAlignment="Center"
+                                            Style="{StaticResource ToolbarTextBlock}"
+                                            Text="{x:Static resx:ResUI.TbSettingsMux4SboxMinStreams}"
+                                            TextWrapping="Wrap" />
+                                        <TextBox
+                                            x:Name="txtMuxMinStreams4Box"
+                                            Grid.Row="2"
+                                            Grid.Column="1"
+                                            Margin="{StaticResource Margin4}"
+                                            Style="{StaticResource DefTextBox}" />
+
+                                        <TextBlock
+                                            Grid.Row="3"
+                                            Grid.Column="0"
+                                            Margin="{StaticResource Margin4}"
+                                            VerticalAlignment="Center"
+                                            Style="{StaticResource ToolbarTextBlock}"
+                                            Text="{x:Static resx:ResUI.TbSettingsMux4SboxMaxStreams}"
+                                            TextWrapping="Wrap" />
+                                        <TextBox
+                                            x:Name="txtMuxMaxStreams4Box"
+                                            Grid.Row="3"
+                                            Grid.Column="1"
+                                            Margin="{StaticResource Margin4}"
+                                            Style="{StaticResource DefTextBox}" />
+
+                                        <TextBlock
+                                            Grid.Row="4"
+                                            Grid.Column="0"
+                                            Margin="{StaticResource Margin4}"
+                                            VerticalAlignment="Center"
+                                            Style="{StaticResource ToolbarTextBlock}"
+                                            Text="{x:Static resx:ResUI.TbSettingsMux4SboxPadding}"
+                                            TextWrapping="Wrap" />
+                                        <ToggleButton
+                                            x:Name="togMuxPadding4Box"
+                                            Grid.Row="4"
+                                            Grid.Column="1"
+                                            Margin="{StaticResource Margin4}"
+                                            HorizontalAlignment="Left" />
+                                    </Grid>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </materialDesign:PopupBox>
+                </Grid>
+
                 <Separator
                     x:Name="sepa2"
-                    Grid.Row="3"
+                    Grid.Row="4"
                     Margin="0,2"
                     Style="{DynamicResource MaterialDesignSeparator}" />
 
-                <Grid x:Name="gridTransport" Grid.Row="4">
+                <Grid x:Name="gridTransport" Grid.Row="5">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -1523,7 +1703,7 @@
                     </Grid>
                 </Grid>
 
-                <Grid x:Name="gridFinalmask" Grid.Row="5">
+                <Grid x:Name="gridFinalmask" Grid.Row="6">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="300" />
                         <ColumnDefinition Width="Auto" />
@@ -1559,11 +1739,11 @@
                 </Grid>
 
                 <Separator
-                    Grid.Row="6"
+                    Grid.Row="7"
                     Margin="0,2"
                     Style="{DynamicResource MaterialDesignSeparator}" />
 
-                <Grid x:Name="gridTls" Grid.Row="7">
+                <Grid x:Name="gridTls" Grid.Row="8">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -1593,7 +1773,7 @@
                 </Grid>
                 <Grid
                     x:Name="gridTlsMore"
-                    Grid.Row="8"
+                    Grid.Row="9"
                     Visibility="Collapsed">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -1786,7 +1966,7 @@
                 </Grid>
                 <Grid
                     x:Name="gridRealityMore"
-                    Grid.Row="8"
+                    Grid.Row="9"
                     Visibility="Collapsed">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -1898,7 +2078,7 @@
                         Style="{StaticResource DefTextBox}" />
                 </Grid>
                 <Separator
-                    Grid.Row="9"
+                    Grid.Row="10"
                     Margin="0,2"
                     Style="{DynamicResource MaterialDesignSeparator}" />
             </Grid>

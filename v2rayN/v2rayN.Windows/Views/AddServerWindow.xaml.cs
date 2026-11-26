@@ -31,7 +31,11 @@ public partial class AddServerWindow
         cmbFingerprint2.ItemsSource = Global.Fingerprints;
         cmbAlpn.ItemsSource = Global.Alpns;
 
+        cmbMuxProtocol4Box.ItemsSource = Global.SingboxMuxs;
+        cmbMuxXudpProxyUDP4434Ray.ItemsSource = Global.XudpProxyUDP443Options;
+
         gridTlsMore.Visibility = Visibility.Collapsed;
+        gridMux.Visibility = Visibility.Collapsed;
 
         this.WhenActivated(disposables =>
         {
@@ -60,14 +64,12 @@ public partial class AddServerWindow
                             this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtId.Text).DisposeWith(currentTypeDisposables);
                             this.Bind(ViewModel, vm => vm.AlterId, v => v.txtAlterId.Text).DisposeWith(currentTypeDisposables);
                             this.Bind(ViewModel, vm => vm.VmessSecurity, v => v.cmbSecurity.Text).DisposeWith(currentTypeDisposables);
-                            this.Bind(ViewModel, vm => vm.MuxEnabled, v => v.togmuxEnabled.IsChecked).DisposeWith(currentTypeDisposables);
                             break;
 
                         case EConfigType.Shadowsocks:
                             this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtId3.Text).DisposeWith(currentTypeDisposables);
                             this.Bind(ViewModel, vm => vm.SsMethod, v => v.cmbSecurity3.Text).DisposeWith(currentTypeDisposables);
                             this.Bind(ViewModel, vm => vm.Uot, v => v.togUotEnabled3.IsChecked).DisposeWith(currentTypeDisposables);
-                            this.Bind(ViewModel, vm => vm.MuxEnabled, v => v.togmuxEnabled3.IsChecked).DisposeWith(currentTypeDisposables);
                             break;
 
                         case EConfigType.SOCKS:
@@ -90,13 +92,11 @@ public partial class AddServerWindow
                             this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtId5.Text).DisposeWith(currentTypeDisposables);
                             this.Bind(ViewModel, vm => vm.Flow, v => v.cmbFlow5.Text).DisposeWith(currentTypeDisposables);
                             this.Bind(ViewModel, vm => vm.VlessEncryption, v => v.txtSecurity5.Text).DisposeWith(currentTypeDisposables);
-                            this.Bind(ViewModel, vm => vm.MuxEnabled, v => v.togmuxEnabled5.IsChecked).DisposeWith(currentTypeDisposables);
                             break;
 
                         case EConfigType.Trojan:
                             this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtId6.Text).DisposeWith(currentTypeDisposables);
                             this.Bind(ViewModel, vm => vm.Flow, v => v.cmbFlow6.Text).DisposeWith(currentTypeDisposables);
-                            this.Bind(ViewModel, vm => vm.MuxEnabled, v => v.togmuxEnabled6.IsChecked).DisposeWith(currentTypeDisposables);
                             break;
 
                         case EConfigType.Hysteria2:
@@ -152,6 +152,27 @@ public partial class AddServerWindow
                     }
                 })
                 .DisposeWith(disposables);
+
+            //mux
+            this.Bind(ViewModel, vm => vm.MuxEnabled4Ray, v => v.togMux4Ray.IsChecked).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.MuxConcurrency4Ray, v => v.txtMuxConcurrency4Ray.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.MuxXudpConcurrency4Ray, v => v.txtMuxXudpConcurrency4Ray.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.MuxXudpProxyUDP4434Ray, v => v.cmbMuxXudpProxyUDP4434Ray.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.MuxEnabled4Ray, v => v.txtMuxConcurrency4Ray.IsEnabled).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.MuxEnabled4Ray, v => v.txtMuxXudpConcurrency4Ray.IsEnabled).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.MuxEnabled4Ray, v => v.cmbMuxXudpProxyUDP4434Ray.IsEnabled).DisposeWith(disposables);
+
+            this.Bind(ViewModel, vm => vm.MuxEnabled4Box, v => v.togMux4Box.IsChecked).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.MuxProtocol4Box, v => v.cmbMuxProtocol4Box.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.MuxMaxConnections4Box, v => v.txtMuxMaxConnections4Box.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.MuxMinStreams4Box, v => v.txtMuxMinStreams4Box.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.MuxMaxStreams4Box, v => v.txtMuxMaxStreams4Box.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.MuxPadding4Box, v => v.togMuxPadding4Box.IsChecked).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.MuxEnabled4Box, v => v.cmbMuxProtocol4Box.IsEnabled).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.MuxEnabled4Box, v => v.txtMuxMaxConnections4Box.IsEnabled).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.MuxEnabled4Box, v => v.txtMuxMinStreams4Box.IsEnabled).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.MuxEnabled4Box, v => v.txtMuxMaxStreams4Box.IsEnabled).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.MuxEnabled4Box, v => v.togMuxPadding4Box.IsEnabled).DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.Network, v => v.cmbNetwork.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.RawHeaderType, v => v.cmbHeaderTypeRaw.Text).DisposeWith(disposables);
@@ -306,6 +327,13 @@ public partial class AddServerWindow
                 }
                 break;
         }
+
+        var mux4Ray = profileItem.ConfigType is EConfigType.VMess or EConfigType.VLESS;
+        var mux4Sbox = profileItem.ConfigType is EConfigType.VMess or EConfigType.VLESS or EConfigType.Trojan or EConfigType.Shadowsocks;
+        gridMux.Visibility = mux4Ray || mux4Sbox ? Visibility.Visible : Visibility.Collapsed;
+        stkMux4Ray.Visibility = stkMuxSetting4Ray.Visibility = mux4Ray ? Visibility.Visible : Visibility.Collapsed;
+        stkMux4Box.Visibility = stkMuxSetting4Box.Visibility = mux4Sbox ? Visibility.Visible : Visibility.Collapsed;
+
         cmbStreamSecurity.ItemsSource = lstStreamSecurity;
         cmbStreamSecurity.SelectedItem = profileItem.StreamSecurity;
     }
