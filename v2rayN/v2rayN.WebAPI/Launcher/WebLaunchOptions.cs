@@ -8,11 +8,16 @@ public enum WebLaunchMode
     BackgroundChild,
 }
 
-public sealed record WebLaunchOptions(WebLaunchMode Mode, bool NoOpen, string[] HostArguments)
+public sealed record WebLaunchOptions(WebLaunchMode Mode, string[] HostArguments)
 {
     public const string StopFlag = "--stop";
     public const string ForegroundFlag = "--foreground";
     public const string BackgroundFlag = "--background";
+
+    /// <summary>
+    /// Accepted and stripped for compatibility with scripts written before the launcher
+    /// stopped opening a browser; it has no behavioral effect.
+    /// </summary>
     public const string NoOpenFlag = "--no-open";
     public const string BackgroundChildFlag = "--background-child";
     public const string HelpFlag = "--help";
@@ -46,10 +51,7 @@ public sealed record WebLaunchOptions(WebLaunchMode Mode, bool NoOpen, string[] 
                 and not HelpFlag
                 and not HelpShortFlag)
             .ToArray();
-        return new WebLaunchOptions(
-            mode,
-            arguments.Contains(NoOpenFlag, StringComparer.Ordinal),
-            hostArguments);
+        return new WebLaunchOptions(mode, hostArguments);
     }
 }
 
@@ -147,8 +149,8 @@ public static class LauncherMessages
     public static string Started(string url, string command, LauncherLocale locale) =>
         Format("started", locale, url, command);
 
-    public static string AlreadyRunning(string url, string command, bool browserOpened, LauncherLocale locale) =>
-        Format(browserOpened ? "alreadyRunningOpening" : "alreadyRunning", locale, url, command);
+    public static string AlreadyRunning(string url, string command, LauncherLocale locale) =>
+        Format("alreadyRunning", locale, url, command);
 
     public static string ForegroundStarted(string url, LauncherLocale locale) => Format("foregroundStarted", locale, url);
 

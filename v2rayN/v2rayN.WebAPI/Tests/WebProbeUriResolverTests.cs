@@ -43,7 +43,6 @@ public class WebProbeUriResolverTests
     {
         await WebProbeUriResolver.TryResolve(Config(), out var endpoints).Should().BeTrue();
         await endpoints.HealthUri.ToString().Should().BeEqualTo("http://127.0.0.1:5080/api/health");
-        await endpoints.ApiUri.ToString().Should().BeEqualTo("http://127.0.0.1:5080/");
     }
 
     [Test]
@@ -100,20 +99,17 @@ public class WebProbeUriResolverTests
     }
 
     [Test]
-    public async Task LauncherUrisFollowTheSameResolutionAndNeverGuess()
+    public async Task LauncherHealthUriFollowsTheSameResolutionAndNeverGuesses()
     {
-        var (health, api) = Program.GetLauncherUris(Config(("urls", "http://[::1]:5090")));
+        var health = Program.GetLauncherHealthUri(Config(("urls", "http://[::1]:5090")));
         await health!.ToString().Should().BeEqualTo("http://[::1]:5090/api/health");
-        await api!.ToString().Should().BeEqualTo("http://[::1]:5090/");
 
         // A configured localhost stays localhost instead of being rewritten to 127.0.0.1.
-        var (localhostHealth, localhostApi) = Program.GetLauncherUris(Config(("urls", "http://localhost:5090")));
+        var localhostHealth = Program.GetLauncherHealthUri(Config(("urls", "http://localhost:5090")));
         await localhostHealth!.ToString().Should().BeEqualTo("http://localhost:5090/api/health");
-        await localhostApi!.ToString().Should().BeEqualTo("http://localhost:5090/");
 
-        var (httpsHealth, httpsApi) = Program.GetLauncherUris(Config(("urls", "https://127.0.0.1:5443")));
-        await (httpsHealth is null).Should().BeTrue();
-        await (httpsApi is null).Should().BeTrue();
+        var unprobeable = Program.GetLauncherHealthUri(Config(("urls", "https://127.0.0.1:5443")));
+        await (unprobeable is null).Should().BeTrue();
     }
 
     [Test]

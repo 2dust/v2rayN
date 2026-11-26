@@ -113,7 +113,7 @@ run_refusal_case() {
     "V2RAYN_DATA_HOME=$data_home" \
     "DOTNET_BUNDLE_EXTRACT_BASE_DIR=$case_root/dotnet-bundle" \
     "${process_env[@]}" \
-    "$executable" --foreground --no-open >"$case_root/runtime.log" 2>&1 &
+    "$executable" --foreground >"$case_root/runtime.log" 2>&1 &
   app_pid=$!
 
   local ready=false

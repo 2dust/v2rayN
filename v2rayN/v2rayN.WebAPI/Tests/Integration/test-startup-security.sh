@@ -9,7 +9,19 @@ command -v python3 >/dev/null
 
 temporary="$(mktemp -d)"
 web_pid=""
+background_data_home=""
+background_url=""
+background_port=""
+background_output=""
 cleanup() {
+  if [[ -n "$background_data_home" ]] && [[ -n "${executable:-}" ]]; then
+    # A CI runner itself runs under systemd, so the detached child inherits a
+    # system.slice/*.service cgroup and --stop correctly refuses to compete with a
+    # supervisor. Signal the verified child directly instead.
+    stop_background_instance \
+      "$background_data_home" "$background_url" "$background_port" "$background_output" \
+      >/dev/null 2>&1 || true
+  fi
   if [[ -n "$web_pid" ]] && kill -0 "$web_pid" 2>/dev/null; then
     kill -TERM "$web_pid" 2>/dev/null || true
     for _ in {1..20}; do
@@ -47,6 +59,99 @@ with socket.socket() as sock:
 PY
 }
 
+# The instance lock is flock-exclusive and holds the PID its owner wrote, so it is the
+# authoritative identity even when the instance never became healthy. The health header
+# reports the PID the server believes it has; when the server is up, both must agree.
+background_instance_pid() {
+  local base_url="$1" data_home="$2" header_pid lock_pid
+  lock_pid="$(head -n 1 "$data_home/v2rayN/v2rayN.WebAPI.instance.lock" 2>/dev/null | tr -cd '0-9' || true)"
+  [[ -n "$lock_pid" ]] || return 1
+  header_pid="$(curl --silent --show-error --fail --max-time 5 \
+    --dump-header - --output /dev/null "$base_url/api/health" 2>/dev/null \
+    | tr -d '\r' \
+    | awk 'tolower($1) == "x-v2rayn-webapi-instance-pid:" { print $2; exit }')"
+  if [[ -n "$header_pid" && "$header_pid" != "$lock_pid" ]]; then
+    return 1
+  fi
+  printf '%s\n' "$lock_pid"
+}
+
+# The verified child also has to be this test's own executable copy, otherwise the
+# PID/lock agreement could still name an unrelated process on a busy host.
+assert_instance_belongs_to_test() {
+  local process_id="$1"
+  local expected_executable expected_command actual_executable actual_command
+  expected_executable="$(readlink -f "$executable")"
+  expected_command="$executable"
+  actual_executable="$(readlink -f "/proc/$process_id/exe" 2>/dev/null || true)"
+  actual_command="$(tr '\0' '\n' < "/proc/$process_id/cmdline" 2>/dev/null | head -n 1 || true)"
+  [[ "$actual_executable" = "$expected_executable" && "$actual_command" = "$expected_command" ]]
+}
+
+port_is_listening() {
+  python3 - "$1" <<'PY'
+import socket
+import sys
+
+with socket.socket() as sock:
+    sock.settimeout(0.5)
+    sys.exit(0 if sock.connect_ex(("127.0.0.1", int(sys.argv[1]))) == 0 else 1)
+PY
+}
+
+# TERM the verified instance, wait for it to exit, then confirm the port and the
+# instance lock were released. Never falls back to a process-name-wide kill.
+stop_background_instance() {
+  local data_home="$1" base_url="$2" port="$3" output="$4" process_id waited
+  if ! process_id="$(background_instance_pid "$base_url" "$data_home")"; then
+    echo "Could not read a verified instance PID for the background launch." >&2
+    return 1
+  fi
+  if kill -0 "$process_id" 2>/dev/null && ! assert_instance_belongs_to_test "$process_id"; then
+    echo "Refusing to signal PID $process_id: it is not this test's v2rayN.WebAPI." >&2
+    return 1
+  fi
+
+  kill -TERM "$process_id" 2>/dev/null || true
+  for waited in {1..160}; do
+    kill -0 "$process_id" 2>/dev/null || break
+    sleep 0.25
+  done
+  if kill -0 "$process_id" 2>/dev/null; then
+    cat "$output" >&2 2>/dev/null || true
+    echo "Background instance $process_id did not stop after SIGTERM." >&2
+    return 1
+  fi
+
+  for waited in {1..40}; do
+    port_is_listening "$port" || break
+    sleep 0.25
+  done
+  if port_is_listening "$port"; then
+    echo "Background instance kept listening on 127.0.0.1:$port after exit." >&2
+    return 1
+  fi
+
+  for waited in {1..40}; do
+    [[ -e "$data_home/v2rayN/v2rayN.WebAPI.instance.lock" ]] || return 0
+    if python3 - "$data_home/v2rayN/v2rayN.WebAPI.instance.lock" <<'PY'
+import fcntl
+import sys
+
+# A released instance lock is unlocked even though the file remains on disk, so
+# taking the lock here proves no owner still holds it.
+with open(sys.argv[1], "rb") as handle:
+    fcntl.flock(handle, fcntl.LOCK_EX | fcntl.LOCK_NB)
+PY
+    then
+      return 0
+    fi
+    sleep 0.25
+  done
+  echo "Background instance kept holding its instance lock after exit." >&2
+  return 1
+}
+
 assert_rejected_without_key() {
   local deployment="$1" data_home="$temporary/$1-data" output="$temporary/$1-rejected.log" status
   local markers=()
@@ -63,7 +168,7 @@ assert_rejected_without_key() {
       -u INVOCATION_ID -u JOURNAL_STREAM -u NOTIFY_SOCKET \
       -u DOTNET_RUNNING_IN_CONTAINER -u container \
       "${markers[@]}" V2RAYN_DATA_HOME="$data_home" \
-      "$executable" --foreground --no-open
+      "$executable" --foreground
   ) >"$output" 2>&1; then
     status=0
   else
@@ -79,7 +184,8 @@ assert_rejected_without_key() {
 wait_for_health() {
   local base_url="$1" output="$2" healthy=false
   for _ in {1..60}; do
-    if ! kill -0 "$web_pid" 2>/dev/null; then
+    # A detached background instance has no pid of ours to watch; the probe alone decides.
+    if [[ -n "$web_pid" ]] && ! kill -0 "$web_pid" 2>/dev/null; then
       cat "$output" >&2
       echo "Web process exited before becoming healthy." >&2
       exit 1
@@ -155,7 +261,7 @@ assert_remote_listener_rejected() {
       -u INVOCATION_ID -u JOURNAL_STREAM -u NOTIFY_SOCKET \
       -u DOTNET_RUNNING_IN_CONTAINER -u container \
       "${settings[@]}" V2RAYN_DATA_HOME="$temporary/listener-$source-data" \
-      "$executable" --foreground --no-open "${arguments[@]}" >"$output" 2>&1; then
+      "$executable" --foreground "${arguments[@]}" >"$output" 2>&1; then
     status=0
   else
     status=$?
@@ -174,7 +280,7 @@ assert_malformed_configuration_fails() {
   if (
     cd "$temporary/other-working-directory"
     exec env -u V2RAYN_WEB_API_KEY -u INVOCATION_ID -u JOURNAL_STREAM -u NOTIFY_SOCKET \
-      -u DOTNET_RUNNING_IN_CONTAINER -u container "$executable" --foreground --no-open
+      -u DOTNET_RUNNING_IN_CONTAINER -u container "$executable" --foreground
   ) >"$output" 2>&1; then
     status=0
   else
@@ -206,12 +312,12 @@ assert_invalid_management_key_fails() {
       exec env -u INVOCATION_ID -u JOURNAL_STREAM -u NOTIFY_SOCKET \
         -u DOTNET_RUNNING_IN_CONTAINER -u container \
         "V2RAYN_WEB_API_KEY=$key" V2RAYN_DATA_HOME="$data_home" \
-        "$executable" --foreground --no-open
+        "$executable" --foreground
     else
       exec env -u V2RAYN_WEB_API_KEY \
         -u INVOCATION_ID -u JOURNAL_STREAM -u NOTIFY_SOCKET \
         -u DOTNET_RUNNING_IN_CONTAINER -u container \
-        V2RAYN_DATA_HOME="$data_home" "$executable" --foreground --no-open
+        V2RAYN_DATA_HOME="$data_home" "$executable" --foreground
     fi
   ) >"$output" 2>&1; then
     status=0
@@ -252,7 +358,7 @@ start_with_valid_management_key_boundary() {
       -u ASPNETCORE_URLS -u ASPNETCORE_HTTP_PORTS -u ASPNETCORE_HTTPS_PORTS \
       "${key_settings[@]}" \
       V2RAYN_DATA_HOME="$data_home" V2RAYN_WEB_AUTOSTART=false ASPNETCORE_URLS="$url" \
-      "$executable" --foreground --no-open
+      "$executable" --foreground
   ) >"$output" 2>&1 &
   web_pid=$!
   wait_for_health "$url" "$output"
@@ -282,7 +388,7 @@ native_key="first-run-$(python3 -c 'import secrets; print(secrets.token_hex(24))
     V2RAYN_WEB_AUTOSTART=true \
     ASPNETCORE_URLS="$native_url" \
     DOTNET_BUNDLE_EXTRACT_BASE_DIR="$temporary/native-bundle" \
-    "$executable" --foreground --no-open
+    "$executable" --foreground
 ) >"$native_log" 2>&1 &
 web_pid=$!
 wait_for_health "$native_url" "$native_log"
@@ -345,7 +451,7 @@ start_managed_with_key() {
     "${markers[@]}" V2RAYN_WEB_API_KEY="$key" \
     V2RAYN_DATA_HOME="$data_home" V2RAYN_WEB_AUTOSTART=false \
     ASPNETCORE_URLS="$url" DOTNET_BUNDLE_EXTRACT_BASE_DIR="$temporary/$deployment-bundle" \
-    "$executable" --foreground --no-open >"$output" 2>&1 &
+    "$executable" --foreground >"$output" 2>&1 &
   web_pid=$!
   wait_for_health "$url" "$output"
   stop_instance "$output"
@@ -371,7 +477,7 @@ start_managed_with_dotenv_key() {
       -u DOTNET_RUNNING_IN_CONTAINER -u container \
       "${markers[@]}" V2RAYN_DATA_HOME="$data_home" \
       DOTNET_BUNDLE_EXTRACT_BASE_DIR="$temporary/$deployment-dotenv-bundle" \
-      "$executable" --foreground --no-open
+      "$executable" --foreground
   ) >"$output" 2>&1 &
   web_pid=$!
   wait_for_health "$url" "$output"
@@ -426,7 +532,7 @@ start_managed_with_process_environment_precedence() {
       V2RAYN_WEB_AUTOSTART=false ASPNETCORE_URLS="$url" \
       V2RAYN_DATA_HOME="$data_home" \
       DOTNET_BUNDLE_EXTRACT_BASE_DIR="$temporary/systemd-priority-bundle" \
-      "$executable" --foreground --no-open
+      "$executable" --foreground
   ) >"$output" 2>&1 &
   web_pid=$!
   wait_for_health "$url" "$output"
@@ -469,4 +575,76 @@ start_managed_with_process_environment_precedence "$(new_port)"
 start_managed_with_key systemd "$(new_port)"
 start_managed_with_key container "$(new_port)"
 
-echo "Startup security tests passed (loopback first-run, remote listeners fail-closed across configuration sources, malformed .env rejection, systemd/container keys from .env or process environment)."
+# The launcher prints localized text; these are the only phrases each locale used for
+# the removed browser-opening branch, so their absence proves no opener was attempted.
+assert_no_browser_opening_message() {
+  local output="$1"
+  if grep -Eqi 'Opening the API health endpoint|正在打开 API 健康端点|正在開啟 API 健康端點' "$output"; then
+    cat "$output" >&2
+    echo "Launcher reported opening a browser." >&2
+    exit 1
+  fi
+}
+
+# The default terminal launch detaches into the background, reports the resolved
+# health endpoint, and never opens a browser: a browser opener would need a graphical
+# session and would also make the launcher depend on the stale root path.
+assert_background_launch_stays_headless() {
+  local port output status
+  port="$(new_port)"
+  background_data_home="$temporary/background-data"
+  background_url="http://127.0.0.1:$port"
+  background_port="$port"
+  output="$temporary/background-launch.log"
+  background_output="$output"
+
+  # No DISPLAY/WAYLAND_DISPLAY: a graphical-session probe would be the only way an
+  # opener could have run, so the launch must still succeed on a headless host.
+  set +e
+  timeout 60 env -u V2RAYN_WEB_API_KEY -u DISPLAY -u WAYLAND_DISPLAY \
+    -u INVOCATION_ID -u JOURNAL_STREAM -u NOTIFY_SOCKET \
+    -u DOTNET_RUNNING_IN_CONTAINER -u container \
+    V2RAYN_DATA_HOME="$background_data_home" \
+    V2RAYN_WEB_AUTOSTART=false \
+    ASPNETCORE_URLS="$background_url" \
+    DOTNET_BUNDLE_EXTRACT_BASE_DIR="$temporary/background-bundle" \
+    "$executable" >"$output" 2>&1
+  status=$?
+  set -e
+  [[ "$status" -eq 0 ]] || { cat "$output" >&2; echo "Background launch exited with status $status." >&2; exit 1; }
+
+  # The launcher output is localized; assert the resolved endpoint appears verbatim
+  # instead of relying on an English sentence.
+  grep -Fq "$background_url/api/health" "$output" \
+    || { cat "$output" >&2; echo "Background launch did not report the resolved health endpoint." >&2; exit 1; }
+  assert_no_browser_opening_message "$output"
+  wait_for_health "$background_url" "$output"
+
+  # A second launch of the same data directory reuses the healthy instance, prints its
+  # state, and must not print any browser-opening message either.
+  set +e
+  timeout 60 env -u V2RAYN_WEB_API_KEY -u DISPLAY -u WAYLAND_DISPLAY \
+    -u INVOCATION_ID -u JOURNAL_STREAM -u NOTIFY_SOCKET \
+    -u DOTNET_RUNNING_IN_CONTAINER -u container \
+    V2RAYN_DATA_HOME="$background_data_home" \
+    V2RAYN_WEB_AUTOSTART=false \
+    ASPNETCORE_URLS="$background_url" \
+    DOTNET_BUNDLE_EXTRACT_BASE_DIR="$temporary/background-bundle" \
+    "$executable" >"$temporary/background-relaunch.log" 2>&1
+  status=$?
+  set -e
+  [[ "$status" -eq 0 ]] || { cat "$temporary/background-relaunch.log" >&2; echo "Repeated background launch exited with status $status." >&2; exit 1; }
+  grep -Fq "$background_url/api/health" "$temporary/background-relaunch.log" \
+    || { cat "$temporary/background-relaunch.log" >&2; echo "Repeated background launch did not report the existing instance health endpoint." >&2; exit 1; }
+  assert_no_browser_opening_message "$temporary/background-relaunch.log"
+
+  # The runner may be a systemd service, where --stop intentionally defers to the
+  # supervisor; stop the verified test instance directly instead.
+  stop_background_instance "$background_data_home" "$background_url" "$port" "$output" \
+    || exit 1
+  background_data_home=""
+}
+
+assert_background_launch_stays_headless
+
+echo "Startup security tests passed (loopback first-run, remote listeners fail-closed across configuration sources, malformed .env rejection, systemd/container keys from .env or process environment, headless background launch without browser startup)."

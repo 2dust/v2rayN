@@ -563,7 +563,7 @@ jobs:
           export V2RAYN_WEB_API_KEY=ci-smoke-key-0123456789abcdef
           export ASPNETCORE_URLS=http://127.0.0.1:5080
           cd "$publish"
-          ./v2rayN.WebAPI --foreground --no-open > /tmp/smoke.log 2>&1 &
+          ./v2rayN.WebAPI --foreground > /tmp/smoke.log 2>&1 &
           app_pid=$!
           echo "$app_pid" > /tmp/smoke.pid
           echo "riscv64 API smoke application PID: $app_pid"
@@ -704,7 +704,7 @@ jobs:
             ./bin/sing_box/sing-box version >/dev/null || rc=9
             ./bin/mihomo/mihomo -v >/dev/null || rc=9
             ./v2rayN.WebAPI --help >/dev/null || rc=9
-            V2RAYN_WEB_API_KEY=ci-smoke-key-0123456789abcdef ASPNETCORE_URLS=http://127.0.0.1:5080 ./v2rayN.WebAPI --foreground --no-open > /tmp/smoke.log 2>&1 &
+            V2RAYN_WEB_API_KEY=ci-smoke-key-0123456789abcdef ASPNETCORE_URLS=http://127.0.0.1:5080 ./v2rayN.WebAPI --foreground > /tmp/smoke.log 2>&1 &
             APP=$!
             echo "$APP" > /tmp/smoke.pid
             ok=0
