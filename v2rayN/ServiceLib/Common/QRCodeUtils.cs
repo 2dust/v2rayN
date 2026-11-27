@@ -119,7 +119,7 @@ public class QRCodeUtils
         // horizontally
         canvas.Translate(bmp.Width, 0);
         canvas.Scale(-1, 1);
-        canvas.DrawBitmap(bmp, 0, 0);
+        canvas.DrawBitmap(bmp, 0, 0, SKSamplingOptions.Default);
         return flipped;
     }
 }
