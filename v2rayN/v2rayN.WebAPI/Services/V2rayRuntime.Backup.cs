@@ -305,7 +305,7 @@ public sealed partial class V2rayRuntime
             isWindows: OperatingSystem.IsWindows(),
             externalSupervisor: LauncherEnvironment.IsSystemdManagedDeployment(),
             containerEnvironment: LauncherEnvironment.IsCurrentContainerEnvironment(),
-            setsidPath: OperatingSystem.IsLinux() ? LinuxXdgBrowserOpener.FindExecutable("setsid") : null,
+            setsidPath: OperatingSystem.IsLinux() ? ExecutableLocator.Find("setsid") : null,
             processPath: processPath,
             managedEntryPoint: WebReplacementCommand.GetManagedEntryPoint(processPath, processArguments),
             hostArguments: GetCurrentHostArguments(),

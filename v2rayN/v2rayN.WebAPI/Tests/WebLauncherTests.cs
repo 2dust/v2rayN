@@ -55,10 +55,28 @@ public class WebLauncherTests
     [Test]
     public async Task BackgroundChildRunsTheForegroundHostWithoutRecursiveLauncherArguments()
     {
-        var options = WebLaunchOptions.Parse(["--background-child", "--no-open", "--urls", "http://127.0.0.1:5090"], isLinux: true, daemonEnvironment: false, containerEnvironment: false, interactiveLaunch: false);
+        var options = WebLaunchOptions.Parse(["--background-child", "--urls", "http://127.0.0.1:5090"], isLinux: true, daemonEnvironment: false, containerEnvironment: false, interactiveLaunch: false);
         await (options.Mode == WebLaunchMode.BackgroundChild).Should().BeTrue();
-        await options.NoOpen.Should().BeTrue();
         await options.HostArguments.SequenceEqual(["--urls", "http://127.0.0.1:5090"]).Should().BeTrue();
+    }
+
+    [Test]
+    public async Task LegacyNoOpenFlagIsAcceptedButStrippedAndNeverForwardedToTheHost()
+    {
+        // Scripts written before the launcher stopped opening a browser still pass
+        // --no-open; it must stay harmless and must not reach the web host.
+        var options = WebLaunchOptions.Parse(
+            ["--no-open", "--urls", "http://127.0.0.1:5090"],
+            isLinux: true,
+            daemonEnvironment: false,
+            containerEnvironment: false,
+            interactiveLaunch: true);
+
+        await (options.Mode == WebLaunchMode.BackgroundLauncher).Should().BeTrue();
+        await options.HostArguments.SequenceEqual(["--urls", "http://127.0.0.1:5090"]).Should().BeTrue();
+
+        var help = LauncherMessages.Help(LauncherLocale.English);
+        await help.Contains("--no-open", StringComparison.Ordinal).Should().BeFalse();
     }
 
     [Test]
@@ -128,7 +146,6 @@ public class WebLauncherTests
             var help = LauncherMessages.Help(locale);
             await help.Contains("--foreground", StringComparison.Ordinal).Should().BeTrue();
             await help.Contains("--background", StringComparison.Ordinal).Should().BeTrue();
-            await help.Contains("--no-open", StringComparison.Ordinal).Should().BeTrue();
             await help.Contains("--stop", StringComparison.Ordinal).Should().BeTrue();
             await help.Contains("--help", StringComparison.Ordinal).Should().BeTrue();
             await help.Contains("V2RAYN_WEB_API_KEY", StringComparison.Ordinal).Should().BeTrue();
@@ -144,7 +161,7 @@ public class WebLauncherTests
     }
 
     [Test]
-    public async Task ExistingHealthyInstanceIsReusedAndBrowserAdapterIsInvoked()
+    public async Task ExistingHealthyInstanceIsReusedWithoutAnyBrowserInteraction()
     {
         if (!OperatingSystem.IsLinux())
         {
@@ -156,19 +173,13 @@ public class WebLauncherTests
         await WebInstanceLock.TryAcquire(lockPath, writeOwner: true, out var heldLock).Should().BeTrue();
         using (heldLock)
         {
-            var browser = new FakeBrowserOpener();
             var result = await ExistingInstanceHandler.TryReuseAsync(
                 lockPath,
                 new Uri("http://127.0.0.1:5080/api/health"),
-                new Uri("http://127.0.0.1:5080/"),
                 new FakeHealthProbe(true, WebInstanceLock.ReadOwnerProcessId(lockPath)),
-                browser,
-                noOpen: false,
                 TimeSpan.FromSeconds(1));
 
             await result.Existing.Should().BeTrue();
-            await result.BrowserOpened.Should().BeTrue();
-            await (browser.LastUri == new Uri("http://127.0.0.1:5080/")).Should().BeTrue();
         }
     }
 
@@ -186,17 +197,13 @@ public class WebLauncherTests
         using (heldLock)
         {
             var expectedOwner = WebInstanceLock.ReadOwnerProcessId(lockPath);
-            var browser = new FakeBrowserOpener();
             var timedOut = false;
             try
             {
                 await ExistingInstanceHandler.TryReuseAsync(
                     lockPath,
                     new Uri("http://127.0.0.1:5080/api/health"),
-                    new Uri("http://127.0.0.1:5080/"),
                     new FakeHealthProbe(true, expectedOwner + 1),
-                    browser,
-                    noOpen: false,
                     TimeSpan.FromMilliseconds(50));
             }
             catch (TimeoutException)
@@ -205,7 +212,6 @@ public class WebLauncherTests
             }
 
             await timedOut.Should().BeTrue();
-            await (browser.LastUri is null).Should().BeTrue();
         }
     }
 
@@ -224,10 +230,7 @@ public class WebLauncherTests
         var result = await ExistingInstanceHandler.TryReuseAsync(
             lockPath,
             new Uri("http://127.0.0.1:5080/api/health"),
-            new Uri("http://127.0.0.1:5080/"),
             new FakeHealthProbe(false),
-            new FakeBrowserOpener(),
-            noOpen: true,
             TimeSpan.FromMilliseconds(100));
 
         await result.Existing.Should().BeFalse();
@@ -470,7 +473,7 @@ public class WebLauncherTests
         await chinese.Contains("API 健康端点", StringComparison.Ordinal).Should().BeTrue();
         await chinese.Contains("Ctrl+C 不会停止", StringComparison.Ordinal).Should().BeTrue();
         await chinese.Contains("./v2rayN.WebAPI --stop", StringComparison.Ordinal).Should().BeTrue();
-        await LauncherMessages.AlreadyRunning("http://127.0.0.1:5080", command, false, LauncherLocale.TraditionalChinese)
+        await LauncherMessages.AlreadyRunning("http://127.0.0.1:5080", command, LauncherLocale.TraditionalChinese)
             .Contains("--stop", StringComparison.Ordinal).Should().BeTrue();
         await LauncherMessages.Started("http://127.0.0.1:5080", command, LauncherLocale.TraditionalChinese)
             .Contains("--stop", StringComparison.Ordinal).Should().BeTrue();
@@ -559,17 +562,6 @@ public class WebLauncherTests
         {
             ProcessIds.Add(processId);
             OnSignal?.Invoke(processId);
-            return true;
-        }
-    }
-
-    private sealed class FakeBrowserOpener : IBrowserOpener
-    {
-        public Uri? LastUri { get; private set; }
-
-        public bool TryOpen(Uri apiUri)
-        {
-            LastUri = apiUri;
             return true;
         }
     }

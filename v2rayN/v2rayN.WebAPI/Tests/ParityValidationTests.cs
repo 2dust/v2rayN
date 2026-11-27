@@ -92,6 +92,47 @@ public class ParityValidationTests
     }
 
     [Test]
+    public async Task MasqueProfileWithoutPasswordIsAcceptedAndSavedByServiceLib()
+    {
+        var profile = CreateProfile(EConfigType.MASQUE);
+        profile.Username = string.Empty;
+        profile.Password = string.Empty;
+        profile.SetProtocolExtra(new ProtocolExtraItem { MasquePath = "/masque" });
+
+        var valid = V2rayRuntime.TryValidateProfile(profile, out var code, out _);
+        await valid.Should().BeTrue();
+        await code.Should().BeEqualTo("ok");
+
+        var result = await ConfigDbHandler.AddMasqueServer(profile, toFile: false);
+
+        await result.Should().BeEqualTo(0);
+        await profile.ConfigType.Should().BeEqualTo(EConfigType.MASQUE);
+        await profile.Password.Should().BeEqualTo(string.Empty);
+    }
+
+    [Test]
+    public async Task MasqueValidationWithWarpFieldsKeepsOtherProtocolRulesUnchanged()
+    {
+        var profile = CreateProfile(EConfigType.MASQUE);
+        profile.Password = string.Empty;
+        profile.SetProtocolExtra(new ProtocolExtraItem
+        {
+            MasquePath = "/masque",
+            MasqueHeaders = "{\"X-Test\":\"value\"}",
+            WarpPublicKey = "public-key",
+            WarpPrivateKey = "private-key",
+            WarpAddress = "172.16.0.2/32,2606:4700::2/128",
+        });
+
+        await V2rayRuntime.TryValidateProfile(profile, out _, out _).Should().BeTrue();
+
+        var missingAddress = CreateProfile(EConfigType.MASQUE);
+        missingAddress.Address = string.Empty;
+        await V2rayRuntime.TryValidateProfile(missingAddress, out var code, out _).Should().BeFalse();
+        await code.Should().BeEqualTo("profile_validation_failed");
+    }
+
+    [Test]
     public async Task WebCoreMappingsAreLimitedToUpstreamEditableTypes()
     {
         var editableTypes = Enum.GetValues<EConfigType>()
@@ -107,6 +148,7 @@ public class ParityValidationTests
             EConfigType.Trojan,
             EConfigType.Hysteria2,
             EConfigType.WireGuard,
+            EConfigType.MASQUE,
         };
         await editableTypes.SequenceEqual(expected).Should().BeTrue();
 

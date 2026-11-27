@@ -15,7 +15,8 @@ public sealed record SubscriptionInput(
     string? PrevProfile = null,
     string? NextProfile = null,
     int? PreSocksPort = null,
-    ECoreType? CustomCoreType = null);
+    ECoreType? CustomCoreType = null,
+    string? PreResolver = null);
 
 public sealed record SubscriptionView(
     string Id,
@@ -34,7 +35,8 @@ public sealed record SubscriptionView(
     string? PrevProfile,
     string? NextProfile,
     int? PreSocksPort,
-    string? CustomCoreType);
+    string? CustomCoreType,
+    string? PreResolver);
 
 public sealed record SubscriptionMutationResult(bool Success, string Code, string MessageKey, SubscriptionView? Data);
 
@@ -281,7 +283,10 @@ public sealed record DnsEditorOptionsView(
     string[] FakeIpRanges,
     string[] ExpectedIps);
 
-public sealed record SubscriptionEditorOptionsView(string[] ConvertTargets, string[] CustomCoreTypes);
+public sealed record SubscriptionEditorOptionsView(
+    string[] ConvertTargets,
+    string[] CustomCoreTypes,
+    string[] PreResolveAddresses);
 
 public sealed record ProfileEditorOptionsView(
     string[] CoreTypes,
@@ -307,7 +312,9 @@ public sealed record ProfileEditorOptionsView(
     string[] Alpns,
     IReadOnlyDictionary<string, string[]> ShadowsocksSecurities,
     string[] StreamSecurityTypes,
-    string[] MultipleLoadStrategies);
+    string[] MultipleLoadStrategies,
+    string[] XdriveProviders,
+    string[] XdriveServices);
 
 public sealed record WebEditorOptionsView(
     SubscriptionEditorOptionsView Subscriptions,

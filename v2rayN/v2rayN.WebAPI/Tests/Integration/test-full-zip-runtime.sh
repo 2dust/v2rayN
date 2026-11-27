@@ -82,7 +82,7 @@ chmod 600 "$install_dir/.env"
     -u ASPNETCORE_HTTP_PORTS \
     V2RAYN_DATA_HOME="$data_home" \
     DOTNET_BUNDLE_EXTRACT_BASE_DIR="$temporary/dotnet-bundle" \
-    "$executable" --foreground --no-open
+    "$executable" --foreground
 ) >"$temporary/web.log" 2>&1 &
 web_pid=$!
 health_url="http://127.0.0.1:$port/api/health"

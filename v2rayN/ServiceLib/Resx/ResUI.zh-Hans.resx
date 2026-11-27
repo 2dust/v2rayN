@@ -1966,4 +1966,19 @@
   <data name="TbSpeedtestSettings" xml:space="preserve">
     <value>测速设置</value>
   </data>
+  <data name="MsgCheckUpdateViaLatest" xml:space="preserve">
+    <value>正在通过发布重定向检查 {0} 更新...</value>
+  </data>
+  <data name="MsgCheckUpdateViaApi" xml:space="preserve">
+    <value>正在通过 GitHub API 检查 {0} 更新...</value>
+  </data>
+  <data name="MsgCheckUpdateViaApiFailed" xml:space="preserve">
+    <value>{0} 的 GitHub API 不可用</value>
+  </data>
+  <data name="MsgCheckUpdateViaGitRefs" xml:space="preserve">
+    <value>正在通过 git 引用检查 {0} 更新...</value>
+  </data>
+  <data name="MsgCheckUpdateViaGitRefsFailed" xml:space="preserve">
+    <value>{0} 的 git 引用不可用</value>
+  </data>
 </root>

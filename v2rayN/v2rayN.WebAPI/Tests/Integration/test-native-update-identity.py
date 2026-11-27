@@ -82,7 +82,7 @@ def run_scenario(root, previous, candidate, rollback, reject_invalid=False, list
     for key in ("INVOCATION_ID", "JOURNAL_STREAM", "container", "DOTNET_RUNNING_IN_CONTAINER"):
         env.pop(key, None)
     log = (root / "runtime.log").open("wb")
-    owner = subprocess.Popen([str(install / NAME), "--foreground", "--no-open"], env=env, stdout=log, stderr=log)
+    owner = subprocess.Popen([str(install / NAME), "--foreground"], env=env, stdout=log, stderr=log)
     try:
         wait_health(url, before["version"])
         preserved = {str(p): fingerprint(p) for p in (install / "extra", install / "bin", scope / "bin")}
@@ -203,7 +203,7 @@ def run_refusal_scenario(root, previous, host, label):
     for entry in ("INVOCATION_ID", "JOURNAL_STREAM", "container", "DOTNET_RUNNING_IN_CONTAINER"):
         env.pop(entry, None)
     log = (root / "runtime.log").open("wb")
-    owner = subprocess.Popen([str(install / NAME), "--foreground", "--no-open"], env=env, stdout=log, stderr=log)
+    owner = subprocess.Popen([str(install / NAME), "--foreground"], env=env, stdout=log, stderr=log)
     try:
         # The health diagnostics are loopback-only, so a non-loopback listener only
         # guarantees a successful response body here.

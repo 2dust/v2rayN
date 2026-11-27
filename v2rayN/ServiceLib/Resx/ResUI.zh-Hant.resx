@@ -1975,4 +1975,19 @@
   <data name="TbSpeedtestSettings" xml:space="preserve">
     <value>測速設定</value>
   </data>
+  <data name="MsgCheckUpdateViaLatest" xml:space="preserve">
+    <value>正在透過發佈重新導向檢查 {0} 更新...</value>
+  </data>
+  <data name="MsgCheckUpdateViaApi" xml:space="preserve">
+    <value>正在透過 GitHub API 檢查 {0} 更新...</value>
+  </data>
+  <data name="MsgCheckUpdateViaApiFailed" xml:space="preserve">
+    <value>{0} 的 GitHub API 無法使用</value>
+  </data>
+  <data name="MsgCheckUpdateViaGitRefs" xml:space="preserve">
+    <value>正在透過 git 參照檢查 {0} 更新...</value>
+  </data>
+  <data name="MsgCheckUpdateViaGitRefsFailed" xml:space="preserve">
+    <value>{0} 的 git 參照無法使用</value>
+  </data>
 </root>

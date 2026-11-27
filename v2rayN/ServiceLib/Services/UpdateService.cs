@@ -6,6 +6,8 @@ public partial class UpdateService(DownloadService downloadService, Config confi
     private readonly Func<bool, string, Task>? _updateFunc = updateFunc;
     private static readonly string _tag = "UpdateService";
 
+    private GitHubReleaseSource ReleaseSource => field ??= new(downloadService, progress => UpdateFunc(false, GetProgressMsg(progress)));
+
     public async Task CheckUpdateGuiN(bool preRelease, CancellationToken cancellationToken = default)
     {
         var url = string.Empty;
@@ -182,51 +184,36 @@ public partial class UpdateService(DownloadService downloadService, Config confi
     private async Task<UpdateResult> GetRemoteVersion(ECoreType type, bool preRelease, CancellationToken cancellationToken = default)
     {
         var coreInfo = CoreInfoManager.Instance.GetCoreInfo(type);
-        var tagName = string.Empty;
-        if (preRelease || coreInfo?.LockedMaxVersion != null)
+        if (coreInfo == null)
         {
-            var url = coreInfo?.ReleaseApiUrl;
-            var result = await downloadService.TryDownloadString(url, cancellationToken);
-            if (result.IsNullOrEmpty())
-            {
-                return new UpdateResult(false, "");
-            }
-
-            var gitHubReleases = JsonUtils.Deserialize<List<GitHubRelease>>(result);
-            var gitHubRelease = preRelease ? gitHubReleases?.First() : gitHubReleases?.First(r => r.Prerelease == false);
-            tagName = gitHubRelease?.TagName;
-            //var body = gitHubRelease?.Body;
-
-            if (coreInfo?.LockedMaxVersion != null)
-            {
-                var lockedMaxVersion = coreInfo.LockedMaxVersion;
-                var remoteVersion = new SemanticVersion(tagName);
-                if (remoteVersion > lockedMaxVersion)
-                {
-                    var fallbackRelease = gitHubReleases?
-                        .Where(r => preRelease || !r.Prerelease)
-                        .Select(r => new { Release = r, IsValid = SemanticVersion.TryParse(r.TagName, out var v), Version = v })
-                        .Where(x => x.IsValid && x.Version <= coreInfo.LockedMaxVersion)
-                        .MaxBy(x => x.Version)?
-                        .Release;
-
-                    gitHubRelease = fallbackRelease;
-                    tagName = gitHubRelease?.TagName;
-                }
-            }
+            return new UpdateResult(false, "");
         }
-        else
-        {
-            var url = Path.Combine(coreInfo.Url, "latest");
-            var lastUrl = await downloadService.GetFinalUrlAsync(url, cancellationToken);
-            if (lastUrl == null)
-            {
-                return new UpdateResult(false, "");
-            }
 
-            tagName = lastUrl?.Split("/tag/").LastOrDefault();
+        var tagName = await ReleaseSource.GetLatestTag(coreInfo, preRelease, cancellationToken);
+        if (string.IsNullOrEmpty(tagName))
+        {
+            return new UpdateResult(false, "");
         }
         return new UpdateResult(true, new SemanticVersion(tagName));
+    }
+
+    private static string GetProgressMsg(GitHubReleaseProgress progress)
+    {
+        switch (progress.Stage)
+        {
+            case EGitHubReleaseStage.LatestRedirect:
+                return string.Format(ResUI.MsgCheckUpdateViaLatest, progress.CoreType);
+            case EGitHubReleaseStage.ReleasesApi:
+                return string.Format(ResUI.MsgCheckUpdateViaApi, progress.CoreType);
+            case EGitHubReleaseStage.ReleasesApiFailed:
+                return string.Format(ResUI.MsgCheckUpdateViaApiFailed, progress.CoreType);
+            case EGitHubReleaseStage.GitRefs:
+                return string.Format(ResUI.MsgCheckUpdateViaGitRefs, progress.CoreType);
+            case EGitHubReleaseStage.GitRefsFailed:
+                return string.Format(ResUI.MsgCheckUpdateViaGitRefsFailed, progress.CoreType);
+            default:
+                return string.Empty;
+        }
     }
 
     [GeneratedRegex(@"v?(?<version>\d+\.\d+\.\d+(?:-[0-9a-zA-Z.-]+)?(?:\+[0-9a-zA-Z.-]+)?)", RegexOptions.IgnoreCase)]

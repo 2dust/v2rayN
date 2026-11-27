@@ -635,7 +635,7 @@ internal static class NativeWebUpdateHelper
         ProcessStartInfo startInfo;
         if (OperatingSystem.IsLinux())
         {
-            var setsid = LinuxXdgBrowserOpener.FindExecutable("setsid")
+            var setsid = ExecutableLocator.Find("setsid")
                 ?? throw new InvalidOperationException("The setsid executable is required for a detached native Web restart.");
             startInfo = new ProcessStartInfo
             {

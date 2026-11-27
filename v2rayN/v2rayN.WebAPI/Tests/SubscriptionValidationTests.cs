@@ -60,6 +60,30 @@ public class SubscriptionValidationTests
     }
 
     [Test]
+    public async Task OmittedPreResolverIsPreservedAndEmptyValueClearsIt()
+    {
+        var existing = new SubItem
+        {
+            Id = "pre-resolver-subscription",
+            Remarks = "Existing subscription",
+            Url = "https://example.test/subscription",
+            PreResolver = "119.29.29.29",
+        };
+        var legacyInput = new SubscriptionInput("Existing subscription", "https://example.test/subscription");
+        var clearedInput = new SubscriptionInput("Existing subscription", "https://example.test/subscription", PreResolver: string.Empty);
+        var changedInput = new SubscriptionInput("Existing subscription", "https://example.test/subscription", PreResolver: "8.8.8.8");
+
+        var legacyUpdated = V2rayRuntime.ToSubItem(legacyInput, existing);
+        var clearedUpdated = V2rayRuntime.ToSubItem(clearedInput, existing);
+        var changedUpdated = V2rayRuntime.ToSubItem(changedInput, existing);
+
+        await legacyUpdated.PreResolver.Should().BeEqualTo("119.29.29.29");
+        await clearedUpdated.PreResolver.Should().BeEqualTo(string.Empty);
+        await changedUpdated.PreResolver.Should().BeEqualTo("8.8.8.8");
+        await V2rayRuntime.ToSubscriptionView(legacyUpdated).PreResolver.Should().BeEqualTo("119.29.29.29");
+    }
+
+    [Test]
     public async Task SubscriptionUpdateCanClearCustomCoreTypeAndReloadAsNone()
     {
         var existing = new SubItem

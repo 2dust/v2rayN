@@ -16,7 +16,7 @@ public static class WebProbeUriResolver
 {
     public const string HealthPath = "/api/health";
 
-    public sealed record WebProbeEndpoints(Uri HealthUri, Uri ApiUri);
+    public sealed record WebProbeEndpoints(Uri HealthUri);
 
     /// <summary>
     /// True when a URI can carry a verifiable health probe: plain HTTP to a host the
@@ -29,8 +29,8 @@ public static class WebProbeUriResolver
         && WebSetupAccessPolicy.IsLocalHost(uri.Host);
 
     /// <summary>
-    /// Resolves the health and API URLs for the first effective listener that can be probed
-    /// over loopback HTTP. Returns false when no listener can be probed reliably.
+    /// Resolves the health URL for the first effective listener that can be probed over
+    /// loopback HTTP. Returns false when no listener can be probed reliably.
     /// </summary>
     public static bool TryResolve(IConfiguration configuration, out WebProbeEndpoints endpoints)
     {
@@ -41,7 +41,7 @@ public static class WebProbeUriResolver
                 continue;
             }
 
-            endpoints = new WebProbeEndpoints(healthUri, new UriBuilder(healthUri) { Path = "/" }.Uri);
+            endpoints = new WebProbeEndpoints(healthUri);
             return true;
         }
 

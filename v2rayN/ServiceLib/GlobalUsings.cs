@@ -41,5 +41,6 @@ global using ServiceLib.Models.Entities;
 global using ServiceLib.Resx;
 global using ServiceLib.Services;
 global using ServiceLib.Services.CoreConfig;
+global using ServiceLib.Services.GitHub;
 global using ServiceLib.Services.Statistics;
 global using SQLite;

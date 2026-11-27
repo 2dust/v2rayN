@@ -342,7 +342,7 @@ function Invoke-RestoreScenario([bool]$CoreWasRunning) {
         Set-UpdateEnvironment $url $key $bundleRoot
         try {
             $executable = Join-Path $install $executableName
-            $owner = Start-NativeTestProcess $executable ('--foreground --no-open --urls "{0}"' -f $url) $install
+            $owner = Start-NativeTestProcess $executable ('--foreground --urls "{0}"' -f $url) $install
         } finally {
             Restore-TestEnvironment
         }
@@ -475,7 +475,7 @@ function Invoke-StartupSmoke {
     $client = $null
     try {
         $exe = Join-Path $runtimeDir $executableName
-        $webProcess = Start-NativeTestProcess $exe ('--foreground --no-open --urls "{0}"' -f $url) $runtimeDir
+        $webProcess = Start-NativeTestProcess $exe ('--foreground --urls "{0}"' -f $url) $runtimeDir
         $health = Wait-TestHealth -Url $url -Process $webProcess
 
         $lockPath = Join-Path $runtimeDir 'v2rayN.WebAPI.instance.lock'
@@ -578,7 +578,7 @@ function Invoke-UpdateScenario([bool]$ExpectRollback) {
         Set-UpdateEnvironment $url $key $bundleRoot
         try {
             $exe = Join-Path $install $executableName
-            $owner = Start-NativeTestProcess $exe ('--foreground --no-open --urls "{0}"' -f $url) $install
+            $owner = Start-NativeTestProcess $exe ('--foreground --urls "{0}"' -f $url) $install
         } finally {
             Restore-TestEnvironment
         }
