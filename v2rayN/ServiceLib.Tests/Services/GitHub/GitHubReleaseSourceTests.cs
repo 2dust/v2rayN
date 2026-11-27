@@ -57,6 +57,24 @@ public class GitHubReleaseSourceTests
     }
 
     [Test]
+    public async Task GetLatestTag_IgnoresNonNumericTagFromGitRefs()
+    {
+        await using var server = new RouteServer();
+        server.Map("/releases", 500);
+        server.Map("/info/refs", 200,
+            "001e# service=git-upload-pack\n"
+            + "0000"
+            + "0044aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/tags/nightly\n");
+        server.Map("/tag/nightly", 200);
+
+        var stages = new List<EGitHubReleaseStage>();
+        var tag = await GetLatestTag(server, stages, preRelease: true, lockedMaxVersion: null);
+
+        await tag.Should().BeNull();
+        await string.Join(",", stages).Should().BeEqualTo("ReleasesApi,ReleasesApiFailed,GitRefs,GitRefsFailed");
+    }
+
+    [Test]
     public async Task GetLatestTag_ReportsGitRefsFailureWhenEverythingFails()
     {
         await using var server = new RouteServer();

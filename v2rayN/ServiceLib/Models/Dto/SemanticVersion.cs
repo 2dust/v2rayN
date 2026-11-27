@@ -2,6 +2,7 @@ namespace ServiceLib.Models.Dto;
 
 public class SemanticVersion : IEquatable<SemanticVersion>, IComparable
 {
+    private readonly bool isValid;
     private readonly string? build;
     private readonly int major;
     private readonly int minor;
@@ -15,10 +16,12 @@ public class SemanticVersion : IEquatable<SemanticVersion>, IComparable
         this.minor = minor;
         this.patch = patch;
         raw = $"{major}.{minor}.{patch}";
+        isValid = true;
     }
 
     public SemanticVersion(string? version)
     {
+        isValid = true;
         try
         {
             if (string.IsNullOrEmpty(version))
@@ -65,6 +68,7 @@ public class SemanticVersion : IEquatable<SemanticVersion>, IComparable
         }
         catch
         {
+            isValid = false;
             major = 0;
             minor = 0;
             patch = 0;
@@ -87,16 +91,14 @@ public class SemanticVersion : IEquatable<SemanticVersion>, IComparable
 
     public static bool TryParse(string? version, out SemanticVersion? result)
     {
-        try
-        {
-            result = new SemanticVersion(version);
-            return true;
-        }
-        catch
+        var parsed = new SemanticVersion(version);
+        if (!parsed.isValid)
         {
             result = null;
             return false;
         }
+        result = parsed;
+        return true;
     }
 
     public override bool Equals(object? obj)
