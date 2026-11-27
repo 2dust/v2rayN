@@ -16,12 +16,13 @@
         </Style>
     </UserControl.Styles>
 
-    <DockPanel Margin="{StaticResource Margin8}">
+    <DockPanel Margin="{StaticResource Margin8}" KeyboardNavigation.TabNavigation="Cycle">
         <StackPanel Margin="{StaticResource Margin4}" DockPanel.Dock="Bottom">
             <TextBlock
                 Name="txtMsg"
                 Margin="{StaticResource Margin4}"
-                HorizontalAlignment="Left" />
+                HorizontalAlignment="Left"
+                AutomationProperties.LiveSetting="Polite" />
         </StackPanel>
 
         <StackPanel Grid.IsSharedSizeScope="True">
@@ -45,6 +46,7 @@
                         Grid.Row="0"
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
+                        AutomationProperties.HeadingLevel="2"
                         Text="{x:Static resx:ResUI.menuLocalBackupAndRestore}" />
 
                     <TextBlock
@@ -101,9 +103,16 @@
                         Grid.Row="0"
                         Grid.Column="0"
                         Orientation="Horizontal">
-                        <TextBlock Margin="{StaticResource Margin4}" Text="{x:Static resx:ResUI.menuRemoteBackupAndRestore}" />
+                        <TextBlock
+                            Margin="{StaticResource Margin4}"
+                            AutomationProperties.HeadingLevel="2"
+                            Text="{x:Static resx:ResUI.menuRemoteBackupAndRestore}" />
 
-                        <Button Margin="{StaticResource MarginLr8}" Classes="IconButton">
+                        <Button
+                            Margin="{StaticResource MarginLr8}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.menuRemoteBackupAndRestore}"
+                            Classes="IconButton"
+                            ToolTip.Tip="{x:Static resx:ResUI.menuRemoteBackupAndRestore}">
                             <Button.Content>
                                 <PathIcon Data="{StaticResource SemiIconMore}">
                                     <PathIcon.RenderTransform>
@@ -128,6 +137,7 @@
                                                 Grid.Column="1"
                                                 Margin="{StaticResource Margin4}"
                                                 VerticalAlignment="Center"
+                                                AutomationProperties.Name="{x:Static resx:ResUI.LvWebDavUrl}"
                                                 TextWrapping="Wrap" />
 
                                             <TextBlock
@@ -142,7 +152,8 @@
                                                 Grid.Row="1"
                                                 Grid.Column="1"
                                                 Margin="{StaticResource Margin4}"
-                                                VerticalAlignment="Center" />
+                                                VerticalAlignment="Center"
+                                                AutomationProperties.Name="{x:Static resx:ResUI.LvWebDavUserName}" />
 
                                             <TextBlock
                                                 Grid.Row="2"
@@ -156,7 +167,8 @@
                                                 Grid.Row="2"
                                                 Grid.Column="1"
                                                 Margin="{StaticResource Margin4}"
-                                                VerticalAlignment="Center" />
+                                                VerticalAlignment="Center"
+                                                AutomationProperties.Name="{x:Static resx:ResUI.LvWebDavPassword}" />
 
                                             <TextBlock
                                                 Grid.Row="3"
@@ -170,7 +182,8 @@
                                                 Grid.Row="3"
                                                 Grid.Column="1"
                                                 Margin="{StaticResource Margin4}"
-                                                VerticalAlignment="Center" />
+                                                VerticalAlignment="Center"
+                                                AutomationProperties.Name="{x:Static resx:ResUI.LvWebDavDirName}" />
 
                                             <Button
                                                 x:Name="menuWebDavCheck"

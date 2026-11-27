@@ -20,7 +20,21 @@
     mc:Ignorable="d">
     <dialogHost:DialogHost CloseOnClickAway="True" DisableOpeningAnimation="True">
         <DockPanel>
-            <DockPanel Margin="{StaticResource Margin8}" DockPanel.Dock="Top">
+            <DockPanel
+                Margin="{StaticResource Margin8}"
+                AutomationProperties.AccessibilityView="Control"
+                AutomationProperties.LandmarkType="Navigation"
+                AutomationProperties.Name="{x:Static resx:ResUI.TbDisplayGUI}"
+                DockPanel.Dock="Top">
+                <TextBlock
+                    x:Name="txtLiveAnnouncer"
+                    Width="1"
+                    Height="1"
+                    AutomationProperties.LiveSetting="Polite"
+                    DockPanel.Dock="Right"
+                    Focusable="False"
+                    IsHitTestVisible="False"
+                    Opacity="0" />
                 <ContentControl x:Name="conTheme" DockPanel.Dock="Right" />
                 <Menu Margin="{StaticResource Margin4}">
                     <MenuItem Header="{x:Static resx:ResUI.menuServers}">
@@ -97,7 +111,10 @@
                         <Separator />
                     </MenuItem>
 
-                    <MenuItem x:Name="menuReload" Header="{x:Static resx:ResUI.menuReload}" />
+                    <MenuItem
+                        x:Name="menuReload"
+                        AutomationProperties.AcceleratorKey="F5"
+                        Header="{x:Static resx:ResUI.menuReload}" />
 
                     <MenuItem x:Name="menuPromotion" Header="{x:Static resx:ResUI.menuPromotion}" />
 
@@ -112,21 +129,38 @@
                     IsVisible="False" />
             </DockPanel>
 
-            <ContentControl x:Name="contentStatusBarView" DockPanel.Dock="Bottom" />
+            <ContentControl
+                x:Name="contentStatusBarView"
+                AutomationProperties.AccessibilityView="Control"
+                AutomationProperties.LandmarkType="ContentInfo"
+                AutomationProperties.Name="Status"
+                DockPanel.Dock="Bottom" />
 
             <Grid
                 x:Name="gridMain"
                 ColumnDefinitions="1*,10,1*"
                 IsVisible="False">
-                <ContentControl x:Name="tabProfiles" Grid.Column="0" />
+                <ContentControl
+                    x:Name="tabProfiles"
+                    Grid.Column="0"
+                    AutomationProperties.AccessibilityView="Control"
+                    AutomationProperties.LandmarkType="Main"
+                    AutomationProperties.Name="{x:Static resx:ResUI.menuServers}" />
                 <GridSplitter
                     x:Name="gridSplitter"
                     Grid.Column="1"
-                    HorizontalAlignment="Stretch" />
-                <DockPanel x:Name="tabDockPanel" Grid.Column="2">
+                    HorizontalAlignment="Stretch"
+                    AutomationProperties.Name="Resize panels" />
+                <DockPanel
+                    x:Name="tabDockPanel"
+                    Grid.Column="2"
+                    AutomationProperties.AccessibilityView="Control"
+                    AutomationProperties.LandmarkType="Complementary"
+                    AutomationProperties.Name="{x:Static resx:ResUI.MsgInformationTitle}">
                     <TabStrip
                         x:Name="tabStripH"
                         Margin="{StaticResource MarginLr8}"
+                        AutomationProperties.Name="{x:Static resx:ResUI.MsgInformationTitle}"
                         DockPanel.Dock="Top">
                         <TabStrip.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -137,6 +171,7 @@
                     <TabStrip
                         x:Name="tabStripV"
                         Margin="{StaticResource MarginLr8}"
+                        AutomationProperties.Name="{x:Static resx:ResUI.MsgInformationTitle}"
                         DockPanel.Dock="Left"
                         IsVisible="False">
                         <TabStrip.ItemsPanel>

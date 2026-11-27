@@ -14,4 +14,11 @@ public class ClashConnectionModel
     public string? Elapsed { get; set; }
     public string? Chain { get; set; }
     public string? ProcessPath { get; set; }
+
+    public override string ToString()
+    {
+        var parts = new[] { Host, Chain, Network, Type, ProcessPath, Elapsed }
+            .Where(s => !string.IsNullOrWhiteSpace(s));
+        return string.Join(", ", parts);
+    }
 }

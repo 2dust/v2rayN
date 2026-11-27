@@ -50,6 +50,7 @@
                         Grid.Row="0"
                         Grid.Column="0"
                         Margin="{StaticResource Margin4}"
+                        AutomationProperties.HeadingLevel="1"
                         Text="{x:Static resx:ResUI.TbGlobalHotkeySetting}" />
 
                     <TextBlock
@@ -65,6 +66,8 @@
                         Grid.Column="1"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
+                        AutomationProperties.HelpText="{x:Static resx:ResUI.TbGlobalHotkeySettingTip}"
+                        AutomationProperties.Name="{x:Static resx:ResUI.TbDisplayGUI}"
                         IsReadOnly="True" />
 
                     <TextBlock
@@ -79,6 +82,8 @@
                         Grid.Column="1"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
+                        AutomationProperties.HelpText="{x:Static resx:ResUI.TbGlobalHotkeySettingTip}"
+                        AutomationProperties.Name="{x:Static resx:ResUI.TbClearSystemProxy}"
                         IsReadOnly="True" />
 
                     <TextBlock
@@ -93,6 +98,8 @@
                         Grid.Column="1"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
+                        AutomationProperties.HelpText="{x:Static resx:ResUI.TbGlobalHotkeySettingTip}"
+                        AutomationProperties.Name="{x:Static resx:ResUI.TbSetSystemProxy}"
                         IsReadOnly="True" />
                     <TextBlock
                         Grid.Row="4"
@@ -106,6 +113,8 @@
                         Grid.Column="1"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
+                        AutomationProperties.HelpText="{x:Static resx:ResUI.TbGlobalHotkeySettingTip}"
+                        AutomationProperties.Name="{x:Static resx:ResUI.TbNotChangeSystemProxy}"
                         IsReadOnly="True" />
                     <TextBlock
                         Grid.Row="5"
@@ -119,6 +128,8 @@
                         Grid.Column="1"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
+                        AutomationProperties.HelpText="{x:Static resx:ResUI.TbGlobalHotkeySettingTip}"
+                        AutomationProperties.Name="{x:Static resx:ResUI.TbSystemProxyPac}"
                         IsReadOnly="True" />
                 </Grid>
 

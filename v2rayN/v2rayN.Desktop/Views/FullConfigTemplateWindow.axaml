@@ -64,7 +64,8 @@
                             <ToggleSwitch
                                 x:Name="rayFullConfigTemplateEnable"
                                 Margin="{StaticResource Margin4}"
-                                HorizontalAlignment="Left" />
+                                HorizontalAlignment="Left"
+                                AutomationProperties.Name="{x:Static resx:ResUI.TbFullConfigTemplateEnable}" />
                         </StackPanel>
                     </Grid>
 
@@ -77,7 +78,8 @@
                             <ToggleSwitch
                                 x:Name="togAddProxyProtocolOutboundOnly4Ray"
                                 Margin="{StaticResource Margin4}"
-                                HorizontalAlignment="Left" />
+                                HorizontalAlignment="Left"
+                                AutomationProperties.Name="{x:Static resx:ResUI.TbAddProxyProtocolOutboundOnly}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
@@ -88,7 +90,8 @@
                             <TextBox
                                 x:Name="txtProxyDetour4Ray"
                                 Width="200"
-                                Margin="{StaticResource Margin4}" />
+                                Margin="{StaticResource Margin4}"
+                                AutomationProperties.Name="{x:Static resx:ResUI.TbSetUpstreamProxyDetour}" />
                         </StackPanel>
                     </WrapPanel>
 
@@ -99,17 +102,26 @@
                             BorderBrush="Gray"
                             BorderThickness="1"
                             Header="xray config template json">
-                            <views:JsonEditor x:Name="rayFullConfigTemplate" VerticalAlignment="Stretch" />
+                            <views:JsonEditor
+                                x:Name="rayFullConfigTemplate"
+                                VerticalAlignment="Stretch"
+                                AutomationProperties.Name="xray config template json" />
                         </HeaderedContentControl>
 
-                        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
+                        <GridSplitter
+                            Grid.Column="1"
+                            HorizontalAlignment="Stretch"
+                            AutomationProperties.Name="Resize panels" />
 
                         <HeaderedContentControl
                             Grid.Column="2"
                             BorderBrush="Gray"
                             BorderThickness="1"
                             Header="xray tun config template json">
-                            <views:JsonEditor x:Name="rayFullTunConfigTemplate" VerticalAlignment="Stretch" />
+                            <views:JsonEditor
+                                x:Name="rayFullTunConfigTemplate"
+                                VerticalAlignment="Stretch"
+                                AutomationProperties.Name="xray tun config template json" />
                         </HeaderedContentControl>
                     </Grid>
                 </DockPanel>
@@ -142,7 +154,8 @@
                             <ToggleSwitch
                                 x:Name="sbFullConfigTemplateEnable"
                                 Margin="{StaticResource Margin4}"
-                                HorizontalAlignment="Left" />
+                                HorizontalAlignment="Left"
+                                AutomationProperties.Name="{x:Static resx:ResUI.TbFullConfigTemplateEnable}" />
                         </StackPanel>
                     </Grid>
 
@@ -155,7 +168,8 @@
                             <ToggleSwitch
                                 x:Name="togAddProxyProtocolOutboundOnly4Singbox"
                                 Margin="{StaticResource Margin4}"
-                                HorizontalAlignment="Left" />
+                                HorizontalAlignment="Left"
+                                AutomationProperties.Name="{x:Static resx:ResUI.TbAddProxyProtocolOutboundOnly}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
@@ -166,7 +180,8 @@
                             <TextBox
                                 x:Name="txtProxyDetour4Singbox"
                                 Width="200"
-                                Margin="{StaticResource Margin4}" />
+                                Margin="{StaticResource Margin4}"
+                                AutomationProperties.Name="{x:Static resx:ResUI.TbSetUpstreamProxyDetour}" />
                         </StackPanel>
                     </WrapPanel>
 
@@ -177,17 +192,26 @@
                             BorderBrush="Gray"
                             BorderThickness="1"
                             Header="sing-box config template json">
-                            <views:JsonEditor x:Name="sbFullConfigTemplate" VerticalAlignment="Stretch" />
+                            <views:JsonEditor
+                                x:Name="sbFullConfigTemplate"
+                                VerticalAlignment="Stretch"
+                                AutomationProperties.Name="sing-box config template json" />
                         </HeaderedContentControl>
 
-                        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
+                        <GridSplitter
+                            Grid.Column="1"
+                            HorizontalAlignment="Stretch"
+                            AutomationProperties.Name="Resize panels" />
 
                         <HeaderedContentControl
                             Grid.Column="2"
                             BorderBrush="Gray"
                             BorderThickness="1"
                             Header="sing-box tun config template json">
-                            <views:JsonEditor x:Name="sbFullTunConfigTemplate" VerticalAlignment="Stretch" />
+                            <views:JsonEditor
+                                x:Name="sbFullTunConfigTemplate"
+                                VerticalAlignment="Stretch"
+                                AutomationProperties.Name="sing-box tun config template json" />
                         </HeaderedContentControl>
                     </Grid>
                 </DockPanel>

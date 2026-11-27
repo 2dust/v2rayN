@@ -2,7 +2,7 @@
     x:Class="v2rayN.Desktop.Views.MsgView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:avaloniaEdit="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
+    xmlns:controls="clr-namespace:v2rayN.Desktop.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dd="clr-namespace:v2rayN.Desktop.DesignData"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -23,12 +23,14 @@
                 Width="200"
                 Margin="{StaticResource MarginLr8}"
                 VerticalContentAlignment="Center"
+                AutomationProperties.Name="{x:Static resx:ResUI.MsgFilterTitle}"
                 PlaceholderText="{x:Static resx:ResUI.MsgFilterTitle}"
                 ToolTip.Tip="{x:Static resx:ResUI.MsgFilterTitle}" />
 
             <Button
                 x:Name="btnCopy"
                 Margin="{StaticResource MarginLr8}"
+                AutomationProperties.Name="{x:Static resx:ResUI.menuMsgViewCopyAll}"
                 Classes="IconButton Success"
                 Click="menuMsgViewCopyAll_Click"
                 ToolTip.Tip="{x:Static resx:ResUI.menuMsgViewCopyAll}">
@@ -39,6 +41,7 @@
             <Button
                 x:Name="btnClear"
                 Margin="{StaticResource MarginLr8}"
+                AutomationProperties.Name="{x:Static resx:ResUI.menuMsgViewClear}"
                 Classes="IconButton Success"
                 Click="menuMsgViewClear_Click"
                 ToolTip.Tip="{x:Static resx:ResUI.menuMsgViewClear}">
@@ -54,6 +57,7 @@
                 x:Name="togAutoRefresh"
                 Margin="{StaticResource MarginLr8}"
                 HorizontalAlignment="Left"
+                AutomationProperties.Name="{x:Static resx:ResUI.TbAutoRefresh}"
                 IsChecked="True"
                 Theme="{DynamicResource SimpleToggleSwitch}" />
             <TextBlock
@@ -64,20 +68,32 @@
                 x:Name="togScrollToEnd"
                 Margin="{StaticResource MarginLr8}"
                 HorizontalAlignment="Left"
+                AutomationProperties.Name="{x:Static resx:ResUI.TbAutoScrollToEnd}"
                 IsChecked="True"
                 Theme="{DynamicResource SimpleToggleSwitch}" />
         </WrapPanel>
 
-        <avaloniaEdit:TextEditor
-            Name="txtMsg"
+        <ListBox
+            x:Name="lstMsg"
             Margin="{StaticResource Margin8}"
-            IsReadOnly="True"
-            VerticalScrollBarVisibility="Auto"
-            WordWrap="True">
-            <avaloniaEdit:TextEditor.Options>
-                <avaloniaEdit:TextEditorOptions AllowScrollBelowDocument="False" />
-            </avaloniaEdit:TextEditor.Options>
-            <avaloniaEdit:TextEditor.ContextFlyout>
+            AutomationProperties.Name="{x:Static resx:ResUI.MsgInformationTitle}"
+            BorderThickness="1"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            ScrollViewer.VerticalScrollBarVisibility="Auto"
+            SelectionMode="Multiple">
+            <ListBox.Styles>
+                <Style x:DataType="controls:LogLineItem" Selector="ListBoxItem">
+                    <Setter Property="Padding" Value="4,1" />
+                    <Setter Property="MinHeight" Value="20" />
+                    <Setter Property="AutomationProperties.Name" Value="{Binding Text}" />
+                </Style>
+            </ListBox.Styles>
+            <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="controls:LogLineItem">
+                    <controls:LogLineTextBlock AutomationProperties.AccessibilityView="Raw" LogText="{Binding Text}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ContextFlyout>
                 <MenuFlyout>
                     <MenuItem
                         x:Name="menuMsgViewSelectAll"
@@ -98,8 +114,8 @@
                         Click="menuMsgViewClear_Click"
                         Header="{x:Static resx:ResUI.menuMsgViewClear}" />
                 </MenuFlyout>
-            </avaloniaEdit:TextEditor.ContextFlyout>
-        </avaloniaEdit:TextEditor>
+            </ListBox.ContextFlyout>
+        </ListBox>
 
     </DockPanel>
 </UserControl>

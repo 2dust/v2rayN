@@ -13,4 +13,6 @@ public partial class ClashProxyModel : ReactiveObject
     [Reactive] public partial string? DelayName { get; set; }
 
     public bool IsActive { get; set; }
+
+    public override string ToString() => string.Join(" ", new[] { Name, Type, Now, DelayName }.Where(s => !string.IsNullOrWhiteSpace(s)));
 }

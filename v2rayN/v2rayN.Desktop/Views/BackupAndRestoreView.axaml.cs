@@ -1,3 +1,5 @@
+using Avalonia.VisualTree;
+using DialogHostAvalonia;
 using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Views;
@@ -9,6 +11,15 @@ public partial class BackupAndRestoreView : ReactiveUserControl<BackupAndRestore
         InitializeComponent();
         menuLocalBackup.Click += MenuLocalBackup_Click;
         menuLocalRestore.Click += MenuLocalRestore_Click;
+        Loaded += (_, _) => menuLocalBackup.Focus();
+        KeyDown += (_, e) =>
+        {
+            if (e.Key == Key.Escape)
+            {
+                this.FindAncestorOfType<DialogHost>()?.CurrentSession?.Close();
+                e.Handled = true;
+            }
+        };
 
         this.WhenActivated(disposables =>
         {

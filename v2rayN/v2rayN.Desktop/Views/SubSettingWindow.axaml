@@ -32,6 +32,7 @@
             <DataGrid
                 x:Name="lstSubscription"
                 AutoGenerateColumns="False"
+                AutomationProperties.Name="{x:Static resx:ResUI.menuSubSetting}"
                 BorderThickness="1"
                 CanUserResizeColumns="True"
                 GridLinesVisibility="All"
@@ -40,12 +41,20 @@
                 ItemsSource="{Binding SubItems}">
                 <DataGrid.KeyBindings>
                     <KeyBinding Command="{Binding SubDeleteCmd}" Gesture="Delete" />
+                    <KeyBinding Command="{Binding SubEditCmd}" Gesture="Ctrl+D" />
+                    <KeyBinding Command="{Binding SubEditCmd}" Gesture="Enter" />
                 </DataGrid.KeyBindings>
                 <DataGrid.ContextMenu>
                     <ContextMenu>
                         <MenuItem x:Name="menuSubAdd2" Header="{x:Static resx:ResUI.menuSubAdd}" />
-                        <MenuItem x:Name="menuSubDelete2" Header="{x:Static resx:ResUI.menuSubDelete}" />
-                        <MenuItem x:Name="menuSubEdit2" Header="{x:Static resx:ResUI.menuSubEdit}" />
+                        <MenuItem
+                            x:Name="menuSubDelete2"
+                            Header="{x:Static resx:ResUI.menuSubDelete}"
+                            InputGesture="Delete" />
+                        <MenuItem
+                            x:Name="menuSubEdit2"
+                            Header="{x:Static resx:ResUI.menuSubEdit}"
+                            InputGesture="Ctrl+D" />
                         <MenuItem x:Name="menuSubShare2" Header="{x:Static resx:ResUI.menuSubShare}" />
                     </ContextMenu>
                 </DataGrid.ContextMenu>

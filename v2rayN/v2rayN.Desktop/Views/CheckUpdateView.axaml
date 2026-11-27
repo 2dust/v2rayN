@@ -13,7 +13,7 @@
     Design.DataContext="{x:Static dd:DesignData.CheckUpdate}"
     mc:Ignorable="d">
 
-    <DockPanel Margin="{StaticResource Margin8}">
+    <DockPanel Margin="{StaticResource Margin8}" KeyboardNavigation.TabNavigation="Cycle">
         <Border
             Margin="{StaticResource Margin4}"
             VerticalAlignment="Center"
@@ -33,7 +33,8 @@
                 <ToggleSwitch
                     x:Name="togEnableUpdateViaProxy"
                     Margin="{StaticResource Margin4}"
-                    HorizontalAlignment="Left" />
+                    HorizontalAlignment="Left"
+                    AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsEnableUpdateViaProxy}" />
 
                 <Button
                     x:Name="btnCheckOnly"
@@ -56,6 +57,7 @@
 
             <ListBox
                 x:Name="lstCheckUpdates"
+                AutomationProperties.Name="{x:Static resx:ResUI.menuCheckUpdate}"
                 BorderThickness="1"
                 ItemsSource="{Binding CheckUpdateModels}">
                 <ItemsControl.ItemsPanel>
@@ -73,6 +75,8 @@
                                     Margin="{StaticResource Margin4}"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
+                                    AutomationProperties.HelpText="{Binding Remarks}"
+                                    AutomationProperties.Name="{Binding CoreTypeForStorage}"
                                     IsChecked="{Binding IsSelected}" />
 
                                 <DockPanel
@@ -83,6 +87,8 @@
                                         Margin="{StaticResource Margin4}"
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
+                                        AutomationProperties.HelpText="{Binding CoreTypeForStorage}"
+                                        AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsEnableCheckPreReleaseUpdate}"
                                         IsChecked="{Binding IsCheckPreRelease}"
                                         OffContent=""
                                         OnContent="" />
@@ -102,6 +108,7 @@
                                     Grid.Column="3"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
+                                    AutomationProperties.LiveSetting="Polite"
                                     Text="{Binding Remarks}"
                                     TextWrapping="WrapWithOverflow" />
                             </Grid>

@@ -5,6 +5,7 @@
     xmlns:conv="using:v2rayN.Desktop.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dd="clr-namespace:v2rayN.Desktop.DesignData"
+    xmlns:dto="clr-namespace:ServiceLib.Models.Dto;assembly=ServiceLib"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:vms="clr-namespace:ServiceLib.ViewModels;assembly=ServiceLib"
@@ -15,6 +16,7 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <conv:DelayColorConverter x:Key="DelayColorConverter" />
+        <conv:ActiveStatusConverter x:Key="ActiveStatusConverter" />
     </UserControl.Resources>
 
     <DockPanel Margin="2">
@@ -31,7 +33,8 @@
             <ComboBox
                 x:Name="cmbRulemode"
                 Width="100"
-                Margin="{StaticResource MarginLr8}">
+                Margin="{StaticResource MarginLr8}"
+                AutomationProperties.Name="{x:Static resx:ResUI.menuRulemode}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate x:DataType="x:String">
                         <TextBlock Text="{Binding}" />
@@ -46,7 +49,8 @@
             <ComboBox
                 x:Name="cmbSorting"
                 Width="100"
-                Margin="{StaticResource MarginLr8}">
+                Margin="{StaticResource MarginLr8}"
+                AutomationProperties.Name="{x:Static resx:ResUI.TbSorting}">
                 <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingDelay}" />
                 <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingName}" />
                 <ComboBoxItem Content="{x:Static resx:ResUI.TbSortingDefault}" />
@@ -55,6 +59,8 @@
             <Button
                 x:Name="menuProxiesReload"
                 Margin="{StaticResource MarginLr8}"
+                AutomationProperties.AcceleratorKey="F5"
+                AutomationProperties.Name="{x:Static resx:ResUI.menuProxiesReload}"
                 Classes="IconButton Success"
                 ToolTip.Tip="{x:Static resx:ResUI.menuProxiesReload}">
                 <Button.Content>
@@ -65,6 +71,7 @@
             <Button
                 x:Name="menuGroupProxiesDelaytest"
                 Margin="{StaticResource MarginLr8}"
+                AutomationProperties.Name="{x:Static resx:ResUI.menuDelaytest}"
                 Classes="IconButton Success"
                 ToolTip.Tip="{x:Static resx:ResUI.menuDelaytest}">
                 <Button.Content>
@@ -79,11 +86,13 @@
             <ToggleSwitch
                 x:Name="togAutoRefresh"
                 Margin="{StaticResource MarginLr8}"
-                HorizontalAlignment="Left" />
+                HorizontalAlignment="Left"
+                AutomationProperties.Name="{x:Static resx:ResUI.TbAutoRefresh}" />
         </WrapPanel>
         <DockPanel>
             <ListBox
                 x:Name="lstProxyGroups"
+                AutomationProperties.Name="{x:Static resx:ResUI.TbProxies}"
                 DockPanel.Dock="Left"
                 ItemsSource="{Binding ProxyGroups}">
                 <ItemsControl.ItemsPanel>
@@ -110,7 +119,15 @@
                 </ItemsControl.ItemTemplate>
             </ListBox>
 
-            <ListBox x:Name="lstProxyDetails" ItemsSource="{Binding ProxyDetails}">
+            <ListBox
+                x:Name="lstProxyDetails"
+                AutomationProperties.Name="{x:Static resx:ResUI.TbProxies}"
+                ItemsSource="{Binding ProxyDetails}">
+                <ListBox.Styles>
+                    <Style x:DataType="dto:ClashProxyModel" Selector="ListBoxItem">
+                        <Setter Property="AutomationProperties.ItemStatus" Value="{Binding IsActive, Converter={StaticResource ActiveStatusConverter}}" />
+                    </Style>
+                </ListBox.Styles>
                 <ItemsControl.ContextMenu>
                     <ContextMenu>
                         <MenuItem x:Name="menuProxyDelaytest" Header="{x:Static resx:ResUI.menuDelaytest}" />
@@ -136,12 +153,21 @@
                                 <Border
                                     Width="5"
                                     Margin="0,1"
+                                    AutomationProperties.AccessibilityView="Raw"
                                     Background="YellowGreen"
                                     CornerRadius="4"
                                     DockPanel.Dock="Left"
                                     IsVisible="{Binding IsActive}" />
                                 <Grid Margin="{StaticResource Margin4}" RowDefinitions="1*,8,1*">
-                                    <TextBlock Grid.Row="0" Text="{Binding Name}" />
+                                    <DockPanel Grid.Row="0">
+                                        <TextBlock
+                                            Margin="4,0,0,0"
+                                            AutomationProperties.AccessibilityView="Raw"
+                                            DockPanel.Dock="Right"
+                                            IsVisible="{Binding IsActive}"
+                                            Text="✓" />
+                                        <TextBlock Text="{Binding Name}" />
+                                    </DockPanel>
                                     <DockPanel Grid.Row="2">
                                         <TextBlock
                                             DockPanel.Dock="Right"

@@ -8,12 +8,14 @@ public partial class RoutingSettingWindow : WindowBase<RoutingSettingViewModel>
     public RoutingSettingWindow()
     {
         InitializeComponent();
+        DataGridAccessibilityHelper.Attach(lstRoutings);
 
         Loaded += Window_Loaded;
         Closing += RoutingSettingWindow_Closing;
         KeyDown += RoutingSettingWindow_KeyDown;
         lstRoutings.SelectionChanged += lstRoutings_SelectionChanged;
         lstRoutings.DoubleTapped += LstRoutings_DoubleTapped;
+        menuRoutingAdvancedEdit.Click += (_, _) => _ = ViewModel?.RoutingAdvancedEditAsync(false);
         menuRoutingAdvancedSelectAll.Click += menuRoutingAdvancedSelectAll_Click;
 
         cmbdomainStrategy.ItemsSource = Global.DomainStrategies;
@@ -70,12 +72,27 @@ public partial class RoutingSettingWindow : WindowBase<RoutingSettingViewModel>
                 case Key.A:
                     lstRoutings.SelectAll();
                     break;
+
+                case Key.D:
+                    e.Handled = true;
+                    _ = ViewModel?.RoutingAdvancedEditAsync(false);
+                    break;
             }
         }
         else
         {
+            if (e.Source is ComboBox or Button or HyperlinkButton)
+            {
+                return;
+            }
+
             switch (e.Key)
             {
+                case Key.F2:
+                    e.Handled = true;
+                    _ = ViewModel?.RoutingAdvancedEditAsync(false);
+                    break;
+
                 case Key.Enter:
                     //case Key.Return:
                     ViewModel?.RoutingAdvancedSetDefault();

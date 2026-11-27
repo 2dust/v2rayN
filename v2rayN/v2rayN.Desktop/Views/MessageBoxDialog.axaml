@@ -15,7 +15,10 @@
     WindowStartupLocation="CenterOwner"
     mc:Ignorable="d">
 
-    <Grid Margin="24" RowDefinitions="*,Auto">
+    <Grid
+        Margin="24"
+        KeyboardNavigation.TabNavigation="Cycle"
+        RowDefinitions="*,Auto">
         <ScrollViewer
             Grid.Row="0"
             MinHeight="60"
@@ -26,6 +29,7 @@
             <TextBlock
                 x:Name="txtMessage"
                 VerticalAlignment="Center"
+                AutomationProperties.LiveSetting="Assertive"
                 LineHeight="22"
                 TextWrapping="Wrap" />
         </ScrollViewer>
