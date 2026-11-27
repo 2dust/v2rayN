@@ -601,6 +601,15 @@ namespace ServiceLib.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Country 的本地化字符串。
+        /// </summary>
+        public static string LvCountry {
+            get {
+                return ResourceManager.GetString("LvCountry", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   查找类似 Subs group 的本地化字符串。
         /// </summary>
         public static string LvSubscription {

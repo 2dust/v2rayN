@@ -616,6 +616,7 @@ public sealed partial class V2rayRuntime(
                     extension?.Sort ?? 0,
                     delay,
                     speed,
+                    extension?.Country,
                     extension?.IpInfo,
                     statistic?.TodayUp ?? 0,
                     statistic?.TodayDown ?? 0,

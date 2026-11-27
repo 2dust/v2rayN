@@ -502,7 +502,7 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
             ProfileExManager.Instance.SetTestDelay(it.IndexId, responseTime);
             await UpdateFunc(it.IndexId, responseTime.ToString());
 
-            if (!_config.UiItem.HideColumnIpInfo && responseTime > 0)
+            if (responseTime > 0)
             {
                 using var downloadHandle = new DownloadService
                 {
@@ -510,13 +510,15 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
                     DisposeHandler = false,
                 };
                 var ipInfo = await ConnectionHandler.GetIPInfo(downloadHandle, ct);
+                var country = ipInfo?.Country ?? Global.None;
                 var ipStr = ipInfo?.ToString() ?? Global.None;
+                ProfileExManager.Instance.SetTestCountry(it.IndexId, country);
                 ProfileExManager.Instance.SetTestIpInfo(it.IndexId, ipStr);
-                await UpdateIpInfoFunc(it.IndexId, ipStr);
+                await UpdateIpInfoFunc(it.IndexId, country, ipStr);
             }
             else
             {
-                await UpdateIpInfoFunc(it.IndexId, ResUI.SpeedtestingSkip);
+                await UpdateIpInfoFunc(it.IndexId, ResUI.SpeedtestingSkip, ResUI.SpeedtestingSkip);
             }
 
             completedIds.TryAdd(it.IndexId, 0);
@@ -654,8 +656,8 @@ public class SpeedtestService(Config config, Func<SpeedTestResult, Task> updateF
         }
     }
 
-    private async Task UpdateIpInfoFunc(string indexId, string ip)
+    private async Task UpdateIpInfoFunc(string indexId, string country, string ip)
     {
-        await _updateFunc?.Invoke(new() { IndexId = indexId, IpInfo = ip });
+        await _updateFunc?.Invoke(new() { IndexId = indexId, Country = country, IpInfo = ip });
     }
 }

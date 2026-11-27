@@ -144,6 +144,12 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTextColumn
+                            Width="80"
+                            Binding="{Binding Country}"
+                            Header="{x:Static resx:ResUI.LvCountry}"
+                            SortMemberPath="Country"
+                            Tag="Country" />
+                        <DataGridTextColumn
                             Width="100"
                             Binding="{Binding SpeedVal}"
                             Header="{x:Static resx:ResUI.LvTestSpeed}"

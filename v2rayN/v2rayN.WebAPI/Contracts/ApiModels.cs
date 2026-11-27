@@ -54,6 +54,7 @@ public sealed record ProfileView(
     int Sort,
     int Delay,
     decimal Speed,
+    string? Country,
     string? IpInfo,
     long TodayUp,
     long TodayDown,

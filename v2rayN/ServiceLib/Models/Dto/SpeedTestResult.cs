@@ -8,5 +8,7 @@ public class SpeedTestResult
 
     public string? Speed { get; set; }
 
+    public string? Country { get; set; }
+
     public string? IpInfo { get; set; }
 }

@@ -162,6 +162,14 @@ public class ProfileExManager
         IndexIdEnqueue(indexId);
     }
 
+    public void SetTestCountry(string indexId, string country)
+    {
+        var profileEx = GetProfileExItem(indexId);
+
+        profileEx.Country = country;
+        IndexIdEnqueue(indexId);
+    }
+
     public void SetTestIpInfo(string indexId, string ipInfo)
     {
         var profileEx = GetProfileExItem(indexId);

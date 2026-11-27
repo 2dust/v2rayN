@@ -294,6 +294,10 @@ public partial class ProfilesViewModel : MyReactiveObject
         {
             item.SpeedVal = result.Speed ?? string.Empty;
         }
+        if (result.Country.IsNotEmpty())
+        {
+            item.Country = result.Country ?? string.Empty;
+        }
         if (result.IpInfo.IsNotEmpty())
         {
             item.IpInfo = result.IpInfo ?? string.Empty;
@@ -426,6 +430,7 @@ public partial class ProfilesViewModel : MyReactiveObject
                         Speed = t33?.Speed ?? 0,
                         DelayVal = t33?.Delay != 0 ? $"{t33?.Delay}" : string.Empty,
                         SpeedVal = t33?.Speed > 0 ? $"{t33?.Speed}" : t33?.Message ?? string.Empty,
+                        Country = t33?.Country ?? string.Empty,
                         IpInfo = t33?.IpInfo ?? string.Empty,
                         TodayDown = t22 == null ? "" : Utils.HumanFy(t22.TodayDown),
                         TodayUp = t22 == null ? "" : Utils.HumanFy(t22.TodayUp),

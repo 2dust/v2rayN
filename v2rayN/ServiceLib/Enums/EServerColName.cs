@@ -11,6 +11,7 @@ public enum EServerColName
     StreamSecurity,
     SubRemarks,
     DelayVal,
+    Country,
     SpeedVal,
     IpInfo,
 

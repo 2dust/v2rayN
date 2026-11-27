@@ -330,6 +330,11 @@
                         </DataGridTextColumn.ElementStyle>
                     </base:MyDGTextColumn>
                     <base:MyDGTextColumn
+                        Width="80"
+                        Binding="{Binding Country}"
+                        ExName="Country"
+                        Header="{x:Static resx:ResUI.LvCountry}" />
+                    <base:MyDGTextColumn
                         Width="100"
                         Binding="{Binding SpeedVal}"
                         ExName="SpeedVal"

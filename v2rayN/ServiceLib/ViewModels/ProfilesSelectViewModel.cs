@@ -204,6 +204,7 @@ public partial class ProfilesSelectViewModel : MyReactiveObject, ICloseable
                         Speed = t33?.Speed ?? 0,
                         DelayVal = t33?.Delay != 0 ? $"{t33?.Delay}" : string.Empty,
                         SpeedVal = t33?.Speed > 0 ? $"{t33?.Speed}" : t33?.Message ?? string.Empty,
+                        Country = t33?.Country ?? string.Empty,
                         IpInfo = t33?.IpInfo ?? string.Empty,
                     }).OrderBy(t => t.Sort).ToList();
 

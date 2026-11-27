@@ -9,5 +9,6 @@ public class ProfileExItem
     public decimal Speed { get; set; }
     public int Sort { get; set; }
     public string? Message { get; set; }
+    public string? Country { get; set; }
     public string? IpInfo { get; set; }
 }

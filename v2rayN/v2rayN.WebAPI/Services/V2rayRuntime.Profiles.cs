@@ -535,6 +535,7 @@ public sealed partial class V2rayRuntime
             indexId = result.IndexId,
             delay,
             speed,
+            country = result.Country,
             ipInfo = result.IpInfo,
             rawResult = delay is null && speed is null ? (result.Delay ?? result.Speed) : null,
         });
