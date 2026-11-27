@@ -11,6 +11,7 @@ public partial class App : Application
 
         AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
         TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
+        Dispatcher.UIThread.UnhandledException += Dispatcher_UnhandledException;
     }
 
     public override void OnFrameworkInitializationCompleted()
@@ -123,6 +124,23 @@ public partial class App : Application
     private void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
     {
         Logging.SaveLog("TaskScheduler_UnobservedTaskException", e.Exception);
+    }
+
+    private void Dispatcher_UnhandledException(object? sender, DispatcherUnhandledExceptionEventArgs e)
+    {
+        // An unhandled exception escaping a dispatcher operation on the UI thread
+        // terminates the process (SIGABRT on macOS). This is observed when the Mac
+        // sleeps/wakes: shutdown- and startup-time callbacks throw while the app is
+        // already closing or not fully initialized. Log and keep the process alive.
+        try
+        {
+            Logging.SaveLog("Dispatcher_UnhandledException", e.Exception);
+        }
+        catch
+        {
+            // Ignore logging failures
+        }
+        e.Handled = true;
     }
 
     private async void MenuAddServerViaClipboardClick(object? sender, EventArgs e)

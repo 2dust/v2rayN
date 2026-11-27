@@ -14,14 +14,31 @@ internal class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        if (OnStartup(args) == false)
+        try
         {
-            Environment.Exit(0);
-            return;
-        }
+            if (OnStartup(args) == false)
+            {
+                Environment.Exit(0);
+                return;
+            }
 
-        BuildAvaloniaApp()
-            .StartWithClassicDesktopLifetime(args);
+            BuildAvaloniaApp()
+                .StartWithClassicDesktopLifetime(args);
+        }
+        catch (Exception ex)
+        {
+            // Last line of defense: an unhandled exception raised before the dispatcher
+            // unhandled-exception handler is active aborts the process without any trace
+            // in the app log (observed on macOS when relaunching right after wake).
+            try
+            {
+                Logging.SaveLog("Unhandled exception during startup or shutdown", ex);
+            }
+            catch
+            {
+                // Ignore logging failures
+            }
+        }
     }
 
     private static bool OnStartup(string[]? Args)
