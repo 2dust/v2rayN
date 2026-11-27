@@ -766,7 +766,7 @@ package_binary() {
 
   extra_depends="libc6 (>= 2.36), fontconfig (>= 2.14.1), desktop-file-utils (>= 0.26), xdg-utils (>= 1.1.3), coreutils (>= 9.1), bash (>= 5.2.15), libfreetype6 (>= 2.12)"
   # .NET runtime dependencies not covered by ELF dependency scanning.
-  extra_depends+=", ca-certificates, libgssapi-krb5-2, libicu76 | libicu72, libssl3t64 | libssl3, tzdata"
+  extra_depends+=", ca-certificates, libgssapi-krb5-2, libicu78 | libicu76 | libicu74 | libicu72, libssl3t64 | libssl3, tzdata"
   # Avalonia loads X11 dynamically; libsm6 also depends on libice6.
   extra_depends+=", libx11-6, libsm6"
 
