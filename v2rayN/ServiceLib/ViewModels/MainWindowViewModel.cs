@@ -308,11 +308,6 @@ public partial class MainWindowViewModel : MyReactiveObject
                 await ShowHideWindowInteraction.HandleSafe(blShow);
             });
 
-        StatusBarViewModel.SetDefaultServerRequested
-            .AsObservable()
-            .ObserveOn(RxSchedulers.MainThreadScheduler)
-            .SubscribeAsync(async indexId => await ProfilesViewModel.SetDefaultServer(indexId));
-
         StatusBarViewModel.SubscriptionsUpdateRequested
             .AsObservable()
             .ObserveOn(RxSchedulers.MainThreadScheduler)
@@ -366,22 +361,11 @@ public partial class MainWindowViewModel : MyReactiveObject
         NoticeManager.Instance.SendMessageEx(msg);
         if (success)
         {
-            var indexIdOld = _config.IndexId;
             await RefreshServersDispatcherAsync();
 
-            // If indexId changed or subIndexId is empty, directly reload.
-            if (indexIdOld != _config.IndexId || _config.SubIndexId.IsNullOrEmpty())
+            if (_config.IndexId != _config.PreIndexId)
             {
                 await Reload();
-            }
-            else
-            {
-                // The activity config belongs to the current group.
-                var profile = await ConfigDbQuery.GetProfileItem(_config.IndexId);
-                if (profile != null && profile.Subid == _config.SubIndexId)
-                {
-                    await Reload();
-                }
             }
 
             if (_config.UiItem.EnableAutoAdjustMainLvColWidth)

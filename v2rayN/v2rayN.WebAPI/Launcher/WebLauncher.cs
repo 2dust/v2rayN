@@ -17,9 +17,30 @@ public sealed record WebHealthProbeResult(
     string? WebVersion = null,
     string? CoreProfileId = null);
 
-public interface IBrowserOpener
+/// <summary>
+/// Locates executables on PATH for the detached child, native update and restore paths.
+/// </summary>
+internal static class ExecutableLocator
 {
-    bool TryOpen(Uri apiUri);
+    public static string? Find(string name)
+    {
+        var path = Environment.GetEnvironmentVariable("PATH");
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            return null;
+        }
+
+        foreach (var directory in path.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries))
+        {
+            var candidate = Path.Combine(directory, name);
+            if (File.Exists(candidate))
+            {
+                return candidate;
+            }
+        }
+
+        return null;
+    }
 }
 
 public sealed class HttpWebHealthProbe : IWebHealthProbe
@@ -71,75 +92,19 @@ public sealed class HttpWebHealthProbe : IWebHealthProbe
     }
 }
 
-public sealed class LinuxXdgBrowserOpener : IBrowserOpener
-{
-    public bool TryOpen(Uri apiUri)
-    {
-        if (string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("DISPLAY"))
-            && string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("WAYLAND_DISPLAY")))
-        {
-            return false;
-        }
-
-        var xdgOpen = FindExecutable("xdg-open");
-        if (xdgOpen is null)
-        {
-            return false;
-        }
-
-        try
-        {
-            var startInfo = new ProcessStartInfo
-            {
-                FileName = xdgOpen,
-                UseShellExecute = false,
-            };
-            startInfo.ArgumentList.Add(apiUri.ToString());
-            return Process.Start(startInfo) is not null;
-        }
-        catch (Exception exception) when (exception is InvalidOperationException or IOException or System.ComponentModel.Win32Exception)
-        {
-            return false;
-        }
-    }
-
-    internal static string? FindExecutable(string name)
-    {
-        var path = Environment.GetEnvironmentVariable("PATH");
-        if (string.IsNullOrWhiteSpace(path))
-        {
-            return null;
-        }
-
-        foreach (var directory in path.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries))
-        {
-            var candidate = Path.Combine(directory, name);
-            if (File.Exists(candidate))
-            {
-                return candidate;
-            }
-        }
-
-        return null;
-    }
-}
-
 public static class ExistingInstanceHandler
 {
     public static async Task<ExistingInstanceResult> TryReuseAsync(
         string lockPath,
         Uri healthUri,
-        Uri apiUri,
         IWebHealthProbe healthProbe,
-        IBrowserOpener browserOpener,
-        bool noOpen,
         TimeSpan waitTimeout,
         CancellationToken cancellationToken = default)
     {
         if (WebInstanceLock.TryAcquire(lockPath, writeOwner: false, out var probe))
         {
             probe!.Dispose();
-            return new ExistingInstanceResult(false, false);
+            return new ExistingInstanceResult(false);
         }
 
         var timeout = Stopwatch.StartNew();
@@ -149,18 +114,13 @@ public static class ExistingInstanceHandler
             var health = await healthProbe.ProbeAsync(healthUri, cancellationToken);
             if (health.IsHealthy && ownerProcessId.HasValue && health.InstanceProcessId == ownerProcessId)
             {
-                if (!noOpen)
-                {
-                    var browserOpened = browserOpener.TryOpen(apiUri);
-                    return new ExistingInstanceResult(true, browserOpened);
-                }
-                return new ExistingInstanceResult(true, false);
+                return new ExistingInstanceResult(true);
             }
 
             if (WebInstanceLock.TryAcquire(lockPath, writeOwner: false, out probe))
             {
                 probe!.Dispose();
-                return new ExistingInstanceResult(false, false);
+                return new ExistingInstanceResult(false);
             }
 
             await Task.Delay(TimeSpan.FromMilliseconds(250), cancellationToken);
@@ -171,7 +131,7 @@ public static class ExistingInstanceHandler
     }
 }
 
-public sealed record ExistingInstanceResult(bool Existing, bool BrowserOpened);
+public sealed record ExistingInstanceResult(bool Existing);
 
 public sealed class WebLauncher
 {
@@ -179,13 +139,11 @@ public sealed class WebLauncher
     private static readonly TimeSpan HealthPollInterval = TimeSpan.FromMilliseconds(200);
 
     private readonly IWebHealthProbe _healthProbe;
-    private readonly IBrowserOpener _browserOpener;
     private readonly LauncherLocale _locale;
 
-    public WebLauncher(IWebHealthProbe healthProbe, IBrowserOpener browserOpener, LauncherLocale locale)
+    public WebLauncher(IWebHealthProbe healthProbe, LauncherLocale locale)
     {
         _healthProbe = healthProbe;
-        _browserOpener = browserOpener;
         _locale = locale;
     }
 
@@ -194,8 +152,6 @@ public sealed class WebLauncher
         string[] hostArguments,
         string instanceLockPath,
         Uri healthUri,
-        Uri apiUri,
-        bool noOpen,
         CancellationToken cancellationToken = default)
     {
         var commandLine = Environment.GetCommandLineArgs();
@@ -205,18 +161,14 @@ public sealed class WebLauncher
             var existing = await ExistingInstanceHandler.TryReuseAsync(
                     instanceLockPath,
                     healthUri,
-                    apiUri,
                     _healthProbe,
-                    _browserOpener,
-                    noOpen,
                     StartupTimeout,
                     cancellationToken);
             if (existing.Existing)
             {
                 Print(LauncherMessages.AlreadyRunning(
-                    apiUri.ToString(),
+                    healthUri.ToString(),
                     launcherCommand,
-                    existing.BrowserOpened,
                     _locale));
                 return 0;
             }
@@ -245,20 +197,18 @@ public sealed class WebLauncher
             if (lockHeld && ownerProcessId.HasValue
                 && health.IsHealthy && health.InstanceProcessId == ownerProcessId)
             {
-                var opened = !noOpen && _browserOpener.TryOpen(apiUri);
                 if (ownerProcessId.Value == child.Id)
                 {
                     Print(LauncherMessages.Started(
-                        apiUri.ToString(),
+                        healthUri.ToString(),
                         launcherCommand,
                         _locale));
                     return 0;
                 }
 
                 Print(LauncherMessages.AlreadyRunning(
-                    apiUri.ToString(),
+                    healthUri.ToString(),
                     launcherCommand,
-                    opened,
                     _locale));
                 return 0;
             }
@@ -269,11 +219,9 @@ public sealed class WebLauncher
                 if (lockHeld && ownerProcessId.HasValue && ownerProcessId != child.Id
                     && health.IsHealthy && health.InstanceProcessId == ownerProcessId)
                 {
-                    var opened = !noOpen && _browserOpener.TryOpen(apiUri);
                     Print(LauncherMessages.AlreadyRunning(
-                        apiUri.ToString(),
+                        healthUri.ToString(),
                         launcherCommand,
-                        opened,
                         _locale));
                     return 0;
                 }
@@ -303,7 +251,7 @@ public sealed class WebLauncher
 
     private static Process? StartDetachedChild(string executablePath, string[] hostArguments)
     {
-        var setsid = LinuxXdgBrowserOpener.FindExecutable("setsid");
+        var setsid = ExecutableLocator.Find("setsid");
         var processPath = Environment.ProcessPath ?? executablePath;
         var commandLine = Environment.GetCommandLineArgs();
         var command = WebReplacementCommand.Create(

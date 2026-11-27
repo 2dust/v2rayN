@@ -53,29 +53,64 @@ public partial class CoreConfigSingboxService
                 customOutboundContent = customOutboundContent.Replace("{{tag}}", outboundTag);
                 customOutboundContent = customOutboundContent.Replace("{{detour}}", outboundDetour);
                 customOutboundContent = customOutboundContent.Replace("{{interface}}", outboundBindInterface);
-                var customOutboundObj = JsonUtils.ParseJson(customOutboundContent) as JsonObject;
+                var customOutboundNode = JsonUtils.ParseJson(customOutboundContent);
+
+                JsonObject customOutboundObj;
+                JsonObject customOutboundDialingObj;
+                if (customOutboundNode is JsonArray jsonArray)
+                {
+                    // NOTE: When the custom outbound definition is an array,
+                    // treat it as an outbound proxy chain:
+                    // apply outbound-level settings (such as the tag) to the first element,
+                    // and apply dialing settings (such as the detour) to the last element.
+                    if (jsonArray.Count == 0
+                        || jsonArray[0] is not JsonObject firstObj
+                        || jsonArray[^1] is not JsonObject lastObj)
+                    {
+                        continue;
+                    }
+                    customOutboundObj = firstObj;
+                    customOutboundDialingObj = lastObj;
+                }
+                else if (customOutboundNode is JsonObject jsonObject)
+                {
+                    customOutboundObj = jsonObject;
+                    customOutboundDialingObj = jsonObject;
+                }
+                else
+                {
+                    continue;
+                }
 
                 if (!containTagPlaceholder)
                 {
-                    customOutboundObj?["tag"] = outboundTag;
+                    customOutboundObj["tag"] = outboundTag;
                 }
                 if (!containDetourPlaceholder && !outboundDetour.IsNullOrEmpty())
                 {
-                    customOutboundObj?["detour"] = outboundDetour;
-                }
-                else if (outboundDetour.IsNullOrEmpty())
-                {
-                    customOutboundObj?.Remove("detour");
+                    customOutboundDialingObj["detour"] = outboundDetour;
                 }
                 if (!containBindInterfacePlaceholder && !outboundBindInterface.IsNullOrEmpty())
                 {
-                    customOutboundObj?["bind_interface"] = outboundBindInterface;
+                    customOutboundDialingObj["bind_interface"] = outboundBindInterface;
                 }
 
                 var index = jsonArrayOutbounds
                     .Select((node, idx) => new { node, idx })
                     .FirstOrDefault(x => x.node?["tag"]?.ToString() == outboundTag)?.idx ?? -1;
-                if (index != -1)
+                if (index == -1)
+                {
+                    continue;
+                }
+                if (customOutboundNode is JsonArray customOutboundArray)
+                {
+                    jsonArrayOutbounds.RemoveAt(index);
+                    foreach (var item in customOutboundArray)
+                    {
+                        jsonArrayOutbounds.Insert(index++, item?.DeepClone());
+                    }
+                }
+                else
                 {
                     jsonArrayOutbounds[index] = customOutboundObj;
                 }

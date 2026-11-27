@@ -18,11 +18,11 @@ DOTNET_SDK_DIR=""
 
 DOTNET_NUPKG_BASE="${DOTNET_NUPKG_BASE:-https://github.com/autorepobot/dotnet-nupkg-prebuild/releases/download}"
 SKIASHARP_BASE="${SKIASHARP_BASE:-https://github.com/autorepobot/SkiaSharp-ppc64le/releases/download}"
-SkiaSharp_VERSION="${SkiaSharp_VERSION:-4.156.0}"
-HarfBuzzSharp_VERSION="${HarfBuzzSharp_VERSION:-14.4.0.100}"
+SkiaSharp_VERSION="${SkiaSharp_VERSION:-4.157.0}"
+HarfBuzzSharp_VERSION="${HarfBuzzSharp_VERSION:-14.4.0.200}"
 
-DOTNET_SDK_VERSION="${DOTNET_SDK_VERSION:-10.0.114}"
-DOTNET_X86_VERSION="${DOTNET_X86_VERSION:-10.0.114}"
+DOTNET_SDK_VERSION="${DOTNET_SDK_VERSION:-10.0.115}"
+DOTNET_X86_VERSION="${DOTNET_X86_VERSION:-10.0.115}"
 
 OS_ID=""
 OS_NAME=""

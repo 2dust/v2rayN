@@ -1,6 +1,5 @@
 using Semi.Avalonia;
 
-
 namespace v2rayN.Desktop.ViewModels;
 
 public partial class ThemeSettingViewModel : MyReactiveObject
@@ -120,7 +119,7 @@ public partial class ThemeSettingViewModel : MyReactiveObject
 
         try
         {
-            Application.Current!.Resources["AppFontFamily"] = currentFontFamily;
+            Application.Current!.Resources["AppFontFamily"] = new FontFamily(currentFontFamily);
         }
         catch (Exception ex)
         {

@@ -1,7 +1,6 @@
 using System.Drawing;
 using System.Windows.Media.Imaging;
 
-
 namespace v2rayN.Manager;
 
 public sealed class WindowsManager

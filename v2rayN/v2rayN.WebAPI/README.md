@@ -18,13 +18,13 @@ directory:
 cp .env.example .env
 chmod 600 .env
 # Set V2RAYN_WEB_API_KEY in .env for supervised, container, or remote deployments.
-./v2rayN.WebAPI --foreground --no-open
+./v2rayN.WebAPI --foreground
 ```
 
-On Linux, a terminal launch without flags starts the API in the background, detached from the
-terminal, and prints its health endpoint. `--foreground` keeps it attached and stops it safely with
-Ctrl+C, `--stop` stops the instance running for the same data directory, and `--help` prints every
-option together with the common environment variables; `--no-open` suppresses the browser opener.
+The API never opens a browser. On Linux, a terminal launch without flags starts the API in the
+background, detached from the terminal, and prints its health endpoint. `--foreground` keeps it
+attached and stops it safely with Ctrl+C, `--stop` stops the instance running for the same data
+directory, and `--help` prints every option together with the common environment variables.
 Detached children and later helper processes keep the launch context, so an instance started from a
 terminal is never mistaken for a systemd-managed service (systemd exports `INVOCATION_ID` /
 `JOURNAL_STREAM` to everything launched from such a terminal).
@@ -103,8 +103,9 @@ REST and native EventSource in the target browser. Some browsers block HTTP LAN 
 permission; use an HTTPS API or a same-origin reverse proxy. Never expose an unauthenticated/wildcard
 listener or disable the existing listener/Management Key policies to work around browser limits.
 
-Non-API paths, including `GET /`, return 404. The launcher opens the API health endpoint,
-not a client application. API packages contain no frontend installation directory or placeholder.
+Non-API paths, including `GET /`, return 404. The launcher prints the API health endpoint of the
+instance it started; it never opens a browser or a client application. API packages contain no
+frontend installation directory or placeholder.
 
 ## Prerelease update preferences
 

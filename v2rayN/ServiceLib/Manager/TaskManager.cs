@@ -1,5 +1,3 @@
-
-
 namespace ServiceLib.Manager;
 
 public class TaskManager

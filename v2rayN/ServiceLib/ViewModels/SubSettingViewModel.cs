@@ -1,5 +1,3 @@
-
-
 namespace ServiceLib.ViewModels;
 
 public partial class SubSettingViewModel : MyReactiveObject
@@ -92,7 +90,7 @@ public partial class SubSettingViewModel : MyReactiveObject
 
         foreach (var it in SelectedSources ?? [SelectedSource])
         {
-            await ConfigDbHandler.DeleteSubItem( it.Id);
+            await ConfigDbHandler.DeleteSubItem(it.Id);
         }
         await RefreshSubItems();
         NoticeManager.Instance.Enqueue(ResUI.OperationSuccess);

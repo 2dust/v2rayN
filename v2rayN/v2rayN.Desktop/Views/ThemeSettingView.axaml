@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dd="clr-namespace:v2rayN.Desktop.DesignData"
+    xmlns:dto="clr-namespace:ServiceLib.Models.Dto;assembly=ServiceLib"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:resx="clr-namespace:ServiceLib.Resx;assembly=ServiceLib"
     xmlns:vms="clr-namespace:v2rayN.Desktop.ViewModels"
@@ -58,7 +59,9 @@
                         <ComboBox
                             x:Name="cmbCurrentLanguage"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Center" />
+                            HorizontalAlignment="Center"
+                            DisplayMemberBinding="{CompiledBinding Display, x:DataType=dto:LanguageOption}"
+                            SelectedValueBinding="{CompiledBinding Value, x:DataType=dto:LanguageOption}" />
                     </StackPanel>
                 </StackPanel>
             </Flyout>

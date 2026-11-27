@@ -89,7 +89,7 @@ internal static class Program
                 Args = launchOptions.HostArguments,
                 ContentRootPath = AppContext.BaseDirectory,
             }).Configuration;
-            var (stopHealthUri, _) = GetLauncherUris(stopConfiguration);
+            var stopHealthUri = GetLauncherHealthUri(stopConfiguration);
             var stopper = new WebStopper(new HttpWebHealthProbe(), new LinuxProcessSignalSender());
             var result = await stopper.StopAsync(GetInstanceLockPath(), stopHealthUri);
             Console.Out.WriteLine(LauncherMessages.StopMessage(result, GetLauncherLocale(), stopper.LastObservedShutdownStage));
@@ -129,14 +129,14 @@ internal static class Program
                 return 1;
             }
 
-            var (healthUri, apiUri) = GetLauncherUris(builder.Configuration);
-            if (healthUri is null || apiUri is null)
+            var healthUri = GetLauncherHealthUri(builder.Configuration);
+            if (healthUri is null)
             {
                 Console.Error.WriteLine(LauncherMessages.StartUnprobeable(GetLauncherLocale()));
                 return 1;
             }
 
-            var launcher = new WebLauncher(new HttpWebHealthProbe(), new LinuxXdgBrowserOpener(), GetLauncherLocale());
+            var launcher = new WebLauncher(new HttpWebHealthProbe(), GetLauncherLocale());
             var processPath = Environment.ProcessPath;
             if (string.IsNullOrWhiteSpace(processPath))
             {
@@ -149,9 +149,7 @@ internal static class Program
                 processPath,
                 launchOptions.HostArguments,
                 lockPath,
-                healthUri,
-                apiUri,
-                launchOptions.NoOpen);
+                healthUri);
         }
 
         if (launchOptions.Mode == WebLaunchMode.BackgroundChild)
@@ -327,10 +325,10 @@ internal static class Program
 
         if (showForegroundPrompt)
         {
-            var (_, apiUri) = GetLauncherUris(builder.Configuration);
-            if (apiUri is not null)
+            var healthUri = GetLauncherHealthUri(builder.Configuration);
+            if (healthUri is not null)
             {
-                var displayUri = apiUri.ToString();
+                var displayUri = healthUri.ToString();
                 app.Lifetime.ApplicationStarted.Register(() =>
                     Console.Out.WriteLine(LauncherMessages.ForegroundStarted(displayUri, GetLauncherLocale())));
             }
@@ -391,16 +389,13 @@ internal static class Program
     private static string GetInstanceLockPath() =>
         Path.Combine(Utils.StartupPath(), "v2rayN.WebAPI.instance.lock");
 
-    internal static (Uri? HealthUri, Uri? ApiUri) GetLauncherUris(IConfiguration configuration)
+    internal static Uri? GetLauncherHealthUri(IConfiguration configuration)
     {
-        if (WebProbeUriResolver.TryResolve(configuration, out var endpoints))
-        {
-            return (endpoints.HealthUri, endpoints.ApiUri);
-        }
-
         // Never guess a loopback address or port: a probe that does not match the
         // configured listeners would verify (or stop) the wrong process.
-        return (null, null);
+        return WebProbeUriResolver.TryResolve(configuration, out var endpoints)
+            ? endpoints.HealthUri
+            : null;
     }
 
     private static Dictionary<string, string?> ReadEnvironment() =>

@@ -8,7 +8,7 @@ namespace v2rayN.WebAPI.Services;
 
 public sealed partial class V2rayRuntime
 {
-    private readonly object _restoreShutdownGate = new();
+    private readonly Lock _restoreShutdownGate = new();
     private Task? _restoreShutdownTask;
     private const long MaxBackupArchiveBytes = 64L * 1024 * 1024;
     private const long MaxBackupExpandedBytes = 256L * 1024 * 1024;
@@ -305,7 +305,7 @@ public sealed partial class V2rayRuntime
             isWindows: OperatingSystem.IsWindows(),
             externalSupervisor: LauncherEnvironment.IsSystemdManagedDeployment(),
             containerEnvironment: LauncherEnvironment.IsCurrentContainerEnvironment(),
-            setsidPath: OperatingSystem.IsLinux() ? LinuxXdgBrowserOpener.FindExecutable("setsid") : null,
+            setsidPath: OperatingSystem.IsLinux() ? ExecutableLocator.Find("setsid") : null,
             processPath: processPath,
             managedEntryPoint: WebReplacementCommand.GetManagedEntryPoint(processPath, processArguments),
             hostArguments: GetCurrentHostArguments(),

@@ -27,6 +27,7 @@ public class SubscriptionParityTests
             PreSocksPort = 10809,
             Memo = "memo",
             CustomCoreType = ECoreType.sing_box,
+            PreResolver = "https://doh.pub/dns-query",
         };
 
         var loaded = V2rayRuntime.ToSubscriptionView(original);
@@ -45,7 +46,8 @@ public class SubscriptionParityTests
             loaded.PrevProfile,
             loaded.NextProfile,
             loaded.PreSocksPort,
-            ECoreType.sing_box);
+            ECoreType.sing_box,
+            loaded.PreResolver);
         var saved = V2rayRuntime.ToSubItem(input, original);
         var reloaded = V2rayRuntime.ToSubscriptionView(saved);
 
@@ -64,6 +66,7 @@ public class SubscriptionParityTests
         await reloaded.NextProfile.Should().BeEqualTo("typed landing alias");
         await reloaded.PreSocksPort.Should().BeEqualTo(original.PreSocksPort);
         await reloaded.CustomCoreType.Should().BeEqualTo("sing_box");
+        await reloaded.PreResolver.Should().BeEqualTo("https://doh.pub/dns-query");
     }
 
     [Test]

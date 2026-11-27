@@ -306,6 +306,11 @@ public static class ConfigTextHandler
 
     #region DefaultServer
 
+    public static async Task<int> ResetDefaultServer()
+    {
+        return await SetDefaultServerIndex(Config.IndexId);
+    }
+
     /// <summary>
     /// Set the default server by its index ID
     /// Updates the configuration to use the specified server as default
@@ -319,6 +324,7 @@ public static class ConfigTextHandler
             return -1;
         }
 
+        Config.PreIndexId = Config.IndexId;
         Config.IndexId = indexId;
 
         await SaveConfig();

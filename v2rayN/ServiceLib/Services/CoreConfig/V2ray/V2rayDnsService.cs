@@ -324,7 +324,7 @@ public partial class CoreConfigV2rayService
         AddDnsServers(remoteDNSAddress, proxyGeositeList);
         AddDnsServers(directDNSAddress, directGeositeList, true);
         AddDnsServers(directDNSAddress, expectedDomainList, true, expectedIPs, false);
-        AddDnsServers(remoteDNSAddress, expectedDomainList, false, expectedIPs);
+        AddDnsServers(remoteDNSAddress, expectedDomainList);
 
         if (!useDirectDns)
         {

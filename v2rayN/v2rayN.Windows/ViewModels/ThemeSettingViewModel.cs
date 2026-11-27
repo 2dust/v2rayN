@@ -3,7 +3,6 @@ using MaterialDesignColors.ColorManipulation;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
 
-
 namespace v2rayN.ViewModels;
 
 public partial class ThemeSettingViewModel : MyReactiveObject

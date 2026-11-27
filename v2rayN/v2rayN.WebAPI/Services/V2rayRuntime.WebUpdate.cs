@@ -449,7 +449,7 @@ public sealed partial class V2rayRuntime
             string? isolatedWindowsHelper = null;
             if (OperatingSystem.IsLinux())
             {
-                var setsid = LinuxXdgBrowserOpener.FindExecutable("setsid")
+                var setsid = ExecutableLocator.Find("setsid")
                     ?? throw new InvalidOperationException("The setsid executable is required for a native Web update.");
                 startInfo = new ProcessStartInfo
                 {

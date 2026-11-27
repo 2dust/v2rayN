@@ -99,8 +99,10 @@ public class WebInstanceLockProcessTests
     {
         private readonly DirectoryInfo _directory = Directory.CreateTempSubdirectory("v2rayn-instance-lock-tests-");
         public string Path => _directory.FullName;
+
         public void Dispose() => _directory.Delete(recursive: true);
     }
+
     private sealed class LockProcess : IAsyncDisposable
     {
         private static readonly TimeSpan Timeout = TimeSpan.FromSeconds(20);

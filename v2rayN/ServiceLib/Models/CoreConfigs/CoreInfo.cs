@@ -7,6 +7,7 @@ public class CoreInfo
     public string? Arguments { get; set; }
     public string? Url { get; set; }
     public string? ReleaseApiUrl { get; set; }
+    public string? GitInfoRefsUrl { get; set; }
     public string? DownloadUrlWin64 { get; set; }
     public string? DownloadUrlWinArm64 { get; set; }
     public string? DownloadUrlLinux64 { get; set; }
@@ -19,5 +20,5 @@ public class CoreInfo
     public string? Match { get; set; }
     public string? VersionArg { get; set; }
     public bool AbsolutePath { get; set; }
-    public IDictionary<string, string?> Environment { get; set; } = new Dictionary<string, string?>();
+    public IReadOnlyDictionary<string, string?> Environment { get; set; } = new Dictionary<string, string?>();
 }

@@ -8,6 +8,7 @@ public class HttpClientHelper
 
     // private readonly SocketsHttpHandler _directHandler = CreateSocketsHttpHandler(false);
     private readonly Lazy<SocketsHttpHandler> _directHandlerLazy = new(() => CreateSocketsHttpHandler(false));
+
     private Uri _proxyUri = null!;
 
     public static HttpClientHelper Instance => _instance.Value;

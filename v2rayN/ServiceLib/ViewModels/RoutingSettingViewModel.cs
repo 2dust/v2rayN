@@ -1,5 +1,3 @@
-
-
 namespace ServiceLib.ViewModels;
 
 public partial class RoutingSettingViewModel : MyReactiveObject
@@ -174,7 +172,7 @@ public partial class RoutingSettingViewModel : MyReactiveObject
             return;
         }
 
-        if (await ConfigDbHandler.SetDefaultRouting( item) == 0)
+        if (await ConfigDbHandler.SetDefaultRouting(item) == 0)
         {
             await RefreshRoutingItems();
             IsModified = true;

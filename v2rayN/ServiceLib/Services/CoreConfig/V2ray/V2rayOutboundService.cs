@@ -720,7 +720,7 @@ public partial class CoreConfigV2rayService
                             pathHttp = string.Join(",".AppendQuotes(), arrPath);
                         }
                         request = request.Replace("$requestPath$", $"{pathHttp.AppendQuotes()}");
-                        rawSettings.header.request = JsonUtils.SerializeToNode(request) as JsonObject;
+                        rawSettings.header.request = JsonUtils.ParseJson(request) as JsonObject;
 
                         streamSettings.rawSettings = rawSettings;
                     }
