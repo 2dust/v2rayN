@@ -1971,4 +1971,22 @@
   <data name="TransportPathTip6" xml:space="preserve">
     <value>Удаленная папка XDRIVE</value>
   </data>
+  <data name="TbSpeedtestSettings" xml:space="preserve">
+    <value>Настройки тестирования скорости</value>
+  </data>
+  <data name="MsgCheckUpdateViaLatest" xml:space="preserve">
+    <value>Проверка обновлений {0} через перенаправление на последний релиз...</value>
+  </data>
+  <data name="MsgCheckUpdateViaApi" xml:space="preserve">
+    <value>Проверка обновлений {0} через API GitHub...</value>
+  </data>
+  <data name="MsgCheckUpdateViaApiFailed" xml:space="preserve">
+    <value>API GitHub для {0} недоступен</value>
+  </data>
+  <data name="MsgCheckUpdateViaGitRefs" xml:space="preserve">
+    <value>Проверка обновлений {0} по ссылкам Git...</value>
+  </data>
+  <data name="MsgCheckUpdateViaGitRefsFailed" xml:space="preserve">
+    <value>Ссылки Git для {0} недоступны</value>
+  </data>
 </root>
