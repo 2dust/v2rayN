@@ -1450,30 +1450,10 @@ public static class ConfigDbHandler
                             var ipList = await dnsClient.TryResolveIpv46Async(key, cancellationToken);
                             return ipList.FirstOrDefault()?.ToString() ?? key;
                         })).Value;
-                    if (!string.IsNullOrEmpty(resolvedAddress))
+                    if (!string.IsNullOrEmpty(resolvedAddress) && resolvedAddress != address)
                     {
                         profileItem.Address = resolvedAddress;
-                    }
-                    // host -> serverName -> address
-                    if (!profileItem.StreamSecurity.IsNullOrEmpty()
-                        && profileItem.Sni.IsNullOrEmpty())
-                    {
-                        profileItem.Sni = profileItem.Address;
-                    }
-                    var requestHostTransport = new HashSet<string>
-                    {
-                        nameof(ETransport.ws),
-                        nameof(ETransport.httpupgrade),
-                        nameof(ETransport.xhttp),
-                        //nameof(ETransport.grpc),
-                    };
-                    if (requestHostTransport.Contains(profileItem.GetNetwork())
-                        && profileItem.GetTransportExtra().Host.IsNullOrEmpty())
-                    {
-                        profileItem.SetTransportExtra(profileItem.GetTransportExtra() with
-                        {
-                            Host = profileItem.Sni,
-                        });
+                        KeepDomainForSniAndHost(profileItem, address);
                     }
                 }
 
@@ -1518,6 +1498,40 @@ public static class ConfigDbHandler
 
         await SaveConfig();
         return countServers;
+    }
+
+    /// <summary>
+    /// After the pre-resolver replaces the address with an IP, keep TLS SNI and the HTTP Host header
+    /// on the original domain, the same values the core would have derived from the domain
+    /// (sni -> transport host -> address).
+    /// </summary>
+    private static void KeepDomainForSniAndHost(ProfileItem profileItem, string domain)
+    {
+        var transport = profileItem.GetTransportExtra();
+        var network = profileItem.GetNetwork();
+        var transportHost = network switch
+        {
+            nameof(ETransport.raw) or nameof(ETransport.ws) or nameof(ETransport.httpupgrade) or nameof(ETransport.xhttp) => transport.Host,
+            nameof(ETransport.grpc) => transport.GrpcAuthority,
+            _ => null,
+        };
+        // These protocols always use TLS; their StreamSecurity is only defaulted later, when the server is added.
+        var useTls = profileItem.StreamSecurity.IsNotEmpty()
+            || profileItem.ConfigType is EConfigType.Trojan or EConfigType.Hysteria2 or EConfigType.TUIC
+                or EConfigType.Anytls or EConfigType.Naive or EConfigType.MASQUE;
+        if (useTls && profileItem.Sni.IsNullOrEmpty() && transportHost.IsNullOrEmpty())
+        {
+            profileItem.Sni = domain;
+        }
+
+        if (network is nameof(ETransport.ws) or nameof(ETransport.httpupgrade) or nameof(ETransport.xhttp)
+            && transport.Host.IsNullOrEmpty())
+        {
+            profileItem.SetTransportExtra(transport with
+            {
+                Host = profileItem.Sni.IsNullOrEmpty() ? domain : profileItem.Sni,
+            });
+        }
     }
 
     /// <summary>
