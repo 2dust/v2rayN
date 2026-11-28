@@ -146,6 +146,51 @@ public class AddServerViewModelTests
     }
 
     [Test]
+    public async Task AddServerViewModel_ShouldDisableAutoMux_WhenSwitchingAwayFromXdrive()
+    {
+        CoreConfigTestFactory.BindAppManagerConfig(CoreConfigTestFactory.CreateConfig());
+
+        var profile = new ProfileItem
+        {
+            IndexId = "test-node",
+            ConfigType = EConfigType.VLESS,
+            Address = "example.com",
+            Port = 443,
+            Network = nameof(ETransport.xdrive),
+        };
+
+        var vm = new AddServerViewModel(profile);
+        await vm.MuxEnabled.Should().BeTrue();
+
+        vm.Network = nameof(ETransport.raw);
+
+        await vm.MuxEnabled.Should().BeFalse();
+    }
+
+    [Test]
+    public async Task AddServerViewModel_ShouldKeepManualMux_WhenSwitchingNonXdriveTransports()
+    {
+        CoreConfigTestFactory.BindAppManagerConfig(CoreConfigTestFactory.CreateConfig());
+
+        var profile = new ProfileItem
+        {
+            IndexId = "test-node",
+            ConfigType = EConfigType.VLESS,
+            Address = "example.com",
+            Port = 443,
+            Network = nameof(ETransport.raw),
+            MuxEnabled = true,
+        };
+
+        var vm = new AddServerViewModel(profile);
+        await vm.MuxEnabled.Should().BeTrue();
+
+        vm.Network = nameof(ETransport.ws);
+
+        await vm.MuxEnabled.Should().BeTrue();
+    }
+
+    [Test]
     public async Task Localization_ShouldProvideXdriveStrings()
     {
         await ResUI.XdriveService.IsNotEmpty().Should().BeTrue();
