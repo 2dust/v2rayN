@@ -29,7 +29,6 @@ public class TrojanFmt : BaseFmt
         {
             item.AllowInsecure = Global.StringTrue;
         }
-        item.SetProtocolExtra(item.GetProtocolExtra() with { Flow = GetQueryValue(query, "flow") });
         ResolveUriQuery(query, ref item);
 
         return item;
@@ -50,10 +49,6 @@ public class TrojanFmt : BaseFmt
         if (item.GetAllowInsecure())
         {
             _insecureQueryKeys.ForEach(q => dicQuery.Add(q, "1"));
-        }
-        if (!item.GetProtocolExtra().Flow.IsNullOrEmpty())
-        {
-            dicQuery.Add("flow", item.GetProtocolExtra().Flow);
         }
         ToUriQuery(item, null, ref dicQuery);
 

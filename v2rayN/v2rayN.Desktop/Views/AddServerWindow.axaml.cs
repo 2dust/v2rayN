@@ -96,7 +96,6 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
 
                         case EConfigType.Trojan:
                             this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtId6.Text).DisposeWith(currentTypeDisposables);
-                            this.Bind(ViewModel, vm => vm.Flow, v => v.cmbFlow6.SelectedValue).DisposeWith(currentTypeDisposables);
                             this.Bind(ViewModel, vm => vm.MuxEnabled, v => v.togmuxEnabled6.IsChecked).DisposeWith(currentTypeDisposables);
                             break;
 
@@ -254,7 +253,6 @@ public partial class AddServerWindow : WindowBase<AddServerViewModel>
             case EConfigType.Trojan:
                 gridTrojan.IsVisible = true;
                 lstStreamSecurity.Add(Global.StreamSecurityReality);
-                cmbFlow6.ItemsSource = Global.Flows;
                 break;
 
             case EConfigType.Hysteria2:

@@ -113,7 +113,6 @@ public class FmtHandlerTests
         await AssertRawTransportFields(source, resolved);
         await resolved.Password.Should().BeEqualTo(source.Password);
         await resolved.Sni.Should().BeEqualTo(source.Sni);
-        await resolved.GetProtocolExtra().Flow.Should().BeEqualTo(source.GetProtocolExtra().Flow);
         await resolved.GetAllowInsecure().Should().BeTrue();
 
         // Trojan is the one exporter that writes both spellings of the flag.
@@ -437,7 +436,6 @@ public class FmtHandlerTests
             AllowInsecure = Global.StringTrue,
         };
 
-        item.SetProtocolExtra(new ProtocolExtraItem { Flow = Global.Flows[1], });
         item.SetTransportExtra(new TransportExtraItem { RawHeaderType = Global.None, });
 
         return item;
