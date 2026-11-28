@@ -14,6 +14,7 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
     public ProfilesView()
     {
         InitializeComponent();
+        DataGridAccessibilityHelper.Attach(lstProfiles);
 
         _config = ConfigTextHandler.Config;
 
@@ -458,6 +459,19 @@ public partial class ProfilesView : ReactiveUserControl<ProfilesViewModel>
         lstProfiles.AddHandler(PointerPressedEvent, (sender, e) =>
         {
             if (e.GetCurrentPoint(lstProfiles).Properties.IsRightButtonPressed)
+            {
+                var header = (e.Source as Visual)?.FindAncestorOfType<DataGridColumnHeader>();
+                if (header?.OwningColumn != null)
+                {
+                    e.Handled = true;
+                    ShowColumnHeaderContextMenu(header, header.OwningColumn);
+                }
+            }
+        }, RoutingStrategies.Tunnel);
+
+        lstProfiles.AddHandler(KeyDownEvent, (sender, e) =>
+        {
+            if (e.Key == Key.Apps || (e.Key == Key.F10 && e.KeyModifiers.HasFlag(KeyModifiers.Shift)))
             {
                 var header = (e.Source as Visual)?.FindAncestorOfType<DataGridColumnHeader>();
                 if (header?.OwningColumn != null)

@@ -20,7 +20,11 @@
         </Style>
     </UserControl.Styles>
 
-    <Button Margin="{StaticResource MarginLr8}" Classes="IconButton">
+    <Button
+        Margin="{StaticResource MarginLr8}"
+        AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsTheme}"
+        Classes="IconButton"
+        ToolTip.Tip="{x:Static resx:ResUI.TbSettingsTheme}">
         <Button.Content>
             <PathIcon Data="{StaticResource SemiIconMore}">
                 <PathIcon.RenderTransform>
@@ -39,7 +43,8 @@
                         <ComboBox
                             x:Name="cmbCurrentTheme"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Center" />
+                            HorizontalAlignment="Center"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsTheme}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock
@@ -49,7 +54,8 @@
                         <ComboBox
                             x:Name="cmbCurrentFontSize"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Center" />
+                            HorizontalAlignment="Center"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsFontSize}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock
@@ -60,6 +66,7 @@
                             x:Name="cmbCurrentLanguage"
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Center"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsLanguage}"
                             DisplayMemberBinding="{CompiledBinding Display, x:DataType=dto:LanguageOption}"
                             SelectedValueBinding="{CompiledBinding Value, x:DataType=dto:LanguageOption}" />
                     </StackPanel>

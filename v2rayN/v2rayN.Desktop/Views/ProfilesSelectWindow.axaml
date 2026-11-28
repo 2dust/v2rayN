@@ -46,6 +46,7 @@
                     <ListBox
                         x:Name="lstGroup"
                         Margin="{StaticResource MarginLr4}"
+                        AutomationProperties.Name="{x:Static resx:ResUI.menuSubscription}"
                         DisplayMemberBinding="{Binding Remarks}"
                         ItemsSource="{Binding SubItems}"
                         Theme="{DynamicResource ButtonRadioGroupListBox}">
@@ -59,6 +60,7 @@
                     <Button
                         x:Name="btnAutofitColumnWidth"
                         Margin="{StaticResource MarginLr4}"
+                        AutomationProperties.Name="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}"
                         Classes="IconButton Success"
                         ToolTip.Tip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
                         <Button.Content>
@@ -71,6 +73,7 @@
                         Width="200"
                         Margin="{StaticResource MarginLr4}"
                         VerticalContentAlignment="Center"
+                        AutomationProperties.Name="{x:Static resx:ResUI.MsgServerTitle}"
                         PlaceholderText="{x:Static resx:ResUI.MsgServerTitle}"
                         Text="{Binding ServerFilter, Mode=TwoWay}"
                         ToolTip.Tip="{x:Static resx:ResUI.MsgServerTitle}" />
@@ -80,6 +83,7 @@
                 <DataGrid
                     x:Name="lstProfiles"
                     AutoGenerateColumns="False"
+                    AutomationProperties.Name="{x:Static resx:ResUI.TbSelectProfile}"
                     BorderThickness="1"
                     CanUserReorderColumns="True"
                     CanUserResizeColumns="True"

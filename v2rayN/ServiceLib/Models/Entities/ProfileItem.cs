@@ -44,6 +44,8 @@ public class ProfileItem
         return summary;
     }
 
+    public override string ToString() => GetSummary();
+
     public List<string>? GetAlpn()
     {
         return Alpn.IsNullOrEmpty() ? null : Utils.String2List(Alpn);

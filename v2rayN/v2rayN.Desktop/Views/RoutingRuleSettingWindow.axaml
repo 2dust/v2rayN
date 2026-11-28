@@ -65,6 +65,7 @@
                     Margin="{StaticResource Margin4}"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
+                    AutomationProperties.Name="{x:Static resx:ResUI.LvRemarks}"
                     TextWrapping="Wrap" />
 
                 <TextBlock
@@ -75,7 +76,8 @@
                     x:Name="txtSort"
                     Width="100"
                     Margin="{StaticResource Margin4}"
-                    HorizontalAlignment="Left" />
+                    HorizontalAlignment="Left"
+                    AutomationProperties.Name="{x:Static resx:ResUI.LvSort}" />
             </StackPanel>
 
             <TextBlock
@@ -91,7 +93,8 @@
                 <ComboBox
                     x:Name="cmbdomainStrategy"
                     Width="200"
-                    Margin="{StaticResource Margin4}" />
+                    Margin="{StaticResource Margin4}"
+                    AutomationProperties.Name="{x:Static resx:ResUI.TbdomainStrategy}" />
                 <TextBlock
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -99,7 +102,8 @@
                 <ComboBox
                     x:Name="cmbdomainStrategy4Singbox"
                     Width="200"
-                    Margin="{StaticResource Margin4}" />
+                    Margin="{StaticResource Margin4}"
+                    AutomationProperties.Name="{x:Static resx:ResUI.TbdomainStrategy4Singbox}" />
             </StackPanel>
 
             <TextBlock
@@ -116,6 +120,7 @@
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
+                AutomationProperties.Name="{x:Static resx:ResUI.LvUrl}"
                 TextWrapping="Wrap" />
 
             <!--
@@ -159,12 +164,14 @@
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
+                AutomationProperties.Name="{x:Static resx:ResUI.LvCustomRulesetPath4Singbox}"
                 TextWrapping="Wrap" />
             <Button
                 x:Name="btnBrowseCustomRulesetPath4Singbox"
                 Grid.Row="4"
                 Grid.Column="2"
                 Margin="{StaticResource Margin4}"
+                AutomationProperties.HelpText="{x:Static resx:ResUI.LvCustomRulesetPath4Singbox}"
                 Content="{x:Static resx:ResUI.TbBrowse}" />
         </Grid>
 
@@ -173,6 +180,7 @@
                 <DataGrid
                     x:Name="lstRules"
                     AutoGenerateColumns="False"
+                    AutomationProperties.Name="{x:Static resx:ResUI.menuRuleList}"
                     Background="Transparent"
                     BorderThickness="1"
                     CanUserResizeColumns="True"
@@ -186,6 +194,10 @@
                     <DataGrid.ContextMenu>
                         <ContextMenu>
                             <MenuItem x:Name="menuRuleAdd2" Header="{x:Static resx:ResUI.menuRuleAdd}" />
+                            <MenuItem
+                                x:Name="menuRuleEdit"
+                                Header="{x:Static resx:ResUI.TbEdit}"
+                                InputGesture="Ctrl+D" />
                             <MenuItem
                                 x:Name="menuRuleRemove"
                                 Header="{x:Static resx:ResUI.menuRuleRemove}"
@@ -218,7 +230,7 @@
                         <DataGridCheckBoxColumn
                             Width="60"
                             Binding="{Binding Enabled}"
-                            Header="" />
+                            Header="{x:Static resx:ResUI.LvEnabled}" />
                         <DataGridTextColumn
                             Width="150"
                             Binding="{Binding Remarks}"

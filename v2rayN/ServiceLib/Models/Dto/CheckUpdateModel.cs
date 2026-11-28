@@ -11,4 +11,6 @@ public partial class CheckUpdateModel : ReactiveObject
     public bool? IsFinished { get; set; }
     public bool IsGeoFile { get; set; }
     public string CoreTypeForStorage => IsGeoFile ? "GeoFiles" : (CoreType?.ToString() ?? "");
+
+    public override string ToString() => string.IsNullOrWhiteSpace(Remarks) ? CoreTypeForStorage : $"{CoreTypeForStorage} {Remarks}";
 }

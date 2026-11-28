@@ -38,4 +38,6 @@ public class SubItem
     public ECoreType? CustomCoreType { get; set; }
 
     public string? PreResolver { get; set; }
+
+    public override string ToString() => Remarks ?? string.Empty;
 }

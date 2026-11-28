@@ -11,6 +11,7 @@ public partial class SubSettingWindow : WindowBase<SubSettingViewModel>
     public SubSettingWindow()
     {
         InitializeComponent();
+        DataGridAccessibilityHelper.Attach(lstSubscription);
 
         menuClose.Click += menuClose_Click;
         Loaded += Window_Loaded;

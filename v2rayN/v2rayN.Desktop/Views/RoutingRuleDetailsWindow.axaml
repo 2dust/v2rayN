@@ -33,7 +33,8 @@
                 Grid.Column="1"
                 Width="300"
                 Margin="{StaticResource Margin4}"
-                HorizontalAlignment="Left" />
+                HorizontalAlignment="Left"
+                AutomationProperties.Name="{x:Static resx:ResUI.LvRemarks}" />
             <StackPanel
                 Grid.Row="0"
                 Grid.Column="2"
@@ -45,7 +46,8 @@
                     x:Name="togEnabled"
                     Margin="{StaticResource Margin4}"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Center" />
+                    VerticalAlignment="Center"
+                    AutomationProperties.Name="{x:Static resx:ResUI.LvEnabled}" />
 
             </StackPanel>
 
@@ -61,6 +63,8 @@
                 Grid.Column="1"
                 Width="300"
                 Margin="{StaticResource Margin4}"
+                AutomationProperties.HelpText="{x:Static resx:ResUI.TbRuleTypeTips}"
+                AutomationProperties.Name="{x:Static resx:ResUI.TbRuleType}"
                 MaxDropDownHeight="1000" />
             <TextBlock
                 Grid.Row="1"
@@ -83,6 +87,8 @@
                 Grid.Column="1"
                 Width="300"
                 Margin="{StaticResource Margin4}"
+                AutomationProperties.HelpText="{x:Static resx:ResUI.TbRuleOutboundTagTip}"
+                AutomationProperties.Name="outboundTag"
                 IsEditable="True" />
             <StackPanel
                 Grid.Row="2"
@@ -113,7 +119,9 @@
                 Grid.Column="1"
                 Width="300"
                 Margin="{StaticResource Margin4}"
-                HorizontalAlignment="Left" />
+                HorizontalAlignment="Left"
+                AutomationProperties.HelpText="{x:Static resx:ResUI.TbRuleMatchingTips}"
+                AutomationProperties.Name="port" />
             <TextBlock
                 Grid.Row="3"
                 Grid.Column="2"
@@ -135,6 +143,7 @@
                 Grid.Column="1"
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
+                AutomationProperties.Name="protocol"
                 SelectionMode="Multiple,Toggle"
                 Theme="{DynamicResource CardCheckGroupListBox}" />
             <TextBlock
@@ -159,6 +168,8 @@
                 Grid.Row="5"
                 Grid.Column="1"
                 Margin="{StaticResource Margin4}"
+                AutomationProperties.HelpText="{x:Static resx:ResUI.TbRoutingInboundTagTips}"
+                AutomationProperties.Name="inboundTag"
                 SelectionMode="Multiple,Toggle"
                 Theme="{DynamicResource CardCheckGroupListBox}" />
             <TextBlock
@@ -182,6 +193,8 @@
                 Grid.Column="1"
                 Width="300"
                 Margin="{StaticResource Margin4}"
+                AutomationProperties.HelpText="{x:Static resx:ResUI.TbRoutingTips}"
+                AutomationProperties.Name="network"
                 MaxDropDownHeight="1000" />
             <TextBlock
                 Grid.Row="6"
@@ -228,11 +241,15 @@
                 <TextBox
                     Name="txtDomain"
                     VerticalAlignment="Stretch"
+                    AutomationProperties.Name="{x:Static resx:ResUI.TbRoutingRuleDomain}"
                     Classes="TextArea"
                     MinLines="10"
                     TextWrapping="Wrap" />
             </HeaderedContentControl>
-            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
+            <GridSplitter
+                Grid.Column="1"
+                HorizontalAlignment="Stretch"
+                AutomationProperties.Name="Resize panels" />
             <HeaderedContentControl
                 Grid.Column="2"
                 BorderBrush="Gray"
@@ -241,11 +258,15 @@
                 <TextBox
                     Name="txtIP"
                     VerticalAlignment="Stretch"
+                    AutomationProperties.Name="{x:Static resx:ResUI.TbRoutingRuleIP}"
                     Classes="TextArea"
                     MinLines="10"
                     TextWrapping="Wrap" />
             </HeaderedContentControl>
-            <GridSplitter Grid.Column="3" HorizontalAlignment="Stretch" />
+            <GridSplitter
+                Grid.Column="3"
+                HorizontalAlignment="Stretch"
+                AutomationProperties.Name="Resize panels" />
             <HeaderedContentControl
                 Grid.Column="4"
                 BorderBrush="Gray"
@@ -254,6 +275,7 @@
                 <TextBox
                     Name="txtProcess"
                     VerticalAlignment="Stretch"
+                    AutomationProperties.Name="{x:Static resx:ResUI.TbRoutingRuleProcess}"
                     Classes="TextArea"
                     MinLines="10"
                     TextWrapping="Wrap" />

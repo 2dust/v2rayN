@@ -50,6 +50,7 @@
                             Grid.Column="0"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
+                            AutomationProperties.LiveSetting="Polite"
                             Text="{x:Static resx:ResUI.TbCustomDNSEnabledPageInvalid}" />
 
                         <TextBlock
@@ -65,6 +66,8 @@
                             Width="300"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
+                            AutomationProperties.HelpText="{x:Static resx:ResUI.TbDomesticDNSTips}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbDomesticDNS}"
                             IsEditable="True" />
                         <TextBlock
                             Grid.Row="1"
@@ -87,6 +90,8 @@
                             Width="300"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
+                            AutomationProperties.HelpText="{x:Static resx:ResUI.TbRemoteDNSTips}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbRemoteDNS}"
                             IsEditable="True" />
                         <TextBlock
                             Grid.Row="2"
@@ -109,6 +114,8 @@
                             Width="300"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
+                            AutomationProperties.HelpText="{x:Static resx:ResUI.TbBootstrapDNSTips}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbBootstrapDNS}"
                             IsEditable="True" />
                         <TextBlock
                             Grid.Row="3"
@@ -131,6 +138,8 @@
                             Width="200"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
+                            AutomationProperties.HelpText="{x:Static resx:ResUI.TbDirectResolveStrategyTips}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbDirectResolveStrategy}"
                             PlaceholderText="Default" />
                         <TextBlock
                             Grid.Row="5"
@@ -153,6 +162,8 @@
                             Width="200"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
+                            AutomationProperties.HelpText="{x:Static resx:ResUI.TbRemoteResolveStrategyTips}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbRemoteResolveStrategy}"
                             PlaceholderText="Default" />
                         <TextBlock
                             Grid.Row="6"
@@ -175,6 +186,8 @@
                             Width="200"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
+                            AutomationProperties.HelpText="{x:Static resx:ResUI.TbProxyDialResolveStrategyTip}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbProxyDialResolveStrategy}"
                             PlaceholderText="Default" />
                         <TextBlock
                             Grid.Row="7"
@@ -196,7 +209,8 @@
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Left"
-                            VerticalAlignment="Center" />
+                            VerticalAlignment="Center"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbParallelQuery}" />
 
                         <TextBlock
                             Grid.Row="9"
@@ -210,7 +224,8 @@
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Left"
-                            VerticalAlignment="Center" />
+                            VerticalAlignment="Center"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbServeStale}" />
 
                         <TextBlock
                             Grid.Row="10"
@@ -224,7 +239,9 @@
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Left"
-                            VerticalAlignment="Center" />
+                            VerticalAlignment="Center"
+                            AutomationProperties.HelpText="{x:Static resx:ResUI.TbEnableHappyEyeballsTip}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbEnableHappyEyeballs}" />
                         <TextBlock
                             Grid.Row="10"
                             Grid.Column="2"
@@ -250,6 +267,7 @@
                             Grid.Column="0"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
+                            AutomationProperties.LiveSetting="Polite"
                             Text="{x:Static resx:ResUI.TbCustomDNSEnabledPageInvalid}" />
 
                         <TextBlock
@@ -264,7 +282,8 @@
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Left"
-                            VerticalAlignment="Center" />
+                            VerticalAlignment="Center"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsUseSystemHosts}" />
 
                         <TextBlock
                             Grid.Row="2"
@@ -278,7 +297,8 @@
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Left"
-                            VerticalAlignment="Center" />
+                            VerticalAlignment="Center"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbAddCommonDNSHosts}" />
 
                         <TextBlock
                             Grid.Row="3"
@@ -295,13 +315,17 @@
                                 Grid.Column="0"
                                 Margin="{StaticResource Margin4}"
                                 HorizontalAlignment="Left"
-                                VerticalAlignment="Center" />
+                                VerticalAlignment="Center"
+                                AutomationProperties.HelpText="{x:Static resx:ResUI.TbFakeIPTips}"
+                                AutomationProperties.Name="{x:Static resx:ResUI.TbFakeIP}" />
                             <ComboBox
                                 x:Name="cmbFakeIPRange"
                                 Grid.Column="1"
                                 Margin="{StaticResource Margin4}"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Center"
+                                AutomationProperties.HelpText="{x:Static resx:ResUI.TbFakeIPTips}"
+                                AutomationProperties.Name="{x:Static resx:ResUI.TbFakeIP}"
                                 IsEditable="True" />
                         </Grid>
                         <TextBlock
@@ -328,13 +352,17 @@
                                 Grid.Column="0"
                                 Margin="{StaticResource Margin4}"
                                 HorizontalAlignment="Left"
-                                VerticalAlignment="Center" />
+                                VerticalAlignment="Center"
+                                AutomationProperties.HelpText="{x:Static resx:ResUI.TbFakeIPv6Tips}"
+                                AutomationProperties.Name="{x:Static resx:ResUI.TbFakeIPv6}" />
                             <ComboBox
                                 x:Name="cmbFakeIPv6Range"
                                 Grid.Column="1"
                                 Margin="{StaticResource Margin4}"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Center"
+                                AutomationProperties.HelpText="{x:Static resx:ResUI.TbFakeIPv6Tips}"
+                                AutomationProperties.Name="{x:Static resx:ResUI.TbFakeIPv6}"
                                 IsEditable="True" />
                         </Grid>
                         <TextBlock
@@ -357,7 +385,9 @@
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Left"
-                            VerticalAlignment="Center" />
+                            VerticalAlignment="Center"
+                            AutomationProperties.HelpText="{x:Static resx:ResUI.TbBlockSVCBHTTPSQueriesTips}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbBlockSVCBHTTPSQueries}" />
                         <TextBlock
                             Grid.Row="5"
                             Grid.Column="2"
@@ -378,7 +408,9 @@
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Left"
-                            VerticalAlignment="Center" />
+                            VerticalAlignment="Center"
+                            AutomationProperties.HelpText="{x:Static resx:ResUI.TbBlockAAAAQueriesTips}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbBlockAAAAQueries}" />
                         <TextBlock
                             Grid.Row="6"
                             Grid.Column="2"
@@ -400,6 +432,8 @@
                             Width="200"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Center"
+                            AutomationProperties.HelpText="{x:Static resx:ResUI.TbValidateDirectExpectedIPsDesc}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbValidateDirectExpectedIPs}"
                             IsEditable="True" />
                         <TextBlock
                             Grid.Row="7"
@@ -424,6 +458,7 @@
                             Grid.ColumnSpan="3"
                             Margin="{StaticResource Margin4}"
                             VerticalAlignment="Stretch"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbDNSHostsConfig}"
                             BorderThickness="1"
                             Classes="TextArea"
                             PlaceholderText="{x:Static resx:ResUI.TbDNSHostsConfig}"
@@ -448,7 +483,8 @@
                             <ToggleSwitch
                                 x:Name="togRayCustomDNSEnableCompatible"
                                 Margin="{StaticResource Margin4}"
-                                HorizontalAlignment="Left" />
+                                HorizontalAlignment="Left"
+                                AutomationProperties.Name="{x:Static resx:ResUI.TbCustomDNSEnable}" />
                         </StackPanel>
 
                         <StackPanel Grid.Row="1" Orientation="Horizontal">
@@ -473,7 +509,8 @@
                             <ToggleSwitch
                                 x:Name="togUseSystemHostsCompatible"
                                 Margin="{StaticResource Margin4}"
-                                HorizontalAlignment="Left" />
+                                HorizontalAlignment="Left"
+                                AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsUseSystemHosts}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
@@ -484,7 +521,8 @@
                             <ComboBox
                                 x:Name="cmbdomainStrategy4FreedomCompatible"
                                 Width="150"
-                                Margin="{StaticResource Margin4}" />
+                                Margin="{StaticResource Margin4}"
+                                AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsDomainStrategy4Freedom}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
@@ -496,6 +534,7 @@
                                 x:Name="cmbdomainDNSAddressCompatible"
                                 Width="150"
                                 Margin="{StaticResource Margin4}"
+                                AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsDomainDNSAddress}"
                                 IsEditable="True" />
                         </StackPanel>
                     </WrapPanel>
@@ -507,17 +546,26 @@
                             BorderBrush="Gray"
                             BorderThickness="1"
                             Header="HTTP/SOCKS">
-                            <local:JsonEditor Name="txtnormalDNSCompatible" VerticalAlignment="Stretch" />
+                            <local:JsonEditor
+                                Name="txtnormalDNSCompatible"
+                                VerticalAlignment="Stretch"
+                                AutomationProperties.Name="HTTP/SOCKS" />
                         </HeaderedContentControl>
 
-                        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
+                        <GridSplitter
+                            Grid.Column="1"
+                            HorizontalAlignment="Stretch"
+                            AutomationProperties.Name="Resize panels" />
 
                         <HeaderedContentControl
                             Grid.Column="2"
                             BorderBrush="Gray"
                             BorderThickness="1"
                             Header="{x:Static resx:ResUI.TbSettingsTunMode}">
-                            <local:JsonEditor Name="txttunDNSCompatible" VerticalAlignment="Stretch" />
+                            <local:JsonEditor
+                                Name="txttunDNSCompatible"
+                                VerticalAlignment="Stretch"
+                                AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsTunMode}" />
                         </HeaderedContentControl>
                     </Grid>
                 </DockPanel>
@@ -539,7 +587,8 @@
                             <ToggleSwitch
                                 x:Name="togSBCustomDNSEnableCompatible"
                                 Margin="{StaticResource Margin4}"
-                                HorizontalAlignment="Left" />
+                                HorizontalAlignment="Left"
+                                AutomationProperties.Name="{x:Static resx:ResUI.TbCustomDNSEnable}" />
                         </StackPanel>
 
                         <StackPanel Grid.Row="1" Orientation="Horizontal">
@@ -564,7 +613,8 @@
                             <ComboBox
                                 x:Name="cmbdomainStrategy4OutCompatible"
                                 Width="150"
-                                Margin="{StaticResource Margin4}" />
+                                Margin="{StaticResource Margin4}"
+                                AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsDomainStrategy4Out}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
@@ -576,6 +626,7 @@
                                 x:Name="cmbdomainDNSAddress2Compatible"
                                 Width="150"
                                 Margin="{StaticResource Margin4}"
+                                AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsDomainDNSAddress}"
                                 IsEditable="True" />
                         </StackPanel>
                     </WrapPanel>
@@ -587,17 +638,26 @@
                             BorderBrush="Gray"
                             BorderThickness="1"
                             Header="HTTP/SOCKS">
-                            <local:JsonEditor Name="txtnormalDNS2Compatible" VerticalAlignment="Stretch" />
+                            <local:JsonEditor
+                                Name="txtnormalDNS2Compatible"
+                                VerticalAlignment="Stretch"
+                                AutomationProperties.Name="HTTP/SOCKS" />
                         </HeaderedContentControl>
 
-                        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" />
+                        <GridSplitter
+                            Grid.Column="1"
+                            HorizontalAlignment="Stretch"
+                            AutomationProperties.Name="Resize panels" />
 
                         <HeaderedContentControl
                             Grid.Column="2"
                             BorderBrush="Gray"
                             BorderThickness="1"
                             Header="{x:Static resx:ResUI.TbSettingsTunMode}">
-                            <local:JsonEditor Name="txttunDNS2Compatible" VerticalAlignment="Stretch" />
+                            <local:JsonEditor
+                                Name="txttunDNS2Compatible"
+                                VerticalAlignment="Stretch"
+                                AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsTunMode}" />
                         </HeaderedContentControl>
                     </Grid>
                 </DockPanel>

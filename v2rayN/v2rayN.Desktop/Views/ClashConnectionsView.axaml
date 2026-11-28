@@ -25,11 +25,13 @@
                 Width="200"
                 Margin="{StaticResource MarginLr8}"
                 VerticalContentAlignment="Center"
+                AutomationProperties.Name="{x:Static resx:ResUI.ConnectionsHostFilterTitle}"
                 PlaceholderText="{x:Static resx:ResUI.ConnectionsHostFilterTitle}" />
 
             <Button
                 x:Name="btnConnectionCloseAll"
                 Margin="{StaticResource MarginLr8}"
+                AutomationProperties.Name="{x:Static resx:ResUI.menuConnectionCloseAll}"
                 Classes="IconButton Success"
                 ToolTip.Tip="{x:Static resx:ResUI.menuConnectionCloseAll}">
                 <Button.Content>
@@ -40,6 +42,7 @@
             <Button
                 x:Name="btnAutofitColumnWidth"
                 Margin="{StaticResource MarginLr8}"
+                AutomationProperties.Name="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}"
                 Classes="IconButton Success"
                 ToolTip.Tip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
                 <Button.Content>
@@ -54,12 +57,14 @@
             <ToggleSwitch
                 x:Name="togAutoRefresh"
                 Margin="{StaticResource MarginLr8}"
-                HorizontalAlignment="Left" />
+                HorizontalAlignment="Left"
+                AutomationProperties.Name="{x:Static resx:ResUI.TbAutoRefresh}" />
         </WrapPanel>
 
         <DataGrid
             x:Name="lstConnections"
             AutoGenerateColumns="False"
+            AutomationProperties.Name="{x:Static resx:ResUI.TbConnections}"
             BorderThickness="1"
             CanUserResizeColumns="True"
             GridLinesVisibility="All"

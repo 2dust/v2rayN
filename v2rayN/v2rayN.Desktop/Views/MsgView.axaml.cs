@@ -1,15 +1,20 @@
+using System.Collections.ObjectModel;
 using v2rayN.Desktop.Common;
+using v2rayN.Desktop.Controls;
 
 namespace v2rayN.Desktop.Views;
 
 public partial class MsgView : ReactiveUserControl<MsgViewModel>
 {
-    //private const int KeepLines = 30;
+    private readonly ObservableCollection<LogLineItem> _logLines = [];
 
     public MsgView()
     {
         InitializeComponent();
-        txtMsg.TextArea.TextView.Options.EnableHyperlinks = false;
+
+        lstMsg.ItemsSource = _logLines;
+        lstMsg.GotFocus += LstMsg_GotFocus;
+        lstMsg.KeyDown += LstMsg_KeyDown;
 
         this.WhenActivated(disposables =>
         {
@@ -23,36 +28,74 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
                 interaction.SetOutput(RxVoid.Default);
             }).DisposeWith(disposables);
         });
+    }
 
-        TextEditorKeywordHighlighter.Attach(txtMsg, Global.LogLevelColors.ToDictionary(
-                kv => kv.Key,
-                kv => (IBrush)new SolidColorBrush(Color.Parse(kv.Value))
-            ));
+    private void LstMsg_GotFocus(object? sender, FocusChangedEventArgs e)
+    {
+        if (_logLines.Count > 0 && lstMsg.SelectedIndex < 0)
+        {
+            lstMsg.SelectedIndex = (togScrollToEnd.IsChecked ?? true) ? _logLines.Count - 1 : 0;
+        }
+    }
+
+    private void LstMsg_KeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.KeyModifiers is KeyModifiers.Control or KeyModifiers.Meta)
+        {
+            switch (e.Key)
+            {
+                case Key.A:
+                    e.Handled = true;
+                    lstMsg.SelectAll();
+                    break;
+
+                case Key.C:
+                    e.Handled = true;
+                    menuMsgViewCopy_Click(sender, e);
+                    break;
+            }
+        }
     }
 
     private void ShowMsg(object msg)
     {
-        //var lineCount = txtMsg.LineCount;
-        //if (lineCount > ViewModel?.NumMaxMsg)
-        //{
-        //    var cutLine = txtMsg.Document.GetLineByNumber(lineCount - KeepLines);
-        //    txtMsg.Document.Remove(0, cutLine.Offset);
-        //}
-        if (txtMsg.LineCount > ViewModel?.NumMaxMsg)
+        var maxLines = ViewModel?.NumMaxMsg ?? 500;
+        if (_logLines.Count > maxLines)
         {
             ClearMsg();
         }
 
-        txtMsg.AppendText(msg.ToString());
-        if (togScrollToEnd.IsChecked ?? true)
+        var text = msg.ToString();
+        if (string.IsNullOrEmpty(text))
         {
-            txtMsg.ScrollToEnd();
-            // Let layout finish without a nested dispatcher loop during a native window drag.
+            return;
+        }
+
+        var lines = text.Split(["\r\n", "\n"], StringSplitOptions.None);
+        for (var i = 0; i < lines.Length; i++)
+        {
+            // Ignore only the trailing empty segment caused by a terminating newline.
+            if (i == lines.Length - 1 && lines[i].Length == 0)
+            {
+                continue;
+            }
+
+            _logLines.Add(new LogLineItem(lines[i]));
+        }
+
+        while (_logLines.Count > maxLines + 50)
+        {
+            _logLines.RemoveAt(0);
+        }
+
+        if ((togScrollToEnd.IsChecked ?? true) && _logLines.Count > 0)
+        {
+            var lastItem = _logLines[^1];
             Dispatcher.UIThread.Post(() =>
             {
-                if (togScrollToEnd.IsChecked ?? true)
+                if ((togScrollToEnd.IsChecked ?? true) && _logLines.Count > 0)
                 {
-                    txtMsg.ScrollTo(txtMsg.LineCount, 0, AvaloniaEdit.Rendering.VisualYPosition.TextBottom, txtMsg.Bounds.Height, 0);
+                    lstMsg.ScrollIntoView(lastItem);
                 }
             }, DispatcherPriority.Background);
         }
@@ -60,28 +103,34 @@ public partial class MsgView : ReactiveUserControl<MsgViewModel>
 
     public void ClearMsg()
     {
-        txtMsg.Clear();
-        txtMsg.AppendText("----- Message cleared -----\n");
+        _logLines.Clear();
+        _logLines.Add(new LogLineItem("----- Message cleared -----"));
     }
 
     private void menuMsgViewSelectAll_Click(object? sender, RoutedEventArgs e)
     {
         Dispatcher.UIThread.Post(() =>
         {
-            txtMsg.TextArea.Focus();
-            txtMsg.SelectAll();
+            lstMsg.Focus();
+            lstMsg.SelectAll();
         }, DispatcherPriority.Render);
     }
 
     private async void menuMsgViewCopy_Click(object? sender, RoutedEventArgs e)
     {
-        var data = txtMsg.SelectedText.TrimEx();
+        var selected = lstMsg.SelectedItems?.OfType<LogLineItem>().Select(x => x.Text).ToList();
+        if (selected is null || selected.Count == 0)
+        {
+            return;
+        }
+
+        var data = string.Join(Environment.NewLine, selected).TrimEx();
         await AvaUtils.SetClipboardData(this, data);
     }
 
     private async void menuMsgViewCopyAll_Click(object? sender, RoutedEventArgs e)
     {
-        var data = txtMsg.Text.TrimEx();
+        var data = string.Join(Environment.NewLine, _logLines.Select(x => x.Text)).TrimEx();
         await AvaUtils.SetClipboardData(this, data);
     }
 

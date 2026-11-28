@@ -44,7 +44,8 @@
                 Width="300"
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Center" />
+                VerticalAlignment="Center"
+                AutomationProperties.Name="{x:Static resx:ResUI.TbdomainStrategy}" />
 
             <TextBlock
                 Grid.Row="1"
@@ -62,7 +63,8 @@
                 Width="300"
                 Margin="{StaticResource Margin4}"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Center" />
+                VerticalAlignment="Center"
+                AutomationProperties.Name="{x:Static resx:ResUI.TbdomainStrategy4Singbox}" />
         </Grid>
 
         <TabControl x:Name="tabAdvanced">
@@ -70,6 +72,7 @@
                 <DataGrid
                     x:Name="lstRoutings"
                     AutoGenerateColumns="False"
+                    AutomationProperties.Name="{x:Static resx:ResUI.TbRoutingTabRuleList}"
                     Background="Transparent"
                     BorderThickness="1"
                     CanUserResizeColumns="True"
@@ -83,6 +86,10 @@
                     <DataGrid.ContextMenu>
                         <ContextMenu>
                             <MenuItem x:Name="menuRoutingAdvancedAdd" Header="{x:Static resx:ResUI.menuRoutingAdvancedAdd}" />
+                            <MenuItem
+                                x:Name="menuRoutingAdvancedEdit"
+                                Header="{x:Static resx:ResUI.TbEdit}"
+                                InputGesture="Ctrl+D" />
                             <MenuItem
                                 x:Name="menuRoutingAdvancedRemove"
                                 Header="{x:Static resx:ResUI.menuRoutingAdvancedRemove}"
@@ -101,7 +108,10 @@
                     </DataGrid.ContextMenu>
 
                     <DataGrid.Columns>
-                        <DataGridCheckBoxColumn Width="40" Binding="{Binding IsActive}" />
+                        <DataGridCheckBoxColumn
+                            Width="60"
+                            Binding="{Binding IsActive}"
+                            Header="{x:Static resx:ResUI.TipActiveServer}" />
                         <DataGridTextColumn
                             Width="*"
                             Binding="{Binding Remarks}"

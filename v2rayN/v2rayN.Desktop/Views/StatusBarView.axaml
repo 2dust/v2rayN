@@ -16,18 +16,24 @@
                 Margin="{StaticResource MarginLr8}"
                 VerticalAlignment="Center"
                 DockPanel.Dock="Right">
-                <TextBlock x:Name="txtSpeedProxyDisplay" HorizontalAlignment="Right" />
-                <Border Margin="1" />
-                <TextBlock x:Name="txtSpeedDirectDisplay" HorizontalAlignment="Right" />
+                <TextBlock
+                    x:Name="txtSpeedProxyDisplay"
+                    HorizontalAlignment="Right"
+                    AutomationProperties.Name="Proxy speed" />
+                <Border Margin="1" AutomationProperties.AccessibilityView="Raw" />
+                <TextBlock
+                    x:Name="txtSpeedDirectDisplay"
+                    HorizontalAlignment="Right"
+                    AutomationProperties.Name="Direct speed" />
             </StackPanel>
 
             <StackPanel
                 Margin="{StaticResource MarginLr8}"
                 VerticalAlignment="Center"
                 DockPanel.Dock="Left">
-                <TextBlock x:Name="txtInboundDisplay" />
-                <Border Margin="1" />
-                <TextBlock x:Name="txtInboundLanDisplay" />
+                <TextBlock x:Name="txtInboundDisplay" AutomationProperties.Name="{x:Static resx:ResUI.LabLocal}" />
+                <Border Margin="1" AutomationProperties.AccessibilityView="Raw" />
+                <TextBlock x:Name="txtInboundLanDisplay" AutomationProperties.Name="{x:Static resx:ResUI.LabLAN}" />
             </StackPanel>
 
             <StackPanel
@@ -44,6 +50,7 @@
                     x:Name="togEnableTun"
                     Margin="{StaticResource Margin4}"
                     HorizontalAlignment="Center"
+                    AutomationProperties.Name="{x:Static resx:ResUI.TbEnableTunAs}"
                     Theme="{DynamicResource SimpleToggleSwitch}" />
             </StackPanel>
 
@@ -56,6 +63,7 @@
                     x:Name="cmbSystemProxy"
                     Width="160"
                     Margin="{StaticResource MarginLr8}"
+                    AutomationProperties.Name="{x:Static resx:ResUI.menuSystemproxy}"
                     ToolTip.Tip="{x:Static resx:ResUI.menuSystemproxy}">
                     <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxyClear}" />
                     <ComboBoxItem Content="{x:Static resx:ResUI.menuSystemProxySet}" />
@@ -67,16 +75,28 @@
                     x:Name="cmbRoutings2"
                     Width="160"
                     Margin="{StaticResource MarginLr8}"
+                    AutomationProperties.Name="{x:Static resx:ResUI.menuRouting}"
                     DisplayMemberBinding="{Binding Remarks}"
                     ItemsSource="{Binding RoutingItems}"
                     ToolTip.Tip="{x:Static resx:ResUI.menuRouting}" />
             </StackPanel>
 
-            <StackPanel Margin="{StaticResource MarginLr8}" VerticalAlignment="Center">
-                <TextBlock x:Name="txtRunningServerDisplay" />
-                <Border Margin="1" />
-                <TextBlock x:Name="txtRunningInfoDisplay" />
-            </StackPanel>
+            <Button
+                x:Name="btnRunningServer"
+                Margin="{StaticResource MarginLr8}"
+                Padding="4,2"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Left"
+                VerticalAlignment="Center"
+                AutomationProperties.HelpText="{x:Static resx:ResUI.menuRealPingServer}"
+                Theme="{DynamicResource BorderlessButton}"
+                ToolTip.Tip="{x:Static resx:ResUI.menuRealPingServer}">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock x:Name="txtRunningServerDisplay" />
+                    <Border Margin="1" AutomationProperties.AccessibilityView="Raw" />
+                    <TextBlock x:Name="txtRunningInfoDisplay" AutomationProperties.LiveSetting="Polite" />
+                </StackPanel>
+            </Button>
         </DockPanel>
     </Grid>
 </UserControl>

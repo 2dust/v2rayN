@@ -1,4 +1,5 @@
 using System.Xml;
+using Avalonia.Automation;
 using AvaloniaEdit.Highlighting;
 using AvaloniaEdit.Highlighting.Xshd;
 
@@ -43,6 +44,16 @@ public partial class JsonEditor : UserControl
             {
                 Editor.Text = text ?? string.Empty;
             }
+        });
+
+        this.GetObservable(AutomationProperties.NameProperty).Subscribe(name =>
+        {
+            AutomationProperties.SetName(Editor.TextArea, name);
+        });
+
+        this.GetObservable(AutomationProperties.HelpTextProperty).Subscribe(helpText =>
+        {
+            AutomationProperties.SetHelpText(Editor.TextArea, helpText);
         });
 
         if (Design.IsDesignMode)

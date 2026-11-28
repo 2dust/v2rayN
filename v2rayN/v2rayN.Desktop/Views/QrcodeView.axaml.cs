@@ -1,3 +1,6 @@
+using Avalonia.VisualTree;
+using DialogHostAvalonia;
+
 namespace v2rayN.Desktop.Views;
 
 public partial class QrcodeView : UserControl
@@ -5,6 +8,7 @@ public partial class QrcodeView : UserControl
     public QrcodeView()
     {
         InitializeComponent();
+        RegisterAccessibilityHandlers();
         if (Design.IsDesignMode)
         {
             //const string url = Global.AppName;
@@ -17,11 +21,25 @@ public partial class QrcodeView : UserControl
     public QrcodeView(string? url)
     {
         InitializeComponent();
+        RegisterAccessibilityHandlers();
 
         txtContent.Text = url;
         imgQrcode.Source = GetQRCode(url);
 
         txtContent.GotFocus += (_, _) => Dispatcher.UIThread.Post(() => { txtContent.SelectAll(); });
+    }
+
+    private void RegisterAccessibilityHandlers()
+    {
+        Loaded += (_, _) => txtContent.Focus();
+        KeyDown += (_, e) =>
+        {
+            if (e.Key == Key.Escape)
+            {
+                this.FindAncestorOfType<DialogHost>()?.CurrentSession?.Close();
+                e.Handled = true;
+            }
+        };
     }
 
     private Bitmap? GetQRCode(string? url)

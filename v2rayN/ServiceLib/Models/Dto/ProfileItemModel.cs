@@ -50,4 +50,48 @@ public partial class ProfileItemModel : ReactiveObject
 
         return summary;
     }
+
+    public override string ToString()
+    {
+        var parts = new List<string>();
+        if (IsActive)
+        {
+            parts.Add(ResUI.TipActiveServer);
+        }
+        if (!string.IsNullOrWhiteSpace(Remarks))
+        {
+            parts.Add(Remarks);
+        }
+        parts.Add(ConfigType.ToString());
+        if (!ConfigType.IsComplexType() && !string.IsNullOrWhiteSpace(Address))
+        {
+            parts.Add(Port > 0 ? $"{Address}:{Port}" : Address);
+        }
+        if (!string.IsNullOrWhiteSpace(Network))
+        {
+            parts.Add(Network);
+        }
+        if (!string.IsNullOrWhiteSpace(StreamSecurity))
+        {
+            parts.Add(StreamSecurity);
+        }
+        if (!string.IsNullOrWhiteSpace(DelayVal))
+        {
+            parts.Add($"{ResUI.LvTestDelay} {DelayVal}");
+        }
+        if (!string.IsNullOrWhiteSpace(SpeedVal))
+        {
+            parts.Add($"{ResUI.LvTestSpeed} {SpeedVal}");
+        }
+        if (!string.IsNullOrWhiteSpace(IpInfo))
+        {
+            parts.Add(IpInfo);
+        }
+        if (!string.IsNullOrWhiteSpace(SubRemarks))
+        {
+            parts.Add(SubRemarks);
+        }
+
+        return string.Join(", ", parts);
+    }
 }

@@ -178,6 +178,11 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
     private async Task DelegateSnackMsg(string content)
     {
         _manager?.Show(new Avalonia.Controls.Notifications.Notification(null, content, NotificationType.Information));
+        if (txtLiveAnnouncer.Text == content)
+        {
+            txtLiveAnnouncer.Text = string.Empty;
+        }
+        txtLiveAnnouncer.Text = content;
         await Task.CompletedTask;
     }
 

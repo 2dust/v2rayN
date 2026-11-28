@@ -40,6 +40,7 @@
                     Grid.Row="0"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
+                    AutomationProperties.HeadingLevel="1"
                     Text="{x:Static resx:ResUI.menuSubscription}" />
 
                 <TextBlock
@@ -55,6 +56,7 @@
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
+                    AutomationProperties.Name="{x:Static resx:ResUI.LvRemarks}"
                     TextWrapping="Wrap" />
 
                 <TextBlock
@@ -69,6 +71,8 @@
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
+                    AutomationProperties.HelpText="{x:Static resx:ResUI.SubUrlTips}"
+                    AutomationProperties.Name="{x:Static resx:ResUI.LvUrl}"
                     PlaceholderText="{x:Static resx:ResUI.SubUrlTips}"
                     TextWrapping="Wrap" />
                 <Button
@@ -76,7 +80,9 @@
                     Grid.Column="2"
                     Margin="{StaticResource MarginLr8}"
                     HorizontalAlignment="Left"
-                    Classes="IconButton">
+                    AutomationProperties.Name="{x:Static resx:ResUI.LvMoreUrl}"
+                    Classes="IconButton"
+                    ToolTip.Tip="{x:Static resx:ResUI.LvMoreUrl}">
                     <Button.Content>
                         <PathIcon Data="{StaticResource SemiIconMore}">
                             <PathIcon.RenderTransform>
@@ -98,6 +104,8 @@
                                     Margin="{StaticResource Margin4}"
                                     HorizontalAlignment="Stretch"
                                     VerticalAlignment="Center"
+                                    AutomationProperties.HelpText="{x:Static resx:ResUI.SubUrlTips}"
+                                    AutomationProperties.Name="{x:Static resx:ResUI.LvMoreUrl}"
                                     Classes="TextArea"
                                     MinLines="4"
                                     PlaceholderText="{x:Static resx:ResUI.SubUrlTips}"
@@ -122,6 +130,7 @@
                         x:Name="togEnable"
                         Margin="{StaticResource Margin4}"
                         HorizontalAlignment="Center"
+                        AutomationProperties.Name="{x:Static resx:ResUI.LvEnabled}"
                         DockPanel.Dock="Left" />
 
                     <TextBox
@@ -129,6 +138,8 @@
                         Width="100"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Center"
+                        AutomationProperties.HelpText="{x:Static resx:ResUI.SubUrlTips}"
+                        AutomationProperties.Name="{x:Static resx:ResUI.LvAutoUpdateInterval}"
                         DockPanel.Dock="Right"
                         PlaceholderText="{x:Static resx:ResUI.SubUrlTips}" />
 
@@ -152,6 +163,8 @@
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
+                    AutomationProperties.HelpText="{x:Static resx:ResUI.SubUrlTips}"
+                    AutomationProperties.Name="{x:Static resx:ResUI.LvFilter}"
                     PlaceholderText="{x:Static resx:ResUI.SubUrlTips}" />
 
                 <TextBlock
@@ -166,6 +179,8 @@
                     Grid.Column="1"
                     Width="200"
                     Margin="{StaticResource Margin4}"
+                    AutomationProperties.HelpText="{x:Static resx:ResUI.LvConvertTargetTip}"
+                    AutomationProperties.Name="{x:Static resx:ResUI.LvConvertTarget}"
                     ToolTip.Tip="{x:Static resx:ResUI.LvConvertTargetTip}" />
 
                 <TextBlock
@@ -180,6 +195,8 @@
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
+                    AutomationProperties.HelpText="{x:Static resx:ResUI.SubUrlTips}"
+                    AutomationProperties.Name="{x:Static resx:ResUI.LvUserAgent}"
                     PlaceholderText="{x:Static resx:ResUI.SubUrlTips}"
                     TextWrapping="Wrap" />
 
@@ -195,6 +212,8 @@
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
+                    AutomationProperties.HelpText="{x:Static resx:ResUI.SubUrlTips}"
+                    AutomationProperties.Name="{x:Static resx:ResUI.LvPreResolve}"
                     IsEditable="True"
                     PlaceholderText="{x:Static resx:ResUI.SubUrlTips}" />
 
@@ -209,6 +228,8 @@
                         x:Name="txtRequestHeaders"
                         Margin="{StaticResource Margin4}"
                         AcceptsReturn="True"
+                        AutomationProperties.HelpText="{x:Static resx:ResUI.SubRequestHeadersTips}"
+                        AutomationProperties.Name="{x:Static resx:ResUI.LvRequestHeaders}"
                         Classes="TextArea"
                         MaxLines="8"
                         MinLines="4"
@@ -232,7 +253,8 @@
                     Grid.Column="1"
                     Width="100"
                     Margin="{StaticResource Margin4}"
-                    HorizontalAlignment="Left" />
+                    HorizontalAlignment="Left"
+                    AutomationProperties.Name="{x:Static resx:ResUI.LvSort}" />
 
                 <TextBlock
                     Grid.Row="11"
@@ -246,6 +268,8 @@
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
+                    AutomationProperties.HelpText="{x:Static resx:ResUI.LvPrevProfileTip}"
+                    AutomationProperties.Name="{x:Static resx:ResUI.LvPrevProfile}"
                     PlaceholderText="{x:Static resx:ResUI.LvPrevProfileTip}"
                     ToolTip.Tip="{x:Static resx:ResUI.LvPrevProfileTip}" />
                 <Button
@@ -253,6 +277,7 @@
                     Grid.Row="11"
                     Grid.Column="2"
                     Margin="{StaticResource Margin4}"
+                    AutomationProperties.HelpText="{x:Static resx:ResUI.LvPrevProfile}"
                     Content="{x:Static resx:ResUI.TbSelectProfile}" />
 
                 <TextBlock
@@ -267,6 +292,8 @@
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
+                    AutomationProperties.HelpText="{x:Static resx:ResUI.LvPrevProfileTip}"
+                    AutomationProperties.Name="{x:Static resx:ResUI.LvNextProfile}"
                     PlaceholderText="{x:Static resx:ResUI.LvPrevProfileTip}"
                     ToolTip.Tip="{x:Static resx:ResUI.LvPrevProfileTip}" />
                 <Button
@@ -274,6 +301,7 @@
                     Grid.Row="12"
                     Grid.Column="2"
                     Margin="{StaticResource Margin4}"
+                    AutomationProperties.HelpText="{x:Static resx:ResUI.LvNextProfile}"
                     Content="{x:Static resx:ResUI.TbSelectProfile}" />
 
                 <TextBlock
@@ -288,7 +316,8 @@
                     Grid.Column="1"
                     Width="200"
                     Margin="{StaticResource Margin4}"
-                    HorizontalAlignment="Left" />
+                    HorizontalAlignment="Left"
+                    AutomationProperties.Name="{x:Static resx:ResUI.LvCustomCoreType}" />
 
                 <TextBlock
                     Grid.Row="14"
@@ -303,6 +332,8 @@
                     Width="200"
                     Margin="{StaticResource Margin4}"
                     HorizontalAlignment="Left"
+                    AutomationProperties.HelpText="{x:Static resx:ResUI.TipPreSocksPort}"
+                    AutomationProperties.Name="{x:Static resx:ResUI.TbPreSocksPort4Sub}"
                     PlaceholderText="{x:Static resx:ResUI.TipPreSocksPort}"
                     ToolTip.Tip="{x:Static resx:ResUI.TipPreSocksPort}" />
 
@@ -318,6 +349,7 @@
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
+                    AutomationProperties.Name="{x:Static resx:ResUI.LvMemo}"
                     TextWrapping="Wrap" />
             </Grid>
         </ScrollViewer>

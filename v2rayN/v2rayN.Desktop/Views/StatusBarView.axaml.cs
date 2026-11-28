@@ -1,3 +1,4 @@
+using Avalonia.Automation;
 using DialogHostAvalonia;
 using v2rayN.Desktop.Common;
 
@@ -13,8 +14,7 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
 
         _config = ConfigTextHandler.Config;
 
-        txtRunningServerDisplay.Tapped += TxtRunningServerDisplay_Tapped;
-        txtRunningInfoDisplay.Tapped += TxtRunningServerDisplay_Tapped;
+        btnRunningServer.Click += (_, _) => ViewModel?.TestServerAvailability();
 
         this.WhenActivated(disposables =>
         {
@@ -23,6 +23,19 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
             this.OneWayBind(ViewModel, vm => vm.InboundLanDisplay, v => v.txtInboundLanDisplay.Text).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.RunningServerDisplay, v => v.txtRunningServerDisplay.Text).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.RunningInfoDisplay, v => v.txtRunningInfoDisplay.Text).DisposeWith(disposables);
+            this.WhenAnyValue(
+                    x => x.ViewModel!.RunningServerDisplay,
+                    x => x.ViewModel!.RunningInfoDisplay,
+                    (server, info) => (server, info))
+                .ObserveOn(RxSchedulers.MainThreadScheduler)
+                .Subscribe(tuple =>
+                {
+                    var name = string.IsNullOrWhiteSpace(tuple.info)
+                        ? tuple.server
+                        : $"{tuple.server} {tuple.info}";
+                    AutomationProperties.SetName(btnRunningServer, name);
+                })
+                .DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.SpeedProxyDisplay, v => v.txtSpeedProxyDisplay.Text).DisposeWith(disposables);
             this.OneWayBind(ViewModel, vm => vm.SpeedDirectDisplay, v => v.txtSpeedDirectDisplay.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.EnableTun, v => v.togEnableTun.IsChecked).DisposeWith(disposables);
@@ -86,10 +99,5 @@ public partial class StatusBarView : ReactiveUserControl<StatusBarViewModel>
 
         AppManager.Instance.LinuxSudoPwd = password;
         return password;
-    }
-
-    private void TxtRunningServerDisplay_Tapped(object? sender, Avalonia.Input.TappedEventArgs e)
-    {
-        ViewModel?.TestServerAvailability();
     }
 }

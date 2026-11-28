@@ -1,3 +1,5 @@
+using v2rayN.Desktop.Common;
+
 namespace v2rayN.Desktop.Views;
 
 public partial class ClashConnectionsView : ReactiveUserControl<ClashConnectionsViewModel>
@@ -8,6 +10,7 @@ public partial class ClashConnectionsView : ReactiveUserControl<ClashConnections
     public ClashConnectionsView()
     {
         InitializeComponent();
+        DataGridAccessibilityHelper.Attach(lstConnections);
 
         _config = ConfigTextHandler.Config;
 

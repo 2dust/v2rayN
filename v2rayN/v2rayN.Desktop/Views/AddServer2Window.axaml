@@ -40,6 +40,7 @@
                     Grid.Row="0"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
+                    AutomationProperties.HeadingLevel="1"
                     Text="{x:Static resx:ResUI.menuServers}" />
 
                 <TextBlock
@@ -56,7 +57,8 @@
                     Width="400"
                     Margin="{StaticResource Margin4}"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Center" />
+                    VerticalAlignment="Center"
+                    AutomationProperties.Name="{x:Static resx:ResUI.TbRemarks}" />
 
                 <TextBlock
                     Grid.Row="2"
@@ -72,6 +74,7 @@
                     Margin="{StaticResource Margin4}"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
+                    AutomationProperties.Name="{x:Static resx:ResUI.TbAddress}"
                     IsReadOnly="True" />
                 <StackPanel
                     Grid.Row="2"
@@ -101,6 +104,7 @@
                     Width="200"
                     Margin="{StaticResource Margin4}"
                     HorizontalAlignment="Left"
+                    AutomationProperties.Name="{x:Static resx:ResUI.TbCoreType}"
                     MaxDropDownHeight="1000" />
 
                 <Separator
@@ -131,7 +135,9 @@
                         <ToggleSwitch
                             x:Name="togDisplayLog"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.HelpText="{x:Static resx:ResUI.TipDisplayLog}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbDisplayLog}" />
                         <TextBlock
                             Margin="{StaticResource MarginLr8}"
                             VerticalAlignment="Center"
@@ -150,7 +156,9 @@
                         Grid.Column="1"
                         Width="200"
                         Margin="{StaticResource Margin4}"
-                        HorizontalAlignment="Left" />
+                        HorizontalAlignment="Left"
+                        AutomationProperties.HelpText="{x:Static resx:ResUI.TipPreSocksPort}"
+                        AutomationProperties.Name="{x:Static resx:ResUI.TbPreSocksPort}" />
                     <StackPanel
                         Grid.Row="2"
                         Grid.Column="1"
@@ -189,7 +197,9 @@
                         Grid.Row="0"
                         Grid.Column="1"
                         Margin="{StaticResource Margin4}"
-                        HorizontalAlignment="Left" />
+                        HorizontalAlignment="Left"
+                        AutomationProperties.HelpText="{x:Static resx:ResUI.TbCustomOutboundTip}"
+                        AutomationProperties.Name="Sing-Box Endpoint" />
                     <TextBlock
                         Grid.Row="1"
                         Grid.Column="1"

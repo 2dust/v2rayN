@@ -54,7 +54,9 @@
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.HelpText="{x:Static resx:ResUI.TbSettingsSocksPortTip}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsSocksPort}" />
                         <TextBlock
                             Grid.Row="0"
                             Grid.Column="2"
@@ -74,7 +76,8 @@
                             Grid.Row="2"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsSecondLocalPortEnabled}" />
 
                         <TextBlock
                             Grid.Row="3"
@@ -87,7 +90,8 @@
                             Grid.Row="3"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsUdpEnabled}" />
 
                         <TextBlock
                             Grid.Row="4"
@@ -100,7 +104,8 @@
                             Grid.Row="4"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsSniffingEnabled}" />
 
                         <TextBlock
                             Grid.Row="5"
@@ -115,6 +120,7 @@
                             Grid.ColumnSpan="2"
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Left"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsDestOverride}"
                             SelectionMode="Multiple,Toggle"
                             Theme="{DynamicResource CardCheckGroupListBox}" />
 
@@ -129,7 +135,8 @@
                             Grid.Row="6"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsRouteOnly}" />
 
                         <TextBlock
                             Grid.Row="7"
@@ -142,7 +149,8 @@
                             Grid.Row="7"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsAllowLAN}" />
 
                         <TextBlock
                             Grid.Row="8"
@@ -155,7 +163,8 @@
                             Grid.Row="8"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsNewPort4LAN}" />
 
                         <TextBlock
                             Grid.Row="9"
@@ -169,7 +178,8 @@
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsUser}" />
 
                         <TextBlock
                             Grid.Row="10"
@@ -183,7 +193,8 @@
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsPass}" />
 
                         <TextBlock
                             Grid.Row="12"
@@ -196,7 +207,8 @@
                             Grid.Row="12"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsLogEnabledToFile}" />
 
                         <TextBlock
                             Grid.Row="13"
@@ -209,7 +221,8 @@
                             Grid.Row="13"
                             Grid.Column="1"
                             Width="200"
-                            Margin="{StaticResource Margin4}" />
+                            Margin="{StaticResource Margin4}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsLogLevel}" />
 
                         <TextBlock
                             Grid.Row="15"
@@ -222,7 +235,8 @@
                             Grid.Row="15"
                             Grid.Column="1"
                             Width="200"
-                            Margin="{StaticResource Margin4}" />
+                            Margin="{StaticResource Margin4}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsDefFingerprint}" />
 
                         <TextBlock
                             Grid.Row="16"
@@ -235,7 +249,9 @@
                             Grid.Row="16"
                             Grid.Column="1"
                             Width="200"
-                            Margin="{StaticResource Margin4}" />
+                            Margin="{StaticResource Margin4}"
+                            AutomationProperties.HelpText="{x:Static resx:ResUI.TbSettingsDefUserAgentTips}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsDefUserAgent}" />
                         <TextBlock
                             Grid.Row="16"
                             Grid.Column="3"
@@ -253,7 +269,8 @@
                             Grid.Row="17"
                             Grid.Column="1"
                             Width="200"
-                            Margin="{StaticResource Margin4}" />
+                            Margin="{StaticResource Margin4}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsMux4SboxProtocol}" />
 
                         <TextBlock
                             Grid.Row="18"
@@ -266,7 +283,8 @@
                             Grid.Row="18"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsEnableCacheFile4Sbox}" />
 
                         <TextBlock
                             Grid.Row="19"
@@ -284,11 +302,15 @@
                                 x:Name="txtUpMbps"
                                 Width="90"
                                 Margin="{StaticResource Margin4}"
+                                AutomationProperties.HelpText="{x:Static resx:ResUI.TbSettingsHysteriaBandwidth}"
+                                AutomationProperties.Name="Up"
                                 PlaceholderText="Up" />
                             <TextBox
                                 x:Name="txtDownMbps"
                                 Width="90"
                                 Margin="{StaticResource Margin4}"
+                                AutomationProperties.HelpText="{x:Static resx:ResUI.TbSettingsHysteriaBandwidth}"
+                                AutomationProperties.Name="Down"
                                 PlaceholderText="Down" />
                         </StackPanel>
 
@@ -303,14 +325,17 @@
                             Grid.Row="20"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsEnableFragment}" />
 
                         <Button
                             Grid.Row="20"
                             Grid.Column="2"
                             Margin="{StaticResource MarginLr8}"
                             HorizontalAlignment="Left"
-                            Classes="IconButton">
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsEnableFragment}"
+                            Classes="IconButton"
+                            ToolTip.Tip="{x:Static resx:ResUI.TbSettingsEnableFragment}">
                             <Button.Content>
                                 <PathIcon Data="{StaticResource SemiIconMore}">
                                     <PathIcon.RenderTransform>
@@ -334,7 +359,9 @@
                                                 Grid.Column="1"
                                                 Width="120"
                                                 Margin="{StaticResource Margin4}"
-                                                HorizontalAlignment="Left" />
+                                                HorizontalAlignment="Left"
+                                                AutomationProperties.HelpText="{x:Static resx:ResUI.TbSettingsFragmentPacketsTip}"
+                                                AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsFragmentPackets}" />
                                             <TextBlock
                                                 Grid.Row="0"
                                                 Grid.Column="2"
@@ -356,6 +383,8 @@
                                                 Width="120"
                                                 Margin="{StaticResource Margin4}"
                                                 HorizontalAlignment="Left"
+                                                AutomationProperties.HelpText="{x:Static resx:ResUI.TbSettingsFragmentLengthTip}"
+                                                AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsFragmentLength}"
                                                 PlaceholderText="50-100" />
                                             <TextBlock
                                                 Grid.Row="1"
@@ -378,6 +407,8 @@
                                                 Width="120"
                                                 Margin="{StaticResource Margin4}"
                                                 HorizontalAlignment="Left"
+                                                AutomationProperties.HelpText="{x:Static resx:ResUI.TbSettingsFragmentIntervalTip}"
+                                                AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsFragmentInterval}"
                                                 PlaceholderText="10-20" />
                                             <TextBlock
                                                 Grid.Row="2"
@@ -400,6 +431,8 @@
                                                 Width="120"
                                                 Margin="{StaticResource Margin4}"
                                                 HorizontalAlignment="Left"
+                                                AutomationProperties.HelpText="{x:Static resx:ResUI.TbSettingsFragmentMaxSplitTip}"
+                                                AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsFragmentMaxSplit}"
                                                 PlaceholderText="0" />
                                             <TextBlock
                                                 Grid.Row="3"
@@ -425,7 +458,9 @@
                             Grid.Row="21"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.HelpText="{x:Static resx:ResUI.TbEnableFinalFragmentTip}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbEnableFinalFragment}" />
                         <TextBlock
                             Grid.Row="21"
                             Grid.Column="2"
@@ -446,6 +481,8 @@
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin4}"
+                            AutomationProperties.HelpText="{x:Static resx:ResUI.TbSettingsBindInterfaceTip}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsBindInterface}"
                             IsEditable="True" />
                         <TextBlock
                             Grid.Row="22"
@@ -468,6 +505,8 @@
                             Width="200"
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Left"
+                            AutomationProperties.HelpText="{x:Static resx:ResUI.TbSettingsSendThroughTip}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsSendThrough}"
                             PlaceholderText="0.0.0.0" />
                         <TextBlock
                             Grid.Row="23"
@@ -488,7 +527,9 @@
                             Grid.Column="1"
                             Margin="{StaticResource MarginLr8}"
                             HorizontalAlignment="Left"
-                            Classes="IconButton">
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsMux4Ray}"
+                            Classes="IconButton"
+                            ToolTip.Tip="{x:Static resx:ResUI.TbSettingsMux4Ray}">
                             <Button.Content>
                                 <PathIcon Data="{StaticResource SemiIconMore}">
                                     <PathIcon.RenderTransform>
@@ -512,6 +553,7 @@
                                                 Grid.Column="1"
                                                 Width="200"
                                                 Margin="{StaticResource Margin4}"
+                                                AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsMux4RayConcurrency}"
                                                 PlaceholderText="8" />
 
                                             <TextBlock
@@ -526,6 +568,7 @@
                                                 Grid.Column="1"
                                                 Width="200"
                                                 Margin="{StaticResource Margin4}"
+                                                AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsMux4RayXudpConcurrency}"
                                                 PlaceholderText="16" />
 
                                             <TextBlock
@@ -539,7 +582,8 @@
                                                 Grid.Row="2"
                                                 Grid.Column="1"
                                                 Width="200"
-                                                Margin="{StaticResource Margin4}" />
+                                                Margin="{StaticResource Margin4}"
+                                                AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsMux4RayXudpProxyUDP443}" />
                                         </Grid>
                                     </StackPanel>
                                 </Flyout>
@@ -568,7 +612,9 @@
                             Grid.Row="1"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.HelpText="{x:Static resx:ResUI.TbSettingsStartBootTip}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsStartBoot}" />
                         <TextBlock
                             Grid.Row="1"
                             Grid.Column="2"
@@ -589,7 +635,8 @@
                             Grid.Row="2"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsStatistics}" />
 
                         <TextBlock
                             Grid.Row="3"
@@ -602,7 +649,8 @@
                             Grid.Row="3"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsDisplayRealTimeSpeed}" />
 
                         <TextBlock
                             Grid.Row="4"
@@ -615,7 +663,8 @@
                             Grid.Row="4"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsKeepOlderDedupl}" />
 
                         <!--<TextBlock
                             Grid.Row="5"
@@ -641,7 +690,8 @@
                             Grid.Row="5"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsAutoHideStartup}" />
 
                         <TextBlock
                             Grid.Row="6"
@@ -656,6 +706,8 @@
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Left"
+                            AutomationProperties.HelpText="{x:Static resx:ResUI.TbSettingsHide2TrayWhenCloseTip}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsHide2TrayWhenClose}"
                             IsVisible="{Binding BlIsLinux}" />
                         <TextBlock
                             Grid.Row="6"
@@ -678,6 +730,7 @@
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Left"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsMacOSShowInDock}"
                             IsVisible="{Binding BlIsIsMacOS}" />
 
                         <TextBlock
@@ -691,7 +744,8 @@
                             Grid.Row="8"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsEnableDragDropSort}" />
 
                         <TextBlock
                             Grid.Row="9"
@@ -704,7 +758,8 @@
                             Grid.Row="9"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsDoubleClick2Activate}" />
 
                         <TextBlock
                             Grid.Row="10"
@@ -717,7 +772,9 @@
                             Grid.Row="10"
                             Grid.Column="1"
                             Width="300"
-                            Margin="{StaticResource Margin4}" />
+                            Margin="{StaticResource Margin4}"
+                            AutomationProperties.HelpText="{x:Static resx:ResUI.TbRootCertificateProviderTip}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbRootCertificateProvider}" />
                         <TextBlock
                             Grid.Row="10"
                             Grid.Column="2"
@@ -738,6 +795,8 @@
                             Grid.Column="1"
                             Width="300"
                             Margin="{StaticResource Margin4}"
+                            AutomationProperties.HelpText="{x:Static resx:ResUI.TbSettingsCurrentFontFamilyLinuxTip}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsCurrentFontFamily}"
                             IsEditable="True" />
                         <TextBlock
                             Grid.Row="11"
@@ -759,6 +818,7 @@
                             Grid.Column="1"
                             Width="300"
                             Margin="{StaticResource Margin4}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsSubConvert}"
                             IsEditable="True" />
 
                         <TextBlock
@@ -772,7 +832,8 @@
                             Grid.Row="13"
                             Grid.Column="1"
                             Width="200"
-                            Margin="{StaticResource Margin4}" />
+                            Margin="{StaticResource Margin4}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsMainGirdOrientation}" />
 
                         <TextBlock
                             Grid.Row="14"
@@ -786,7 +847,8 @@
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsAutoUpdateInterval}" />
 
                         <TextBlock
                             Grid.Row="15"
@@ -800,6 +862,8 @@
                             Grid.Column="1"
                             Width="300"
                             Margin="{StaticResource Margin4}"
+                            AutomationProperties.HelpText="{x:Static resx:ResUI.TbSettingsChinaUserTip}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsGeoFilesSource}"
                             IsEditable="True" />
                         <TextBlock
                             Grid.Row="15"
@@ -821,6 +885,8 @@
                             Grid.Column="1"
                             Width="300"
                             Margin="{StaticResource Margin4}"
+                            AutomationProperties.HelpText="{x:Static resx:ResUI.TbSettingsChinaUserTip}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsSrsFilesSource}"
                             IsEditable="True" />
                         <TextBlock
                             Grid.Row="16"
@@ -842,6 +908,8 @@
                             Grid.Column="1"
                             Width="300"
                             Margin="{StaticResource Margin4}"
+                            AutomationProperties.HelpText="{x:Static resx:ResUI.TbSettingsChinaUserTip}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsRoutingRulesSource}"
                             IsEditable="True" />
                         <TextBlock
                             Grid.Row="17"
@@ -871,7 +939,8 @@
                             Grid.Row="1"
                             Grid.Column="1"
                             Width="200"
-                            Margin="{StaticResource Margin4}" />
+                            Margin="{StaticResource Margin4}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsMixedConcurrencyCount}" />
 
                         <TextBlock
                             Grid.Row="2"
@@ -884,7 +953,8 @@
                             Grid.Row="2"
                             Grid.Column="1"
                             Width="200"
-                            Margin="{StaticResource Margin4}" />
+                            Margin="{StaticResource Margin4}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsSpeedTestTimeout}" />
 
                         <TextBlock
                             Grid.Row="3"
@@ -898,6 +968,7 @@
                             Grid.Column="1"
                             Width="300"
                             Margin="{StaticResource Margin4}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsSpeedTestUrl}"
                             IsEditable="True" />
 
                         <TextBlock
@@ -912,6 +983,7 @@
                             Grid.Column="1"
                             Width="300"
                             Margin="{StaticResource Margin4}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsSpeedPingTestUrl}"
                             IsEditable="True" />
 
                         <TextBlock
@@ -926,6 +998,7 @@
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin4}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsUdpTestUrl}"
                             IsEditable="True" />
 
                         <TextBlock
@@ -940,6 +1013,7 @@
                             Grid.Column="1"
                             Width="300"
                             Margin="{StaticResource Margin4}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsIPAPIUrl}"
                             IsEditable="True" />
 
                     </Grid>
@@ -963,11 +1037,13 @@
                                 Margin="{StaticResource Margin4}"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
+                                AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsCustomSystemProxyScriptPath}"
                                 PlaceholderText="proxy_set.sh"
                                 TextWrapping="Wrap" />
                             <Button
                                 x:Name="btnBrowseCustomSystemProxyScriptPath"
                                 Margin="{StaticResource Margin4}"
+                                AutomationProperties.HelpText="{x:Static resx:ResUI.TbSettingsCustomSystemProxyScriptPath}"
                                 Content="{x:Static resx:ResUI.TbBrowse}" />
                         </StackPanel>
                     </StackPanel>
@@ -983,7 +1059,8 @@
                             <ToggleSwitch
                                 x:Name="tognotProxyLocalAddress"
                                 Margin="{StaticResource Margin4}"
-                                HorizontalAlignment="Left" />
+                                HorizontalAlignment="Left"
+                                AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsNotProxyLocalAddress}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
@@ -994,7 +1071,8 @@
                             <ComboBox
                                 x:Name="cmbsystemProxyAdvancedProtocol"
                                 MinWidth="400"
-                                Margin="{StaticResource Margin4}" />
+                                Margin="{StaticResource Margin4}"
+                                AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsAdvancedProtocol}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
@@ -1008,11 +1086,13 @@
                                 Margin="{StaticResource Margin4}"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
+                                AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsCustomSystemProxyPacPath}"
                                 PlaceholderText="pac.txt"
                                 TextWrapping="Wrap" />
                             <Button
                                 x:Name="btnBrowseCustomSystemProxyPacPath"
                                 Margin="{StaticResource Margin4}"
+                                AutomationProperties.HelpText="{x:Static resx:ResUI.TbSettingsCustomSystemProxyPacPath}"
                                 Content="{x:Static resx:ResUI.TbBrowse}" />
                         </StackPanel>
                     </StackPanel>
@@ -1033,6 +1113,8 @@
                         x:Name="txtsystemProxyExceptions"
                         Margin="{StaticResource Margin4}"
                         VerticalAlignment="Stretch"
+                        AutomationProperties.HelpText="{x:Static resx:ResUI.TbSettingsExceptionTip}"
+                        AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsException}"
                         BorderThickness="1"
                         Classes="TextArea"
                         TextWrapping="Wrap" />
@@ -1058,7 +1140,8 @@
                             Grid.Row="2"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsTunAutoRoute}" />
 
                         <TextBlock
                             Grid.Row="3"
@@ -1071,7 +1154,8 @@
                             Grid.Row="3"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsTunStrictRoute}" />
 
                         <TextBlock
                             Grid.Row="4"
@@ -1085,7 +1169,8 @@
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsTunStack}" />
 
                         <TextBlock
                             Grid.Row="5"
@@ -1100,6 +1185,7 @@
                             Width="200"
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Left"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbMtu}"
                             IsEditable="True" />
 
                         <TextBlock
@@ -1114,7 +1200,8 @@
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbIcmpRoutingPolicy}" />
 
                         <TextBlock
                             Grid.Row="7"
@@ -1127,7 +1214,8 @@
                             Grid.Row="7"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsEnableIPv6Address}" />
 
                         <TextBlock
                             Grid.Row="8"
@@ -1140,7 +1228,9 @@
                             Grid.Row="8"
                             Grid.Column="1"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.HelpText="{x:Static resx:ResUI.TbLegacyProtectTip}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbLegacyProtect}" />
                         <TextBlock
                             Grid.Row="8"
                             Grid.Column="2"
@@ -1162,6 +1252,8 @@
                             Width="200"
                             Margin="{StaticResource Margin4}"
                             HorizontalAlignment="Left"
+                            AutomationProperties.HelpText="{x:Static resx:ResUI.TbRouteExcludeAddressTip}"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbRouteExcludeAddress}"
                             Classes="TextArea"
                             TextWrapping="Wrap" />
                         <TextBlock
@@ -1184,7 +1276,8 @@
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbIpv4Address}" />
 
                         <TextBlock
                             Grid.Row="11"
@@ -1198,7 +1291,8 @@
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbIpv6Address}" />
 
                         <TextBlock
                             Grid.Row="12"
@@ -1212,7 +1306,8 @@
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin4}"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            AutomationProperties.Name="{x:Static resx:ResUI.TbSettingsTunDnsMode}" />
                     </Grid>
                 </ScrollViewer>
             </TabItem>
@@ -1233,7 +1328,8 @@
                         Grid.Row="1"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource Margin4}" />
+                        Margin="{StaticResource Margin4}"
+                        AutomationProperties.Name="VMess" />
 
                     <TextBlock
                         Grid.Row="2"
@@ -1246,7 +1342,8 @@
                         Grid.Row="2"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource Margin4}" />
+                        Margin="{StaticResource Margin4}"
+                        AutomationProperties.Name="Custom Pre" />
 
                     <TextBlock
                         Grid.Row="3"
@@ -1259,7 +1356,8 @@
                         Grid.Row="3"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource Margin4}" />
+                        Margin="{StaticResource Margin4}"
+                        AutomationProperties.Name="Shadowsocks" />
 
                     <TextBlock
                         Grid.Row="4"
@@ -1272,7 +1370,8 @@
                         Grid.Row="4"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource Margin4}" />
+                        Margin="{StaticResource Margin4}"
+                        AutomationProperties.Name="Socks" />
 
                     <TextBlock
                         Grid.Row="5"
@@ -1285,7 +1384,8 @@
                         Grid.Row="5"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource Margin4}" />
+                        Margin="{StaticResource Margin4}"
+                        AutomationProperties.Name="VLESS" />
 
                     <TextBlock
                         Grid.Row="6"
@@ -1298,7 +1398,8 @@
                         Grid.Row="6"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource Margin4}" />
+                        Margin="{StaticResource Margin4}"
+                        AutomationProperties.Name="Trojan" />
 
                     <TextBlock
                         Grid.Row="7"
@@ -1311,7 +1412,8 @@
                         Grid.Row="7"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource Margin4}" />
+                        Margin="{StaticResource Margin4}"
+                        AutomationProperties.Name="Hysteria2" />
 
                     <TextBlock
                         Grid.Row="8"
@@ -1324,7 +1426,8 @@
                         Grid.Row="8"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource Margin4}" />
+                        Margin="{StaticResource Margin4}"
+                        AutomationProperties.Name="Wireguard" />
 
                     <TextBlock
                         Grid.Row="9"
@@ -1337,7 +1440,8 @@
                         Grid.Row="9"
                         Grid.Column="1"
                         Width="200"
-                        Margin="{StaticResource Margin4}" />
+                        Margin="{StaticResource Margin4}"
+                        AutomationProperties.Name="MASQUE" />
                 </Grid>
             </TabItem>
         </TabControl>

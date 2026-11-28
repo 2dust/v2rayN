@@ -1,3 +1,4 @@
+using Avalonia.Automation;
 using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Views;
@@ -21,6 +22,8 @@ public partial class MessageBoxDialog : Window
 
         Title = caption;
         txtMessage.Text = message;
+        AutomationProperties.SetName(this, caption);
+        AutomationProperties.SetHelpText(btnYes, message);
 
         btnYes.Click += BtnYes_Click;
         btnNo.Click += BtnNo_Click;

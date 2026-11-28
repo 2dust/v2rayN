@@ -49,6 +49,12 @@ public partial class GlobalHotkeySettingWindow : WindowBase<GlobalHotkeySettingV
 
     private void TxtGlobalHotkey_PreviewKeyDown(object? sender, KeyEventArgs e)
     {
+        if ((e.Key == Key.Tab && e.KeyModifiers is KeyModifiers.None or KeyModifiers.Shift)
+            || (e.Key == Key.Escape && e.KeyModifiers == KeyModifiers.None))
+        {
+            return;
+        }
+
         e.Handled = true;
         if (sender is not TextBox txtBox)
         {

@@ -1,4 +1,5 @@
 using v2rayN.Desktop.Base;
+using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Views;
 
@@ -7,6 +8,8 @@ public partial class AddGroupServerWindow : WindowBase<AddGroupServerViewModel>
     public AddGroupServerWindow()
     {
         InitializeComponent();
+        DataGridAccessibilityHelper.Attach(lstChild);
+        DataGridAccessibilityHelper.Attach(lstPreviewChild);
 
         Loaded += Window_Loaded;
         btnCancel.Click += (s, e) => Close();

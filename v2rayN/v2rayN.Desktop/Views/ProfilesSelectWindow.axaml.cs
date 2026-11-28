@@ -1,5 +1,6 @@
 using Avalonia.VisualTree;
 using v2rayN.Desktop.Base;
+using v2rayN.Desktop.Common;
 
 namespace v2rayN.Desktop.Views;
 
@@ -8,6 +9,7 @@ public partial class ProfilesSelectWindow : WindowBase<ProfilesSelectViewModel>
     public ProfilesSelectWindow()
     {
         InitializeComponent();
+        DataGridAccessibilityHelper.Attach(lstProfiles);
 
         btnCancel.Click += (_, _) => Close();
         btnAutofitColumnWidth.Click += BtnAutofitColumnWidth_Click;

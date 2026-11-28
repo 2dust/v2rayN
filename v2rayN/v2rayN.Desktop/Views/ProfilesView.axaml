@@ -23,6 +23,7 @@
                 <ListBox
                     x:Name="lstGroup"
                     Margin="{StaticResource MarginLr4}"
+                    AutomationProperties.Name="{x:Static resx:ResUI.menuSubscription}"
                     DisplayMemberBinding="{Binding Remarks}"
                     ItemsSource="{Binding SubItems}"
                     Theme="{DynamicResource PureCardRadioGroupListBox}">
@@ -45,6 +46,7 @@
                     <Button
                         x:Name="btnEditSub"
                         Margin="{StaticResource MarginLr4}"
+                        AutomationProperties.Name="{x:Static resx:ResUI.menuSubEdit}"
                         Classes="IconButton Success"
                         ToolTip.Tip="{x:Static resx:ResUI.menuSubEdit}">
                         <Button.Content>
@@ -54,6 +56,7 @@
                     <Button
                         x:Name="btnAddSub"
                         Margin="{StaticResource MarginLr4}"
+                        AutomationProperties.Name="{x:Static resx:ResUI.menuSubAdd}"
                         Classes="IconButton Success"
                         ToolTip.Tip="{x:Static resx:ResUI.menuSubAdd}">
                         <Button.Content>
@@ -66,14 +69,16 @@
                         Width="200"
                         Margin="{StaticResource MarginLr4}"
                         VerticalContentAlignment="Center"
+                        AutomationProperties.Name="{x:Static resx:ResUI.MsgServerTitle}"
                         PlaceholderText="{x:Static resx:ResUI.MsgServerTitle}"
                         ToolTip.Tip="{x:Static resx:ResUI.MsgServerTitle}" />
 
                     <Button
-                       x:Name="btnAutofitColumnWidth"
-                       Margin="{StaticResource MarginLr4}"
-                       Classes="IconButton Success"
-                       ToolTip.Tip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
+                        x:Name="btnAutofitColumnWidth"
+                        Margin="{StaticResource MarginLr4}"
+                        AutomationProperties.Name="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}"
+                        Classes="IconButton Success"
+                        ToolTip.Tip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
                         <Button.Content>
                             <PathIcon Data="{StaticResource SemiIconExpand}" />
                         </Button.Content>
@@ -82,6 +87,7 @@
                     <Button
                         x:Name="btnFastRealPing"
                         Margin="{StaticResource MarginLr4}"
+                        AutomationProperties.Name="{x:Static resx:ResUI.menuFastRealPing}"
                         Classes="IconButton Success"
                         ToolTip.Tip="{x:Static resx:ResUI.menuFastRealPing}">
                         <Button.Content>
@@ -91,6 +97,8 @@
                     <Button
                         x:Name="menuMixedTestServer"
                         Margin="{StaticResource MarginLr4}"
+                        AutomationProperties.AcceleratorKey="Ctrl+E"
+                        AutomationProperties.Name="{x:Static resx:ResUI.menuMixedTestServer}"
                         Classes="IconButton Success"
                         ToolTip.Tip="{x:Static resx:ResUI.menuMixedTestServer}">
                         <Button.Content>
@@ -105,6 +113,7 @@
             <DataGrid
                 x:Name="lstProfiles"
                 AutoGenerateColumns="False"
+                AutomationProperties.Name="{x:Static resx:ResUI.menuServers}"
                 BorderThickness="1"
                 CanUserAddRows="False"
                 CanUserDeleteRows="False"

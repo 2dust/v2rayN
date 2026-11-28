@@ -1,3 +1,4 @@
+using Avalonia.VisualTree;
 using v2rayN.Desktop.Base;
 using v2rayN.Desktop.Common;
 
@@ -8,12 +9,14 @@ public partial class RoutingRuleSettingWindow : WindowBase<RoutingRuleSettingVie
     public RoutingRuleSettingWindow()
     {
         InitializeComponent();
+        DataGridAccessibilityHelper.Attach(lstRules);
 
         Loaded += Window_Loaded;
         btnCancel.Click += (s, e) => Close();
         KeyDown += RoutingRuleSettingWindow_KeyDown;
         lstRules.SelectionChanged += lstRules_SelectionChanged;
         lstRules.DoubleTapped += LstRules_DoubleTapped;
+        menuRuleEdit.Click += (_, _) => _ = ViewModel?.RuleEditAsync(false);
         menuRuleSelectAll.Click += menuRuleSelectAll_Click;
         //btnBrowseCustomIcon.Click += btnBrowseCustomIcon_Click;
         btnBrowseCustomRulesetPath4Singbox.Click += btnBrowseCustomRulesetPath4Singbox_ClickAsync;
@@ -85,6 +88,11 @@ public partial class RoutingRuleSettingWindow : WindowBase<RoutingRuleSettingVie
 
     private void RoutingRuleSettingWindow_KeyDown(object? sender, KeyEventArgs e)
     {
+        if (e.Source is TextBox)
+        {
+            return;
+        }
+
         if (e.KeyModifiers is KeyModifiers.Control or KeyModifiers.Meta)
         {
             if (e.Key == Key.A)
@@ -95,11 +103,29 @@ public partial class RoutingRuleSettingWindow : WindowBase<RoutingRuleSettingVie
             {
                 ViewModel?.RuleExportSelectedAsync();
             }
+            else if (e.Key == Key.D)
+            {
+                e.Handled = true;
+                _ = ViewModel?.RuleEditAsync(false);
+            }
         }
         else
         {
             switch (e.Key)
             {
+                case Key.F2:
+                    e.Handled = true;
+                    _ = ViewModel?.RuleEditAsync(false);
+                    break;
+
+                case Key.Enter:
+                    if (e.Source is Visual v && (v == lstRules || v.FindAncestorOfType<DataGrid>() == lstRules))
+                    {
+                        e.Handled = true;
+                        _ = ViewModel?.RuleEditAsync(false);
+                    }
+                    break;
+
                 case Key.T:
                     ViewModel?.MoveRule(EMove.Top);
                     break;
