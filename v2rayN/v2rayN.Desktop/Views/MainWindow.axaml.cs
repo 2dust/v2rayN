@@ -205,18 +205,27 @@ public partial class MainWindow : WindowBase<MainWindowViewModel>
             return;
         }
 
-        Logging.SaveLog("OnClosing -> " + e.CloseReason.ToString());
-
-        switch (e.CloseReason)
+        try
         {
-            case WindowCloseReason.OwnerWindowClosing or WindowCloseReason.WindowClosing:
-                e.Cancel = true;
-                ShowHideWindow(false);
-                break;
+            Logging.SaveLog("OnClosing -> " + e.CloseReason.ToString());
 
-            case WindowCloseReason.ApplicationShutdown or WindowCloseReason.OSShutdown:
-                await AppManager.Instance.AppExitAsync(false);
-                break;
+            switch (e.CloseReason)
+            {
+                case WindowCloseReason.OwnerWindowClosing or WindowCloseReason.WindowClosing:
+                    e.Cancel = true;
+                    ShowHideWindow(false);
+                    break;
+
+                case WindowCloseReason.ApplicationShutdown or WindowCloseReason.OSShutdown:
+                    await AppManager.Instance.AppExitAsync(false);
+                    break;
+            }
+        }
+        catch (Exception ex)
+        {
+            // Never let the async void closing handler take the process down
+            // (an unhandled exception here aborts the app with SIGABRT on macOS).
+            Logging.SaveLog("OnClosing", ex);
         }
 
         base.OnClosing(e);
