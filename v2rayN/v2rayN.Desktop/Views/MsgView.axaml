@@ -11,12 +11,15 @@
     d:DesignWidth="800"
     Design.DataContext="{x:Static dd:DesignData.Msg}"
     mc:Ignorable="d">
-    <DockPanel Margin="2">
-        <WrapPanel
-            Margin="{StaticResource Margin4}"
-            VerticalAlignment="Center"
-            DockPanel.Dock="Top"
-            Orientation="Horizontal">
+    <Border
+        BorderBrush="{DynamicResource SemiColorDisabledBorder}"
+        BorderThickness="0,1,0,0">
+        <DockPanel Margin="0">
+            <WrapPanel
+                Margin="0,0,0,8"
+                VerticalAlignment="Center"
+                DockPanel.Dock="Top"
+                Orientation="Horizontal">
 
             <TextBox
                 x:Name="cmbMsgFilter"
@@ -68,12 +71,19 @@
                 Theme="{DynamicResource SimpleToggleSwitch}" />
         </WrapPanel>
 
-        <avaloniaEdit:TextEditor
-            Name="txtMsg"
+        <Border
             Margin="{StaticResource Margin8}"
-            IsReadOnly="True"
-            VerticalScrollBarVisibility="Auto"
-            WordWrap="True">
+            Background="{DynamicResource SemiColorBackground1}"
+            BorderBrush="{DynamicResource SemiColorDisabledBorder}"
+            BorderThickness="1"
+            CornerRadius="6">
+            <avaloniaEdit:TextEditor
+                Name="txtMsg"
+                Padding="10,8"
+                Background="Transparent"
+                IsReadOnly="True"
+                VerticalScrollBarVisibility="Auto"
+                WordWrap="True">
             <avaloniaEdit:TextEditor.Options>
                 <avaloniaEdit:TextEditorOptions AllowScrollBelowDocument="False" />
             </avaloniaEdit:TextEditor.Options>
@@ -99,7 +109,9 @@
                         Header="{x:Static resx:ResUI.menuMsgViewClear}" />
                 </MenuFlyout>
             </avaloniaEdit:TextEditor.ContextFlyout>
-        </avaloniaEdit:TextEditor>
+            </avaloniaEdit:TextEditor>
+        </Border>
 
-    </DockPanel>
+        </DockPanel>
+    </Border>
 </UserControl>

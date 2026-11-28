@@ -105,7 +105,7 @@ public partial class ThemeSettingViewModel : MyReactiveObject
     private void ModifyFontSizeEx(double size)
     {
         //DataGrid
-        var rowHeight = 20 + (size / 2);
+        var rowHeight = 22 + (size / 2);
         Application.Current!.Resources["DataGridRowHeight"] = rowHeight;
     }
 

@@ -20,9 +20,9 @@
     mc:Ignorable="d">
     <dialogHost:DialogHost CloseOnClickAway="True" DisableOpeningAnimation="True">
         <DockPanel>
-            <DockPanel Margin="{StaticResource Margin8}" DockPanel.Dock="Top">
+            <DockPanel Margin="12,8,12,16" DockPanel.Dock="Top">
                 <ContentControl x:Name="conTheme" DockPanel.Dock="Right" />
-                <Menu Margin="{StaticResource Margin4}">
+                <Menu VerticalAlignment="Center">
                     <MenuItem Header="{x:Static resx:ResUI.menuServers}">
                         <MenuItem
                             x:Name="menuAddServerViaClipboard"
@@ -106,7 +106,8 @@
 
                 <Button
                     x:Name="btnNewUpdate"
-                    Margin="{StaticResource MarginLr8}"
+                    Margin="{StaticResource MarginLr12}"
+                    VerticalAlignment="Center"
                     HorizontalAlignment="Left"
                     Content="{x:Static resx:ResUI.menuNewUpdate}"
                     IsVisible="False" />
@@ -116,6 +117,7 @@
 
             <Grid
                 x:Name="gridMain"
+                Margin="12,8,12,0"
                 ColumnDefinitions="1*,10,1*"
                 IsVisible="False">
                 <ContentControl x:Name="tabProfiles" Grid.Column="0" />
@@ -126,7 +128,7 @@
                 <DockPanel x:Name="tabDockPanel" Grid.Column="2">
                     <TabStrip
                         x:Name="tabStripH"
-                        Margin="{StaticResource MarginLr8}"
+                        Margin="0,0,0,8"
                         DockPanel.Dock="Top">
                         <TabStrip.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -136,7 +138,7 @@
                     </TabStrip>
                     <TabStrip
                         x:Name="tabStripV"
-                        Margin="{StaticResource MarginLr8}"
+                        Margin="0,0,8,0"
                         DockPanel.Dock="Left"
                         IsVisible="False">
                         <TabStrip.ItemsPanel>

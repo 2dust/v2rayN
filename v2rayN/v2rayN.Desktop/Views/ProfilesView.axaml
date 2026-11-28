@@ -19,10 +19,10 @@
     </UserControl.Resources>
     <Grid>
         <DockPanel>
-            <WrapPanel Margin="2" DockPanel.Dock="Top">
+            <WrapPanel Margin="0,0,0,8" DockPanel.Dock="Top">
                 <ListBox
                     x:Name="lstGroup"
-                    Margin="{StaticResource MarginLr4}"
+                    Margin="0,0,8,0"
                     DisplayMemberBinding="{Binding Remarks}"
                     ItemsSource="{Binding SubItems}"
                     Theme="{DynamicResource PureCardRadioGroupListBox}">
@@ -44,7 +44,7 @@
                 <StackPanel Orientation="Horizontal">
                     <Button
                         x:Name="btnEditSub"
-                        Margin="{StaticResource MarginLr4}"
+                        Margin="{StaticResource MarginLr8}"
                         Classes="IconButton Success"
                         ToolTip.Tip="{x:Static resx:ResUI.menuSubEdit}">
                         <Button.Content>
@@ -53,7 +53,7 @@
                     </Button>
                     <Button
                         x:Name="btnAddSub"
-                        Margin="{StaticResource MarginLr4}"
+                        Margin="{StaticResource MarginLr8}"
                         Classes="IconButton Success"
                         ToolTip.Tip="{x:Static resx:ResUI.menuSubAdd}">
                         <Button.Content>
@@ -64,14 +64,14 @@
                     <TextBox
                         x:Name="txtServerFilter"
                         Width="200"
-                        Margin="{StaticResource MarginLr4}"
+                        Margin="{StaticResource MarginLr8}"
                         VerticalContentAlignment="Center"
-                        PlaceholderText="{x:Static resx:ResUI.MsgServerTitle}"
-                        ToolTip.Tip="{x:Static resx:ResUI.MsgServerTitle}" />
+                        PlaceholderText="{x:Static resx:ResUI.MsgServerFilterTip}"
+                        ToolTip.Tip="{x:Static resx:ResUI.MsgServerFilterTip}" />
 
                     <Button
                        x:Name="btnAutofitColumnWidth"
-                       Margin="{StaticResource MarginLr4}"
+                       Margin="{StaticResource MarginLr8}"
                        Classes="IconButton Success"
                        ToolTip.Tip="{x:Static resx:ResUI.menuProfileAutofitColumnWidth}">
                         <Button.Content>
@@ -81,7 +81,7 @@
 
                     <Button
                         x:Name="btnFastRealPing"
-                        Margin="{StaticResource MarginLr4}"
+                        Margin="{StaticResource MarginLr8}"
                         Classes="IconButton Success"
                         ToolTip.Tip="{x:Static resx:ResUI.menuFastRealPing}">
                         <Button.Content>
@@ -90,7 +90,7 @@
                     </Button>
                     <Button
                         x:Name="menuMixedTestServer"
-                        Margin="{StaticResource MarginLr4}"
+                        Margin="{StaticResource MarginLr8}"
                         Classes="IconButton Success"
                         ToolTip.Tip="{x:Static resx:ResUI.menuMixedTestServer}">
                         <Button.Content>
@@ -105,14 +105,14 @@
             <DataGrid
                 x:Name="lstProfiles"
                 AutoGenerateColumns="False"
-                BorderThickness="1"
+                BorderThickness="0"
                 CanUserAddRows="False"
                 CanUserDeleteRows="False"
                 CanUserHideColumns="True"
                 CanUserReorderColumns="True"
                 CanUserResizeColumns="True"
                 Classes.InsetContent="True"
-                GridLinesVisibility="All"
+                GridLinesVisibility="Horizontal"
                 HeadersVisibility="All"
                 IsReadOnly="False"
                 ItemsSource="{Binding ProfileItems}"
@@ -217,6 +217,7 @@
                     <DataGridTextColumn
                         Width="80"
                         Binding="{Binding ConfigType}"
+                        Foreground="{DynamicResource SemiColorTertiary}"
                         Header="{x:Static resx:ResUI.LvServiceType}"
                         IsReadOnly="True"
                         Tag="ConfigType" />
@@ -230,11 +231,12 @@
                                 <StackPanel Margin="{StaticResource MarginLr8}" Orientation="Horizontal">
                                     <Label
                                         Margin="{StaticResource MarginLr4}"
-                                        Classes="Solid Red"
+                                        Classes="Ghost Green"
                                         Content="{x:Static resx:ResUI.TipActiveServer}"
                                         IsVisible="{Binding IsActive}"
                                         Theme="{DynamicResource TagLabel}" />
                                     <TextBlock
+                                        FontWeight="SemiBold"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
                                         Text="{Binding Remarks}" />
@@ -258,18 +260,21 @@
                     <DataGridTextColumn
                         Width="100"
                         Binding="{Binding Network}"
+                        Foreground="{DynamicResource SemiColorTertiary}"
                         Header="{x:Static resx:ResUI.LvTransportProtocol}"
                         IsReadOnly="True"
                         Tag="Network" />
                     <DataGridTextColumn
                         Width="100"
                         Binding="{Binding StreamSecurity}"
+                        Foreground="{DynamicResource SemiColorTertiary}"
                         Header="{x:Static resx:ResUI.LvTLS}"
                         IsReadOnly="True"
                         Tag="StreamSecurity" />
                     <DataGridTextColumn
                         Width="100"
                         Binding="{Binding SubRemarks}"
+                        Foreground="{DynamicResource SemiColorTertiary}"
                         Header="{x:Static resx:ResUI.LvSubscription}"
                         IsReadOnly="True"
                         Tag="SubRemarks" />
@@ -303,6 +308,7 @@
                             <DataTemplate>
                                 <TextBlock
                                     Margin="{StaticResource MarginLr8}"
+                                    Foreground="{DynamicResource SemiColorTertiary}"
                                     VerticalAlignment="Center"
                                     Text="{Binding Path=IpInfo, Mode=OneWay}">
                                     <TextBlock.ContextMenu>
@@ -321,24 +327,28 @@
                     <DataGridTextColumn
                         Width="100"
                         Binding="{Binding TodayUp}"
+                        Foreground="{DynamicResource SemiColorTertiary}"
                         Header="{x:Static resx:ResUI.LvTodayUploadDataAmount}"
                         IsReadOnly="True"
                         Tag="TodayUp" />
                     <DataGridTextColumn
                         Width="100"
                         Binding="{Binding TodayDown}"
+                        Foreground="{DynamicResource SemiColorTertiary}"
                         Header="{x:Static resx:ResUI.LvTodayDownloadDataAmount}"
                         IsReadOnly="True"
                         Tag="TodayDown" />
                     <DataGridTextColumn
                         Width="100"
                         Binding="{Binding TotalUp}"
+                        Foreground="{DynamicResource SemiColorTertiary}"
                         Header="{x:Static resx:ResUI.LvTotalUploadDataAmount}"
                         IsReadOnly="True"
                         Tag="TotalUp" />
                     <DataGridTextColumn
                         Width="100"
                         Binding="{Binding TotalDown}"
+                        Foreground="{DynamicResource SemiColorTertiary}"
                         Header="{x:Static resx:ResUI.LvTotalDownloadDataAmount}"
                         IsReadOnly="True"
                         Tag="TotalDown" />

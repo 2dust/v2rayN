@@ -1,4 +1,5 @@
 using System.Xml;
+using v2rayN.Desktop.Common;
 using AvaloniaEdit.Highlighting;
 using AvaloniaEdit.Highlighting.Xshd;
 
@@ -25,8 +26,8 @@ public partial class JsonEditor : UserControl
     {
         InitializeComponent();
 
-        var isDark = Application.Current?.ActualThemeVariant != ThemeVariant.Light;
-        Editor.SyntaxHighlighting = isDark ? SHighlightingDark.Value : SHighlightingLight.Value;
+        ApplyHighlighting();
+
         Editor.TextArea.TextView.Options.EnableHyperlinks = false;
 
         Editor.TextChanged += (_, _) =>
@@ -50,6 +51,36 @@ public partial class JsonEditor : UserControl
             Text = "{\n  \"key\": \"value\",\n  \"number\": 123,\n  \"boolean\": true,\n  \"nullValue\": null\n}";
         }
     }
+
+    private void ApplyHighlighting()
+    {
+        var isDark = ThemeHelper.IsDarkTheme();
+        Editor.SyntaxHighlighting = isDark ? SHighlightingDark.Value : SHighlightingLight.Value;
+    }
+
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+
+        if (Application.Current is { } app)
+        {
+            // Keep the syntax colors in sync with light / dark / colored theme variants.
+            app.ActualThemeVariantChanged += OnThemeVariantChanged;
+        }
+        ApplyHighlighting();
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        if (Application.Current is { } app)
+        {
+            app.ActualThemeVariantChanged -= OnThemeVariantChanged;
+        }
+
+        base.OnDetachedFromVisualTree(e);
+    }
+
+    private void OnThemeVariantChanged(object? sender, EventArgs e) => ApplyHighlighting();
 
     private static IHighlightingDefinition BuildHighlighting(bool dark)
     {
