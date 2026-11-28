@@ -16,6 +16,8 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
     [Reactive]
     public partial bool MuxEnabled { get; set; }
 
+    private bool _muxAutoEnabledByXdrive;
+
     [Reactive]
     public partial string Cert { get; set; }
 
@@ -346,7 +348,16 @@ public partial class AddServerViewModel : MyReactiveObject, ICloseable
                 }
                 if (network == nameof(ETransport.xdrive))
                 {
-                    MuxEnabled = true;
+                    if (!MuxEnabled)
+                    {
+                        MuxEnabled = true;
+                        _muxAutoEnabledByXdrive = true;
+                    }
+                }
+                else if (_muxAutoEnabledByXdrive)
+                {
+                    MuxEnabled = false;
+                    _muxAutoEnabledByXdrive = false;
                 }
                 this.RaisePropertyChanged(nameof(TransportHeaderType));
                 this.RaisePropertyChanged(nameof(TransportHost));
