@@ -1923,7 +1923,26 @@ public static class ConfigDbHandler
 
         if (counter > 0 && lstOriSub is { Count: > 0 })
         {
-            await RemoveServers(lstOriSub.Where(item => item.IsSub).ToList());
+            var previousProfiles = lstOriSub.Where(item => item.IsSub).ToList();
+            var previousMuxProfiles = previousProfiles.Where(item => item.MuxEnabled.HasValue).ToList();
+            if (previousMuxProfiles.Count > 0)
+            {
+                var previousIds = previousProfiles.Select(item => item.IndexId).ToHashSet();
+                var refreshedProfiles = await ConfigDbQuery.ProfileItems(subid) ?? [];
+                foreach (var profile in refreshedProfiles.Where(item => item.IsSub
+                    && !item.MuxEnabled.HasValue && !previousIds.Contains(item.IndexId)))
+                {
+                    var previous = previousMuxProfiles.FirstOrDefault(item => CompareProfileItem(item, profile, true));
+                    if (previous != null)
+                    {
+                        await SQLiteHelper.Instance.ExecuteAsync(
+                            "UPDATE ProfileItem SET MuxEnabled = ? WHERE IndexId = ? AND MuxEnabled IS NULL",
+                            previous.MuxEnabled, profile.IndexId);
+                    }
+                }
+            }
+
+            await RemoveServers(previousProfiles);
         }
 
         //Select active node
