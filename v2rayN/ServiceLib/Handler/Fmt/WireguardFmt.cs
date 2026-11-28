@@ -2,6 +2,9 @@ namespace ServiceLib.Handler.Fmt;
 
 public class WireguardFmt : BaseFmt
 {
+    // wg-quick lets these keys appear more than once, each line adding to the list.
+    private static readonly HashSet<string> _repeatableKeys = new(StringComparer.OrdinalIgnoreCase) { "Address", "DNS" };
+
     public static ProfileItem? Resolve(string str, out string msg)
     {
         msg = ResUI.ConfigurationFormatIncorrect;
@@ -146,6 +149,13 @@ public class WireguardFmt : BaseFmt
                 if (commentPos >= 0)
                 {
                     value = value[..commentPos].TrimEnd();
+                }
+
+                if (_repeatableKeys.Contains(key)
+                    && currentDicRef.TryGetValue(key, out var previous)
+                    && previous.IsNotEmpty())
+                {
+                    value = value.IsNullOrEmpty() ? previous : $"{previous}, {value}";
                 }
 
                 currentDicRef[key] = value;

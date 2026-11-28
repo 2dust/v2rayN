@@ -42,4 +42,36 @@ public class WireguardFmtTests
         await second.Address.Should().BeEqualTo("example.com");
         await second.Port.Should().BeEqualTo(12345);
     }
+
+    [Test]
+    public async Task ResolveConfig_ShouldKeepEveryAddressAndDnsLine()
+    {
+        // wg-quick lets Address and DNS appear more than once. wgcf wrote its
+        // WARP profiles with one Address line per family until late 2024.
+        const string config =
+            """
+            [Interface]
+            PrivateKey = interface-private-key
+            Address = 172.16.0.2/32
+            Address = 2606:4700:110:8a36::2/128
+            DNS = 1.1.1.1
+            DNS = 2606:4700:4700::1111
+            MTU = 1280
+
+            [Peer]
+            PublicKey = peer-public-key
+            AllowedIPs = 0.0.0.0/0
+            AllowedIPs = ::/0
+            Endpoint = engage.cloudflareclient.com:2408
+            """;
+
+        var resolved = WireguardFmt.ResolveConfig(config);
+
+        await resolved.Should().NotBeNull();
+        await resolved.Should().HaveCount(1);
+
+        var protocolExtra = resolved![0].GetProtocolExtra();
+        await protocolExtra.WgInterfaceAddress.Should().BeEqualTo("172.16.0.2/32, 2606:4700:110:8a36::2/128");
+        await protocolExtra.WgDns.Should().BeEqualTo("1.1.1.1, 2606:4700:4700::1111");
+    }
 }
