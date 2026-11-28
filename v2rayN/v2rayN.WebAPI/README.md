@@ -11,6 +11,8 @@ An independent WebUI or other HTTP client manages its own hosting and configurat
 
 ## Start the API
 
+Linux x64 and ARM64 native installs and app-only updates require **glibc 2.39 or later**.
+
 For a native install, unpack the API release ZIP and start the executable from its install
 directory:
 

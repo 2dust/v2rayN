@@ -50,6 +50,8 @@ Read the Wiki for usage guides and configuration details.
 | Linux | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | macOS | ✅ | - | ✅ | - | - | - |
 
+Linux x64, ARM64, and PPC64LE builds require **glibc 2.39 or later** for the bundled SQLite library.
+
 Minimum OS requirements: [Release files introduction](https://github.com/2dust/v2rayN/wiki/Release-files-introduction) / 最低系统要求：[发布文件介绍](https://github.com/2dust/v2rayN/wiki/Release-files-introduction)
 
 ---
