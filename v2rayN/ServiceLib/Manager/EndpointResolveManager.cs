@@ -1,3 +1,4 @@
+using System.Buffers.Binary;
 using System.Net.Http.Headers;
 
 namespace ServiceLib.Manager;
@@ -549,7 +550,13 @@ public class EndpointResolveManager
         }
     }
 
-    public class UdpDnsResolver(IPEndPoint dnsServer) : IDnsResolver
+    /// <summary>
+    ///     Default time to wait for one UDP or TCP DNS query, so a lost or unanswered query
+    ///     falls back to the domain instead of blocking the caller.
+    /// </summary>
+    private static readonly TimeSpan DefaultQueryTimeout = TimeSpan.FromSeconds(5);
+
+    public class UdpDnsResolver(IPEndPoint dnsServer, TimeSpan? queryTimeout = null) : IDnsResolver
     {
         public async Task<List<IPAddress>> ResolveAsync(
             string host,
@@ -561,18 +568,20 @@ public class EndpointResolveManager
                 ipv6,
                 async (name, queryType, ct) =>
                 {
+                    using var timeoutCts = CancellationTokenSource.CreateLinkedTokenSource(ct);
+                    timeoutCts.CancelAfter(queryTimeout ?? DefaultQueryTimeout);
                     var query = DnsWire.BuildQuery(name, queryType);
                     using var udpClient = new UdpClient();
                     udpClient.Connect(dnsServer);
-                    await udpClient.SendAsync(query, query.Length);
-                    var result = await udpClient.ReceiveAsync(ct);
+                    await udpClient.SendAsync(query, timeoutCts.Token);
+                    var result = await udpClient.ReceiveAsync(timeoutCts.Token);
                     return result.Buffer;
                 },
                 cancellationToken);
         }
     }
 
-    public class TcpDnsResolver(IPEndPoint dnsServer) : IDnsResolver
+    public class TcpDnsResolver(IPEndPoint dnsServer, TimeSpan? queryTimeout = null) : IDnsResolver
     {
         public async Task<List<IPAddress>> ResolveAsync(
             string host,
@@ -584,18 +593,25 @@ public class EndpointResolveManager
                 ipv6,
                 async (name, queryType, ct) =>
                 {
+                    using var timeoutCts = CancellationTokenSource.CreateLinkedTokenSource(ct);
+                    timeoutCts.CancelAfter(queryTimeout ?? DefaultQueryTimeout);
+                    var token = timeoutCts.Token;
                     var query = DnsWire.BuildQuery(name, queryType);
                     using var tcpClient = new TcpClient();
-                    await tcpClient.ConnectAsync(dnsServer.Address, dnsServer.Port, ct);
+                    await tcpClient.ConnectAsync(dnsServer.Address, dnsServer.Port, token);
                     await using var networkStream = tcpClient.GetStream();
-                    await networkStream.WriteAsync(query, 0, query.Length, ct);
+                    // DNS over TCP prefixes every message with its 2-byte length (RFC 1035 4.2.2).
+                    var request = new byte[query.Length + 2];
+                    BinaryPrimitives.WriteUInt16BigEndian(request, (ushort)query.Length);
+                    query.CopyTo(request, 2);
+                    await networkStream.WriteAsync(request, token);
                     // Read the length of the response (2 bytes)
                     var lengthBuffer = new byte[2];
-                    await networkStream.ReadExactlyAsync(lengthBuffer, 0, 2, ct);
-                    var responseLength = (lengthBuffer[0] << 8) | lengthBuffer[1];
+                    await networkStream.ReadExactlyAsync(lengthBuffer, token);
+                    var responseLength = BinaryPrimitives.ReadUInt16BigEndian(lengthBuffer);
                     // Read the actual response
                     var responseBuffer = new byte[responseLength];
-                    await networkStream.ReadExactlyAsync(responseBuffer, 0, responseLength, ct);
+                    await networkStream.ReadExactlyAsync(responseBuffer, token);
                     return responseBuffer;
                 },
                 cancellationToken);
