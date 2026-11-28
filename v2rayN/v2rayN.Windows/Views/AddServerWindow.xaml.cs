@@ -177,6 +177,18 @@ public partial class AddServerWindow
             this.Bind(ViewModel, vm => vm.GrpcAuthority, v => v.txtRequestHostGrpc.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.GrpcServiceName, v => v.txtPathGrpc.Text).DisposeWith(disposables);
 
+            cmbProviderXdrive.ItemsSource = Global.XdriveProviders;
+            this.Bind(ViewModel, vm => vm.XdriveProvider, v => v.cmbProviderXdrive.Text).DisposeWith(disposables);
+            cmbServiceXdrive.ItemsSource = Global.XdriveServices;
+            this.Bind(ViewModel, vm => vm.XdriveService, v => v.cmbServiceXdrive.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.XdriveRemoteFolder, v => v.txtRemoteFolderXdrive.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.XdriveSecrets, v => v.txtSecretsXdrive.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.XdriveS3Endpoint, v => v.txtEndpointXdrive.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.XdriveS3Bucket, v => v.txtBucketXdrive.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.XdriveS3Region, v => v.txtRegionXdrive.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.XdriveS3PathStyle, v => v.togPathStyleXdrive.IsChecked).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.XdriveExtra, v => v.txtExtraXdrive.Text).DisposeWith(disposables);
+
             this.Bind(ViewModel, vm => vm.SelectedSource.StreamSecurity, v => v.cmbStreamSecurity.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.SelectedSource.Sni, v => v.txtSNI.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.AllowInsecure, v => v.togAllowInsecure.IsChecked).DisposeWith(disposables);
@@ -365,6 +377,7 @@ public partial class AddServerWindow
         gridTransportHttpupgrade.Visibility = Visibility.Collapsed;
         gridTransportXhttp.Visibility = Visibility.Collapsed;
         gridTransportGrpc.Visibility = Visibility.Collapsed;
+        gridTransportXdrive.Visibility = Visibility.Collapsed;
 
         switch (network)
         {
@@ -390,6 +403,10 @@ public partial class AddServerWindow
 
             case nameof(ETransport.grpc):
                 gridTransportGrpc.Visibility = Visibility.Visible;
+                break;
+
+            case nameof(ETransport.xdrive):
+                gridTransportXdrive.Visibility = Visibility.Visible;
                 break;
 
             default:
